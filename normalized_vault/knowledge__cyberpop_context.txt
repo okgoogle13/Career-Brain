@@ -1,0 +1,336 @@
+=== SOURCE: cyberpop_context.md ===
+=== CATEGORY: knowledge ===
+=== EXTRACTED: 2026-05-21T10:25:46.212755 ===
+============================================================
+
+# **CareerCopilot Design System: Authentic Intelligence**
+
+This document contains the complete design system for the CareerCopilot application, based on the "Authentic Intelligence" theme. It is the single source of truth for all visual design, typographic rules, and color tokens.
+
+## **1\. Mood Board: Authentic Intelligence**
+
+🔮 **Mood Board: Authentic Intelligence**
+
+**Keywords:** Professional • Structured • Depth-Aware • Humanist • Creative
+
+**1\. The Vibe (Visual Metaphor)**
+
+* **Concept:** "A high-end, modern workspace tool (like Linear or Notion) but with the warmth and emotive readability of a printed magazine. This is 'Grounded AI'—trustworthy, structured, and substantial."  
+* **Key Feelings:** Creative, friendly, intelligent, structured, and authentic.  
+* **Lighting:** High-contrast and clean. It is not "glowing neon"; it is "lit from within."
+
+**2\. The Palette (Cyber-Pop Colors)**
+
+* **The Canvas (Surfaces):**  
+  * \#141318 (Surface) – **Near-Black.** The main app background.  
+  * \#201F25 (Surface Container) – **Dark Grey.** The default card/panel color.  
+* **The Accents (Your P/P/G Palette):**  
+  * \#C4BFFF (Primary) – **Vibrant Purple.** Creative and professional.  
+  * \#56DBBE (Secondary) – **Electric Mint.** Energetic and positive.  
+  * \#FFAEDC (Tertiary) – **Bright Pink.** Playful, surprising, "magic" accent.  
+* **The Text (Content):**  
+  * \#E6E1E5 (On Surface) – **Light Grey.** The default body text.
+
+3\. Typography (The "Humanist" System)  
+This system is built on a dual-font pairing to separate Interface from Content.
+
+* **The "Structured" UI Font: Roboto Flex**  
+  * **Feeling:** Precision, efficiency, clean, modern.  
+  * **Usage:** All UI chrome: Buttons, navigation, labels, tabs, card titles.  
+* **The "Humanist" Content Font: Roboto Serif**  
+  * **Feeling:** Authentic, friendly, emotive, and trustworthy.  
+  * **Usage:** All long-form generated content: AI responses, resume analysis, cover letter drafts. This makes the AI's voice feel more human.
+
+**4\. Materiality & Texture (The "Stacked Paper" Metaphor)**
+
+* **Surface:** Matte, velvety dark surfaces.  
+* **Depth:** 100% Tonal. We **do not use shadows**. Depth is communicated through color tone shifts (lighter \= higher).  
+  * **Layer 0 (Desk):** \#141318 (Surface)  
+  * **Layer 1 (Sidebar):** \#1C1B20 (Surface Container Low)  
+  * **Layer 2 (Canvas):** \#201F25 (Surface Container)  
+  * **Layer 3 (Modal):** \#2B2A2F (Surface Container High)  
+* **Borders:** Subtle 1px outlines (\#938F99).
+
+**5\. UI Pattern Inspiration**
+
+* **"Playful" AI:** Use the **Dark Pink** (\#712F62) background for the AI chat window. Inside it, use the **Light Pink** (\#FFD7EE) *text color* and, most importantly, the Roboto Serif font.  
+* **"Structured" Hierarchy:** The UI is clean, sharp, and grid-aligned, built with Roboto Flex.  
+* **"Organic" Content:** The AI's output is emotive and readable, set in Roboto Serif with a generous line height.
+
+## **2\. Project Style Guide (M3\_GUIDE.md)**
+
+Project Style Guide: CareerCopilot  
+System: Material 3 (Strict 26-Role Implementation)  
+Theme: Authentic Intelligence (Cyber-Pop Palette)  
+Target Platform: Desktop Web (Expanded Screens)  
+1\. Typography  
+Strategy: High-legibility mechanical UI paired with warm, editorial readability.
+
+* **A. Headings & UI Components (Buttons, Nav, Inputs)**  
+  * **Font:** Roboto Flex  
+  * **Usage:** App Bars, Navigation Rails, Button text, Input labels, Data Tables, Card Titles.  
+  * **Features:** Utilize the wdth (Width) and GRAD (Grade) axes to fine-tune density on desktop screens.  
+  * **Instance: ui-emphasis**  
+    * font-weight: 600;  
+    * font-variation-settings: "'GRAD' 50";  
+* **B. Body Copy & Long-Form Content**  
+  * **Font:** Roboto Serif  
+  * **Usage:** User profile bios, generated AI reports, documentation blocks, help text.  
+  * **Rationale:** Adds a "genuine" and authentic tone to the AI's voice, differentiating content from UI.  
+  * **Instance: content-body**  
+    * font-family: 'Roboto Serif', serif;  
+    * font-weight: 400;  
+    * line-height: 1.6;
+
+2\. Color System (The 26-Role Schema)  
+Core Rule: Adherence to contrast pairs from material-theme-cyberpop.json is mandatory.  
+**A. The Surface Hierarchy (Desktop/Expanded Strategy)** *Because this is a desktop app, we rely on depth (tonal elevation) to separate regions. A flat black screen is forbidden.*
+
+| Role | Token Name | Hex (Dark) | Usage |
+| :---- | :---- | :---- | :---- |
+| **Level 0** | surface | \#141318 | The fundamental background of the window. |
+| **Level 1** | surfaceContainerLow | \#1C1B20 | Navigation Rail or Sidebar (recedes). |
+| **Level 2** | surfaceContainer | \#201F25 | **Default** fill for main content cards. |
+| **Level 3** | surfaceContainerHigh | \#2B2A2F | Modals, Dialogs, and Hover states. |
+
+**B. Accent Colors**
+
+| Role | Token Name | Hex (Dark) | Usage |
+| :---- | :---- | :---- | :---- |
+| **Primary** | primary / onPrimary | \#C4BFFF / \#412DAB | Key actions (Submit, Save, "Generate"). |
+| **Active Nav** | primaryContainer | \#5844C3 | Active pill in sidebar. |
+| **Secondary** | secondary / onSecondary | \#56DBBE / \#00382E | Tonal actions (Filters, Chips, Success). |
+| **Tertiary** | tertiaryContainer | \#712F62 | "AI Insights" highlights (Dark Pink). |
+| **On Tertiary** | onTertiaryContainer | \#FFD7EE | Text *on* the AI highlight (Light Pink). |
+
+**C. Feedback & Boundaries**
+
+| Role | Token Name | Hex (Dark) | Usage |
+| :---- | :---- | :---- | :---- |
+| **Error** | error / onError | \#FFB4AB / \#690005 | Critical failures. |
+| **Input Border** | outline | \#938F99 | Input borders, Checkboxes (3:1 contrast). |
+| **Divider** | outlineVariant | \#48454E | Decorative dividers (Low contrast). |
+
+**3\. Accessibility & Implementation Rules**
+
+* **Never Guess Pairs:** Always use the "On" variant for text (e.g., Text on primary background *must* be onPrimary).  
+* **Desktop Density:** Use Surface Container roles to define hierarchy.  
+* **Type Hierarchy:** Do not mix Roboto Flex and Roboto Serif on the same line. Keep UI (Flex) distinct from Content (Serif).
+
+**4\. Component Guidelines**
+
+* **Cards (Standard)**  
+  * **Background:** surfaceContainer (\#201F25)  
+  * **Border:** 1px solid outline (\#938F99)  
+  * **Radius:** Large (16px)  
+  * **Title Font:** Roboto Flex (use ui-emphasis instance)  
+  * **Body Font:** Roboto Serif (use content-body instance)  
+* **Buttons (Primary)**  
+  * **Background:** primary (\#C4BFFF)  
+  * **Text:** onPrimary (\#412DAB).  
+  * **Font:** Roboto Flex (use ui-emphasis instance)  
+* **AI Chat / "Magic" Component**  
+  * **Background:** tertiaryContainer (\#712F62 \- Dark Pink)  
+  * **Text:** onTertiaryContainer (\#FFD7EE \- Light Pink)  
+  * **Radius:** Large (16px)  
+  * **Title Font:** Roboto Flex  
+  * **Body Font:** Roboto Serif (to make AI voice authentic)  
+* **Navigation Rail (Sidebar)**  
+  * **Background:** surfaceContainerLow (\#1C1B20)  
+  * **Font:** Roboto Flex
+
+## **3\. Color Theme JSON (material-theme-cyberpop.json)**
+
+This is the raw token file used to generate the color palettes in this guide.
+
+{  
+    "description": "Cyber-Pop (Purple, Pink, Green) Expressive Theme",  
+    "seed" : "\#8A79F8",  
+    "coreColors": {  
+        "primary": "\#8A79F8",  
+        "secondary": "\#00BD9F",  
+        "tertiary": "\#F072D1"  
+    },  
+    "extendedColors": \[\],  
+    "schemes": {  
+        "light": {  
+            "primary": "\#715FDB",  
+            "surfaceTint": "\#715FDB",  
+            "onPrimary": "\#FFFFFF",  
+            "primaryContainer": "\#E4DFFF",  
+            "onPrimaryContainer": "\#28177D",  
+            "secondary": "\#006C59",  
+            "onSecondary": "\#FFFFFF",  
+            "secondaryContainer": "\#7AF8DA",  
+            "onSecondaryContainer": "\#00211A",  
+            "tertiary": "\#8D467B",  
+            "onTertiary": "\#FFFFFF",  
+            "tertiaryContainer": "\#FFD7EE",  
+            "onTertiaryContainer": "\#3B0031",  
+            "error": "\#BA1A1A",  
+            "onError": "\#FFFFFF",  
+            "errorContainer": "\#FFDAD6",  
+            "onErrorContainer": "\#410002",  
+            "background": "\#FDF7FF",  
+            "onBackground": "\#1C1B20",  
+            "surface": "\#FDF7FF",  
+            "onSurface": "\#1C1B20",  
+            "surfaceVariant": "\#E6E0EC",  
+            "onSurfaceVariant": "\#48454E",  
+            "outline": "\#79757F",  
+            "outlineVariant": "\#C9C5D0",  
+            "shadow": "\#000000",  
+            "scrim": "\#000000",  
+            "inverseSurface": "\#313035",  
+            "inverseOnSurface": "\#F4EFF7",  
+            "inversePrimary": "\#C4BFFF",  
+            "primaryFixed": "\#E4DFFF",  
+            "onPrimaryFixed": "\#28177D",  
+            "primaryFixedDim": "\#C4BFFF",  
+            "onPrimaryFixedVariant": "\#5844C3",  
+            "secondaryFixed": "\#7AF8DA",  
+            "onSecondaryFixed": "\#00211A",  
+            "secondaryFixedDim": "\#56DBBE",  
+            "onSecondaryFixedVariant": "\#005143",  
+            "tertiaryFixed": "\#FFD7EE",  
+            "onTertiaryFixed": "\#3B0031",  
+            "tertiaryFixedDim": "\#FFAEDC",  
+            "onTertiaryFixedVariant": "\#712F62",  
+            "surfaceDim": "\#DDD8E0",  
+            "surfaceBright": "\#FDF7FF",  
+            "surfaceContainerLowest": "\#FFFFFF",  
+            "surfaceContainerLow": "\#F7F2FA",  
+            "surfaceContainer": "\#F1ECF4",  
+            "surfaceContainerHigh": "\#EBE6EE",  
+            "surfaceContainerHighest": "\#E6E1E9"  
+        },  
+        "dark": {  
+            "primary": "\#C4BFFF",  
+            "surfaceTint": "\#C4BFFF",  
+            "onPrimary": "\#412DAB",  
+            "primaryContainer": "\#5844C3",  
+            "onPrimaryContainer": "\#E4DFFF",  
+            "secondary": "\#56DBBE",  
+            "onSecondary": "\#00382E",  
+            "secondaryContainer": "\#005143",  
+            "onSecondaryContainer": "\#7AF8DA",  
+            "tertiary": "\#FFAEDC",  
+            "onTertiary": "\#58144B",  
+            "tertiaryContainer": "\#712F62",  
+            "onTertiaryContainer": "\#FFD7EE",  
+            "error": "\#FFB4AB",  
+            "onError": "\#690005",  
+            "errorContainer": "\#93000A",  
+            "onErrorContainer": "\#FFDAD6",  
+            "background": "\#141318",  
+            "onBackground": "\#E6E1E9",  
+            "surface": "\#141318",  
+            "onSurface": "\#E6E1E9",  
+            "surfaceVariant": "\#48454E",  
+            "onSurfaceVariant": "\#C9C5D0",  
+            "outline": "\#938F99",  
+            "outlineVariant": "\#48454E",  
+            "shadow": "\#000000",  
+            "scrim": "\#000000",  
+            "inverseSurface": "\#E6E1E9",  
+            "inverseOnSurface": "\#313035",  
+            "inversePrimary": "\#715FDB",  
+            "primaryFixed": "\#E4DFFF",  
+            "onPrimaryFixed": "\#28177D",  
+            "primaryFixedDim": "\#C4BFFF",  
+            "onPrimaryFixedVariant": "\#5844C3",  
+            "secondaryFixed": "\#7AF8DA",  
+            "onSecondaryFixed": "\#00211A",  
+            "secondaryFixedDim": "\#56DBBE",  
+            "onSecondaryFixedVariant": "\#005143",  
+            "tertiaryFixed": "\#FFD7EE",  
+            "onTertiaryFixed": "\#3B0031",  
+            "tertiaryFixedDim": "\#FFAEDC",  
+            "onTertiaryFixedVariant": "\#712F62",  
+            "surfaceDim": "\#141318",  
+            "surfaceBright": "\#3A383E",  
+            "surfaceContainerLowest": "\#0F0D13",  
+            "surfaceContainerLow": "\#1C1B20",  
+            "surfaceContainer": "\#201F25",  
+            "surfaceContainerHigh": "\#2B2A2F",  
+            "surfaceContainerHighest": "\#36343A"  
+        }  
+    },  
+    "palettes": {  
+        "primary": {  
+            "0": "\#000000",  
+            "10": "\#10006E",  
+            "20": "\#28177D",  
+            "30": "\#412DAB",  
+            "40": "\#5844C3",  
+            "50": "\#715FDB",  
+            "60": "\#8C79F8",  
+            "70": "\#A995FF",  
+            "80": "\#C4BFFF",  
+            "90": "\#E4DFFF",  
+            "95": "\#F2EEFF",  
+            "99": "\#FFFBFF",  
+            "100": "\#FFFFFF"  
+        },  
+        "secondary": {  
+            "0": "\#000000",  
+            "10": "\#00211A",  
+            "20": "\#00382E",  
+            "30": "\#005143",  
+            "40": "\#006C59",  
+            "50": "\#008870",  
+            "60": "\#00A588",  
+            "70": "\#28C2A1",  
+            "80": "\#56DBBE",  
+            "90": "\#7AF8DA",  
+            "95": "\#AFFFEC",  
+            "99": "\#F2FFFA",  
+            "100": "\#FFFFFF"  
+        },  
+        "tertiary": {  
+            "0": "\#000000",  
+            "10": "\#23001F",  
+            "20": "\#3B0031",  
+            "30": "\#58144B",  
+            "40": "\#712F62",  
+            "50": "\#8D467B",  
+            "60": "\#A95F95",  
+            "70": "\#C678B0",  
+            "80": "\#E492CA",  
+            "90": "\#FFD7EE",  
+            "95": "\#FFECF5",  
+            "99": "\#FFFBFF",  
+            "100": "\#FFFFFF"  
+        },  
+        "neutral": {  
+            "0": "\#000000",  
+            "10": "\#1C1B20",  
+            "20": "\#313035",  
+            "30": "\#48464C",  
+            "40": "\#605E64",  
+            "50": "\#79767D",  
+            "60": "\#939097",  
+            "70": "\#AEAAB1",  
+            "80": "\#C9C5CD",  
+            "90": "\#E6E1E9",  
+            "95": "\#F4EFF7",  
+            "99": "\#FFFBFF",  
+            "100": "\#FFFFFF"  
+        },  
+        "neutral-variant": {  
+            "0": "\#000000",  
+            "10": "\#1D1A22",  
+            "20": "\#322F37",  
+            "30": "\#48454E",  
+            "40": "\#605D66",  
+            "50": "\#79757F",  
+            "60": "\#938F99",  
+            "70": "\#AEAAB4",  
+            "80": "\#C9C5D0",  
+            "90": "\#E6E0EC",  
+            "95": "\#F4EFFB",  
+            "99": "\#FFFBFF",  
+            "100": "\#FFFFFF"  
+        }  
+    }  
+}

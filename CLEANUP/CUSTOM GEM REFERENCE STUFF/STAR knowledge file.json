@@ -1,0 +1,192 @@
+[
+  {
+    "Section": "Introduction",
+    "SubType": "Definition",
+    "Detail": "The STAR method is a standard and highly effective technique for structuring accomplishments on a resume, particularly in the work experience section. It helps demonstrate impact and provides concrete examples of skills and achievements, moving beyond simple duty descriptions.",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Introduction",
+    "SubType": "Purpose",
+    "Detail": "Using STAR makes bullet points more compelling and easier for recruiters and Applicant Tracking Systems (ATS) to understand the value you brought to previous roles.",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Components",
+    "SubType": "S - Situation",
+    "Detail": "Briefly describe the context or background. Where and when did this take place? What was the challenge or scenario?",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Components",
+    "SubType": "T - Task",
+    "Detail": "What was your specific responsibility or objective in that situation? What needed to be done?",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Components",
+    "SubType": "A - Action",
+    "Detail": "What specific steps did *you* take to address the task or challenge? Use strong action verbs to describe your contributions.",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Components",
+    "SubType": "R - Result",
+    "Detail": "What was the outcome of your actions? This is crucial – quantify the results whenever possible using numbers, percentages, or specific metrics to demonstrate impact.",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Components",
+    "SubType": "Note",
+    "Detail": "Sometimes Situation and Task can be combined for brevity.",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Strong Examples",
+    "SubType": "Leadership/Project Management",
+    "Detail": "",
+    "Example_ST": "Faced with a tight deadline for a key client project,",
+    "Example_Action": "spearheaded a 5-person cross-functional team, implementing agile methodologies and daily stand-ups to improve communication and track progress,",
+    "Example_Result": "resulting in project delivery 2 weeks ahead of schedule and exceeding client expectations.",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Strong Examples",
+    "SubType": "Problem Solving/Customer Service",
+    "Detail": "",
+    "Example_ST": "Noticed recurring customer complaints regarding lengthy issue resolution times for '{target_keyword}' problems,",
+    "Example_Action": "analyzed the support workflow, identified bottlenecks, and developed a new triage system with clearer escalation paths,",
+    "Example_Result": "reducing average resolution time by 30% and boosting customer satisfaction scores by 15% within one quarter.",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Strong Examples",
+    "SubType": "Efficiency Improvement/Cost Savings",
+    "Detail": "",
+    "Example_ST": "Inherited a manual monthly reporting process that required 10+ hours to complete,",
+    "Example_Action": "automated data aggregation and report generation using Python scripts and Excel macros,",
+    "Example_Result": "reducing report creation time by 90% (to under 1 hour) and eliminating manual data entry errors.",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Strong Examples",
+    "SubType": "Sales/Revenue Generation",
+    "Detail": "",
+    "Example_ST": "Tasked with increasing sales in an underperforming territory,",
+    "Example_Action": "developed and implemented a targeted outreach strategy focusing on nurturing relationships with high-potential leads identified through market analysis,",
+    "Example_Result": "exceeding the quarterly sales target by 25% and increasing territory revenue by $50,000.",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Strong Examples",
+    "SubType": "Initiative/Process Development",
+    "Detail": "",
+    "Example_ST": "Recognized the lack of standardized onboarding materials for new hires in the department,",
+    "Example_Action": "voluntarily designed and documented a comprehensive 1-week onboarding plan, including checklists, training modules, and introductory meetings,",
+    "Example_Result": "leading to a 20% decrease in ramp-up time for new team members within 6 months.",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Transformations",
+    "SubType": "Example 1",
+    "Detail": "",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "Responsible for managing social media accounts.",
+    "Transformed_STAR_Example": "(S/T) Managed corporate social media accounts (LinkedIn, Twitter) aiming to increase brand engagement, (A) developed and executed a content calendar with targeted campaigns, interactive posts, and influencer collaborations, (R) resulting in a 40% growth in follower count and a 25% increase in user engagement metrics over 6 months."
+  },
+  {
+    "Section": "Transformations",
+    "SubType": "Example 2",
+    "Detail": "",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "Trained new employees.",
+    "Transformed_STAR_Example": "(S/T) Tasked with improving the onboarding process for new software engineers, (A) created and delivered a series of hands-on technical training workshops focusing on core product architecture and coding standards, (R) contributing to a 15% reduction in bugs attributed to new hires during their first quarter."
+  },
+  {
+    "Section": "Transformations",
+    "SubType": "Example 3",
+    "Detail": "",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "Helped improve website performance.",
+    "Transformed_STAR_Example": "(S/T) Identified slow loading times on key website landing pages impacting user experience, (A) optimized image sizes, implemented browser caching, and minified CSS/JavaScript files, (R) improving average page load speed by 50% and contributing to a 10% decrease in bounce rate."
+  },
+  {
+    "Section": "Key Takeaways",
+    "SubType": "Guidance 1",
+    "Detail": "Always aim to include all four STAR components, even if S & T are combined.",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Key Takeaways",
+    "SubType": "Guidance 2",
+    "Detail": "Start bullet points with strong action verbs.",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Key Takeaways",
+    "SubType": "Guidance 3",
+    "Detail": "Quantify the Result (R) whenever possible. If quantification isn't explicit in the input, prompt the user or suggest potential metrics.",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  },
+  {
+    "Section": "Key Takeaways",
+    "SubType": "Guidance 4",
+    "Detail": "Focus on the individual's specific Actions (A) and their direct contribution to the Result (R).",
+    "Example_ST": "",
+    "Example_Action": "",
+    "Example_Result": "",
+    "Original_Description": "",
+    "Transformed_STAR_Example": ""
+  }
+]

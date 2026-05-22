@@ -1,0 +1,34 @@
+[
+  {
+    "category": "Action Verbs",
+    "phrase": "Assisted",
+    "examples": [
+      "Assisted in the development of marketing materials.",
+      "Assisted the team with project management tasks."
+    ],
+    "tone": "formal",
+    "keywords": ["support", "help", "aid"]
+  },
+  {
+    "category": "Action Verbs",
+    "phrase": "Developed",
+    "examples": [
+      "Developed a new software application.",
+      "Developed a marketing strategy for a new product."
+    ],
+    "tone": "formal",
+    "keywords": ["create", "design", "build"]
+  },
+  // ... more action verbs
+  {
+    "category": "Quantifiable Achievements",
+    "phrase": "Increased sales by 20%",
+    "examples": [
+      "Increased sales by 20% in Q4 2023.",
+      "Increased sales by 20% through targeted advertising."
+    ],
+    "tone": "confident",
+    "keywords": ["sales", "growth", "revenue"]
+  }
+  // ... more quantifiable achievements
+]

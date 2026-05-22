@@ -1,0 +1,35 @@
+[
+  {
+    "category": "Opening Options",
+    "subcategory": "Start with passion",
+    "description": "Express your genuine interest in the field and how it aligns with the job. Shows engagement and motivation.",
+    "examples": [
+      "If truly loving data is wrong, I don’t want to be right. It seems like the rest of the folks at [Analytics Company] feel the same way—and that’s just one of the reasons why I think I’d be the perfect next hire for your sales team.",
+      "I’ve been giving my friends and family free style advice since I was 10, and recently decided it’s time I get paid for it. That’s why I couldn’t believe it when I found an open personal stylist position at [Company]."
+    ],
+    "tone": "enthusiastic"
+  },
+  // ... more opening options
+  {
+    "category": "Introduction",
+    "phrase": "I am writing to express my interest in the...",
+    "examples": [
+      "I am writing to express my interest in the Marketing Manager position.",
+      "I am writing to express my interest in the Software Engineer role."
+    ],
+    "tone": "formal",
+    "keywords": ["introduction", "interest", "position"]
+  },
+  // ... more introduction phrases
+  {
+    "category": "Closing",
+    "phrase": "Thank you for your time and consideration.",
+    "examples": [
+      "Thank you for your time and consideration. I look forward to hearing from you.",
+      "Thank you for your time and consideration. I am available for an interview at your earliest convenience."
+    ],
+    "tone": "formal",
+    "keywords": ["closing", "thank you", "interview"]
+  }
+  // ... more closing phrases
+]

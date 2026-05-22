@@ -1,0 +1,171 @@
+=== CAREER BRAIN HARVESTING WORKFLOW RUN LOG ===
+Timestamp: 2026-05-21T10:24:42.807871
+Total Ingested Files: 156
+  Resumes       : 108
+  Cover Letters : 0
+  KSC/STAR      : 28
+  References    : 0
+  Knowledge     : 20
+Errors          : 3
+Skipped (Active): 28
+================================================
+
+SUCCESS | CLEANUP/AI Knowledge Files/prompting guide for jobseekers.md → raw_docs/knowledge/harvested_AI_Knowledge_Files__prompting_guide_for_jobseekers.txt
+SUCCESS | CLEANUP/Bestpractice/Prompt engineering - OpenAI API.pdf → raw_docs/knowledge/harvested_Bestpractice__Prompt_engineering_-_OpenAI_API.txt
+SUCCESS | CLEANUP/Bestpractice/Resume Tailoring with AI Prompts.docx → raw_docs/knowledge/harvested_Bestpractice__Resume_Tailoring_with_AI_Prompts.txt
+SUCCESS | CLEANUP/Bestpractice/The ultimate guide to writing effective AI prompts - Work Life by Atlassian.pdf → raw_docs/knowledge/harvested_Bestpractice__The_ultimate_guide_to_writing_effective_AI_prompts_-_Work_Life_by_Atlassian.txt
+SUCCESS | CLEANUP/CUSTOM GEM REFERENCE STUFF/Skills Matrix Example for Gemini.xlsx → raw_docs/knowledge/harvested_CUSTOM_GEM_REFERENCE_STUFF__Skills_Matrix_Example_for_Gemini.txt
+SUCCESS | CLEANUP/Chromebook Downloads/588F539E-178F-4806-94E9-16ABA7C60FEE_NISHANT DOUGALL EUC LFT UDS 16.9.25.pdf → raw_docs/resumes/harvested_Chromebook_Downloads__588F539E-178F-4806-94E9-16ABA7C60FEE_NISHANT_DOUGALL_EUC_LFT_UDS_16.9.25.txt
+SUCCESS | CLEANUP/Chromebook Downloads/AI Prompts for Solution Design_.md → raw_docs/knowledge/harvested_Chromebook_Downloads__AI_Prompts_for_Solution_Design_.txt
+SUCCESS | CLEANUP/Chromebook Downloads/Nishant_Dougall_Cover_Letter_Harm_Reduction_ Peer_Worker_HRvic (1) (1).pdf → raw_docs/resumes/harvested_Chromebook_Downloads__Nishant_Dougall_Cover_Letter_Harm_Reduction__Peer_Worker_HRvic__1___1_.txt
+SUCCESS | CLEANUP/Chromebook Downloads/Nishant_Dougall_Cover_Letter_Harm_Reduction_ Peer_Worker_HRvic (1).pdf → raw_docs/resumes/harvested_Chromebook_Downloads__Nishant_Dougall_Cover_Letter_Harm_Reduction__Peer_Worker_HRvic__1_.txt
+SUCCESS | CLEANUP/Chromebook Downloads/Prompt & Context Engineering for Resume Agents_ Be.docx → raw_docs/knowledge/harvested_Chromebook_Downloads__Prompt___Context_Engineering_for_Resume_Agents__Be.txt
+SUCCESS | CLEANUP/Chromebook Downloads/Solution Design Resume Agent Requirements.md → raw_docs/knowledge/harvested_Chromebook_Downloads__Solution_Design_Resume_Agent_Requirements.txt
+SUCCESS | CLEANUP/Chromebook Downloads/Solution Design Template for Perplexity Labs Autom.pdf → raw_docs/knowledge/harvested_Chromebook_Downloads__Solution_Design_Template_for_Perplexity_Labs_Autom.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/20240211  THH Peer Worker Role - Responses to Key Selection Criteria.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__20240211_THH_Peer_Worker_Role_-_Responses_to_Key_Selection_Criteria.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/20240211  THH Peer Worker Role - Responses to Key Selection Criteria.docx (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__20240211_THH_Peer_Worker_Role_-_Responses_to_Key_Selection_Criteria.docx__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/20240211  THH Peer Worker Role - Responses to Key Selection Criteria.pdf → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__20240211_THH_Peer_Worker_Role_-_Responses_to_Key_Selection_Criteria.txt
+ERROR | 20240526 Flat Out KSC.doc | Extracted text empty or too short.
+SUCCESS | CLEANUP/Key Selection Criteria Responses/20240526 Flat Out KSC.doc (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__20240526_Flat_Out_KSC.doc__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/20240526 Flat Out KSC.pdf → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__20240526_Flat_Out_KSC.txt
+ERROR | 20240603 IAP KSC.doc | Extracted text empty or too short.
+SUCCESS | CLEANUP/Key Selection Criteria Responses/20240603 IAP KSC.doc (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__20240603_IAP_KSC.doc__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/20240603 IAP KSC.pdf → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__20240603_IAP_KSC.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/KSC_Responses_Statement_of_Claims_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__KSC_Responses_Statement_of_Claims_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/KSC_Responses_Statement_of_Claims_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.docx (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__KSC_Responses_Statement_of_Claims_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.docx__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/KSC_Responses_Statement_of_Claims_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.pdf → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__KSC_Responses_Statement_of_Claims_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH(1).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH_1_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.docx (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.docx__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.docx.1740877338149 (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.docx.1740877338149__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.docx.1740877338149.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.docx.1740877338149.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.pdf → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Client_Care_Support_Worker_THH.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Peer_Test_Facilitator_PRONTO.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Peer_Test_Facilitator_PRONTO.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Peer_Test_Facilitator_PRONTO.docx (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Peer_Test_Facilitator_PRONTO.docx__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Peer_Test_Facilitator_PRONTO.pdf → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Peer_Test_Facilitator_PRONTO.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Project_Worker_Harm_Reduction_Victoria_FUSE.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Project_Worker_Harm_Reduction_Victoria_FUSE.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_Project_Worker_Harm_Reduction_Victoria_FUSE.pdf → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_Project_Worker_Harm_Reduction_Victoria_FUSE.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_TGD_Peer Navigator.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_TGD_Peer_Navigator.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_KSC_Responses_TGD_Peer Navigator.pdf → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_KSC_Responses_TGD_Peer_Navigator.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_Peer_Test_Facilitator_KSC_Responses_THH.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_Peer_Test_Facilitator_KSC_Responses_THH.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_Peer_Test_Facilitator_KSC_Responses_THH.docx (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_Peer_Test_Facilitator_KSC_Responses_THH.docx__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_Peer_Test_Facilitator_KSC_Responses_THH.docx.1740877323696 (Converted - 2026-05-14 03_18).docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_Peer_Test_Facilitator_KSC_Responses_THH.docx.1740877323696__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_Peer_Test_Facilitator_KSC_Responses_THH.docx.1740877323696.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_Peer_Test_Facilitator_KSC_Responses_THH.docx.1740877323696.txt
+SUCCESS | CLEANUP/Key Selection Criteria Responses/Nishant_Dougall_Statement_Of_Claims_KSC_Flat_Out_FDV_Project_Role.docx → raw_docs/ksc/harvested_Key_Selection_Criteria_Responses__Nishant_Dougall_Statement_Of_Claims_KSC_Flat_Out_FDV_Project_Role.txt
+SUCCESS | CLEANUP/Old cover letters/20240211 THH Peer Worker Cover Letter.docx → raw_docs/resumes/harvested_Old_cover_letters__20240211_THH_Peer_Worker_Cover_Letter.txt
+SUCCESS | CLEANUP/Old cover letters/20240211 THH Peer Worker Cover Letter.docx (Converted - 2026-05-14 03_19).docx → raw_docs/resumes/harvested_Old_cover_letters__20240211_THH_Peer_Worker_Cover_Letter.docx__Converted_-_2026-05-14_03_19_.txt
+SUCCESS | CLEANUP/Old cover letters/20240211 THH Peer Worker Cover Letter.pdf → raw_docs/resumes/harvested_Old_cover_letters__20240211_THH_Peer_Worker_Cover_Letter.txt
+SUCCESS | CLEANUP/Old cover letters/Cover_letter_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.docx → raw_docs/resumes/harvested_Old_cover_letters__Cover_letter_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.txt
+SUCCESS | CLEANUP/Old cover letters/Cover_letter_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.docx (Converted - 2026-05-14 03_18).docx → raw_docs/resumes/harvested_Old_cover_letters__Cover_letter_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.docx__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/Old cover letters/Cover_letter_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.pdf → raw_docs/resumes/harvested_Old_cover_letters__Cover_letter_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.txt
+SUCCESS | CLEANUP/Old cover letters/Kassies Resume KL Consumer Peer Worker Northern Health.docx → raw_docs/resumes/harvested_Old_cover_letters__Kassies_Resume_KL_Consumer_Peer_Worker_Northern_Health.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Cheltenham_IAP_Worker_Launch_Housing.docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Cheltenham_IAP_Worker_Launch_Housing.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Cheltenham_IAP_Worker_Launch_Housing.docx (Converted - 2026-05-14 03_19).docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Cheltenham_IAP_Worker_Launch_Housing.docx__Converted_-_2026-05-14_03_19_.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Cheltenham_IAP_Worker_Launch_Housing.pdf → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Cheltenham_IAP_Worker_Launch_Housing.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_IAP_Launch_Housing.docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_IAP_Launch_Housing.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_IAP_Launch_Housing.docx (Converted - 2026-05-14 03_19).docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_IAP_Launch_Housing.docx__Converted_-_2026-05-14_03_19_.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_IAP_Worker_Launch_Housing.docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_IAP_Worker_Launch_Housing.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_IAP_Worker_Launch_Housing.docx (Converted - 2026-05-14 03_19).docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_IAP_Worker_Launch_Housing.docx__Converted_-_2026-05-14_03_19_.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_IAP_Worker_Launch_Housing.pdf → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_IAP_Worker_Launch_Housing.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker(1).docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker_1_.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker.docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker.docx (Converted - 2026-05-14 03_19)(1).docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker.docx__Converted_-_2026-05-14_03_19__1_.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker.docx (Converted - 2026-05-14 03_19).docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker.docx__Converted_-_2026-05-14_03_19_.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker.pdf → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_PLC_THH_Client_Support_Worker.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Peer_Coach_Neuroqueer.pdf → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Peer_Coach_Neuroqueer.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Peer_Test_Facilitator_Pronto.docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Peer_Test_Facilitator_Pronto.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Peer_Test_Facilitator_Pronto.docx (Converted - 2026-05-14 03_19).docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Peer_Test_Facilitator_Pronto.docx__Converted_-_2026-05-14_03_19_.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Peer_Test_Facilitator_Pronto.pdf → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Peer_Test_Facilitator_Pronto.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Project_Worker_Harm_Reduction_Victoria.docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Project_Worker_Harm_Reduction_Victoria.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_Letter_Support_Worker_PLC_THH.docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_Letter_Support_Worker_PLC_THH.txt
+SUCCESS | CLEANUP/Old cover letters/Nishant_Dougall_Cover_letter_Flat_Out_FDV_Project_Role.docx → raw_docs/resumes/harvested_Old_cover_letters__Nishant_Dougall_Cover_letter_Flat_Out_FDV_Project_Role.txt
+SUCCESS | CLEANUP/Old resumes /20230215 Nishant Dougall CV.docx → raw_docs/resumes/harvested_Old_resumes___20230215_Nishant_Dougall_CV.txt
+SUCCESS | CLEANUP/Old resumes /20230825 Resume - Nishant Dougall(1).docx → raw_docs/resumes/harvested_Old_resumes___20230825_Resume_-_Nishant_Dougall_1_.txt
+SUCCESS | CLEANUP/Old resumes /20230825 Resume - Nishant Dougall.docx → raw_docs/resumes/harvested_Old_resumes___20230825_Resume_-_Nishant_Dougall.txt
+SUCCESS | CLEANUP/Old resumes /20230901 Nishant Dougall Resume (Old format)(1).docx → raw_docs/resumes/harvested_Old_resumes___20230901_Nishant_Dougall_Resume__Old_format__1_.txt
+SUCCESS | CLEANUP/Old resumes /20230901 Nishant Dougall Resume (Old format).docx → raw_docs/resumes/harvested_Old_resumes___20230901_Nishant_Dougall_Resume__Old_format_.txt
+SUCCESS | CLEANUP/Old resumes /20240210 Resume - Nishant Dougall.docx → raw_docs/resumes/harvested_Old_resumes___20240210_Resume_-_Nishant_Dougall.txt
+SUCCESS | CLEANUP/Old resumes /20240211 Resume - Nishant Dougall(1).docx → raw_docs/resumes/harvested_Old_resumes___20240211_Resume_-_Nishant_Dougall_1_.txt
+SUCCESS | CLEANUP/Old resumes /20240211 Resume - Nishant Dougall.docx → raw_docs/resumes/harvested_Old_resumes___20240211_Resume_-_Nishant_Dougall.txt
+SUCCESS | CLEANUP/Old resumes /20240211 Resume - Nishant Dougall.pdf → raw_docs/resumes/harvested_Old_resumes___20240211_Resume_-_Nishant_Dougall.txt
+SUCCESS | CLEANUP/Old resumes /20240213 Resume - Nishant Dougall HEADSPACE INTERNSHIP(1).docx → raw_docs/resumes/harvested_Old_resumes___20240213_Resume_-_Nishant_Dougall_HEADSPACE_INTERNSHIP_1_.txt
+SUCCESS | CLEANUP/Old resumes /20240213 Resume - Nishant Dougall HEADSPACE INTERNSHIP.docx → raw_docs/resumes/harvested_Old_resumes___20240213_Resume_-_Nishant_Dougall_HEADSPACE_INTERNSHIP.txt
+SUCCESS | CLEANUP/Old resumes /20240216 Resume - Nishant Dougall HEADSPACE INTERNSHIP.pdf → raw_docs/resumes/harvested_Old_resumes___20240216_Resume_-_Nishant_Dougall_HEADSPACE_INTERNSHIP.txt
+SUCCESS | CLEANUP/Old resumes /20240401 Resume - Nishant Dougall DRIVER.docx → raw_docs/resumes/harvested_Old_resumes___20240401_Resume_-_Nishant_Dougall_DRIVER.txt
+SUCCESS | CLEANUP/Old resumes /20240401 Resume - Nishant Dougall DRIVER.pdf → raw_docs/resumes/harvested_Old_resumes___20240401_Resume_-_Nishant_Dougall_DRIVER.txt
+SUCCESS | CLEANUP/Old resumes /20240401 Resume - Nishant Dougall SACRED DRIVER.docx → raw_docs/resumes/harvested_Old_resumes___20240401_Resume_-_Nishant_Dougall_SACRED_DRIVER.txt
+SUCCESS | CLEANUP/Old resumes /20240512 Resume - Nishant Dougall Headspace Work & Study Support Officer.docx → raw_docs/resumes/harvested_Old_resumes___20240512_Resume_-_Nishant_Dougall_Headspace_Work___Study_Support_Officer.txt
+SUCCESS | CLEANUP/Old resumes /20240512 Resume - Nishant Dougall Headspace Work & Study Support Officer.pdf → raw_docs/resumes/harvested_Old_resumes___20240512_Resume_-_Nishant_Dougall_Headspace_Work___Study_Support_Officer.txt
+SUCCESS | CLEANUP/Old resumes /Emailing final combined resumes .pdf → raw_docs/resumes/harvested_Old_resumes___Emailing_final_combined_resumes_.txt
+SUCCESS | CLEANUP/Old resumes /Geminis Responses to interview questions based on your resume_.docx → raw_docs/knowledge/harvested_Old_resumes___Geminis_Responses_to_interview_questions_based_on_your_resume_.txt
+SUCCESS | CLEANUP/Old resumes /NISHANT DOUGALL - Client Care and Support Worker Resume (1).docx → raw_docs/resumes/harvested_Old_resumes___NISHANT_DOUGALL_-_Client_Care_and_Support_Worker_Resume__1_.txt
+SUCCESS | CLEANUP/Old resumes /NISHANT DOUGALL - Client Care and Support Worker Resume.docx → raw_docs/resumes/harvested_Old_resumes___NISHANT_DOUGALL_-_Client_Care_and_Support_Worker_Resume.txt
+SUCCESS | CLEANUP/Old resumes /Nishant Dougall - Client Support Worker and Project Officer Resume (1).docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_-_Client_Support_Worker_and_Project_Officer_Resume__1_.txt
+SUCCESS | CLEANUP/Old resumes /Nishant Dougall - Client Support Worker and Project Officer Resume(1).docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_-_Client_Support_Worker_and_Project_Officer_Resume_1_.txt
+SUCCESS | CLEANUP/Old resumes /Nishant Dougall - Client Support Worker and Project Officer Resume.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_-_Client_Support_Worker_and_Project_Officer_Resume.txt
+SUCCESS | CLEANUP/Old resumes /Nishant Dougall - Peer Test Facilitator Resume.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_-_Peer_Test_Facilitator_Resume.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Letter_1.DOCX → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Letter_1.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Letter_1_GREEN.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Letter_1_GREEN.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Master_Resume.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Master_Resume.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_References_Launch_Housing_IAP_Worker.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_References_Launch_Housing_IAP_Worker.txt
+ERROR | Nishant_Dougall_Resume.docx | Extracted text empty or too short.
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Client_Care_Support_Worker_THH_PLC.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Client_Care_Support_Worker_THH_PLC.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Client_Care_Support_Worker_THH_PLC.pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Client_Care_Support_Worker_THH_PLC.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_FDV_Justice_Project_Worker_Flat_Out.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_FDV_Justice_Project_Worker_Flat_Out.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Flat_Out_FDV_Justice_Project_Worker(1).pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Flat_Out_FDV_Justice_Project_Worker_1_.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Flat_Out_FDV_Justice_Project_Worker.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Flat_Out_FDV_Justice_Project_Worker.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Flat_Out_FDV_Justice_Project_Worker.pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Flat_Out_FDV_Justice_Project_Worker.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Flat_Out_FDV_Project_Role.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Flat_Out_FDV_Project_Role.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_GREEN.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_GREEN.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Harm_Reduction_ Peer_Worker_HRvic.pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Harm_Reduction__Peer_Worker_HRvic.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_IAPWorker_Launch_Housing.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_IAPWorker_Launch_Housing.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_IAPWorker_Launch_Housing.pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_IAPWorker_Launch_Housing.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_IAP_Worker_Launch_Housing (2).docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_IAP_Worker_Launch_Housing__2_.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_IAP_Worker_Launch_Housing copy.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_IAP_Worker_Launch_Housing_copy.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_IAP_Worker_Launch_Housing copy.pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_IAP_Worker_Launch_Housing_copy.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_IAP_Worker_Launch_Housing.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_IAP_Worker_Launch_Housing.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_IAP_Worker_Launch_Housing.pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_IAP_Worker_Launch_Housing.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Neuroqueer_Peer_Coach.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Neuroqueer_Peer_Coach.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Neuroqueer_Peer_Coach.pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Neuroqueer_Peer_Coach.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_PLC_THH_Client_Care_Support_Worker.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_PLC_THH_Client_Care_Support_Worker.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_PLC_THH_Client_Care_Support_Worker.pdf → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_PLC_THH_Client_Care_Support_Worker.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Project_Worker_Harm_Reduction_Victoria.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Project_Worker_Harm_Reduction_Victoria.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour (1).docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour__1_.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour (2).docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour__2_.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour (3).txt → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour__3_.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour(1).docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour_1_.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_Support_Worker_Thorne_Harbour.txt
+SUCCESS | CLEANUP/Old resumes /Nishant_Dougall_Resume_TGD_Peer_Navigator.docx → raw_docs/resumes/harvested_Old_resumes___Nishant_Dougall_Resume_TGD_Peer_Navigator.txt
+SUCCESS | CLEANUP/Old resumes /OLD Nishant_Dougall_Resume_PLC_THH_Client_Care_Support_Worker.docx → raw_docs/resumes/harvested_Old_resumes___OLD_Nishant_Dougall_Resume_PLC_THH_Client_Care_Support_Worker.txt
+SUCCESS | CLEANUP/Old resumes /Resume_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.docx → raw_docs/resumes/harvested_Old_resumes___Resume_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.txt
+SUCCESS | CLEANUP/Old resumes /Resume_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.pdf → raw_docs/resumes/harvested_Old_resumes___Resume_Nishant_Dougall_FlatOut_FDV_Justice_Project_Worker.txt
+SUCCESS | CLEANUP/Old resumes /Resume_Nishant_Dougall_Harm_Reduction_Peer_worker-HRV(1).docx → raw_docs/resumes/harvested_Old_resumes___Resume_Nishant_Dougall_Harm_Reduction_Peer_worker-HRV_1_.txt
+SUCCESS | CLEANUP/Old resumes /Resume_Nishant_Dougall_Harm_Reduction_Peer_worker-HRV.docx → raw_docs/resumes/harvested_Old_resumes___Resume_Nishant_Dougall_Harm_Reduction_Peer_worker-HRV.txt
+SUCCESS | CLEANUP/Old resumes /Resume_Nishant_Dougall_Peer_Testing_Facilitator_PRONTO.docx → raw_docs/resumes/harvested_Old_resumes___Resume_Nishant_Dougall_Peer_Testing_Facilitator_PRONTO.txt
+SUCCESS | CLEANUP/Old resumes /Resume_Nishant_Dougall_Peer_Testing_Facilitator_PRONTO.pdf → raw_docs/resumes/harvested_Old_resumes___Resume_Nishant_Dougall_Peer_Testing_Facilitator_PRONTO.txt
+SUCCESS | CLEANUP/Old resumes /final combined resumes(1).docx → raw_docs/resumes/harvested_Old_resumes___final_combined_resumes_1_.txt
+SUCCESS | CLEANUP/Old resumes /final combined resumes.docx → raw_docs/resumes/harvested_Old_resumes___final_combined_resumes.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_References_2025.pdf → raw_docs/resumes/harvested_References__Nishant_Dougall_References_2025.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_References_Launch_Housing_IAP_Worker(1).docx → raw_docs/resumes/harvested_References__Nishant_Dougall_References_Launch_Housing_IAP_Worker_1_.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_References_Launch_Housing_IAP_Worker(1).pdf → raw_docs/resumes/harvested_References__Nishant_Dougall_References_Launch_Housing_IAP_Worker_1_.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_References_Launch_Housing_IAP_Worker(2).docx → raw_docs/resumes/harvested_References__Nishant_Dougall_References_Launch_Housing_IAP_Worker_2_.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_References_Launch_Housing_IAP_Worker.docx → raw_docs/resumes/harvested_References__Nishant_Dougall_References_Launch_Housing_IAP_Worker.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_References_Launch_Housing_IAP_Worker.docx (Converted - 2026-05-14 03_18)(1).docx → raw_docs/resumes/harvested_References__Nishant_Dougall_References_Launch_Housing_IAP_Worker.docx__Converted_-_2026-05-14_03_18__1_.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_References_Launch_Housing_IAP_Worker.docx (Converted - 2026-05-14 03_18).docx → raw_docs/resumes/harvested_References__Nishant_Dougall_References_Launch_Housing_IAP_Worker.docx__Converted_-_2026-05-14_03_18_.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_References_Launch_Housing_IAP_Worker.pdf → raw_docs/resumes/harvested_References__Nishant_Dougall_References_Launch_Housing_IAP_Worker.txt
+SUCCESS | CLEANUP/References/Nishant_Dougall_Resume_IAPWorker_Launch_Housing.pdf → raw_docs/resumes/harvested_References__Nishant_Dougall_Resume_IAPWorker_Launch_Housing.txt
+SUCCESS | CLEANUP/References/References for Nishant Dougall.docx → raw_docs/resumes/harvested_References__References_for_Nishant_Dougall.txt
+SUCCESS | CLEANUP/References/References for Nishant Dougall.docx (Converted - 2026-05-14 03_17).docx → raw_docs/resumes/harvested_References__References_for_Nishant_Dougall.docx__Converted_-_2026-05-14_03_17_.txt
+SUCCESS | CLEANUP/References/References for Nishant Dougall.pdf → raw_docs/resumes/harvested_References__References_for_Nishant_Dougall.txt
+SUCCESS | CLEANUP/Resume templates /Nishant_Dougall_Resume_IAPWorker_Launch_Housing_1-compressed_1.pdf → raw_docs/resumes/harvested_Resume_templates___Nishant_Dougall_Resume_IAPWorker_Launch_Housing_1-compressed_1.txt
+SUCCESS | CLEANUP/Resume templates /Nishant_Dougall_Resume_IAPWorker_Launch_Housing_1.pdf → raw_docs/resumes/harvested_Resume_templates___Nishant_Dougall_Resume_IAPWorker_Launch_Housing_1.txt
+SUCCESS | CLEANUP/Resume templates /Robert Walters_CV Resume Template_With AI Prompts.docx → raw_docs/knowledge/harvested_Resume_templates___Robert_Walters_CV_Resume_Template_With_AI_Prompts.txt
+SUCCESS | CLEANUP/Resume templates /Robert Walters_CV Resume Template_With AI Prompts.docx (Converted - 2026-05-14 03_19).docx → raw_docs/knowledge/harvested_Resume_templates___Robert_Walters_CV_Resume_Template_With_AI_Prompts.docx__Converted_-_2026-05-14_03_19_.txt
+SUCCESS | CLEANUP/Resume templates /Robert Walters_CV Resume Template_With AI Prompts.docx.pdf → raw_docs/knowledge/harvested_Resume_templates___Robert_Walters_CV_Resume_Template_With_AI_Prompts.docx.txt
+SUCCESS | CLEANUP/Bestpractice/664e8b9c1af29f5a9f029dc1_TGV Terminology Glossary 2024.pdf → raw_docs/knowledge/harvested_Bestpractice__664e8b9c1af29f5a9f029dc1_TGV_Terminology_Glossary_2024.txt
+SUCCESS | CLEANUP/Bestpractice/LGBTIQA-inclusive-language-guide (1).docx → raw_docs/knowledge/harvested_Bestpractice__LGBTIQA-inclusive-language-guide__1_.txt
+SUCCESS | CLEANUP/Bestpractice/LGBTIQA-inclusive-language-guide (1).docx (Converted - 2026-05-14 03_17).docx → raw_docs/knowledge/harvested_Bestpractice__LGBTIQA-inclusive-language-guide__1_.docx__Converted_-_2026-05-14_03_17_.txt
+SUCCESS | CLEANUP/CUSTOM GEM REFERENCE STUFF/Glossary for Gems.xlsx → raw_docs/knowledge/harvested_CUSTOM_GEM_REFERENCE_STUFF__Glossary_for_Gems.txt
+SUCCESS | CLEANUP/Chromebook Downloads/australian_sector_glossary.pdf → raw_docs/knowledge/harvested_Chromebook_Downloads__australian_sector_glossary.txt
+SUCCESS | CLEANUP/Chromebook Downloads/skill_taxonomy_community_services.docx → raw_docs/knowledge/harvested_Chromebook_Downloads__skill_taxonomy_community_services.txt
+SUCCESS | CLEANUP/Chromebook Downloads/skill_taxonomy_community_services.pdf → raw_docs/knowledge/harvested_Chromebook_Downloads__skill_taxonomy_community_services.txt

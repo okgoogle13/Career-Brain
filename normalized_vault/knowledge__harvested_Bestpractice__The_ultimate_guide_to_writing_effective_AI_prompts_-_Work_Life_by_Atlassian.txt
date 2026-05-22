@@ -1,0 +1,192 @@
+=== SOURCE: harvested_Bestpractice__The_ultimate_guide_to_writing_effective_AI_prompts_-_Work_Life_by_Atlassian.txt ===
+=== CATEGORY: knowledge ===
+=== EXTRACTED: 2026-05-21T10:25:47.642680 ===
+============================================================
+
+=== HARVESTED SOURCE LINEAGE ===
+Original Directory : CLEANUP/Bestpractice
+Original Filename  : The ultimate guide to writing effective AI prompts - Work Life by Atlassian.pdf
+Original Purpose   : AI prompting templates, Custom Gem instructions, or agent manual.
+Harvested Runtime  : 2026-05-21T10:24:29.542712
+============================================================
+
+PUBLISHED SEPTEMBER 18, 2024 IN AI
+The ultimate guide to writing effective AI prompts
+Check out this guide on how to write better AI prompts.
+JAMIL VALLIANI
+Head of Product, Atlassian Intelligence
+MORE FROM ATLASSIAN
+PRODUCTS & NEWS SUBSCRIBE
+You can do a lot with AI — but it all starts with your input. When you’re writing an AI prompt, following
+a few basic guidelines can help you get the results you’re looking for. If you’re new to AI, check out this
+guide to learn more about AI prompting tips and how to use them to write better AI prompts.
+What to consider when writing a prompt
+When writing an AI prompt, there are four key areas to focus on: Persona, task, context, and format.
+The persona refers to the information you provide about yourself when writing an AI prompt. You could
+write a simple prompt like “Write an email to [contact] welcoming them to the company,” but you can
+add more context with a persona in order to get a better response. Instead, try “I am an HR manager.
+Write an email to [contact] welcoming them to the company. Invite them to schedule a meeting with
+me on [date].”
+The task refers to the actual task you’re telling AI to perform. You should be specific about your task
+instructions to get the best results. However, it’s also important to be clear and concise when
+assigning AI tasks. For example, your task could be “Write an email to [contact] to schedule a meeting
+on [day].” If you want to include anything specific in your email, you can add context once you’ve clearly
+stated your task.
+Context is the best way to get targeted results from your AI prompts. Whether you’re using AI for
+content creation, automation, or refining your writing, providing context is a great way to tell AI how
+you want it to perform a task. 
+Let’s say you’re sending a welcome email to a new hire, and there are a few details you want to
+include. You could say:
+“Write an email to [contact] to schedule a meeting on [day]. Ask them if they have any questions
+about their new role. Thank them for joining the team.”
+Different formats work for different types of content. Emails should be short and sweet, but blog posts
+can be thousands of words long. When writing an AI prompt, tell AI what format you want the
+response to be in. For example, you could say:
+“Write an email to [contact] to schedule a meeting on [day]. Use less than 200 words.” 
+You can also ask AI to provide your results in the form of a list, a table, or any other format you want.
+Tips for effective prompting
+Understanding how AI works can help you write effective prompts that generate better results. Let’s
+look at some tips to help you write better prompts.
+Use natural language
+Using natural language is one of the most critical parts of effective AI prompting. Think of it like having
+a conversation with AI. You should write your prompts in a way that mimics everyday speech. That way,
+AI tools can better understand what you’re asking for. The words you use and the way you phrase
+2/19/25, 3:59 AM The ultimate guide to writing effective AI prompts - Work Life by Atlassian
+https://www.atlassian.com/blog/artificial-intelligence/ultimate-guide-writing-ai-prompts 1/4
+
+things can significantly impact the output you receive. 
+Try phrasing your prompts differently if you’re having trouble getting the results you want from AI
+tools, and you’ll learn what works and what doesn’t.
+For example, if you want to generate ideas to create a a knowledge base for a specific problem, you
+could say:
+“Write a knowledge base article for troubleshooting a VPN issue using these steps”
+This prompt uses natural language to ask for a knowledge base article for a specific task with a
+specific set of principles that you set.
+Provide clear and detailed instructions
+Whether you want AI to create a Confluence page or refine your writing, you must tell it precisely what
+you want. When you write an AI prompt, provide clear and detailed instructions about the task. 
+Open-ended prompts usually result in more open-ended results, which means you have less control
+over your output. The more details you provide, the more targeted results you’ll get — as long as you’re
+not adding too many unnecessary words or details.
+For example, if you want to refine your writing, you can say:
+“Please refine the following paragraph to make it more engaging and professional [insert
+paragraph]. Use varied sentence structures and more descriptive language to enhance the
+readability.”
+This prompt gives clear instructions for improving a piece of writing, specifying the desired outcome,
+the text to refine, and the techniques to use. This helps the AI to deliver a more focused and high-
+quality output.
+Keep your prompts concise and straightforward
+It can be tempting to include a lot of details when writing an AI prompt, but that’s not how you get the
+best results. Details are good, but lengthy prompts with too many details can confuse AI tools. Add
+essential details, but keep your prompts concise and straightforward to ensure they’re easy to parse.
+If you need to add more details to refine your output, you can do that after you write your first prompt.
+For example, ask AI to explain how social media marketing works. If the answer doesn’t include a
+detail you’re interested in, simply tell AI to add that detail to the explanation.
+If you were to use a vague and long-winded prompt instead like, “Social media marketing is very
+important today with platforms like Facebook, Instagram, and Twitter. It includes creating content,
+engaging with followers, running ads, and tracking performance. Can you explain all this and guide me
+on how to measure ROI?”, it can lead to poor results.
+Instead of asking that, say:
+“Explain social media marketing on Facebook, Instagram, and Twitter, including content creation,
+follower engagement, ad strategies, and ROI measurement.”  
+This prompt is straightforward and specific, and it clearly states the purpose of the email and what it
+should include without using unnecessary details or words. 
+Be conversational
+We mentioned earlier that writing AI prompts is similar to having a conversation with AI — and it’s
+essential that you understand and take advantage of that. Write your prompts like you’re talking to a
+person to get more interactive results. If you don’t get the results you’re looking for, tell AI how to
+improve those results until you get what you want.
+2/19/25, 3:59 AM The ultimate guide to writing effective AI prompts - Work Life by Atlassian
+https://www.atlassian.com/blog/artificial-intelligence/ultimate-guide-writing-ai-prompts 2/4
+
+Other examples of effective prompting
+Let’s look at a few AI prompt examples to help you better understand what works and what doesn’t
+when it comes to AI prompting.
+Let’s say you want to learn more about a trending topic without reading countless articles. You can
+ask AI to summarize those articles for you:
+“Summarize these articles: [insert URLs]. Contextualize why these announcements are important to
+[industry].”
+This prompt tells AI to create a summary of a series of articles, but the context is critical. Adding that
+second sentence tells AI to put the information into context so you can better understand how an
+announcement impacts you and your industry.
+If you need to email a colleague, you can use AI for that, too. For example:
+“I am a project manager and my goal is to [insert goal]. Send an email to the [current project team
+members]. Ask for updates on the latest project and schedule a meeting for [date] at [time].”
+By providing a persona, clearly defining the task, and adding context, AI can write an email that
+includes all the details that are important to you. When you receive the results, you can add additional
+information or ask AI to refine its writing or adopt a specific tone.
+Strategies for implementing effective prompts
+Now that you know what makes a good prompt, let’s look at some strategies you can use to write
+effective prompts that streamline collaboration and project management.
+Structure your prompts for success
+The structure of an AI prompt is one of the most important aspects. Ensure you’re structuring your
+prompts to guide AI through the task you want to perform. Keep your instructions clear and concise,
+but don’t be afraid to add context to ensure you get the desired results.
+Different prompts require different structures and levels of detail. For example, you might want to tell
+AI exactly what to include in an email — but you can be more open-ended if you’re asking AI to
+summarize an article or offer insights based on the information you provide. For example, a prompt
+with great context and structure would be:
+“Write an email to our client [insert client] requesting feedback on the recent project delivery.
+Include a brief summary of the project highlights, thank them for their collaboration, and ask
+specific questions about their satisfaction with the deliverables and any areas for improvement.”
+This prompt clearly states the task at hand, provides specific details about what to include, gives
+context about the recipient, and provides clear instructions on how to structure the email.
+Refine and adjust your prompts
+One of the best things you can do to write better prompts is to adjust and refine your prompts as you
+go. You might not get the results you’re looking for with your first prompt, but getting better results
+could be as simple as adding a word or changing how you phrase something. Don’t abandon a prompt
+because it didn’t work the first time — try making some minor changes and see what you come up with.
+Collaboration can also help adjust and refine prompting. As your team works with AI and learns to
+write more effective prompts, team members can share tips and tricks with each other.
+Master writing effective prompts 
+Writing effective prompts is essential to getting more out of AI, but it can be more complicated than it
+seems on the surface. Understanding AI prompt best practices helps you keep your prompts consistent
+to get better results.
+2/19/25, 3:59 AM The ultimate guide to writing effective AI prompts - Work Life by Atlassian
+https://www.atlassian.com/blog/artificial-intelligence/ultimate-guide-writing-ai-prompts 3/4
+
+JOIN OVER 150,000 WORKING PROFESSIONALS
+By 
+Culture, tech, teams, and tips, delivered twice a month
+Sign me up!
+Atlassian.com Terms of Use Privacy Policy Copyright © 2025 Atlassian
+With Atlassian Intelligence, you can use AI to generate and summarize content, refine your writing, and
+keep everyone on your team on the same page. If you want to learn more about how Atlassian
+Intelligence helps your team work smarter, contact us to request a demo and try Atlassian Intelligence
+for yourself.
+Learn more
+ABOUT THIS ARTICLE
+Published September 18, 2024
+ABOUT THE AUTHOR
+JAMIL VALLIANI
+Head of Product, Atlassian Intelligence
+    
+RELATED CONTENT
+More in ‘AI’
+AI
+5 AI features that will delight your support agents
+COMPANY NEWS
+Helping every team succeed in the AI era
+APPS
+Harnessing AI to Empower Teams
+COMPANY NEWS
+Atlassian Named a Leader in the 2024 Gartner® Magic Quadrant ™ for Marketing WorkManagement Platforms
+MORE COLLECTIONS
+COLLECTION
+Wellbeing | Well-doing
+Strategies for individuals and leaders to
+cultivate a flexible, balanced, and inclusive
+work life.
+VIEW COLLECTION 
+COLLECTION
+Ways of Working
+How you work is just as important as the
+work you're doing.
+VIEW COLLECTION 
+COLLECTION
+Your Personality at Wo
+Navigating and celebrating the com
+of our individuality.
+VIEW COLLECTION 
+2/19/25, 3:59 AM The ultimate guide to writing effective AI prompts - Work Life by Atlassian
+https://www.atlassian.com/blog/artificial-intelligence/ultimate-guide-writing-ai-prompts 4/4

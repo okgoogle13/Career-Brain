@@ -1,0 +1,4 @@
+body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 2rem; }
+section { border: 1px solid #ccc; padding: 1rem; margin-top: 2rem; border-radius: 8px; }
+textarea, input { width: 100%; margin-bottom: 0.5rem; }
+button { margin-top: 0.5rem; }

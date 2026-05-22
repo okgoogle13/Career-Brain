@@ -1,0 +1,46 @@
+=== SOURCE: community_services_keywords.csv ===
+=== CATEGORY: knowledge ===
+=== EXTRACTED: 2026-05-21T10:25:46.208143 ===
+============================================================
+
+Skill Category,Keywords/Skills,Resume Impact Level,ATS Priority,Usage Context
+Core Technical Skills,Case management,High,Critical,"Job descriptions, achievements"
+Core Technical Skills,Person-centered care,High,Critical,Service delivery descriptions
+Core Technical Skills,Trauma-informed practice,High,Critical,Approach methodology
+Core Technical Skills,Evidence-based practice,Medium,High,Practice framework
+Core Technical Skills,Strength-based approach,Medium,High,Client support methods
+Communication Skills,Active listening,High,High,Client interactions
+Communication Skills,Therapeutic communication,Medium,Medium,Counseling/therapy roles
+Communication Skills,Conflict resolution,Medium,Medium,Team environments
+Communication Skills,Advocacy,High,High,"Client rights, community"
+Communication Skills,Community engagement,Medium,Medium,"Outreach, programs"
+Assessment & Planning,Risk assessment,High,Critical,Safety protocols
+Assessment & Planning,Care planning,High,Critical,Service planning
+Assessment & Planning,Needs assessment,Medium,High,Initial assessments
+Assessment & Planning,Goal setting,Medium,Medium,Support planning
+Assessment & Planning,Progress monitoring,Medium,Medium,Outcome tracking
+Cultural Competency,Cultural competency,High,Critical,Diverse populations
+Cultural Competency,Inclusive practices,Medium,High,Service accessibility
+Cultural Competency,Diversity awareness,Medium,Medium,Workforce diversity
+Cultural Competency,Cross-cultural communication,Medium,Medium,Multicultural clients
+Cultural Competency,Indigenous awareness,High,High,Aboriginal services
+Crisis Management,Crisis intervention,High,Critical,Emergency situations
+Crisis Management,De-escalation techniques,High,Critical,Challenging behaviors
+Crisis Management,Emergency response,Medium,High,Crisis teams
+Crisis Management,Safety planning,Medium,High,Risk mitigation
+Crisis Management,Incident management,Medium,Medium,Documentation
+Professional Practice,Professional boundaries,Medium,High,Ethical conduct
+Professional Practice,Reflective practice,Medium,Medium,Professional development
+Professional Practice,Continuous learning,Medium,Medium,Skills enhancement
+Professional Practice,Ethical practice,High,Critical,Standards compliance
+Professional Practice,Mandatory reporting,High,Critical,Child protection
+Technology & Systems,Case management systems,Medium,Medium,Administrative tasks
+Technology & Systems,Data collection,Medium,High,Reporting requirements
+Technology & Systems,Report writing,Medium,High,Communication records
+Technology & Systems,Digital literacy,Medium,Medium,System navigation
+Technology & Systems,Database management,Low,Low,Information management
+Specialized Areas,NDIS framework,High,Critical,Disability sector
+Specialized Areas,Mental health first aid,Medium,High,Mental health roles
+Specialized Areas,Disability support,High,Critical,NDIS providers
+Specialized Areas,Youth work,Medium,High,Youth services
+Specialized Areas,Aged care,Medium,High,Aged care facilities

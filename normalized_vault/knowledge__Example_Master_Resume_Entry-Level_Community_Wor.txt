@@ -1,0 +1,96 @@
+=== SOURCE: Example Master Resume  Entry-Level Community Wor.md ===
+=== CATEGORY: knowledge ===
+=== EXTRACTED: 2026-05-21T10:25:44.266127 ===
+============================================================
+
+# Example Master Resume: Entry-Level Community Worker (Australian Context)
+
+**Note:** For actual Gem use, convert this content into a PDF or DOCX to showcase formatting. This Markdown is for content structure.
+
+---
+
+## [Your Name]
+[Your Phone Number] | [Your Email] | [Your LinkedIn Profile URL] | [Your City, QLD]
+
+---
+
+## Professional Summary
+Passionate and empathetic recent graduate with a **Certificate IV in Community Services**, eager to commence a career supporting vulnerable individuals and communities in Queensland. Skilled in client communication, basic assessment, and program support, with practical experience in aged care and disability support. Committed to person-centred care and upholding ethical practice within the Australian community services sector.
+
+---
+
+## Core Competencies / Skills
+
+### Client Support & Engagement
+* Client-Centred Support
+* Active Listening & Empathy
+* Basic Needs Assessment
+* Referral Pathways
+* Personal Care Assistance
+* Daily Living Support
+* Communication (Verbal & Written)
+* Crisis Support (basic)
+
+### Community Services Knowledge (Australian)
+* Understanding of NDIS Principles
+* Aged Care Quality Standards (Basic)
+* Child Safe Standards (Awareness)
+* Work Health and Safety (WHS)
+* Confidentiality & Privacy
+* Cultural Sensitivity
+* Mandatory Reporting (Awareness)
+
+### Administrative & Organisational
+* Record Keeping & Documentation
+* Scheduling & Coordination
+* Data Entry
+* Microsoft Office Suite (Word, Outlook, Excel)
+* Team Collaboration
+* Problem-Solving
+
+---
+
+## Professional Experience
+
+**Disability Support Worker (Part-Time)** | Inclusive Support Services | Brisbane, QLD
+* **January 2024 – Present**
+* **Provided** direct, person-centred support to **4 NDIS participants** with varying disabilities, assisting with daily living activities, community access, and personal care.
+* **Implemented** individual support plans (ISPs), adapting strategies to meet unique client needs and promote independence.
+* **Documented** client progress and incident reports accurately, ensuring compliance with NDIS Quality and Safeguarding standards.
+* **Facilitated** community engagement for clients, including participation in social groups and recreational activities.
+
+**Volunteer, Aged Care Support** | Harmony Aged Care Home | Brisbane, QLD
+* **July 2023 – December 2023**
+* **Assisted** residents with recreational activities and social engagement, enhancing their quality of life.
+* **Provided** companionship and empathetic listening to elderly residents, building positive rapport.
+* **Supported** staff with daily tasks and maintained a safe, clean environment for residents.
+
+**Retail Sales Assistant** | Local Clothing Store | Brisbane, QLD
+* **February 2022 – June 2023**
+* **Assisted** **50+ customers daily** with product selection and inquiries, delivering strong customer service.
+* **Managed** cash and card transactions accurately, ensuring end-of-day reconciliation.
+* **Maintained** an organised and tidy sales floor, contributing to a positive shopping environment.
+
+---
+
+## Education
+
+**Certificate IV in Community Services** | TAFE Queensland | Brisbane, QLD
+* **Completed: December 2023**
+* **Key Units:** Work with people with mental health issues, support community participation, respond to client needs, ethical practice.
+
+**Queensland Certificate of Education (QCE)** | [Your High School Name] | Brisbane, QLD
+* **Graduated: 2021**
+
+---
+
+## Additional Sections
+
+**Certifications & Training**
+* First Aid & CPR Certification (Current)
+* NDIS Worker Orientation Module (Completed 2023)
+* Working With Children Check (WWCC) - Queensland (Blue Card) (Current)
+
+**Volunteer Experience**
+* **Community Event Assistant** | Brisbane City Council | October 2023
+    * Assisted with setup and coordination of a large-scale community festival, guiding attendees and providing information.

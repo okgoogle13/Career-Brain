@@ -1,0 +1,184 @@
+=== SOURCE: CV - Nish Dougall 180215.doc ===
+=== CATEGORY: resumes ===
+=== EXTRACTED: 2026-05-21T10:25:31.809327 ===
+============================================================
+
+Profile
+
+    • Business Analyst with experience in large-scale transformational change within the banking and media industries
+
+    • Worked on a diverse range of projects in the capacity of both a Business Analyst and a Change Analyst
+
+    • Broad project experience, including centralization of complex payments processes, deployment of electronic purchasing and delivery of large-scale change to over 3500 employees
+
+    • Focus on large, multi-year transformational bodies of work, delivering multiple projects end-to-end, from concept generation and requirements gathering to testing, training and implementation.
+
+
+Education
+
+
+Master of Professional Accounting	2006-08
+
+Monash University, Melbourne, Australia
+
+
+Bachelor of Business (Marketing)	2003-05
+
+Queensland University of Technology, Brisbane, Australia
+
+
+Higher School Certificate	2002
+
+Completion of High School with a mark of 88%
+Grafton High School, Grafton, Australia
+
+Experience Summary
+
+
+|Key Transferable Skills                               |Project Subject Matter Expertise                      |Key Achievements                                      |
+|Process mapping                                       |Payments                                              |End-to-end delivery of a £2mill payments project to   |
+|Stakeholder management                                |Centralisation                                        |3500 bankers, from concept generation to              |
+|Process improvement                                   |Operating model design                                |implementation                                        |
+|Requirements gathering                                |Banking operations – both lending and transactional   |Completion of requirements documentation for a £5mill |
+|Risk analysis                                         |Broadcast industry – operations & finance dept        |workflow automation project to be delivered to 3500   |
+|Testing                                               |Change deployment                                     |bankers                                               |
+|Presenting to senior stakeholders                     |Electronic purchasing                                 |Development and delivery of a Change Plan to deliver  |
+|Workshop facilitation                                 |Workflow management                                   |large-scale transformational change to 3500 bankers   |
+|Engagement planning                                   |Training and development                              |                                                      |
+|Training needs analysis                               |Management accounting                                 |                                                      |
+|Writing training material                             |Telephony                                             |                                                      |
+|Comms writing                                         |Marketing collateral design                           |                                                      |
+|Risks & issues management                             |                                                      |                                                      |
+
+
+Detailed Experience
+
+Independent News Television (ITN) is one of the world’s leading news and multimedia content companies. It’s most famous products are the news broadcasts for ITV, Channel 4 and Channel 5, which reach around 10 million people every day.
+
+
+Business Analyst	July 2014 – current
+
+
+Finance Transformation Program	ITN
+
+
+Key Responsibilities
+
+    • Mapping of current processes undertaken by staff to make purchases and record expenses
+    • Design of to-be processes by incorporating process improvement principles to increase efficiency and reduce turnaround times
+    • Facilitation of process workshops to reach an agreement on to-be process steps
+    • Significant stakeholder engagement/management across the business to ensure buy-in to a change that most of the company is reluctant to embrace
+    • Testing and configuration of the new software solution
+    • Provision of support in production of training material for new electronic purchasing system
+    • Training of users on new processes and system solutions
+
+
+National Australia Bank (NAB) is one of the four largest financial institutions in Australia in terms of market capitalisation and customers and is the 17th largest bank in the world. It operates across 10 countries serving 8.3 million consumer and business banking customers and over 2.3 million wealth management customers.
+
+
+Senior Business Analyst	Jan 2012 – Feb 2014
+
+
+Centralisation of International & Domestic Payments	Bank of the Future for Business Program - NAB
+
+
+Key Responsibilities
+
+    • Analysis and mapping of current process to fulfill payments requests
+    • Solution design and mapping of to-be process to be completed by centralized team
+    • Overview of NAB’s payment policies and Australian payments regulations to ensure to-be abides
+    • Significant stakeholder engagement/management across the business, including departments such as Risk, Legal, Technology, Strategy, International, Marketing, Product owners, other payments teams
+    • Completion & signoff of detailed “Preliminary Risk Assessment” document, which was necessary due to high risks of losses associated with payments processes
+    • Identification and documentation of requirements for IT component of solution
+    • Translation of requirements into system configuration with 3rd party vendors for two systems, eOCP (for bankers) and ITF (for centralized team)
+    • Detailed testing of both systems
+    • Creation of work instructions for both bankers and the centralized team
+    • Creation of training material for both bankers and centralized team
+    • Drafting of all communications related to project
+    • Facilitation of all training sessions with bankers and centralized team
+
+
+
+
+Senior Business Analyst	Dec 2013 – Feb 2014
+
+
+Oracle BPM Workflow Solution	Bank of the Future for Business Program - NAB
+
+
+Key Responsibilities
+
+    • Analysis of current workflow solution used by a centralized team to fulfill email and phone requests received from Business Bankers and customers of NAB
+    • Translation of Subject Matter Expertise into High Level Requirements documentation
+    • Identification of opportunities to streamline request allocation process
+    • Engagement and management of a wide range of stakeholder relationships
+    • Facilitation of various workshops to secure stakeholder buy-in
+
+
+
+Change Analyst	Aug 2013 – Dec 2013
+
+
+Transformational Change Deployment	Bank of the Future for Business Program - NAB
+
+
+Key Responsibilities
+
+    • Key contributor to Change Deployment Plan
+    • Completion of training needs analysis and creation of banker training materials
+    • Drafting and finalization of internal operational communications
+    • Management of relationships with deployment leads for each district and business unit
+    • Management of staggered deployment of Servicing changes and comms to each Business Unit in line with broader Bank of the Future transformation, including ensuring the deployment activities that underpinned each milestone were completed
+    • Management of deployment schedule and weekly status reports to Change Manager
+
+
+Business Analyst	July 2013 – Aug 2013
+
+
+Operating Model Redesign	Bank of the Future for Business Program - NAB
+
+
+Key Responsibilities
+
+    • Analysis of the impacts of the program’s broader transformational change on customer-facing bankers and designing potential new structures for the “new world” where 1/3 of bankers will move from the frontline into centralized teams
+    • Facilitation of workshops to gain feedback on potential new structures
+    • Documentation of findings and recommendation of a proposed solution
+    • Presentation of solution to various stakeholders to obtain endorsement
+    • Management of risks and issues relating to project
+
+
+
+Change Analyst	April 2013 – Nov 2013
+
+
+Servicing Stream Marketing Initiatives	Bank of the Future for Business Program - NAB
+
+
+Key Responsibilities
+
+    • Analysis of NAB Business marketing material to identify opportunities to advocate the new business model and affirm the centralized team as an integral part of the business transformation both internally and externally
+    • Development of a “brand personality” for the centralized team to reposition them in the eyes of bankers and customers, including redesign of tagline and key messages for inclusion on marketing material
+    • Facilitation of redesign of email signatures, business cards, voicemail scripts and intranet pages to reflect new positioning
+    • Management of complex relationships with Marketing and Branding departments
+    • Completion of training material to teach bankers how to update email signatures, order business cards and re-record voicemail scripts
+    • Development of comms strategy to inform bankers of the new marketing material available to them
+
+
+Subject Matter Expert	Mar 2011 – Dec 2011
+
+
+The Room Next Door Project	NAB
+
+
+
+
+
+Business Banker	Jan 2009 – Mar 2011
+
+
+NAB Business	Carlton Business Banking Centre – NAB
+
+
+Employment References
+
+Available on request

@@ -1,0 +1,29 @@
+{
+  "document_type": "resume",
+  "expected_sections": [
+    {
+      "section_name": "Contact Information",
+      "keywords": ["name", "phone", "email", "address", "linkedin", "contact"]
+    },
+    {
+      "section_name": "Summary",
+      "keywords": ["summary", "profile", "about me", "professional summary", "career summary"]
+    },
+    {
+      "section_name": "Experience",
+      "keywords": ["experience", "employment history", "work history", "professional experience"]
+    },
+    {
+      "section_name": "Education",
+      "keywords": ["education", "qualifications", "academic qualifications", "educational background"]
+    },
+    {
+      "section_name": "Skills",
+      "keywords": ["skills", "technical skills", "proficiencies", "key skills", "core competencies"]
+    },
+    {
+      "section_name": "Awards",
+      "keywords": ["awards", "honours", "recognition", "achievements", "certifications", "licenses"]
+    }
+  ]
+}

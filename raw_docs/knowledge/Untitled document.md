@@ -1,0 +1,61 @@
+1. **Project Objective:**  
+   * Develop a personalized AI agent to automate the generation of tailored resumes, cover letters, and key selection criteria responses for Australian Community Services job applications.  
+   * The agent will leverage the user's pre-configured professional history.  
+2. **Core Functionality:**  
+   * **User Profile Initialization:** Implement a one-time setup to extract and store the user's comprehensive work history, skills, and achievements from provided documents, establishing a "Master Resume."  
+   * **Job Information Extraction:** Enable direct extraction of job descriptions and selection criteria from a given URL.  
+   * **Document Generation:** Produce resumes, cover letters, and KSC responses by integrating a specialized Community Services knowledge base, the user's profile, and research conducted via Perplexity's API.  
+   * **ATS Compliance Analysis:** Provide an ATS (Applicant Tracking System) compliance score, identify matched and missing keywords, and offer actionable suggestions for resume improvement.  
+   * **Tone of Voice Selection:** Allow the user to select from predefined, positive, and professional tones (e.g., Enthusiastic, Confident, Respectful, Warm and Engaging, Direct and Clear) for document generation.  
+   * **Document Storage & History:** Facilitate PDF download of generated documents and maintain a logical database of all outputs for future reference and agent learning.  
+3. **Inputs & Outputs:**  
+   * **One-Time Setup Inputs:**  
+     * User's historical resumes/cover letters (PDF, DOCX, DOC).  
+     * Core Knowledge Artifacts: \`australian\_sector\_glossary.md\`, \`skill\_taxonomy\_community\_services.md\`, \`action\_verbs\_community\_services.md\`, \`pdf\_themes.json\`, CAR/CAO example documents.  
+   * **Runtime Inputs:**  
+     * Job Advertisement URL (primary).  
+     * Optional Job Advertisement Text (fallback).  
+     * Selected PDF Theme.  
+     * Optional, user-defined Tone of Voice.  
+   * **Outputs:**  
+     * Resume, cover letter, and KSC response (DOCX and PDF).  
+     * ATS Compliance Score (integer, e.g., 85/100).  
+     * ATS Matched Keywords.  
+     * ATS Missing Keywords.  
+     * ATS Improvement Suggestions.  
+     * Best Practices Checklist (UI display).  
+4. **Workflow:**  
+   * **One-Time Setup:**  
+     * A dedicated Python script (\`populate\_profile.py\`) will process user documents.  
+     * The script will extract structured information using an LLM.  
+     * The extracted information will be stored in a local SQLite database to create the permanent professional profile.  
+   * **Document Generation:**  
+     * The system will receive a job URL, theme, and optional tone.  
+     * It will scrape the URL and generate documents, prioritizing quantifiable achievements and the specified tone.  
+     * ATS analysis will be performed for resumes.  
+     * The generated PDF will be presented with detailed ATS analysis and a "Best Practices Checklist."  
+5. **Deployment Requirements:**  
+   * **Accessibility:** Implement as a simple, self-contained Progressive Web App (PWA) for cross-device access.  
+   * **Hosting:** Prioritize free/low-cost deployment (e.g., a single Docker container on a VPS or home server).  
+   * **Integrations:** Integrate with Google Gemini and Perplexity APIs (user-provided keys).  
+   * **Data Storage:** Utilize a file-based SQLite database for user profile data.  
+   * **User Management:** Designed for a single user, requiring no login or user management features.  
+6. **Minimum Technical Specifications:**  
+   * **Stack:** Python (FastAPI) for the backend with SQLite; basic HTML/JS for the PWA frontend.  
+   * **Libraries:** Include document parsing (pypdf, python-docx) and web scraping (requests, BeautifulSoup) libraries in the backend.  
+   * **ATS Functionality:** The backend must incorporate a specific function for detailed ATS analysis (score, keyword matching, suggestions).  
+   * **Deliverables:** All code and generated assets must be downloadable. Provide \`openapi.yaml\` for REST endpoint documentation and Docker Compose instructions for deployment.  
+7. **Perplexity Labs Scope:**  
+   * **In-Scope:** Backend API, document generation logic, basic PWA frontend, detailed ATS analysis, integration of knowledge artifacts (RAG), web scraping function, and the one-time setup script (\`populate\_profile.py\`).  
+   * **Out-of-Scope:** Complex external SaaS integrations, advanced authentication, native mobile app development, cloud provider deployment, multi-user logic, and 3rd-party API quota management.  
+8. **Essential Instructions for Development:**  
+   * **Automation:** Automate all possible aspects, including the generation of skeleton project files (backend, frontend, Dockerfile, \`docker-compose.yml\`).  
+   * **Setup Script:** Provide a distinct \`populate\_profile.py\` script for one-time user profile creation.  
+   * **Primary Input:** The main application's primary input must be a job advertisement URL for scraping.  
+   * **Generation Logic:** Document generation functions must prioritize quantifiable achievements from the user's profile and adhere to the specified tone.  
+   * **ATS Analysis:** Implement a function that returns a comprehensive ATS analysis object.  
+   * **PWA Features:** The proof-of-concept PWA must enable optional 'tone of voice' selection and display the full ATS analysis and a 'Best Practices Checklist' post-generation.  
+   * **Documentation:** Include a README detailing usage, dependencies, and Docker Compose deployment steps.  
+9. **Testing Data:**  
+   * The provided knowledge artifacts (.md and .json files) will serve as the primary sample data for testing generation and analysis quality.
+
