@@ -6,7 +6,7 @@
 
 The goal of this system is to ingest, standardize, and synthesize a vast archive of unstructured historical career documents—spanning over a decade of professional experience—into a highly structured, machine-readable **Career Brain Database**.  
 This database is split into three modular JSON engines to optimize Retrieval-Augmented Generation (RAG). By separating **Facts** (Career History), **Narratives** (STAR Stories/Pivots), and **Translations** (Skills & Taxonomies), we prevent LLM context-bloat and prompt drift.  
-This engine is designed to feed a custom, hardcoded Gemini Copilot Gem in Google AI Studio, as well as serve as a local query engine within our active IDE workspace, enabling instantaneous, precise tailoring of resumes, cover letters, and Key Selection Criteria (KSC) responses.
+This engine is designed to feed a custom, hardcoded Gemini Copilot Gem in Google AI Studio, as well as serve as a local query engine within our active IDE workspace, enabling instantaneous, precise tailoring of resumes, cover letters, and Key Selection Criteria (KSC) responses via direct Google Workspace Document generation.
 
 ## **2\. THE LOCAL WORKSPACE ARCHITECTURE**
 
@@ -23,7 +23,10 @@ This engine is designed to feed a custom, hardcoded Gemini Copilot Gem in Google
     ├── career\_history.json  
     ├── ksc\_and\_narratives.json  
     ├── skills\_and\_taxonomy.json  
+    ├── doc\_generation\_report.json
     └── parsing\_errors.log
+├── doc\_templates.json        \# Phase 5: Template config for Google Docs
+├── generate\_document.py      \# Phase 5: Google Workspace generator
 
 ## **3\. STATE MACHINE & GATEKEEPER PROTOCOLS**
 
@@ -40,6 +43,10 @@ This pipeline operates under a strict, user-controlled sequential state gate ins
     \<gate id="3" name="Phase 2 Semantic Compilation"\>  
         \<action\>Execute compile\_brain.py using validated Pydantic model schemas to build output JSON engines.\</action\>  
         \<transition\>STOP and present final database audit statistics, mapping metrics, and the parsing error logs.\</transition\>  
+    \</gate\>  
+    \<gate id="4" name="Phase 5 Google Docs Export"\>  
+        \<action\>Execute generate\_document.py using Google Workspace APIs to clone templates and map extracted data.\</action\>  
+        \<transition\>STOP and present the generated document IDs/links and the generation report.\</transition\>  
     \</gate\>  
 \</gatekeeper\_machine\>
 
@@ -111,7 +118,19 @@ This pipeline operates under a strict, user-controlled sequential state gate ins
     \</database\_modules\>  
 \</phase\_2\_extraction\_specs\>
 
-## **6\. PIPELINE QUALITY CONTROL GUARDRAILS**
+## **6\. PHASE 5: GOOGLE DOCS TEMPLATE GENERATION (THE EXPORT)**
+
+\<phase\_5\_export\_specs\>  
+    \<objective\>Inject structured JSON output into polished, standardized Google Docs formats using the Google Workspace APIs.\</objective\>  
+    \<directives\>  
+        1\. Read config from `doc_templates.json` to identify Golden Master Google Doc IDs for each template type (resume, cover\_letter, etc.).
+        2\. Clone the Golden Master document and perform batch text replacements using fixed placeholders (e.g., `{{TARGET_ROLE}}`, `{{BULLET_1}}`).
+        3\. Output a `doc_generation_report.json` tracking filled placeholders, unresolved tokens, and generated Google Doc links.
+        4\. Do not permanently store PII or OAuth tokens in the repository.
+    \</directives\>  
+\</phase\_5\_export\_specs\>
+
+## **7\. PIPELINE QUALITY CONTROL GUARDRAILS**
 
 To guarantee high fidelity and programmatic stability, the Phase 2 compilation engine must validate output data against the following rules:
 
@@ -121,7 +140,7 @@ To guarantee high fidelity and programmatic stability, the Phase 2 compilation e
    This flags weak points for immediate, targeted metric injection during future iterations.  
 3. **Data Lineage Integrity:** Every single narrative, skill, and history node in the final database must preserve its source. A field named source\_lineage must record the exact raw filename (e.g., 2024\_Resume\_Flat\_Out\_v2.txt) to maintain total transparency.
 
-## **7\. MAINTENANCE AND ITERATION PROTOCOL**
+## **8\. MAINTENANCE AND ITERATION PROTOCOL**
 
 Whenever a new role, community-service certificate, or successful job application artifact is developed:
 

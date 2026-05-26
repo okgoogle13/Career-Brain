@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# Credentials & secrets
+credentials.json
+token.json
+user_config.json
+
+# Generated repomix outputs (regenerable)
+repomix-output.xml
+repomix_perplexity_context.xml
+
+# Large snapshot archives
+CareerBrain_Clean/
+CareerBrain_Clean.zip
+
+# Scratch audit outputs
+scratch/*.json

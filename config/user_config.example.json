@@ -1,0 +1,19 @@
+{
+  "contact": {
+    "name": "Your Full Name",
+    "phone": "0400 000 000",
+    "email": "your.email@example.com",
+    "location": "Melbourne, VIC"
+  },
+  "education": [
+    "Bachelor of Business (Accounting & Finance) — La Trobe University, 2010",
+    "Certificate IV in Mental Health Peer Work — EACH, 2022"
+  ],
+  "certifications": [
+    "MARAM Risk Assessment (Intermediate)",
+    "Working with Children Check (current)",
+    "National Police Check (current)",
+    "Mental Health First Aid"
+  ],
+  "referees": "Available upon request"
+}

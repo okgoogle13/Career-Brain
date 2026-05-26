@@ -1,0 +1,37 @@
+## Artifact 4: Organization Research Template
+
+### Pre-Application Research Framework
+
+#### Organizational Profile
+- **Legal Structure:** Government department, NGO, for-profit, social enterprise
+- **Funding Sources:** Government contracts, donations, fee-for-service, grants
+- **Service Areas:** Geographic coverage and population groups served
+- **Organizational Size:** Staff numbers, budget, service volume
+- **Governance Structure:** Board composition, advisory committees, stakeholder involvement
+
+#### Mission and Values Analysis
+- **Mission Statement:** [Insert organization's exact mission statement]
+- **Core Values:** [List and briefly explain each organizational value]
+- **Strategic Priorities:** [Current strategic plan objectives and timelines]
+- **Recent Initiatives:** [New programs, policy changes, organizational developments]
+
+#### Sector Context and Positioning
+- **Key Competitors/Partners:** Other organizations in similar space
+- **Sector Reputation:** Media coverage, sector recognition, professional standing
+- **Innovation Profile:** New approaches, technology adoption, practice leadership
+- **Challenges Faced:** Current organizational or sector challenges they're addressing
+
+#### Cultural Indicators
+- **Communication Style:** Formal/informal tone in public communications
+- **Diversity and Inclusion:** Stated commitments and visible practices
+- **Professional Development:** Investment in staff training and career progression
+- **Work Environment:** Office culture, flexibility, professional atmosphere
+
+### Research Sources Checklist
+- [ ] Official website and annual reports
+- [ ] Recent media coverage and press releases  
+- [ ] Social media presence and engagement style
+- [ ] Industry publications and sector reports
+- [ ] Professional networks and personal connections
+- [ ] Government databases and funding announcements
+- [ ] Job advertisement language and requirements emphasis

@@ -1,0 +1,171 @@
+# Career Brain — Template Library Builder (Batched Execution Prompt)
+# Target: Antigravity IDE / Claude with access to Career Brain workspace
+# Skills Required: gold_template_builder, ats_template_qa
+
+## Context Preload
+
+Before executing any batch, read this targeted context file to ground your full environment:
+1. `repomix_perplexity_context_slim.xml` — Merged high-fidelity context pack containing:
+   - `ats_rules.json` — ATS compliance rules (structure, vocabulary, terminology)
+   - `doc_templates.json` — Current template registry (check for REPLACE_WITH gaps)
+   - `generate_document.py` — PLACEHOLDER_SCHEMA_V2 (authoritative token list)
+   - `content_engine.py` — MAX constants
+   - `user_config.example.json` — Contact/education/cert field structure
+   - `gem_system_prompt.md` — Target identity & Rosetta Stone translation matrix
+
+---
+
+## Batch 1: Resume Templates
+
+### 1a. Chronological Resume
+Use the gold_template_builder skill.
+
+Design a "Chronological" resume template for Australian community services roles.
+
+Requirements:
+- Section order: Contact Block → Target Role Title ({{TARGET_ROLE}}) → Professional Summary → Skills (skills grid) → Professional Experience (reverse chronological) → Education → Certifications
+- Contact Block MUST use line breaks instead of pipe (|) characters for separation to ensure ATS compliance.
+- Certifications MUST be the final section.
+- Use PLACEHOLDER_SCHEMA_V2 tokens for `resume` type.
+- Target 6 roles × 4 bullets each (ROLE_1 through ROLE_6).
+- 6 skills slots (SKILL_1 through SKILL_6).
+- Heading hierarchy: Name as Title, sections as Heading 1, role titles as Heading 2. Must use native Google Docs style tags (no manual bold for headings).
+- Typography: Calibri 11pt body, Calibri 14pt headings, 1.15 line spacing, 6pt spacing after paragraphs.
+- Glyphs: Only standard hyphens (-) or standard circular bullets. Strictly NO custom bullet characters (•, ✔, ★, ❖, ●, ✅, ❌, |).
+- ATS audit against ats_rules.json.
+- Output the doc_templates.json registration fragment for resume.variants.chronological.
+- Output the dry-run command.
+
+### 1b. Hybrid Resume
+Use the gold_template_builder skill.
+
+Design a "Hybrid" (functional + chronological) resume template.
+
+Requirements:
+- Section order: Contact Block → Target Role Title ({{TARGET_ROLE}}) → Professional/Strengths Summary → Skills (top 6 skills, drawn from {{SKILL_1}} to {{SKILL_6}}) → Professional Experience (abbreviated chronological list: title/org/dates using {{ROLE_N_TITLE}}, {{ROLE_N_ORG}}, and {{ROLE_N_DATES}}, with no per-role bullets to keep the layout condensed) → Education → Certifications
+- Contact Block MUST use line breaks instead of pipe (|) characters.
+- Built specifically for career-transition candidates: the Skills section MUST use Rosetta Stone community framing to translate and reframe corporate finance expertise into community service assets.
+- Abbreviate actual experience to a flat chronological list of organization, role title, and dates to keep focus entirely on skills and competencies.
+- Same ATS rules, same typography (Calibri 11pt, 1.15 spacing, 6pt after), same placeholder schema, standard hyphens/circular bullets only.
+- Output the doc_templates.json registration fragment for resume.variants.hybrid.
+- Output the dry-run command.
+
+**STOP after Batch 1. Build both Golden Masters in Google Docs, register their IDs, then proceed to Batch 2.**
+
+---
+
+## Batch 2: Cover Letter Templates
+
+### 2a. Government Cover Letter
+Use the gold_template_builder skill.
+
+Design a "Government" cover letter template for APS/VPS applications.
+
+Requirements:
+- Formal structure: Date → Addressee block → "Dear [Selection Panel / Hiring Manager]" → Hook Paragraph → Bridge Paragraph (Rosetta Stone) → Evidence Paragraph 1 → Evidence Paragraph 2 → Closing Paragraph → Sign-off
+- Use PLACEHOLDER_SCHEMA_V2 tokens for `cover_letter` type
+- Salutation: "Dear Selection Panel" (mapped from --employer-type government)
+- Static text tone: formal, capability-framework aligned
+- ATS audit against ats_rules.json
+- Output the doc_templates.json registration fragment for cover_letter.variants.government
+- Output the dry-run command with --employer-type government
+
+### 2b. NFP Cover Letter
+Use the gold_template_builder skill.
+
+Design a "Not-for-Profit" cover letter template for community sector roles.
+
+Requirements:
+- Warmer tone than government variant
+- Salutation: "Dear Hiring Manager"
+- Emphasise values alignment and lived-experience in hook paragraph placement
+- Same PLACEHOLDER_SCHEMA_V2 tokens
+- ATS audit
+- Output registration fragment for cover_letter.variants.nfp
+- Output dry-run command with --employer-type nfp
+
+### 2c. Private Sector Cover Letter
+Use the gold_template_builder skill.
+
+Design a "Private Sector" cover letter template.
+
+Requirements:
+- Commercial tone, results-oriented
+- Salutation: "Dear Hiring Manager"
+- Bridge paragraph should lean heavier on corporate-to-corporate framing
+- Same tokens, same ATS audit
+- Output registration fragment for cover_letter.variants.private
+- Output dry-run command with --employer-type private
+
+**STOP after Batch 2. Build all three Golden Masters, register IDs, then proceed to Batch 3.**
+
+---
+
+## Batch 3: KSC Template
+
+### 3a. Standard KSC Response Template
+Use the gold_template_builder_v2 skill.
+
+Design a Key Selection Criteria response template.
+
+Requirements:
+- Structure per criterion: Criterion Text (Heading 2) → Context paragraph → Action paragraph → Result paragraph → Supporting Evidence bullets
+- Use PLACEHOLDER_SCHEMA_V2 tokens for `ksc` type (defined at generate_document.py:118-133)
+- Support up to 6 criteria (KSC_CRITERION_1_TEXT through KSC_CRITERION_6_TEXT)
+- Each criterion gets 2 support bullets (KSC_N_SUPPORT_BULLET_1, KSC_N_SUPPORT_BULLET_2)
+- Word limits from ats_rules.json: Context 40–100, Action 60–200, Result 30–100, Total 200–500
+- Contact block at top: {{CONTACT_NAME}}, {{TARGET_ROLE}}, {{EMPLOYER_ORG}}
+- Must be output in the exact format of `skills/gold_template_builder_v2/ksc_template_spec_form.md`
+- Run the linter: `python3 validate_template_spec.py <spec_file.md>` and iterate until it prints `SPEC OK`.
+- Output registration fragment for ksc
+- Output dry-run command with --criteria flag
+
+**STOP after Batch 3. Build the Golden Master, register ID, then proceed to Batch 4.**
+
+---
+
+## Batch 4: Full Library Validation
+
+Use the ats_template_qa_v2 skill.
+
+Perform a batch validation of ALL Golden Master templates registered in doc_templates.json.
+
+For each entry:
+1. Run the `validate_template_spec.py` linter first as a hard gate.
+2. For registered IDs, run the full validation protocol:
+   - Check 1: Placeholder hygiene (required tokens present, no unknown tokens)
+   - Check 2: ATS structural compliance (single-column, no tables, no text boxes, no forbidden glyphs)
+   - Check 3: Australian terminology audit on static text
+   - Check 4: KSC word-limit awareness (KSC templates only)
+3. Output a graded Markdown report for each template variant
+4. Flag any CRITICAL or WARNING findings
+5. Provide remediation instructions for any failures
+
+---
+
+## Post-Batch Verification & Quality Gate (MANDATORY)
+
+Do NOT declare this task complete until you have executed these two steps in sequence:
+
+### Step 1: Execute Local Dry-Run Suite
+Run these commands to verify that all placeholders parse and map without exceptions:
+```bash
+# Dry-run all three types
+python3 generate_document.py --type resume --target "Test Role at Test Org" --dry-run
+python3 generate_document.py --type cover_letter --target "Case Manager at DHHS" --employer-type government --dry-run
+python3 generate_document.py --type ksc --target "Intake Worker at Launch Housing" --criteria criteria.txt --dry-run
+
+# Check for errors
+cat output/parsing_errors.log
+```
+
+Confirm that the output report JSON is written successfully and contains **zero unresolved placeholders** and **zero parsing errors**.
+
+### Step 2: Mandate Linter Verification Gate
+Instead of manual peer reviews or conversational validation, the structural and stylistic accuracy of these templates is hard-gated by the mechanical linter.
+
+**Action:** You must run:
+```bash
+python3 validate_template_spec.py ksc_template_spec.md
+```
+Confirm that it returns `SPEC OK`. If any errors are flagged, resolve them mechanically.

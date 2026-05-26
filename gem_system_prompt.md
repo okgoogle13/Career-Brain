@@ -186,8 +186,9 @@ into community services language for a [role title] application.
 | Narratives | `ksc_curated.json` | 1,347 narratives, quality-tiered |
 | Skills & Taxonomy | `skills_and_taxonomy.json` | 9 Rosetta Stone mappings, 20 skills, 15 domain keyword sets |
 
-**Last compiled:** 2026-05-21
-**Pipeline version:** Sprint 2 (multi-heuristic metric injection + narrative curation + expanded Rosetta Stone)
+**Last compiled:** 2026-05-24
+**Pipeline version:** Sprint 3 (Centralized ATS rules, Australian terminology localization, and Rosetta Stone bullet tagging)
+
 
 ---
 

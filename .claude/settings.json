@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 validate_template_spec.py doc_templates/resume_warm_impact_v1.json)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 build_golden_master.py doc_templates/resume_warm_impact_v1.json)",
+      "Bash(python3 audit_doc_style.py 1D_dG4Ath-sWEqVI060A3oeMVkwpFy16ZORVd1MIPNG8 --theme doc_templates/cover_letter_government_v1.json)",
+      "Bash(python3 audit_doc_style.py 1GQcH_XyTzV6kgwXK085_k8TQtPwYYvPTZaxXIMMooSY --theme doc_templates/cover_letter_private_v1.json)",
+      "Bash(python3 audit_doc_style.py 1EwMEexcrcJcq_94GAhglEuvM_ROGL-4fI3ObdzT6QNA --theme doc_templates/resume_chronological_v1.json)"
+    ]
+  },
+  "enabledPlugins": {
+    "playground@claude-plugins-official": true
+  }
+}

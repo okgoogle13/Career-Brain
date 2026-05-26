@@ -1,8 +1,0 @@
-{
-  "resume": {
-    "template_doc_id": "REPLACE_WITH_RESUME_GOLDEN_MASTER_DOC_ID"
-  },
-  "cover_letter": {
-    "template_doc_id": "REPLACE_WITH_COVER_LETTER_GOLDEN_MASTER_DOC_ID"
-  }
-}

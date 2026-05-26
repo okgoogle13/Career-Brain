@@ -1,0 +1,19 @@
+{
+  "generated_doc_id": null,
+  "generated_doc_link": null,
+  "placeholder_stats": {
+    "blank": 40,
+    "filled": 2,
+    "total": 42
+  },
+  "run_timestamp": "2026-05-22T21:29:06.971174+00:00",
+  "template": "ksc",
+  "template_doc_id": "REPLACE_WITH_KSC_GOLDEN_MASTER_DOC_ID",
+  "template_variant": null,
+  "unresolved_tokens": [],
+  "warnings": [
+    "contact_name_missing",
+    "no_criteria_provided_or_parsed",
+    "dry_run_no_google_document_created"
+  ]
+}

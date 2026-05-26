@@ -1,0 +1,105 @@
+# Example Master Resume: Senior Social Worker (Australian Context)
+
+**Note:** For actual Gem use, convert this content into a PDF or DOCX to showcase formatting. This Markdown is for content structure.
+
+---
+
+## [Your Name]
+[Your Phone Number] | [Your Email] | [Your LinkedIn Profile URL] | [Your City, VIC]
+
+---
+
+## Professional Summary
+Highly experienced and accredited **Senior Social Worker** with **12+ years** of progressive experience in complex casework, client advocacy, and program leadership within the Australian community services and health sectors. Specialised expertise in child protection, mental health, and family violence, with a proven track record of delivering positive client outcomes and fostering interagency collaboration. Committed to trauma-informed and culturally responsive practice, upholding the AASW Code of Ethics.
+
+---
+
+## Core Competencies / Skills
+
+### Clinical & Casework
+* Psychosocial Assessment & Intervention
+* Crisis Intervention & De-escalation
+* Trauma-Informed Practice
+* Client-Centred Casework
+* Family Systems Therapy
+* Motivational Interviewing
+* Brief Intervention & Counselling
+* Risk Assessment & Management
+
+### Sector-Specific Knowledge (Australian)
+* NDIS (National Disability Insurance Scheme)
+* Victorian Child Protection Legislation (Children, Youth and Families Act 2005)
+* Domestic and Family Violence Frameworks
+* Aged Care Quality Standards
+* Mental Health Act (VIC)
+* AASW Code of Ethics & Practice Standards
+* Working With Children Check (WWCC)
+
+### Leadership & Collaboration
+* Multidisciplinary Team Leadership
+* Interagency Collaboration & Partnerships
+* Supervision & Mentoring
+* Program Development & Evaluation
+* Stakeholder Engagement
+* Advocacy (Individual & Systemic)
+* Quality Improvement
+
+### Software & Documentation
+* Client Management Systems (e.g., Penelope, SHIP)
+* Microsoft Office Suite (Advanced Excel, Word, Outlook)
+* Electronic Health Records (EHR)
+* Data Entry & Reporting
+
+---
+
+## Professional Experience
+
+**Senior Social Worker, Child Protection** | Department of Families, Fairness and Housing (DFFH) | Melbourne, VIC
+* **April 2018 – Present**
+* **Managed** a complex caseload of **25-30 high-risk child protection cases**, conducting comprehensive assessments and implementing safety plans.
+* **Provided** expert evidence and advocacy in Children's Court proceedings, resulting in positive permanency outcomes for **over 90%** of cases presented.
+* **Led** multidisciplinary team meetings, coordinating integrated responses with police, health, and education services to safeguard vulnerable children.
+* **Mentored and supervised** 4 junior social workers, providing clinical guidance and ensuring adherence to departmental policies and statutory obligations.
+* **Developed** and delivered in-house training on complex trauma and risk assessment, enhancing team capability in this critical area.
+
+**Social Worker, Family Services** | Family Support Collective (NGO) | Geelong, VIC
+* **January 2013 – March 2018**
+* **Provided** intensive, client-centred case management and counselling to **40+ families** experiencing complex issues including family violence, mental health, and substance abuse.
+* **Facilitated** a group program for parents experiencing domestic violence, leading to a **20% increase in participants' safety planning knowledge**.
+* **Liaised** extensively with NDIS planners and support coordinators, successfully navigating the scheme to secure appropriate funding for clients with disabilities.
+* **Contributed** to the development of a new early intervention program, which **increased family engagement by 15%** within its first year.
+
+**Caseworker, Youth Homelessness** | Youth Pathways Inc. (NGO) | Sydney, NSW
+* **July 2011 – December 2012**
+* **Supported** young people aged 16-25 experiencing homelessness, providing crisis intervention, advocacy for housing, and referral to specialist services.
+* **Assisted** **over 60 young people** in securing stable accommodation and accessing vital support, reducing their time in crisis accommodation by **25%**.
+* **Collaborated** with local council and community groups to identify gaps in youth support services.
+
+---
+
+## Education
+
+**Master of Social Work** | University of Melbourne | Melbourne, VIC
+* **Graduated: 2013**
+* **Focus:** Advanced Casework Practice, Social Policy & Advocacy
+
+**Bachelor of Arts (Psychology & Sociology)** | University of Sydney | Sydney, NSW
+* **Graduated: 2010**
+
+---
+
+## Additional Sections
+
+**Professional Memberships & Registrations**
+* Accredited Mental Health Social Worker (AMHSW) - AASW (Since 2019)
+* Member, Australian Association of Social Workers (AASW) (Since 2013)
+* Working With Children Check (WWCC) - Victoria (Current)
+
+**Professional Development**
+* Advanced Trauma-Informed Practice Training (2022)
+* NDIS Practice Standards & Quality Indicators Workshop (2021)
+* Crisis Intervention & Suicide Prevention Training (2020)
+
+**Publications & Presentations**
+* "Navigating NDIS: A Social Worker's Perspective on Maximising Client Outcomes" - Presented at AASW National Symposium (2021)
+* Co-authored internal policy paper: "Best Practice in Child Protection Risk Assessment" (2019)

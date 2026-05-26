@@ -1,0 +1,2399 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: ats_rules.json, doc_templates.json, generate_document.py, content_engine.py, user_config.example.json, gem_system_prompt.md
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+ats_rules.json
+content_engine.py
+doc_templates.json
+gem_system_prompt.md
+generate_document.py
+user_config.example.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="ats_rules.json">
+{
+  "ksc": {
+    "word_limits": {
+      "context": [40, 100],
+      "action": [60, 200],
+      "result": [30, 100],
+      "total": [200, 500]
+    }
+  },
+  "structure": {
+    "columns_max": 1,
+    "allow_tables": false,
+    "allow_text_boxes": false,
+    "allow_inline_objects": false,
+    "allowed_headings": ["Skills", "Certifications", "Professional Experience", "Education", "Key Achievements"]
+  },
+  "vocabulary": {
+    "forbidden_characters": ["•", "✔", "★", "❖", "●", "✅", "❌", "|"]
+  },
+  "terminology": {
+    "australian_mappings": {
+      "company": "organisation",
+      "companies": "organisations",
+      "industry": "sector",
+      "industries": "sectors",
+      "job description": "position description",
+      "job ad": "position advertisement",
+      "competency questions": "key selection criteria"
+    }
+  }
+}
+</file>
+
+<file path="content_engine.py">
+#!/usr/bin/env python3
+"""
+Content selection engine for Career Brain Phase 5.
+
+Provides intelligent content selection from the 3-pillar JSON engines
+(Career History, Narratives, Skills & Taxonomy) based on job ad keywords,
+domain relevance, quality tiers, and the Rosetta Stone translation protocol.
+
+This module is used by generate_document.py to build placeholder values
+for Google Docs template injection.
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+import re
+from dataclasses import dataclass
+from enum import Enum
+from pathlib import Path
+from typing import Any
+
+log = logging.getLogger("content_engine")
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Enums & Config
+# ──────────────────────────────────────────────────────────────────────
+
+class DocumentType(str, Enum):
+    RESUME = "resume"
+    COVER_LETTER = "cover_letter"
+    KSC = "ksc"
+
+
+class EmployerType(str, Enum):
+    GOVERNMENT = "government"
+    NFP = "nfp"
+    PRIVATE = "private"
+
+
+@dataclass
+class GenerationConfig:
+    """All parameters for a single document generation run."""
+    doc_type: DocumentType
+    target_role: str
+    variant: str | None = None
+    employer_type: EmployerType = EmployerType.NFP
+    job_ad_text: str | None = None
+    criteria_text: list[str] | None = None
+    dry_run: bool = False
+    summary_override: str | None = None
+    rosetta: bool = True
+
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Constants
+# ──────────────────────────────────────────────────────────────────────
+
+MAX_RESUME_ROLES = 6
+MAX_BULLETS_PER_ROLE = 4
+MAX_RESUME_SKILLS = 6
+MAX_COVER_LETTER_EVIDENCE = 2
+MAX_KSC_CRITERIA = 6
+MAX_KSC_SUPPORT_BULLETS = 2
+
+# Word count targets for KSC CAR sections
+KSC_WORD_TARGETS = {
+    "context": (40, 100),
+    "action": (60, 200),
+    "result": (30, 100),
+    "total": (200, 500),
+}
+
+# Load centralized ATS rules if available
+ATS_RULES_PATH = Path(__file__).parent / "ats_rules.json"
+if ATS_RULES_PATH.exists():
+    try:
+        with ATS_RULES_PATH.open(encoding="utf-8") as fh:
+            _ats_data = json.load(fh)
+            _limits = _ats_data.get("ksc", {}).get("word_limits", {})
+            for _key, _val in _limits.items():
+                if isinstance(_val, list) and len(_val) == 2:
+                    KSC_WORD_TARGETS[_key] = (_val[0], _val[1])
+    except Exception as _exc:
+        log.warning("Failed to load KSC word limits from %s: %s", ATS_RULES_PATH, _exc)
+
+
+# Salutation defaults by employer type
+SALUTATION_MAP = {
+    EmployerType.GOVERNMENT: "Selection Panel",
+    EmployerType.NFP: "Hiring Manager",
+    EmployerType.PRIVATE: "Hiring Manager",
+}
+
+
+# ──────────────────────────────────────────────────────────────────────
+# User Config
+# ──────────────────────────────────────────────────────────────────────
+
+def load_user_config(path: Path) -> dict[str, Any]:
+    """Load static user configuration (contact info, education, certs)."""
+    if not path.exists():
+        log.warning("User config not found at %s — using empty defaults", path)
+        return {}
+    with path.open(encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Keyword Extraction
+# ──────────────────────────────────────────────────────────────────────
+
+def extract_job_ad_keywords(
+    job_ad_text: str,
+    keyword_bank: dict[str, list[str]],
+) -> dict[str, float]:
+    """Match job ad text against keyword_bank domains.
+
+    Returns a dict of ``{domain_tag: relevance_score}`` where the score
+    is the proportion of domain keywords found in the job ad text.
+    """
+    if not job_ad_text or not keyword_bank:
+        return {}
+
+    ad_lower = job_ad_text.lower()
+    scores: dict[str, float] = {}
+
+    for domain, keywords in keyword_bank.items():
+        if not keywords:
+            continue
+        hits = sum(1 for kw in keywords if kw.lower() in ad_lower)
+        if hits > 0:
+            scores[domain] = hits / len(keywords)
+
+    return dict(sorted(scores.items(), key=lambda item: -item[1]))
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Role Selection
+# ──────────────────────────────────────────────────────────────────────
+
+def _parse_date_rank(date_str: str | None) -> int:
+    """Convert a date string into a numeric rank for sorting.
+
+    More recent dates get higher values.  "Present" or "Current" are
+    treated as the most recent possible date.  Returns 0 for unparseable
+    dates.
+    """
+    if not date_str or not isinstance(date_str, str):
+        return 0
+    # "Present" / "Current" / "Ongoing" → always most recent
+    if date_str.strip().lower() in ("present", "current", "ongoing"):
+        return 9999 * 12
+    # Try common patterns: "2024", "Jan 2024", "2024-01", "01/2024"
+    match = re.search(r"(\d{4})", date_str)
+    if match:
+        year = int(match.group(1))
+        # Bonus for month ordering within a year
+        month_match = re.search(
+            r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)", date_str, re.I
+        )
+        month_bonus = 0
+        if month_match:
+            months = [
+                "jan", "feb", "mar", "apr", "may", "jun",
+                "jul", "aug", "sep", "oct", "nov", "dec",
+            ]
+            month_bonus = months.index(month_match.group(1).lower()[:3])
+        return year * 12 + month_bonus
+    return 0
+
+
+def _role_domain_score(
+    role: dict[str, Any],
+    keyword_scores: dict[str, float],
+) -> float:
+    """Score a role's relevance based on its domain archetypes and
+    achievement domain tags against keyword scores."""
+    score = 0.0
+    # Score from role-level domain archetypes
+    for archetype in role.get("domain_archetypes", []):
+        if isinstance(archetype, str):
+            score += keyword_scores.get(archetype, 0.0)
+
+    # Score from achievement-level domain tags
+    for achievement in role.get("achievements", []):
+        for tag in achievement.get("domain_tags", []):
+            if isinstance(tag, str):
+                score += keyword_scores.get(tag, 0.0) * 0.1
+    return score
+
+
+def select_roles(
+    history: dict[str, Any],
+    target_role: str,
+    keyword_scores: dict[str, float],
+    max_roles: int = MAX_RESUME_ROLES,
+) -> list[dict[str, Any]]:
+    """Select and rank roles by recency and domain relevance.
+
+    Returns up to ``max_roles`` roles sorted by a composite score of
+    recency (60% weight) and domain relevance (40% weight).
+    """
+    roles = history.get("roles", [])
+    if not roles:
+        return []
+
+    # Find the maximum date rank for normalisation
+    date_ranks = [_parse_date_rank(r.get("end_date") or r.get("start_date")) for r in roles]
+    max_date = max(date_ranks) if date_ranks else 1
+    if max_date == 0:
+        max_date = 1
+
+    # Pre-compute domain scores across ALL roles for proper normalisation
+    domain_scores = [_role_domain_score(r, keyword_scores) for r in roles]
+    max_domain_all = max(max(domain_scores), 1.0) if domain_scores else 1.0
+
+    scored: list[tuple[float, int, dict[str, Any]]] = []
+    for idx, role in enumerate(roles):
+        recency = _parse_date_rank(role.get("end_date") or role.get("start_date")) / max_date
+        domain_normalised = domain_scores[idx] / max_domain_all
+        composite = (recency * 0.6) + (domain_normalised * 0.4)
+        scored.append((composite, idx, role))
+
+    scored.sort(key=lambda item: (-item[0], item[1]))
+    return [item[2] for item in scored[:max_roles]]
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Bullet Selection
+# ──────────────────────────────────────────────────────────────────────
+
+def _clean_text(value: Any) -> str:
+    """Collapse whitespace in a string value."""
+    if not isinstance(value, str):
+        return ""
+    return " ".join(value.split())
+
+
+def _bullet_text(achievement: dict[str, Any]) -> str:
+    """Extract the display text from an achievement node."""
+    return _clean_text(
+        achievement.get("raw_text")
+        or achievement.get("text")
+        or achievement.get("achievement")
+    )
+
+
+def _has_metric(text: str) -> bool:
+    """Return True if text contains a numeric metric."""
+    return bool(re.search(r"\d+[%$]|\$\d|(?:\d+\s*(?:client|team|staff|hour|day|week|month|year|site|case))", text, re.I))
+
+
+def select_bullets(
+    role: dict[str, Any],
+    keyword_scores: dict[str, float],
+    max_bullets: int = MAX_BULLETS_PER_ROLE,
+) -> list[str]:
+    """Select and rank bullets within a role.
+
+    Prioritises bullets with metrics, then by domain tag relevance.
+    Excludes ``needs_review=True`` bullets.
+    """
+    candidates: list[tuple[float, int, str]] = []
+
+    for idx, achievement in enumerate(role.get("achievements", [])):
+        if achievement.get("needs_review"):
+            continue
+        text = _bullet_text(achievement)
+        if not text:
+            continue
+
+        # Score: metric presence (bonus 1.0) + domain relevance
+        score = 1.0 if _has_metric(text) else 0.0
+        for tag in achievement.get("domain_tags", []):
+            if isinstance(tag, str):
+                score += keyword_scores.get(tag, 0.0) * 0.5
+        candidates.append((score, idx, text))
+
+    candidates.sort(key=lambda item: (-item[0], item[1]))
+    return [item[2] for item in candidates[:max_bullets]]
+
+
+def select_all_bullets(
+    history: dict[str, Any],
+    keyword_scores: dict[str, float],
+    max_total: int = 6,
+) -> list[str]:
+    """Select the best bullets across all roles, flattened.
+
+    Used by the v1-compatible resume placeholder builder.
+    """
+    all_bullets: list[tuple[float, int, int, str]] = []
+    for role_idx, role in enumerate(history.get("roles", [])):
+        for ach_idx, achievement in enumerate(role.get("achievements", [])):
+            if achievement.get("needs_review"):
+                continue
+            text = _bullet_text(achievement)
+            if not text:
+                continue
+            score = 1.0 if _has_metric(text) else 0.0
+            for tag in achievement.get("domain_tags", []):
+                if isinstance(tag, str):
+                    score += keyword_scores.get(tag, 0.0) * 0.5
+            all_bullets.append((score, role_idx, ach_idx, text))
+
+    all_bullets.sort(key=lambda item: (-item[0], item[1], item[2]))
+    return [item[3] for item in all_bullets[:max_total]]
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Narrative Selection
+# ──────────────────────────────────────────────────────────────────────
+
+def select_narratives(
+    narratives: list[dict[str, Any]],
+    competency_targets: list[str] | None = None,
+    narrative_types: list[str] | None = None,
+    max_count: int = 3,
+) -> list[dict[str, Any]]:
+    """Select narratives by competency match and quality tier.
+
+    Priority order:
+    1. quality_tier ascending (tier 1 first)
+    2. competency_tags match count (more matches = better)
+    3. quality_score descending
+    """
+    if not narratives:
+        return []
+
+    targets_lower = [t.lower() for t in (competency_targets or [])]
+    type_filter = [t.lower() for t in (narrative_types or [])]
+
+    scored: list[tuple[int, int, int, int, dict[str, Any]]] = []
+
+    for idx, narrative in enumerate(narratives):
+        text = _clean_text(narrative.get("full_text"))
+        if not text:
+            continue
+
+        # Filter by narrative type if specified
+        n_type = (narrative.get("narrative_type") or "").lower()
+        if type_filter and n_type not in type_filter:
+            continue
+
+        tier = narrative.get("quality_tier", 99)
+        try:
+            tier_val = int(tier)
+        except (TypeError, ValueError):
+            tier_val = 99
+
+        quality_score = narrative.get("quality_score", 0)
+        try:
+            q_score = int(quality_score or 0)
+        except (TypeError, ValueError):
+            q_score = 0
+
+        # Competency match count
+        comp_tags = [
+            t.lower() for t in narrative.get("competency_tags", [])
+            if isinstance(t, str)
+        ]
+        match_count = sum(1 for t in targets_lower if t in comp_tags)
+
+        scored.append((tier_val, -match_count, -q_score, idx, narrative))
+
+    scored.sort()
+    return [item[4] for item in scored[:max_count]]
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Rosetta Stone Translation
+# ──────────────────────────────────────────────────────────────────────
+
+def apply_rosetta_stone(
+    text: str,
+    rosetta_stone: dict[str, dict[str, Any]],
+    target_domain: str | None = None,
+) -> str:
+    """Apply Rosetta Stone translations to reframe corporate language.
+
+    Scans the text for corporate framing keywords and appends
+    community-sector equivalents in parentheses where the community
+    terminology is not already present.  Preserves the original text
+    structure — only adds context, never removes content.
+
+    Example:
+        Input:  "Led cross-departmental compliance workstreams"
+        Output: "Led cross-departmental compliance workstreams
+                 (Complex Case Coordination, MDT Collaboration)"
+    """
+    if not text or not rosetta_stone:
+        return text
+
+    applied_bridges: list[str] = []
+
+    for _key, mapping in rosetta_stone.items():
+        corporate = mapping.get("corporate_framing", "")
+        community = mapping.get("community_translation", "")
+        community_kws = mapping.get("community_keywords", [])
+
+        if not corporate or not community:
+            continue
+
+        # Check if corporate framing keywords appear in the text
+        corporate_terms = [
+            term.strip().lower()
+            for term in re.split(r"[,/]", corporate)
+            if len(term.strip()) > 3
+        ]
+
+        text_lower = text.lower()
+        match_found = any(term in text_lower for term in corporate_terms[:5])
+
+        if match_found:
+            # Check if community keywords are already present
+            has_community = any(
+                kw.lower() in text_lower for kw in community_kws[:3]
+            )
+            if not has_community and community_kws:
+                bridge_kws = ", ".join(community_kws[:3])
+                applied_bridges.append(bridge_kws)
+                log.debug(
+                    "Rosetta Stone applied: %s → %s (%s)",
+                    corporate[:40], community, bridge_kws,
+                )
+
+    if applied_bridges:
+        # Append all bridge keywords as a parenthetical to the text
+        all_kws = ", ".join(applied_bridges)
+        # Strip trailing period to append cleanly, then re-add
+        stripped = text.rstrip(". ")
+        text = f"{stripped} ({all_kws})."
+
+    return text
+
+
+def generate_bridge_paragraph(
+    rosetta_stone: dict[str, dict[str, Any]],
+    keyword_scores: dict[str, float],
+) -> str:
+    """Generate a Rosetta Stone bridge paragraph for cover letters.
+
+    Selects the most relevant corporate-to-community translation based
+    on the job ad keyword scores and constructs a bridging paragraph.
+    """
+    if not rosetta_stone:
+        return ""
+
+    # Find the best matching Rosetta Stone entry based on keyword overlap
+    best_key: str | None = None
+    best_score = -1.0
+
+    for key, mapping in rosetta_stone.items():
+        community_kws = mapping.get("community_keywords", [])
+        score = 0.0
+        for kw in community_kws:
+            kw_lower = kw.lower()
+            for domain, domain_score in keyword_scores.items():
+                if kw_lower in domain.lower() or domain.lower() in kw_lower:
+                    score += domain_score
+        if score > best_score:
+            best_score = score
+            best_key = key
+
+    if not best_key or best_key not in rosetta_stone:
+        # Fall back to the first entry
+        best_key = next(iter(rosetta_stone))
+
+    mapping = rosetta_stone[best_key]
+    corporate = mapping.get("corporate_framing", "")
+    community = mapping.get("community_translation", "")
+    bridge = mapping.get("contextual_bridge", "")
+    community_kws = mapping.get("community_keywords", [])
+
+    if bridge:
+        return bridge
+
+    # Construct a bridge paragraph from the mapping
+    kw_phrase = ", ".join(community_kws[:3]) if community_kws else community
+    paragraph = (
+        f"My experience in {corporate.rstrip('.')} "
+        f"translates directly into {community.lower()} capabilities. "
+        f"I bring demonstrated competency in {kw_phrase}, "
+        f"applying a structured, evidence-based approach developed through "
+        f"years of cross-functional delivery in complex organisational environments."
+    )
+    return paragraph
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Skill Selection
+# ──────────────────────────────────────────────────────────────────────
+
+def select_skills(
+    taxonomy: dict[str, Any],
+    keyword_scores: dict[str, float],
+    max_skills: int = MAX_RESUME_SKILLS,
+) -> list[str]:
+    """Select and format skills for the resume skills section.
+
+    Draws from the skills_inventory and Rosetta Stone community keywords.
+    Prioritises skills that match job ad domain keywords.
+    """
+    skills_inventory = taxonomy.get("skills_inventory", [])
+    rosetta_stone = taxonomy.get("rosetta_stone", {})
+    keyword_bank = taxonomy.get("keyword_bank", {})
+
+    # Collect candidate skill phrases
+    candidates: list[tuple[float, str]] = []
+
+    # From skills inventory
+    for skill in skills_inventory:
+        name = skill.get("skill_name", "")
+        if not name:
+            continue
+        # Score by keyword overlap
+        score = 0.0
+        name_lower = name.lower()
+        for domain, domain_score in keyword_scores.items():
+            domain_kws = keyword_bank.get(domain, [])
+            if any(kw.lower() in name_lower or name_lower in kw.lower() for kw in domain_kws):
+                score += domain_score
+        candidates.append((score, name))
+
+    # From Rosetta Stone community keywords
+    for _key, mapping in rosetta_stone.items():
+        for kw in mapping.get("community_keywords", []):
+            if not kw:
+                continue
+            score = 0.0
+            kw_lower = kw.lower()
+            for domain, domain_score in keyword_scores.items():
+                if kw_lower in domain or domain in kw_lower:
+                    score += domain_score * 1.5  # Boost community keywords
+            candidates.append((score, kw))
+
+    # Deduplicate by lowercase normalisation
+    seen: set[str] = set()
+    unique: list[tuple[float, str]] = []
+    for score, name in candidates:
+        key = name.lower().strip()
+        if key not in seen:
+            seen.add(key)
+            unique.append((score, name))
+
+    unique.sort(key=lambda item: -item[0])
+    return [item[1] for item in unique[:max_skills]]
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Summary Generation
+# ──────────────────────────────────────────────────────────────────────
+
+def generate_professional_summary(
+    config: GenerationConfig,
+    selected_roles: list[dict[str, Any]],
+    keyword_scores: dict[str, float],
+    rosetta_stone: dict[str, dict[str, Any]],
+) -> str:
+    """Generate a 3–4 sentence professional summary.
+
+    Deterministic fallback (no Gemini API). Composes a summary from
+    domain tags, role history, and Rosetta Stone translations.
+    """
+    if config.summary_override is not None:
+        cleaned = _clean_text(config.summary_override)
+        if not cleaned:
+            log.warning("Empty --summary override provided. Falling back to generated summary.")
+        else:
+            return cleaned
+
+    # Collect top domain tags across selected roles
+    tags: dict[str, int] = {}
+    for role in selected_roles:
+        for achievement in role.get("achievements", []):
+            for tag in achievement.get("domain_tags", []):
+                if isinstance(tag, str) and tag:
+                    tags[tag] = tags.get(tag, 0) + 1
+
+    top_tags = [
+        tag.replace("_", " ").title()
+        for tag, _ in sorted(tags.items(), key=lambda item: (-item[1], item[0]))[:3]
+    ]
+
+    # Get years of experience from role dates
+    years = set()
+    for role in selected_roles:
+        start = role.get("start_date", "")
+        end = role.get("end_date", "")
+        for d in (start, end):
+            match = re.search(r"(\d{4})", str(d))
+            if match:
+                years.add(int(match.group(1)))
+
+    experience_span = ""
+    if years:
+        span = max(years) - min(years)
+        if span > 0:
+            experience_span = f"with over {span} years of experience "
+
+    # Get the most relevant Rosetta Stone community translation
+    community_capability = ""
+    if rosetta_stone:
+        best_score = -1.0
+        best_translation = ""
+        for _key, mapping in rosetta_stone.items():
+            comm_kws = mapping.get("community_keywords", [])
+            score = sum(
+                keyword_scores.get(tag, 0.0)
+                for kw in comm_kws
+                for tag in keyword_scores
+                if kw.lower() in tag or tag in kw.lower()
+            )
+            if score > best_score:
+                best_score = score
+                best_translation = mapping.get("community_translation", "")
+        if best_translation:
+            community_capability = f", with particular strength in {best_translation.lower()}"
+
+    # Compose summary
+    domain_phrase = ", ".join(top_tags) if top_tags else "community services"
+    target = _clean_text(config.target_role)
+
+    summary = (
+        f"Dedicated professional {experience_span}"
+        f"across {domain_phrase.lower()}{community_capability}. "
+        f"Seeking to contribute to {target} with a track record of "
+        f"delivering person-centred outcomes in complex service environments. "
+        f"Brings a unique combination of corporate governance rigour and "
+        f"frontline community sector practice."
+    )
+    return summary
+
+
+# ──────────────────────────────────────────────────────────────────────
+# KSC Engine
+# ──────────────────────────────────────────────────────────────────────
+
+def parse_criteria(criteria_text: str) -> list[dict[str, Any]]:
+    """Parse selection criteria from position description text.
+
+    Supports numbered lists, lettered lists, and bullet-point lists.
+    Returns ``[{criterion_text, extracted_competencies}]``.
+    """
+    if not criteria_text:
+        return []
+
+    # Split on common criterion patterns
+    # e.g., "1.", "1)", "a.", "a)", "•", "-", or blank-line-separated paragraphs
+    lines = criteria_text.strip().split("\n")
+    criteria: list[dict[str, Any]] = []
+    current: list[str] = []
+
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            if current:
+                criteria.append(_build_criterion(" ".join(current)))
+                current = []
+            continue
+
+        # Check for new criterion marker
+        is_new = bool(re.match(
+            r"^(?:\d+[.)]\s|[a-z][.)]\s|[•\-\*]\s|(?:criterion|criteria)\s*\d*\s*[:\-])",
+            stripped, re.I,
+        ))
+
+        if is_new and current:
+            criteria.append(_build_criterion(" ".join(current)))
+            current = []
+
+        # Strip the marker
+        cleaned = re.sub(
+            r"^(?:\d+[.)]\s*|[a-z][.)]\s*|[•\-\*]\s*|(?:criterion|criteria)\s*\d*\s*[:\-]\s*)",
+            "", stripped, flags=re.I,
+        )
+        if cleaned:
+            current.append(cleaned)
+
+    if current:
+        criteria.append(_build_criterion(" ".join(current)))
+
+    return criteria[:MAX_KSC_CRITERIA]
+
+
+def _build_criterion(text: str) -> dict[str, Any]:
+    """Build a criterion dict with extracted competency keywords."""
+    competency_keywords = [
+        "communication", "teamwork", "leadership", "problem solving",
+        "conflict resolution", "cultural safety", "risk assessment",
+        "case management", "stakeholder engagement", "advocacy",
+        "trauma informed", "harm reduction", "governance",
+        "quality assurance", "compliance", "coordination",
+        "facilitation", "collaboration", "complex needs",
+        "person centred", "recovery oriented", "inclusive practice",
+        "safety planning", "community development", "intake",
+        "assessment", "service delivery", "program management",
+    ]
+
+    text_lower = text.lower()
+    extracted = [kw for kw in competency_keywords if kw in text_lower]
+
+    return {
+        "criterion_text": _clean_text(text),
+        "extracted_competencies": extracted,
+    }
+
+
+def build_ksc_response(
+    criterion: dict[str, Any],
+    narratives: list[dict[str, Any]],
+    history: dict[str, Any],
+    rosetta_stone: dict[str, dict[str, Any]],
+) -> dict[str, str]:
+    """Build a CAR response for a single criterion.
+
+    Returns ``{context, action, result, support_bullet_1, support_bullet_2}``.
+    """
+    competencies = criterion.get("extracted_competencies", [])
+
+    # Select the best narrative for this criterion
+    matched = select_narratives(
+        narratives=narratives,
+        competency_targets=competencies,
+        narrative_types=["STAR", "CAR"],
+        max_count=1,
+    )
+
+    if not matched:
+        # Broaden the search — try all narrative types
+        matched = select_narratives(
+            narratives=narratives,
+            competency_targets=competencies,
+            max_count=1,
+        )
+
+    response = {"context": "", "action": "", "result": ""}
+
+    if matched:
+        narrative = matched[0]
+        full_text = _clean_text(narrative.get("full_text", ""))
+
+        # Attempt to split into CAR sections
+        # Many narratives have implicit structure — split roughly by thirds
+        sentences = re.split(r"(?<=[.!?])\s+", full_text)
+        total = len(sentences)
+
+        if total >= 3:
+            ctx_end = max(1, total // 4)
+            act_end = max(ctx_end + 1, total * 3 // 4)
+
+            response["context"] = " ".join(sentences[:ctx_end])
+            response["action"] = " ".join(sentences[ctx_end:act_end])
+            response["result"] = " ".join(sentences[act_end:])
+        elif total == 2:
+            response["context"] = sentences[0]
+            response["action"] = sentences[1]
+            response["result"] = ""
+        elif total == 1:
+            response["context"] = sentences[0]
+
+    # Select supporting bullets from career history
+    support_bullets = _select_support_bullets(
+        history, competencies, max_bullets=MAX_KSC_SUPPORT_BULLETS,
+    )
+    for idx, bullet in enumerate(support_bullets, start=1):
+        response[f"support_bullet_{idx}"] = bullet
+
+    return response
+
+
+def _select_support_bullets(
+    history: dict[str, Any],
+    competencies: list[str],
+    max_bullets: int = 2,
+) -> list[str]:
+    """Select supporting bullets from career history that match
+    the criterion's competencies."""
+    candidates: list[tuple[int, int, str]] = []
+
+    for role_idx, role in enumerate(history.get("roles", [])):
+        for ach_idx, achievement in enumerate(role.get("achievements", [])):
+            if achievement.get("needs_review"):
+                continue
+            text = _bullet_text(achievement)
+            if not text:
+                continue
+
+            tags = [
+                t.lower().replace("_", " ")
+                for t in achievement.get("domain_tags", [])
+                if isinstance(t, str)
+            ]
+            match_count = sum(1 for c in competencies if c in " ".join(tags))
+
+            if match_count > 0:
+                candidates.append((match_count, role_idx * 100 + ach_idx, text))
+
+    candidates.sort(key=lambda item: (-item[0], item[1]))
+    return [item[2] for item in candidates[:max_bullets]]
+
+
+# ──────────────────────────────────────────────────────────────────────
+# KSC Word Count Validation
+# ──────────────────────────────────────────────────────────────────────
+
+def validate_ksc_word_counts(
+    response: dict[str, str],
+) -> list[str]:
+    """Validate word counts for each CAR section.
+
+    Returns a list of warning strings for out-of-range sections.
+    """
+    warnings: list[str] = []
+
+    for section in ("context", "action", "result"):
+        text = response.get(section, "")
+        word_count = len(text.split()) if text else 0
+        min_words, max_words = KSC_WORD_TARGETS.get(section, (0, 9999))
+
+        if word_count < min_words:
+            warnings.append(
+                f"ksc_{section}_too_short: {word_count} words (min {min_words})"
+            )
+        elif word_count > max_words:
+            warnings.append(
+                f"ksc_{section}_too_long: {word_count} words (max {max_words})"
+            )
+
+    # Total word count
+    total = sum(
+        len(response.get(s, "").split())
+        for s in ("context", "action", "result")
+    )
+    min_total, max_total = KSC_WORD_TARGETS["total"]
+    if total < min_total:
+        warnings.append(f"ksc_total_too_short: {total} words (min {min_total})")
+    elif total > max_total:
+        warnings.append(f"ksc_total_too_long: {total} words (max {max_total})")
+
+    return warnings
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Cover Letter Closing
+# ──────────────────────────────────────────────────────────────────────
+
+def generate_closing_paragraph(
+    config: GenerationConfig,
+    keyword_scores: dict[str, float],
+) -> str:
+    """Generate an employer-specific closing paragraph.
+
+    Deterministic fallback (no Gemini API).
+    """
+    target = _clean_text(config.target_role)
+    top_domains = list(keyword_scores.keys())[:2]
+    domain_phrase = " and ".join(
+        d.replace("_", " ") for d in top_domains
+    ) if top_domains else "community services"
+
+    if config.employer_type == EmployerType.GOVERNMENT:
+        return (
+            f"I am confident that my experience across {domain_phrase} "
+            f"equips me to deliver high-quality outcomes in this {target} role. "
+            f"I welcome the opportunity to discuss how my background aligns "
+            f"with the requirements of this position and the priorities of your "
+            f"organisation. I am available for interview at your convenience."
+        )
+    elif config.employer_type == EmployerType.NFP:
+        return (
+            f"I would welcome the opportunity to bring my skills in "
+            f"{domain_phrase} to your team. I am deeply aligned with the "
+            f"mission and values of your organisation, and I believe my "
+            f"combination of corporate rigour and frontline community practice "
+            f"would make a meaningful contribution to the {target} role."
+        )
+    else:
+        return (
+            f"I am excited by the opportunity to contribute to this {target} role, "
+            f"bringing expertise in {domain_phrase} and a proven track record "
+            f"of delivering results in complex stakeholder environments. "
+            f"I would appreciate the chance to discuss my candidacy further."
+        )
+</file>
+
+<file path="user_config.example.json">
+{
+  "contact": {
+    "name": "Your Full Name",
+    "phone": "0400 000 000",
+    "email": "your.email@example.com",
+    "location": "Melbourne, VIC"
+  },
+  "education": [
+    "Bachelor of Business (Accounting & Finance) — La Trobe University, 2010",
+    "Certificate IV in Mental Health Peer Work — EACH, 2022"
+  ],
+  "certifications": [
+    "MARAM Risk Assessment (Intermediate)",
+    "Working with Children Check (current)",
+    "National Police Check (current)",
+    "Mental Health First Aid"
+  ],
+  "referees": "Available upon request"
+}
+</file>
+
+<file path="doc_templates.json">
+{
+  "resume": {
+    "template_doc_id": "REPLACE_WITH_RESUME_GOLDEN_MASTER_DOC_ID",
+    "variants": {
+      "chronological": {
+        "template_doc_id": "17PRt5xe5S38a5wt5H_Y6jvQ0n5dIw2opWPM61IMb3kc"
+      },
+      "hybrid": {
+        "template_doc_id": "1TqUqpa4QtZhfO1CQDkjwpK5xkoSkSHOqwoZpH5xGanA"
+      }
+    }
+  },
+  "cover_letter": {
+    "template_doc_id": "REPLACE_WITH_COVER_LETTER_GOLDEN_MASTER_DOC_ID",
+    "variants": {
+      "government": {
+        "template_doc_id": "REPLACE_WITH_COVER_LETTER_GOV_DOC_ID"
+      },
+      "nfp": {
+        "template_doc_id": "REPLACE_WITH_COVER_LETTER_NFP_DOC_ID"
+      },
+      "private": {
+        "template_doc_id": "REPLACE_WITH_COVER_LETTER_PRIVATE_DOC_ID"
+      }
+    }
+  },
+  "ksc": {
+    "template_doc_id": "REPLACE_WITH_KSC_GOLDEN_MASTER_DOC_ID"
+  },
+  "drive_folders": {
+    "root": "1U0qpznqgKRbJtCQMRA9_VXL90U9Bk5wl",
+    "resumes": "REPLACE_WITH_RESUMES_FOLDER_ID",
+    "cover_letters": "REPLACE_WITH_COVER_LETTERS_FOLDER_ID",
+    "ksc_responses": "REPLACE_WITH_KSC_FOLDER_ID"
+  }
+}
+</file>
+
+<file path="gem_system_prompt.md">
+# Career Copilot — Custom Gem System Prompt
+
+> **Paste this entire document into the Instructions field of your Google AI Studio Custom Gem.**
+
+---
+
+## SYSTEM PROMPT
+
+You are **Career Copilot**, a specialist AI assistant for one person: **Nishant Dougall** — a career-transitioner from Corporate Finance (Royal Bank of Scotland, NAB) to the Australian Community Services sector, with lived experience in harm reduction, peer work, housing, FDV justice, and LGBTIQ+ community health.
+
+Your entire knowledge base consists of Nishant's real career history, narratives, skills, and a proprietary **Rosetta Stone Translation Matrix** — a set of hardcoded mappings between corporate finance achievements and their community services equivalents.
+
+You have three knowledge engines:
+1. **Career History Engine** (`career_history.json`) — 80+ real job roles, 789 achievement bullets, domain-tagged
+2. **Narratives Engine** (`ksc_and_narratives.json`) — 1,126 STAR/CAR/Pivot stories indexed by competency
+3. **Skills & Taxonomy Engine** (`skills_and_taxonomy.json`) — 9 Rosetta Stone translations, 20+ skills, keyword bank
+
+---
+
+## CORE IDENTITY
+
+- You are Nishant's dedicated **career intelligence assistant**
+- You do NOT role-play as a general assistant — every response is about Nishant's job applications
+- You write in **Nishant's voice** — warm, direct, community-sector literate, anti-oppressive framing
+- You do **not fabricate** metrics, experiences, or employers. You only draw on what is in the knowledge base
+- When you are uncertain whether something happened, you say: *"I don't have a verified record of this — would you like to provide the details?"*
+
+---
+
+## RETRIEVAL RULES
+
+When answering, use the following logic to decide which engine to query:
+
+| User asks for... | Pull from... |
+|---|---|
+| Resume bullet for a specific role | Career History Engine → filter by company + domain tag |
+| Cover letter intro paragraph | Narratives Engine → type: "hook" + competency match |
+| KSC / selection criteria response | Narratives Engine → type: "STAR" + competency match |
+| Career pivot story | Narratives Engine → type: "pivot" |
+| Translating RBS experience | Skills Engine → Rosetta Stone mapping |
+| Skills list for a job application | Skills Engine → skills_inventory + keyword bank |
+| Tailored resume for a job ad | Career History + Rosetta Stone → filter by sector/domain |
+
+**Always combine engines when relevant.** A KSC response should draw from Narratives AND pull supporting bullets from Career History.
+
+---
+
+## THE ROSETTA STONE PROTOCOL
+
+**This is your most important function.** When Nishant applies for a community services role, you MUST actively translate his corporate experience using the Rosetta Stone matrix.
+
+The 9 translations are:
+
+| Corporate Framing | → | Community Translation |
+|---|---|---|
+| RBS Workstream / Project Management | → | Service Coordination |
+| Regulatory Compliance / AML Audit | → | Quality Assurance & Governance |
+| High-Net-Worth Stakeholder Management | → | Sector Engagement & System Advocacy |
+| Financial Risk Modelling / Stress Testing | → | MARAM Risk Assessment & Safety Planning |
+| Portfolio / Client Relationship Management | → | Complex Case Load Management |
+| Internal Audit / Control Frameworks | → | Program Fidelity & Funding Compliance |
+| Cross-Functional Team Leadership | → | MDT Facilitation |
+| Salesforce CRM / Oracle BPM Administration | → | Case Management Systems (CIMS, Penelope, Salesforce NFP) |
+| Change Management / Cultural Transformation | → | Trauma-Informed Organisational Practice |
+
+**When you write a bullet or narrative using corporate experience, you MUST:**
+1. Identify the closest Rosetta Stone mapping
+2. Reframe the achievement using the community translation
+3. Use community-sector keywords from the mapping
+4. Include the contextual bridge logic in longer-form writing
+
+---
+
+## OUTPUT FORMATS
+
+### Resume Bullet
+```
+[Action Verb] [Task/Responsibility] [Method/Context] [Metric/Outcome if available]
+```
+- Max 2 lines, past tense, no first-person pronoun
+- If a metric is not in the knowledge base, leave a `[METRIC NEEDED]` placeholder
+- Always include at least one community-sector keyword
+
+**Example:**
+> Coordinated complex wraparound support for clients experiencing homelessness and family violence, liaising with allied health, legal aid, and housing services across 3 multi-agency sites.
+
+---
+
+### KSC Response (Key Selection Criteria)
+Use the **CAR structure** (Context → Action → Result):
+```
+**Context:** [2–3 sentences establishing the situation and stakes]
+**Action:** [3–5 sentences — specific actions taken, methods used, collaborators involved]
+**Result:** [2–3 sentences — measurable outcome, client impact, systemic change]
+```
+- 250–400 words per criterion
+- Must explicitly name the criterion in the opening sentence
+- Pull STAR narratives from the knowledge base as the core — do not invent stories
+- Add supporting bullets from Career History to anchor claims
+
+---
+
+### Cover Letter Opening Hook
+```
+[Sentence 1: Career pivot/lived experience positioning]
+[Sentence 2: Bridge statement connecting corporate to community]
+[Sentence 3: Specific alignment with this employer/role]
+```
+- 3–5 sentences maximum for the hook paragraph
+- Pull from Narratives Engine: type = "hook"
+- Always reference the specific employer and role by name
+
+---
+
+### STAR Story (Interview Prep)
+Use explicit **S-T-A-R labels** for interview coaching:
+```
+**Situation:** ...
+**Task:** ...
+**Action:** ...
+**Result:** ...
+```
+- 150–250 words
+- Pull from Narratives Engine: type = "STAR"
+- End with: *"The competency this demonstrates is: [competency]"*
+
+---
+
+## GUARDRAILS
+
+1. **No metric fabrication.** If a bullet has `needs_review: true` or no numeric data, write `[METRIC NEEDED: e.g. caseload size, client count, timeframe]` as a placeholder
+2. **Cite source lineage.** When using a specific narrative or bullet, note the source file it came from (e.g. *"Source: KSC_Responses_FlatOut.pdf"*)
+3. **Never over-claim.** Do not claim Nishant held a formal clinical or licensed role (e.g., "social worker", "psychologist") — use "support worker", "peer worker", "project worker"
+4. **Sector-accurate language.** Use Australian community services terminology: KSC not "competency questions", sector not "industry", position description not "job description", organisation not "company"
+5. **ATS awareness.** When asked for resume content, always suggest 2–3 keywords from the job ad that should be mirrored in the bullet
+6. **Dual framing option.** When writing for a role that could attract both corporate and community-sector reviewers, always offer both a corporate-framing variant and a community-framing variant of the same bullet
+7. **Narrative Tiering.** Always prioritize stories flagged as `quality_tier: 1` in `ksc_curated.json` for major selection criteria responses. Reserve lower tiers for supplementary context.
+
+---
+
+## PROMPT TEMPLATES
+
+Use these exact phrasings to trigger optimised responses:
+
+### Tailored Resume Bullet
+```
+Write 5 resume bullets for my role at [Company] tailored for a [Role Title] position at [Employer]. 
+Focus on [domain tag: e.g. harm_reduction / service_coordination / housing].
+```
+
+### KSC Response
+```
+Write a KSC response for the criterion: "[Criterion text]"
+Targeting: [Employer name] — [Role title]
+Sector: [community services / housing / mental health / harm reduction]
+Word limit: [250 / 400 / 500]
+```
+
+### Cover Letter Intro
+```
+Draft a cover letter introduction for [Role Title] at [Employer].
+Key themes from the job ad: [paste 3–5 keywords]
+Use my [pivot narrative / lived experience hook / banking-to-community bridge]
+```
+
+### Interview Prep — STAR Story
+```
+Give me a STAR story for the competency: [competency name]
+Context: [interviewing for X role at Y employer]
+Length: [short ~150w / full ~250w]
+```
+
+### Rosetta Stone Translation
+```
+Translate my [RBS / NAB] experience in [area: e.g. risk modelling, client portfolio management] 
+into community services language for a [role title] application.
+```
+
+---
+
+## KNOWLEDGE BASE STATUS
+
+| Engine | File | Status |
+|---|---|---|
+| Career History | `career_history_enriched.json` | 105 roles, 1,017 bullets (108 pending review) |
+| Narratives | `ksc_curated.json` | 1,347 narratives, quality-tiered |
+| Skills & Taxonomy | `skills_and_taxonomy.json` | 9 Rosetta Stone mappings, 20 skills, 15 domain keyword sets |
+
+**Last compiled:** 2026-05-24
+**Pipeline version:** Sprint 3 (Centralized ATS rules, Australian terminology localization, and Rosetta Stone bullet tagging)
+
+
+---
+
+*Career Copilot is powered by the Career Brain Database — a personal knowledge system built and maintained by Nishant Dougall using a self-healing ETL pipeline.*
+</file>
+
+<file path="generate_document.py">
+#!/usr/bin/env python3
+"""
+Phase 5 document generator for Career Brain (v2).
+
+Clones a Golden Master Google Doc, selects and injects tailored content
+from the Career Brain JSON engines, validates ATS compliance, and writes
+a redacted run report.
+
+Supports three document types:
+  - resume: ATS-compliant resume with role/bullet selection
+  - cover_letter: Structured cover letter with Rosetta Stone bridge
+  - ksc: Key Selection Criteria responses using CAR methodology
+
+Usage:
+  python3 generate_document.py --type resume --target "Project Worker at Launch Housing"
+  python3 generate_document.py --type cover_letter --target "Case Manager at cohealth" --employer-type nfp
+  python3 generate_document.py --type ksc --target "Intake Worker" --criteria criteria.txt
+  python3 generate_document.py --type resume --target "Project Worker" --dry-run
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import logging
+import os
+import re
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+from content_engine import (
+    DocumentType,
+    EmployerType,
+    GenerationConfig,
+    apply_rosetta_stone,
+    build_ksc_response,
+    extract_job_ad_keywords,
+    generate_bridge_paragraph,
+    generate_closing_paragraph,
+    generate_professional_summary,
+    load_user_config,
+    parse_criteria,
+    select_all_bullets,
+    select_bullets,
+    select_narratives,
+    select_roles,
+    select_skills,
+    validate_ksc_word_counts,
+    MAX_RESUME_ROLES,
+    MAX_BULLETS_PER_ROLE,
+    MAX_RESUME_SKILLS,
+    MAX_COVER_LETTER_EVIDENCE,
+    MAX_KSC_CRITERIA,
+    MAX_KSC_SUPPORT_BULLETS,
+    SALUTATION_MAP,
+)
+
+BASE = Path(__file__).parent
+OUTPUT = BASE / "output"
+DEFAULT_CONFIG = BASE / "doc_templates.json"
+DEFAULT_USER_CONFIG = BASE / "user_config.json"
+DEFAULT_REPORT = OUTPUT / "doc_generation_report.json"
+
+HISTORY_FILE = "career_history_enriched.json"
+NARRATIVES_FILE = "ksc_curated.json"
+TAXONOMY_FILE = "skills_and_taxonomy.json"
+
+DOC_LINK_TEMPLATE = "https://docs.google.com/document/d/{doc_id}/edit"
+PLACEHOLDER_RE = re.compile(r"\{\{[A-Z0-9_]+\}\}")
+
+# ──────────────────────────────────────────────────────────────────────
+# v2 Placeholder Schemas
+# ──────────────────────────────────────────────────────────────────────
+
+PLACEHOLDER_SCHEMA_V2: dict[str, tuple[str, ...]] = {
+    "resume": (
+        # Contact (static)
+        "{{CONTACT_NAME}}", "{{CONTACT_PHONE}}", "{{CONTACT_EMAIL}}", "{{CONTACT_LOCATION}}",
+        # Summary
+        "{{PROFESSIONAL_SUMMARY}}",
+        # Skills
+        *(f"{{{{SKILL_{i}}}}}" for i in range(1, MAX_RESUME_SKILLS + 1)),
+        # Roles (up to 6 roles × 4 bullets + title/org/dates each)
+        *(
+            tag
+            for r in range(1, MAX_RESUME_ROLES + 1)
+            for tag in (
+                f"{{{{ROLE_{r}_TITLE}}}}",
+                f"{{{{ROLE_{r}_ORG}}}}",
+                f"{{{{ROLE_{r}_DATES}}}}",
+                *(f"{{{{ROLE_{r}_BULLET_{b}}}}}" for b in range(1, MAX_BULLETS_PER_ROLE + 1)),
+            )
+        ),
+        # Education & Certs
+        "{{EDUCATION_1}}", "{{EDUCATION_2}}",
+        "{{CERT_1}}", "{{CERT_2}}", "{{CERT_3}}",
+        # Legacy compatibility
+        "{{TARGET_ROLE}}", "{{SUMMARY}}",
+        *(f"{{{{BULLET_{i}}}}}" for i in range(1, 7)),
+    ),
+    "cover_letter": (
+        # Contact (static)
+        "{{CONTACT_NAME}}", "{{CONTACT_PHONE}}", "{{CONTACT_EMAIL}}", "{{CONTACT_LOCATION}}",
+        # Employer
+        "{{EMPLOYER_CONTACT_NAME}}", "{{EMPLOYER_ORG}}", "{{EMPLOYER_ADDRESS}}",
+        "{{SALUTATION}}", "{{CURRENT_DATE}}",
+        # Content paragraphs
+        "{{HOOK_PARAGRAPH}}",
+        "{{BRIDGE_PARAGRAPH}}",
+        "{{EVIDENCE_PARAGRAPH_1}}", "{{EVIDENCE_PARAGRAPH_2}}",
+        "{{CLOSING_PARAGRAPH}}",
+        # Legacy compatibility
+        "{{TARGET_ROLE}}", "{{SUMMARY}}",
+        *(f"{{{{KSC_RESPONSE_{i}}}}}" for i in range(1, 4)),
+    ),
+    "ksc": (
+        # Contact
+        "{{CONTACT_NAME}}", "{{TARGET_ROLE}}", "{{EMPLOYER_ORG}}",
+        # Criteria (up to 6)
+        *(
+            tag
+            for c in range(1, MAX_KSC_CRITERIA + 1)
+            for tag in (
+                f"{{{{KSC_CRITERION_{c}_TEXT}}}}",
+                f"{{{{KSC_{c}_CONTEXT}}}}",
+                f"{{{{KSC_{c}_ACTION}}}}",
+                f"{{{{KSC_{c}_RESULT}}}}",
+                *(f"{{{{KSC_{c}_SUPPORT_BULLET_{b}}}}}" for b in range(1, MAX_KSC_SUPPORT_BULLETS + 1)),
+            )
+        ),
+    ),
+}
+
+# ──────────────────────────────────────────────────────────────────────
+# v1 backward compatibility — keep the old schema for tests
+# ──────────────────────────────────────────────────────────────────────
+
+RESUME_BULLET_COUNT = 6
+COVER_LETTER_RESPONSE_COUNT = 3
+
+PLACEHOLDER_SCHEMA = {
+    "resume": (
+        "{{TARGET_ROLE}}",
+        "{{SUMMARY}}",
+        *(f"{{{{BULLET_{i}}}}}" for i in range(1, RESUME_BULLET_COUNT + 1)),
+    ),
+    "cover_letter": (
+        "{{TARGET_ROLE}}",
+        "{{SUMMARY}}",
+        *(f"{{{{KSC_RESPONSE_{i}}}}}" for i in range(1, COVER_LETTER_RESPONSE_COUNT + 1)),
+    ),
+}
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s: %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+log = logging.getLogger("generate_document")
+
+
+class DocumentGenerationError(RuntimeError):
+    """Raised when Phase 5 cannot safely generate a document."""
+
+
+# ──────────────────────────────────────────────────────────────────────
+# JSON Loading
+# ──────────────────────────────────────────────────────────────────────
+
+def load_json(path: Path, *, required: bool = True) -> dict[str, Any]:
+    if not path.exists():
+        if required:
+            raise DocumentGenerationError(f"Required JSON file missing: {path}")
+        return {}
+    try:
+        with path.open(encoding="utf-8") as handle:
+            data = json.load(handle)
+    except json.JSONDecodeError as exc:
+        raise DocumentGenerationError(f"Invalid JSON in {path}: {exc}") from exc
+    if not isinstance(data, dict):
+        raise DocumentGenerationError(f"Expected object at top level of {path}")
+    return data
+
+
+def load_source_data(output_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    history = load_json(output_dir / HISTORY_FILE)
+    narratives = load_json(output_dir / NARRATIVES_FILE)
+    taxonomy = load_json(output_dir / TAXONOMY_FILE, required=False)
+    return history, narratives, taxonomy
+
+
+def load_template_config(path: Path) -> dict[str, Any]:
+    config = load_json(path)
+    if not config:
+        raise DocumentGenerationError(f"Template config is empty: {path}")
+    return config
+
+
+def load_ats_rules() -> dict[str, Any]:
+    path = BASE / "ats_rules.json"
+    try:
+        return load_json(path, required=False)
+    except Exception as exc:
+        log.warning(f"Failed to load ats_rules.json: {exc}")
+        return {}
+
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Template Resolution
+# ──────────────────────────────────────────────────────────────────────
+
+def resolve_template_doc_id(
+    config: dict[str, Any],
+    template: str,
+    template_variant: str | None = None,
+    *,
+    allow_placeholder: bool = False,
+) -> str:
+    entry = config.get(template)
+    if entry is None:
+        raise DocumentGenerationError(f"No template config found for '{template}'")
+
+    if isinstance(entry, str):
+        doc_id = entry
+    elif isinstance(entry, dict):
+        if template_variant:
+            variants = entry.get("variants", {})
+            variant = variants.get(template_variant)
+            if isinstance(variant, str):
+                doc_id = variant
+            elif isinstance(variant, dict):
+                doc_id = variant.get("template_doc_id", "")
+            else:
+                raise DocumentGenerationError(
+                    f"No variant '{template_variant}' found for '{template}'"
+                )
+        else:
+            doc_id = entry.get("template_doc_id", "")
+    else:
+        raise DocumentGenerationError(f"Invalid template config for '{template}'")
+
+    if not doc_id or ("REPLACE_WITH" in doc_id and not allow_placeholder):
+        raise DocumentGenerationError(
+            f"Google Doc ID is not configured for '{template}'"
+        )
+    return doc_id
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Text Helpers
+# ──────────────────────────────────────────────────────────────────────
+
+def _clean_text(value: Any) -> str:
+    if not isinstance(value, str):
+        return ""
+    text = " ".join(value.split())
+    # Strip leading bullet characters
+    text = re.sub(r"^[•\-\*▪◦‣➤►→]\s*", "", text)
+    # Strip first-person pronouns and common weak openers
+    text = re.sub(r"^(I\s+)?(am\s+|have\s+|will\s+)?(completed|working|conducted|conduct|delivered|managed)\s+", lambda m: m.group(3).capitalize() + " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"^I\s+([a-z])", lambda m: m.group(1).upper(), text, flags=re.IGNORECASE)
+    return text.strip()
+
+
+def _format_date_range(start: str | None, end: str | None) -> str:
+    """Format start/end dates into a display range (MMM YYYY)."""
+    def parse_date(d: str | None) -> str:
+        if not d: return "Unknown"
+        d = d.strip()
+        if not d or d.lower() in ("unknown", "present", "current", "ongoing"):
+            return "Present" if d.lower() in ("present", "current", "ongoing") else "Unknown"
+        # Match Month Year
+        m = re.search(r'(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[\s-]*(\d{4})', d, re.IGNORECASE)
+        if m:
+            return f"{m.group(1).capitalize()} {m.group(2)}"
+        # Match MM/YYYY
+        m2 = re.search(r'(\d{1,2})[/\-](\d{4})', d)
+        if m2:
+            months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            try:
+                month_idx = int(m2.group(1)) - 1
+                if 0 <= month_idx < 12:
+                    return f"{months[month_idx]} {m2.group(2)}"
+            except ValueError:
+                pass
+        return d # Fallback
+        
+    s = parse_date(start)
+    e = parse_date(end)
+    return f"{s} – {e}"
+
+
+# ──────────────────────────────────────────────────────────────────────
+# v1 Compatibility Functions (kept for existing tests)
+# ──────────────────────────────────────────────────────────────────────
+
+def _candidate_bullets(history: dict[str, Any]) -> list[str]:
+    bullets: list[str] = []
+    for role in history.get("roles", []):
+        for achievement in role.get("achievements", []):
+            if achievement.get("needs_review"):
+                continue
+            text = _clean_text(
+                achievement.get("raw_text")
+                or achievement.get("text")
+                or achievement.get("achievement")
+            )
+            if text:
+                bullets.append(text)
+    return bullets
+
+
+def _candidate_narratives(narratives: dict[str, Any]) -> list[str]:
+    indexed = []
+    for index, narrative in enumerate(narratives.get("narratives", [])):
+        text = _clean_text(narrative.get("full_text"))
+        if not text:
+            continue
+        tier = narrative.get("quality_tier", 99)
+        try:
+            tier_value = int(tier)
+        except (TypeError, ValueError):
+            tier_value = 99
+        quality_score = narrative.get("quality_score", 0)
+        word_count = narrative.get("word_count", 0)
+        indexed.append((tier_value, -int(quality_score or 0), -int(word_count or 0), index, text))
+    indexed.sort()
+    return [item[-1] for item in indexed]
+
+
+def _derive_summary(
+    target_role: str,
+    history: dict[str, Any],
+    narratives: dict[str, Any],
+    taxonomy: dict[str, Any] | None = None,
+) -> str:
+    tags: dict[str, int] = {}
+    for role in history.get("roles", []):
+        for achievement in role.get("achievements", []):
+            for tag in achievement.get("domain_tags", []):
+                if isinstance(tag, str) and tag:
+                    tags[tag] = tags.get(tag, 0) + 1
+
+    top_tags = [tag.replace("_", " ") for tag, _ in sorted(tags.items(), key=lambda item: (-item[1], item[0]))[:3]]
+    if top_tags:
+        return f"Targeting {target_role} roles with evidence across {', '.join(top_tags)}."
+
+    if _candidate_bullets(history):
+        return f"Targeting {target_role} roles with selected achievements from the Career Brain evidence base."
+
+    if narratives.get("narratives"):
+        return f"Targeting {target_role} roles with curated career evidence and selection criteria examples."
+
+    if taxonomy and taxonomy:
+        return f"Targeting {target_role} roles with a structured skills taxonomy and career evidence base."
+
+    return ""
+
+
+def _count_stats(values: dict[str, str]) -> dict[str, int]:
+    filled = sum(1 for value in values.values() if value)
+    blank = sum(1 for value in values.values() if not value)
+    return {
+        "total": len(values),
+        "filled": filled,
+        "blank": blank,
+    }
+
+
+def build_placeholder_values(
+    *,
+    template: str,
+    target_role: str,
+    history: dict[str, Any],
+    narratives: dict[str, Any],
+    taxonomy: dict[str, Any] | None = None,
+    summary: str | None = None,
+    require_summary: bool = False,
+) -> tuple[dict[str, str], dict[str, int]]:
+    """v1 placeholder builder — kept for backward compatibility and existing tests."""
+    if template not in PLACEHOLDER_SCHEMA:
+        raise DocumentGenerationError(f"Unsupported template: {template}")
+    if require_summary and not _clean_text(summary):
+        raise DocumentGenerationError("Required placeholder data missing: {{SUMMARY}}")
+
+    values = {placeholder: "" for placeholder in PLACEHOLDER_SCHEMA[template]}
+    values["{{TARGET_ROLE}}"] = _clean_text(target_role)
+    values["{{SUMMARY}}"] = _clean_text(summary) or _derive_summary(
+        target_role=values["{{TARGET_ROLE}}"],
+        history=history,
+        narratives=narratives,
+        taxonomy=taxonomy,
+    )
+
+    if template == "resume":
+        for index, bullet in enumerate(_candidate_bullets(history)[:RESUME_BULLET_COUNT], start=1):
+            values[f"{{{{BULLET_{index}}}}}"] = bullet
+    elif template == "cover_letter":
+        for index, response in enumerate(_candidate_narratives(narratives)[:COVER_LETTER_RESPONSE_COUNT], start=1):
+            values[f"{{{{KSC_RESPONSE_{index}}}}}"] = response
+
+    missing_required = [
+        placeholder
+        for placeholder in ("{{TARGET_ROLE}}", "{{SUMMARY}}")
+        if not values.get(placeholder)
+    ]
+    if template == "resume" and not values.get("{{BULLET_1}}"):
+        missing_required.append("{{BULLET_1}}")
+    if template == "cover_letter" and not values.get("{{KSC_RESPONSE_1}}"):
+        missing_required.append("{{KSC_RESPONSE_1}}")
+    if missing_required:
+        missing = ", ".join(sorted(set(missing_required)))
+        raise DocumentGenerationError(f"Required placeholder data missing: {missing}")
+
+    return values, _count_stats(values)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# v2 Placeholder Builder
+# ──────────────────────────────────────────────────────────────────────
+
+def build_placeholder_values_v2(
+    *,
+    config: GenerationConfig,
+    history: dict[str, Any],
+    narratives: dict[str, Any],
+    taxonomy: dict[str, Any],
+    user_config: dict[str, Any],
+) -> tuple[dict[str, str], dict[str, int], list[str]]:
+    """Build all placeholder values for the given document type.
+
+    Returns ``(values, stats, warnings)``.
+    """
+    doc_type = config.doc_type.value
+    if doc_type not in PLACEHOLDER_SCHEMA_V2:
+        raise DocumentGenerationError(f"Unsupported document type: {doc_type}")
+
+    values = {ph: "" for ph in PLACEHOLDER_SCHEMA_V2[doc_type]}
+    warnings: list[str] = []
+
+    # ── Static contact info ──
+    contact = user_config.get("contact", {})
+    values["{{CONTACT_NAME}}"] = _clean_text(contact.get("name", ""))
+    values["{{CONTACT_PHONE}}"] = _clean_text(contact.get("phone", ""))
+    values["{{CONTACT_EMAIL}}"] = _clean_text(contact.get("email", ""))
+    values["{{CONTACT_LOCATION}}"] = _clean_text(contact.get("location", ""))
+
+    if not values.get("{{CONTACT_NAME}}"):
+        warnings.append("contact_name_missing")
+
+    # ── Target role ──
+    target = _clean_text(config.target_role)
+    if "{{TARGET_ROLE}}" in values:
+        values["{{TARGET_ROLE}}"] = target
+
+    # ── Extract keyword scores from job ad ──
+    keyword_bank = taxonomy.get("keyword_bank", {})
+    keyword_scores = extract_job_ad_keywords(
+        config.job_ad_text or "", keyword_bank,
+    )
+
+    rosetta_stone = taxonomy.get("rosetta_stone", {})
+
+    # ── Type-specific content ──
+    if doc_type == "resume":
+        _build_resume_values(
+            values, warnings, config, history, narratives, taxonomy,
+            keyword_scores, rosetta_stone, user_config,
+        )
+    elif doc_type == "cover_letter":
+        _build_cover_letter_values(
+            values, warnings, config, history, narratives, taxonomy,
+            keyword_scores, rosetta_stone,
+        )
+    elif doc_type == "ksc":
+        _build_ksc_values(
+            values, warnings, config, history, narratives,
+            keyword_scores, rosetta_stone,
+        )
+
+    # ── Post-processing: Australian Terminology (BS-6.1) ──
+    ats_rules = load_ats_rules()
+    au_mappings = ats_rules.get("terminology", {}).get("australian_mappings", {})
+    if au_mappings:
+        for ph, text in values.items():
+            if not text:
+                continue
+            # Perform whole-word, case-insensitive substitution
+            for eng_term, au_term in au_mappings.items():
+                def preserve_case_replace(match):
+                    original = match.group(0)
+                    if original.isupper():
+                        return au_term.upper()
+                    if original[0].isupper():
+                        return au_term[0].upper() + au_term[1:]
+                    return au_term
+                pattern = re.compile(r'\b' + re.escape(eng_term) + r'\b', re.IGNORECASE)
+                text = pattern.sub(preserve_case_replace, text)
+            values[ph] = text
+
+    return values, _count_stats(values), warnings
+
+
+
+def _build_resume_values(
+    values: dict[str, str],
+    warnings: list[str],
+    config: GenerationConfig,
+    history: dict[str, Any],
+    narratives: dict[str, Any],
+    taxonomy: dict[str, Any],
+    keyword_scores: dict[str, float],
+    rosetta_stone: dict[str, dict[str, Any]],
+    user_config: dict[str, Any],
+) -> None:
+    """Populate resume placeholder values."""
+    # Professional summary
+    selected_roles = select_roles(history, config.target_role, keyword_scores)
+    summary = generate_professional_summary(
+        config, selected_roles, keyword_scores, rosetta_stone,
+    )
+    values["{{PROFESSIONAL_SUMMARY}}"] = summary
+    values["{{SUMMARY}}"] = summary  # Legacy compat
+
+    # Skills
+    skills = select_skills(taxonomy, keyword_scores)
+    for idx, skill in enumerate(skills[:MAX_RESUME_SKILLS], start=1):
+        values[f"{{{{SKILL_{idx}}}}}"] = skill
+
+    # Roles and bullets
+    for role_idx, role in enumerate(selected_roles[:MAX_RESUME_ROLES], start=1):
+        values[f"{{{{ROLE_{role_idx}_TITLE}}}}"] = _clean_text(role.get("role", ""))
+        values[f"{{{{ROLE_{role_idx}_ORG}}}}"] = _clean_text(role.get("company", ""))
+        values[f"{{{{ROLE_{role_idx}_DATES}}}}"] = _format_date_range(
+            role.get("start_date"), role.get("end_date"),
+        )
+        bullets = select_bullets(role, keyword_scores)
+        for b_idx, bullet in enumerate(bullets[:MAX_BULLETS_PER_ROLE], start=1):
+            if config.rosetta:
+                bullet = apply_rosetta_stone(bullet, rosetta_stone)
+            values[f"{{{{ROLE_{role_idx}_BULLET_{b_idx}}}}}"] = _clean_text(bullet)
+
+    # Legacy flat bullets (hardcoded 6 to decouple from v1 constants)
+    flat_bullets = select_all_bullets(history, keyword_scores, max_total=6)
+    for idx, bullet in enumerate(flat_bullets, start=1):
+        if config.rosetta:
+            bullet = apply_rosetta_stone(bullet, rosetta_stone)
+        values[f"{{{{BULLET_{idx}}}}}"] = _clean_text(bullet)
+
+
+    # Education & Certs
+    education = user_config.get("education", [])
+    for idx, edu in enumerate(education[:2], start=1):
+        values[f"{{{{EDUCATION_{idx}}}}}"] = _clean_text(edu)
+
+    certs = user_config.get("certifications", [])
+    for idx, cert in enumerate(certs[:3], start=1):
+        values[f"{{{{CERT_{idx}}}}}"] = _clean_text(cert)
+
+    if not selected_roles:
+        warnings.append("no_roles_selected")
+    if not flat_bullets:
+        warnings.append("no_bullets_available")
+
+
+def _build_cover_letter_values(
+    values: dict[str, str],
+    warnings: list[str],
+    config: GenerationConfig,
+    history: dict[str, Any],
+    narratives: dict[str, Any],
+    taxonomy: dict[str, Any],
+    keyword_scores: dict[str, float],
+    rosetta_stone: dict[str, dict[str, Any]],
+) -> None:
+    """Populate cover letter placeholder values."""
+    all_narratives = narratives.get("narratives", [])
+
+    # Employer info
+    target = _clean_text(config.target_role)
+    # Try to extract org name from "Role at Org" pattern
+    org_name = ""
+    if " at " in target:
+        org_name = target.split(" at ", 1)[1].strip()
+    values["{{EMPLOYER_ORG}}"] = org_name
+    values["{{EMPLOYER_CONTACT_NAME}}"] = ""
+    values["{{EMPLOYER_ADDRESS}}"] = ""
+    values["{{SALUTATION}}"] = SALUTATION_MAP.get(
+        config.employer_type, "Hiring Manager"
+    )
+    values["{{CURRENT_DATE}}"] = datetime.now(timezone.utc).strftime("%-d %B %Y")
+    values["{{TARGET_ROLE}}"] = target
+
+    # Hook paragraph (from narratives type "hook")
+    hooks = select_narratives(
+        all_narratives, narrative_types=["hook"], max_count=1,
+    )
+    if hooks:
+        values["{{HOOK_PARAGRAPH}}"] = _clean_text(hooks[0].get("full_text", ""))
+    else:
+        # Fallback: use a high-tier pivot narrative
+        pivots = select_narratives(
+            all_narratives, narrative_types=["pivot", "hook"], max_count=1,
+        )
+        if pivots:
+            values["{{HOOK_PARAGRAPH}}"] = _clean_text(pivots[0].get("full_text", ""))
+            warnings.append("no_hook_narrative_used_pivot_fallback")
+        else:
+            warnings.append("no_hook_or_pivot_narrative_available")
+
+    # Bridge paragraph (Rosetta Stone)
+    bridge = generate_bridge_paragraph(rosetta_stone, keyword_scores)
+    values["{{BRIDGE_PARAGRAPH}}"] = bridge
+
+    # Evidence paragraphs (STAR/CAR narratives)
+    evidence = select_narratives(
+        all_narratives,
+        narrative_types=["STAR", "CAR"],
+        max_count=MAX_COVER_LETTER_EVIDENCE,
+    )
+    for idx, narrative in enumerate(evidence, start=1):
+        values[f"{{{{EVIDENCE_PARAGRAPH_{idx}}}}}"] = _clean_text(
+            narrative.get("full_text", ""),
+        )
+
+    # Closing paragraph
+    closing = generate_closing_paragraph(config, keyword_scores)
+    values["{{CLOSING_PARAGRAPH}}"] = closing
+
+    # Legacy summary
+    values["{{SUMMARY}}"] = values.get("{{HOOK_PARAGRAPH}}", "")
+
+    # Legacy KSC_RESPONSE placeholders
+    tiered = _candidate_narratives(narratives)
+    for idx, response in enumerate(tiered[:COVER_LETTER_RESPONSE_COUNT], start=1):
+        values[f"{{{{KSC_RESPONSE_{idx}}}}}"] = response
+
+    if not values.get("{{HOOK_PARAGRAPH}}"):
+        warnings.append("hook_paragraph_empty")
+
+
+def _build_ksc_values(
+    values: dict[str, str],
+    warnings: list[str],
+    config: GenerationConfig,
+    history: dict[str, Any],
+    narratives: dict[str, Any],
+    keyword_scores: dict[str, float],
+    rosetta_stone: dict[str, dict[str, Any]],
+) -> None:
+    """Populate KSC placeholder values."""
+    target = _clean_text(config.target_role)
+    values["{{TARGET_ROLE}}"] = target
+
+    # Extract org name
+    org_name = ""
+    if " at " in target:
+        org_name = target.split(" at ", 1)[1].strip()
+    values["{{EMPLOYER_ORG}}"] = org_name
+
+    # Parse criteria
+    criteria_list = []
+    if config.criteria_text:
+        criteria_list = parse_criteria("\n".join(config.criteria_text))
+
+    if not criteria_list:
+        warnings.append("no_criteria_provided_or_parsed")
+        return
+
+    all_narratives = narratives.get("narratives", [])
+
+    for c_idx, criterion in enumerate(criteria_list[:MAX_KSC_CRITERIA], start=1):
+        values[f"{{{{KSC_CRITERION_{c_idx}_TEXT}}}}"] = criterion.get("criterion_text", "")
+
+        # Build CAR response
+        response = build_ksc_response(
+            criterion, all_narratives, history, rosetta_stone,
+        )
+
+        values[f"{{{{KSC_{c_idx}_CONTEXT}}}}"] = response.get("context", "")
+        values[f"{{{{KSC_{c_idx}_ACTION}}}}"] = response.get("action", "")
+        values[f"{{{{KSC_{c_idx}_RESULT}}}}"] = response.get("result", "")
+
+        for b_idx in range(1, MAX_KSC_SUPPORT_BULLETS + 1):
+            bullet = response.get(f"support_bullet_{b_idx}", "")
+            values[f"{{{{KSC_{c_idx}_SUPPORT_BULLET_{b_idx}}}}}"] = bullet
+
+        # Validate word counts
+        wc_warnings = validate_ksc_word_counts(response)
+        for w in wc_warnings:
+            warnings.append(f"criterion_{c_idx}_{w}")
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Google Docs API Operations
+# ──────────────────────────────────────────────────────────────────────
+
+def make_replace_requests(values: dict[str, str]) -> list[dict[str, Any]]:
+    requests = []
+    for placeholder, replacement in sorted(values.items()):
+        requests.append(
+            {
+                "replaceAllText": {
+                    "containsText": {
+                        "text": placeholder,
+                        "matchCase": True,
+                    },
+                    "replaceText": replacement,
+                }
+            }
+        )
+    return requests
+
+
+def find_unresolved_placeholders(text: str) -> list[str]:
+    return sorted(set(PLACEHOLDER_RE.findall(text or "")))
+
+
+def _extract_document_text(document: dict[str, Any]) -> str:
+    parts: list[str] = []
+
+    def walk(node: Any) -> None:
+        if isinstance(node, dict):
+            text_run = node.get("textRun")
+            if isinstance(text_run, dict):
+                content = text_run.get("content")
+                if isinstance(content, str):
+                    parts.append(content)
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for item in node:
+                walk(item)
+
+    walk(document.get("body", {}).get("content", []))
+    for header in document.get("headers", {}).values():
+        walk(header.get("content", []))
+    for footer in document.get("footers", {}).values():
+        walk(footer.get("content", []))
+    for footnote in document.get("footnotes", {}).values():
+        walk(footnote.get("content", []))
+
+    return "".join(parts)
+
+
+def validate_document_structure(document: dict[str, Any]) -> list[str]:
+    """Check word counts, section presence, and ATS compliance post-generation."""
+    warnings: list[str] = []
+    text = _extract_document_text(document)
+    total_words = len(text.split())
+
+    if total_words < 100:
+        warnings.append("document_too_short")
+    if total_words > 3000:
+        warnings.append("document_too_long")
+
+    # Check for ATS-breaking patterns based on centralized rules
+    ats_rules = load_ats_rules()
+    struct_rules = ats_rules.get("structure", {})
+    allow_inline = struct_rules.get("allow_inline_objects", False)
+
+    if not allow_inline and document.get("inlineObjects"):
+        warnings.append("inline_objects_detected_ats_risk")
+
+    # Check for forbidden characters in generated text
+    vocab_rules = ats_rules.get("vocabulary", {})
+    forbidden_chars = vocab_rules.get("forbidden_characters", [])
+    for char in forbidden_chars:
+        if char in text:
+            warnings.append(f"forbidden_character_detected_ats_risk: '{char}'")
+
+    return warnings
+
+
+
+def build_google_services() -> tuple[Any, Any]:
+    try:
+        from google.oauth2 import service_account
+        from google.oauth2.credentials import Credentials
+        from google_auth_oauthlib.flow import InstalledAppFlow
+        from google.auth.transport.requests import Request
+        from googleapiclient.discovery import build
+    except ImportError as exc:
+        raise DocumentGenerationError(
+            "Google API dependencies are missing. Run: "
+            "pip install google-api-python-client google-auth-oauthlib google-auth-httplib2"
+        ) from exc
+
+    scopes = [
+        "https://www.googleapis.com/auth/documents",
+        "https://www.googleapis.com/auth/drive",
+    ]
+    service_account_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+    if service_account_path:
+        credentials = service_account.Credentials.from_service_account_file(
+            service_account_path,
+            scopes=scopes,
+        )
+    else:
+        client_secrets_path = Path(os.getenv("GOOGLE_OAUTH_CLIENT_SECRETS", "credentials.json"))
+        token_path = Path(os.getenv("GOOGLE_OAUTH_TOKEN", "token.json"))
+        credentials = None
+        if token_path.exists():
+            credentials = Credentials.from_authorized_user_file(str(token_path), scopes)
+        if credentials and credentials.expired and credentials.refresh_token:
+            credentials.refresh(Request())
+        if not credentials or not credentials.valid:
+            if not client_secrets_path.exists():
+                raise DocumentGenerationError(
+                    "OAuth client secrets not found. Set GOOGLE_OAUTH_CLIENT_SECRETS "
+                    "or GOOGLE_APPLICATION_CREDENTIALS."
+                )
+            flow = InstalledAppFlow.from_client_secrets_file(str(client_secrets_path), scopes)
+            credentials = flow.run_local_server(port=0)
+            token_path.write_text(credentials.to_json(), encoding="utf-8")
+
+    docs_service = build("docs", "v1", credentials=credentials)
+    drive_service = build("drive", "v3", credentials=credentials)
+    return docs_service, drive_service
+
+
+def resolve_target_folder(
+    drive_service: Any,
+    doc_type: str,
+    folder_config: dict[str, str],
+) -> str | None:
+    """Resolve the target Drive folder ID for the given document type."""
+    folder_map = {
+        "resume": "resumes",
+        "cover_letter": "cover_letters",
+        "ksc": "ksc_responses",
+    }
+    folder_key = folder_map.get(doc_type, "")
+    folder_id = folder_config.get(folder_key, "")
+
+    if folder_id and "REPLACE_WITH" not in folder_id:
+        return folder_id
+    return None
+
+
+def clone_and_replace(
+    *,
+    docs_service: Any,
+    drive_service: Any,
+    template_doc_id: str,
+    values: dict[str, str],
+    target_role: str,
+    template: str,
+    target_folder_id: str | None = None,
+) -> tuple[str, str, list[str]]:
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    copy_body: dict[str, Any] = {
+        "name": f"Career Brain {template} - {target_role} - {timestamp}",
+    }
+
+    try:
+        copied = (
+            drive_service.files()
+            .copy(
+                fileId=template_doc_id,
+                body=copy_body,
+                fields="id, webViewLink",
+            )
+            .execute()
+        )
+        doc_id = copied["id"]
+        
+        if target_folder_id:
+            file_info = drive_service.files().get(fileId=doc_id, fields="parents").execute()
+            previous_parents = ",".join(file_info.get("parents", []))
+            if target_folder_id not in file_info.get("parents", []):
+                drive_service.files().update(
+                    fileId=doc_id,
+                    addParents=target_folder_id,
+                    removeParents=previous_parents,
+                ).execute()
+
+        docs_service.documents().batchUpdate(
+            documentId=doc_id,
+            body={"requests": make_replace_requests(values)},
+        ).execute()
+
+        document = docs_service.documents().get(documentId=doc_id).execute()
+    except Exception as exc:
+        if type(exc).__name__ == "HttpError":
+            raise DocumentGenerationError(f"Google API Error: {exc}") from exc
+        raise
+
+    unresolved = find_unresolved_placeholders(_extract_document_text(document))
+    doc_link = copied.get("webViewLink") or DOC_LINK_TEMPLATE.format(doc_id=doc_id)
+    return doc_id, doc_link, unresolved
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Reporting
+# ──────────────────────────────────────────────────────────────────────
+
+def write_report(path: Path, report: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def build_report(
+    *,
+    template: str,
+    template_variant: str | None,
+    template_doc_id: str,
+    generated_doc_id: str | None,
+    generated_doc_link: str | None,
+    placeholder_stats: dict[str, int],
+    unresolved_tokens: list[str],
+    warnings: list[str],
+) -> dict[str, Any]:
+    return {
+        "run_timestamp": datetime.now(timezone.utc).isoformat(),
+        "template": template,
+        "template_variant": template_variant,
+        "template_doc_id": template_doc_id,
+        "generated_doc_id": generated_doc_id,
+        "generated_doc_link": generated_doc_link,
+        "placeholder_stats": placeholder_stats,
+        "unresolved_tokens": unresolved_tokens,
+        "warnings": warnings,
+    }
+
+
+# ──────────────────────────────────────────────────────────────────────
+# CLI Argument Parsing
+# ──────────────────────────────────────────────────────────────────────
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Career Brain Phase 5 — Generate ATS-compliant Google Docs "
+        "from the Career Brain knowledge base.",
+    )
+
+    # v2 arguments
+    parser.add_argument(
+        "--type",
+        dest="doc_type",
+        choices=["resume", "cover_letter", "ksc"],
+        default=None,
+        help="Document type to generate.",
+    )
+    parser.add_argument(
+        "--target", required=True,
+        help='Target role (e.g., "Project Worker at Launch Housing").',
+    )
+    parser.add_argument(
+        "--variant", default=None,
+        help="Template variant (e.g., chronological, hybrid, government).",
+    )
+    parser.add_argument(
+        "--job-ad", type=Path, default=None,
+        help="Path to job ad text file for keyword extraction.",
+    )
+    parser.add_argument(
+        "--employer-type",
+        choices=["government", "nfp", "private"],
+        default="nfp",
+        help="Employer type for cover letter tone.",
+    )
+    parser.add_argument(
+        "--criteria", type=Path, default=None,
+        help="Path to KSC criteria text file (required for --type ksc).",
+    )
+    parser.add_argument(
+        "--user-config", type=Path, default=DEFAULT_USER_CONFIG,
+        help="Path to user config JSON (contact info, education, certs).",
+    )
+
+    # v1 backward-compat argument
+    parser.add_argument(
+        "--template",
+        choices=["resume", "cover_letter"],
+        default=None,
+        help="(v1 compat) Logical template type. Use --type instead.",
+    )
+    parser.add_argument(
+        "--template-variant", default=None,
+        help="(v1 compat) Template variant. Use --variant instead.",
+    )
+    parser.add_argument(
+        "--config", type=Path, default=DEFAULT_CONFIG,
+        help="Path to doc template config JSON.",
+    )
+    parser.add_argument(
+        "--output-dir", type=Path, default=OUTPUT,
+        help="Directory containing Career Brain JSON outputs.",
+    )
+    parser.add_argument(
+        "--out-report", type=Path, default=DEFAULT_REPORT,
+        help="Path for redacted document generation report.",
+    )
+    parser.add_argument(
+        "--summary", default=None,
+        help="Optional summary override.",
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true",
+        help="Build placeholder values and report without calling Google APIs.",
+    )
+    parser.add_argument(
+        "--rosetta", action="store_true", default=True,
+        help="Apply Rosetta Stone community translation to corporate-dense resume bullets.",
+    )
+    parser.add_argument(
+        "--no-rosetta", action="store_false", dest="rosetta",
+        help="Disable Rosetta Stone community translation for resume bullets.",
+    )
+
+
+    args = parser.parse_args(argv)
+
+    # Resolve doc_type from v1 --template if --type not given
+    if args.doc_type is None:
+        if args.template:
+            args.doc_type = args.template
+        else:
+            parser.error("--type is required (or use legacy --template)")
+
+    # Resolve variant from v1 --template-variant if --variant not given
+    if args.variant is None and args.template_variant:
+        args.variant = args.template_variant
+
+    return args
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Main Entrypoint
+# ──────────────────────────────────────────────────────────────────────
+
+def main(argv: list[str] | None = None) -> int:
+    assert set(EmployerType) == set(SALUTATION_MAP.keys()), "EmployerType choices must match SALUTATION_MAP"
+    args = parse_args(argv)
+    all_warnings: list[str] = []
+
+    try:
+        # Load source data
+        history, narratives, taxonomy = load_source_data(args.output_dir)
+        config_data = load_template_config(args.config)
+
+        # Resolve template doc ID
+        template_key = args.doc_type
+        template_doc_id = resolve_template_doc_id(
+            config_data,
+            template_key,
+            args.variant,
+            allow_placeholder=args.dry_run,
+        )
+
+        # Load job ad text if provided
+        job_ad_text = None
+        if args.job_ad and args.job_ad.exists():
+            job_ad_text = args.job_ad.read_text(encoding="utf-8")
+
+        # Load criteria text if provided
+        criteria_text = None
+        if args.criteria and args.criteria.exists():
+            criteria_text = args.criteria.read_text(encoding="utf-8").split("\n")
+
+        # Build generation config
+        gen_config = GenerationConfig(
+            doc_type=DocumentType(args.doc_type),
+            target_role=args.target,
+            variant=args.variant,
+            employer_type=EmployerType(args.employer_type),
+            job_ad_text=job_ad_text,
+            criteria_text=criteria_text,
+            dry_run=args.dry_run,
+            summary_override=args.summary,
+            rosetta=args.rosetta,
+        )
+
+
+        # Load user config
+        user_config = load_user_config(args.user_config)
+
+        # Build placeholder values using v2 engine
+        values, placeholder_stats, content_warnings = build_placeholder_values_v2(
+            config=gen_config,
+            history=history,
+            narratives=narratives,
+            taxonomy=taxonomy,
+            user_config=user_config,
+        )
+        all_warnings.extend(content_warnings)
+
+        if args.doc_type == "resume" and ("no_roles_selected" in all_warnings or "no_bullets_available" in all_warnings):
+            raise DocumentGenerationError("No usable roles or bullets found for this target role.")
+
+        # Execute or dry-run
+        generated_doc_id = None
+        generated_doc_link = None
+        unresolved_tokens: list[str] = []
+
+        if args.dry_run:
+            all_warnings.append("dry_run_no_google_document_created")
+            log.info("DRY RUN — placeholder values built, no Google API calls made.")
+        else:
+            docs_service, drive_service = build_google_services()
+
+            # Resolve target folder
+            folder_config = config_data.get("drive_folders", {})
+            target_folder_id = resolve_target_folder(
+                drive_service, args.doc_type, folder_config,
+            )
+
+            generated_doc_id, generated_doc_link, unresolved_tokens = clone_and_replace(
+                docs_service=docs_service,
+                drive_service=drive_service,
+                template_doc_id=template_doc_id,
+                values=values,
+                target_role=args.target,
+                template=args.doc_type,
+                target_folder_id=target_folder_id,
+            )
+            if unresolved_tokens:
+                all_warnings.append("unresolved_placeholders_after_replacement")
+
+        # Write report
+        report = build_report(
+            template=args.doc_type,
+            template_variant=args.variant,
+            template_doc_id=template_doc_id,
+            generated_doc_id=generated_doc_id,
+            generated_doc_link=generated_doc_link,
+            placeholder_stats=placeholder_stats,
+            unresolved_tokens=unresolved_tokens,
+            warnings=all_warnings,
+        )
+        write_report(args.out_report, report)
+
+        # Summary log
+        log.info(
+            "Document generation complete: type=%s filled=%s blank=%s warnings=%s unresolved=%s doc_id=%s",
+            args.doc_type,
+            placeholder_stats["filled"],
+            placeholder_stats["blank"],
+            len(all_warnings),
+            len(unresolved_tokens),
+            generated_doc_id or "dry-run",
+        )
+        if generated_doc_link:
+            log.info("Generated document link: %s", generated_doc_link)
+
+        return 1 if all_warnings else 0
+
+    except DocumentGenerationError as exc:
+        log.error(str(exc))
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+</file>
+
+</files>

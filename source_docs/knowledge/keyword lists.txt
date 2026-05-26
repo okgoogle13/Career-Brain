@@ -1,0 +1,132 @@
+{
+  "title": "Resume Keywords, Skills, and ATS Guide",
+  "description": "Provides information on how Applicant Tracking Systems (ATS) use keywords, lists common hard and soft skills, and gives examples of industry-specific keywords.",
+  "atsExplanation": {
+    "howItWorks": "Applicant Tracking Systems (ATS) are software used by many companies (especially large ones) to manage job applications. When you submit a resume online, it often goes into an ATS database. The ATS scans and parses the resume, extracting information into a structured format. Hiring managers then search this database using specific keywords relevant to the job description (like skills, job titles, qualifications).",
+    "keywordMatching": "The ATS checks if the keywords in your resume match those entered by the recruiter or found in the job description. Resumes with a higher keyword match rate are more likely to be passed on to a human reviewer. Keywords often come directly from the 'requirements' and 'responsibilities' sections of the job posting.",
+    "importanceOfKeywords": "Using the right keywords is crucial because if your resume lacks them, it might be filtered out by the ATS and never seen by a person, even if you're qualified. You should incorporate relevant keywords naturally into your summary, skills section, and work experience descriptions.",
+    "keywordTips": [
+      "Mirror the language in the job description. If it uses 'manager', use 'manager' instead of 'managed team'.",
+      "Include both the acronym and full form (e.g., 'Search Engine Optimization (SEO)').",
+      "Focus on hard skills listed in the job description.",
+      "Don't 'stuff' keywords unnaturally; the resume must still be readable for humans.",
+      "Ensure your resume formatting is ATS-friendly (simple layout, standard headings, no tables/columns/images)."
+    ],
+    "relevantDocumentContext": "Tailoring resumes effectively is crucial for navigating Applicant Tracking Systems (ATS) and capturing recruiter attention. Identifying keywords from job descriptions is a vital first step."
+  },
+  "generalSkills": {
+    "hardSkills": {
+      "description": "Teachable and measurable abilities often specific to a job. Acquired through education, training, or practice.",
+      "examples": [
+        "Programming Languages (Python, Java, C++, SQL, HTML, CSS, JavaScript)",
+        "Software Proficiency (Microsoft Office Suite, Google Workspace, Adobe Creative Suite, QuickBooks, Salesforce, SAP)",
+        "Data Analysis & Visualization (Excel, SQL, Python/R, Tableau, Power BI, Google Analytics, Statistical Analysis)",
+        "Project Management (Agile, Scrum, Kanban, Budgeting, Scheduling, Risk Management, Asana, Trello)",
+        "Cloud Computing (AWS, Azure, Google Cloud)",
+        "Cybersecurity (Network Security, Encryption, Vulnerability Assessment)",
+        "Foreign Languages (Spanish, German, Chinese, French, etc.)",
+        "Design (Graphic Design, UI/UX Design, CAD, Video Editing)",
+        "Marketing (SEO, SEM, PPC, Content Marketing, Social Media Marketing, Email Marketing)",
+        "Technical Skills (Troubleshooting, Network Configuration, Database Management, Web Development)"
+      ]
+    },
+    "softSkills": {
+      "description": "Interpersonal abilities and personal attributes related to how you work and interact with others. Often transferable across roles.",
+      "examples": [
+        "Communication (Verbal, Written, Presentation, Active Listening)",
+        "Teamwork & Collaboration",
+        "Problem-Solving",
+        "Critical Thinking",
+        "Adaptability & Flexibility",
+        "Time Management & Organization",
+        "Leadership",
+        "Creativity & Innovation",
+        "Attention to Detail",
+        "Emotional Intelligence & Empathy",
+        "Conflict Resolution & Negotiation",
+        "Work Ethic & Reliability"
+      ]
+    }
+  },
+  "industryKeywords": {
+    "description": "Keywords specific to certain industries. Always check the target job description for the most relevant terms.",
+    "marketing": {
+      "category": "Marketing",
+      "examples": [
+        "SEO (Search Engine Optimization)",
+        "SEM (Search Engine Marketing)",
+        "PPC (Pay-Per-Click)",
+        "Content Marketing",
+        "Social Media Marketing/Management",
+        "Email Marketing",
+        "Marketing Strategy",
+        "Campaign Management",
+        "Brand Management",
+        "Market Research",
+        "Google Analytics",
+        "CRM (Customer Relationship Management)",
+        "Lead Generation",
+        "Conversion Rate Optimization (CRO)",
+        "Digital Marketing",
+        "Copywriting",
+        "Public Relations (PR)",
+        "Affiliate Marketing",
+        "Marketing Automation",
+        "UX/UI Design (related)",
+        "Segmentation"
+      ],
+      "sourceCitations": ""
+    },
+    "it": {
+      "category": "Information Technology (IT)",
+      "examples": [
+        "Software Development",
+        "Web Development (Front-end, Back-end, Full-stack)",
+        "Programming Languages (Python, Java, C++, C#, JavaScript, SQL, PHP, Swift)",
+        "Database Management (SQL, MySQL, Oracle)",
+        "Network Administration/Security",
+        "Cybersecurity",
+        "Cloud Computing (AWS, Azure, Google Cloud)",
+        "System Administration (Linux, Windows Server)",
+        "DevOps",
+        "IT Support/Help Desk",
+        "Troubleshooting",
+        "Hardware Configuration",
+        "Operating Systems",
+        "Agile Methodologies/Scrum",
+        "Data Science/Analysis",
+        "Machine Learning/AI",
+        "API Development",
+        "Virtualization",
+        "ITIL"
+      ],
+      "sourceCitations": ""
+    },
+    "healthcare": {
+      "category": "Healthcare",
+      "examples": [
+        "Patient Care",
+        "EMR/EHR (Electronic Medical/Health Records - e.g., Epic, Cerner)",
+        "Medical Terminology",
+        "HIPAA Compliance",
+        "Medical Billing and Coding (ICD-10, CPT)",
+        "Healthcare Administration/Management",
+        "Clinical Research",
+        "Patient Counseling/Advocacy",
+        "Treatment Planning",
+        "Medication Administration",
+        "Wound Care",
+        "Medical Imaging",
+        "Public Health",
+        "Case Management",
+        "Health Informatics",
+        "Quality Assurance",
+        "Scheduling Software",
+        "Insurance Verification",
+        "Registered Nurse (RN)",
+        "CPR/BLS/ACLS"
+      ],
+      "sourceCitations": ""
+    }
+  }
+}

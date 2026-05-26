@@ -1,0 +1,31 @@
+{
+  "ksc": {
+    "word_limits": {
+      "context": [40, 100],
+      "action": [60, 200],
+      "result": [30, 100],
+      "total": [200, 500]
+    }
+  },
+  "structure": {
+    "columns_max": 1,
+    "allow_tables": false,
+    "allow_text_boxes": false,
+    "allow_inline_objects": false,
+    "allowed_headings": ["Summary", "Skills", "Experience", "Education", "Certifications", "Key Achievements"]
+  },
+  "vocabulary": {
+    "forbidden_characters": ["•", "✔", "★", "❖", "●", "✅", "❌", "|"]
+  },
+  "terminology": {
+    "australian_mappings": {
+      "company": "organisation",
+      "companies": "organisations",
+      "industry": "sector",
+      "industries": "sectors",
+      "job description": "position description",
+      "job ad": "position advertisement",
+      "competency questions": "key selection criteria"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+=== CAREER BRAIN VAULT CLEANUP LOG ===
+Executed: 2026-05-21T10:13:12.594840
+Actions Taken: 12
+========================================
+
+DELETE_DUPLICATE | Resume Action Verbs   Power Words  Australian Co.txt | Byte-level clone of Resume Action Verbs   Power Words  Australian Co.md
+DELETE_FORMAT_REDUNDANT | Resume Action Verb Word Bank.txt | Superceded by rich file Resume Action Verb Word Bank.docx
+DELETE_FORMAT_REDUNDANT | Resume Best Practices   Style Guide  Australian.txt | Superceded by rich file Resume Best Practices   Style Guide  Australian.md
+DELETE_FORMAT_REDUNDANT | Resume Tailoring with AI Prompts.txt | Superceded by rich file Resume Tailoring with AI Prompts.md
+ARCHIVE_THIRD_PARTY | 10 selection criteria examples for your resumé - SEEK.docx | Moved to archive_third_party/
+ARCHIVE_THIRD_PARTY | 10 selection criteria examples for your resumé - SEEK.pdf | Moved to archive_third_party/
+ARCHIVE_THIRD_PARTY | Australia_s Best Selection Criteria Examples (2024) - The Resume Writers.pdf.docx | Moved to archive_third_party/
+ARCHIVE_THIRD_PARTY | Cheat Sheet.pdf | Moved to archive_third_party/
+ARCHIVE_THIRD_PARTY | How To Tailor Your Resume to a Job Description (+Examples).pdf | Moved to archive_third_party/
+ARCHIVE_THIRD_PARTY | examples of KSC responses LONG.pdf | Moved to archive_third_party/
+ARCHIVE_THIRD_PARTY | prompting guide for jobseekers.md | Moved to archive_third_party/
+ARCHIVE_THIRD_PARTY | resume example .pdf | Moved to archive_third_party/
