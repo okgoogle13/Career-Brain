@@ -3,7 +3,7 @@
 ## META
 TEMPLATE_TYPE: resume
 VARIANT: hybrid
-DOC_ID: REPLACE_WITH_RESUME_HYBRID_GOLDEN_MASTER_DOC_ID
+DOC_ID: 16FlPfFjHCYibECNtGORE-KEZtr1ogP_dRayo29L0y_I
 TARGET_SECTOR: non_profit
 
 ## TOKENS_USED
@@ -49,11 +49,11 @@ CERT_3 → generate_document.py:562
 3. [Normal Center] {{CONTACT_EMAIL}}
 4. [Normal Center] {{CONTACT_LOCATION}}
 5. [Normal Center italic] {{TARGET_ROLE}}
-6. [Heading 1] SUMMARY
+6. [Heading 1] Summary
 7. [Normal] {{PROFESSIONAL_SUMMARY}}
-8. [Heading 1] CORE COMPETENCIES
+8. [Heading 1] Skills
 9. [Normal] {{SKILL_1}} - {{SKILL_2}} - {{SKILL_3}} - {{SKILL_4}} - {{SKILL_5}} - {{SKILL_6}}
-10. [Heading 1] PROFESSIONAL EXPERIENCE
+10. [Heading 1] Experience
 11. [Heading 2] {{ROLE_1_TITLE}}
 12. [Normal italic] {{ROLE_1_ORG}} — {{ROLE_1_DATES}}
 13. [Heading 2] {{ROLE_2_TITLE}}
@@ -66,10 +66,10 @@ CERT_3 → generate_document.py:562
 20. [Normal italic] {{ROLE_5_ORG}} — {{ROLE_5_DATES}}
 21. [Heading 2] {{ROLE_6_TITLE}}
 22. [Normal italic] {{ROLE_6_ORG}} — {{ROLE_6_DATES}}
-23. [Heading 1] EDUCATION
+23. [Heading 1] Education
 24. [Normal] {{EDUCATION_1}}
 25. [Normal] {{EDUCATION_2}}
-26. [Heading 1] CERTIFICATIONS AND LICENSING
+26. [Heading 1] Certifications
 27. [Normal] {{CERT_1}}
 28. [Normal] {{CERT_2}}
 29. [Normal] {{CERT_3}}
@@ -77,7 +77,7 @@ CERT_3 → generate_document.py:562
 ## ATS_AUDIT
 columns_max: PASS — single column, no tables, no text boxes
 forbidden_chars: PASS — none
-allowed_headings: PASS — Calibri only, consistent styles
+allowed_headings: PASS — all 5 headings (Summary, Skills, Experience, Education, Certifications) in allowed_headings whitelist
 au_terminology: PASS — none
 
 ## REGISTRATION_FRAGMENT
@@ -86,7 +86,7 @@ au_terminology: PASS — none
   "resume": {
     "variants": {
       "hybrid": {
-        "template_doc_id": "REPLACE_WITH_RESUME_HYBRID_GOLDEN_MASTER_DOC_ID"
+        "template_doc_id": "16FlPfFjHCYibECNtGORE-KEZtr1ogP_dRayo29L0y_I"
       }
     }
   }

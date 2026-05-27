@@ -107,7 +107,7 @@
       "block_id": "summary_section",
       "type": "summary_block",
       "order": 4,
-      "heading": "PROFESSIONAL SUMMARY",
+      "heading": "Summary",
       "tokens": ["{{PROFESSIONAL_SUMMARY}}"],
       "content": "{{PROFESSIONAL_SUMMARY}}",
       "visualConfig": {
@@ -136,7 +136,7 @@
       "block_id": "skills_section",
       "type": "skills_block",
       "order": 5,
-      "heading": "CORE SKILLS",
+      "heading": "Skills",
       "tokens": [
         "{{SKILL_1}}",
         "{{SKILL_2}}",
@@ -180,7 +180,7 @@
       "block_id": "experience_section",
       "type": "experience_block",
       "order": 6,
-      "heading": "WORK EXPERIENCE",
+      "heading": "Experience",
       "max_roles": 6,
       "max_bullets_per_role": 4,
       "roles": [
@@ -311,7 +311,7 @@
       "block_id": "education_section",
       "type": "education_block",
       "order": 7,
-      "heading": "EDUCATION",
+      "heading": "Education",
       "tokens": [
         "{{EDUCATION_1}}",
         "{{EDUCATION_2}}"
@@ -342,7 +342,7 @@
       "block_id": "certifications_section",
       "type": "certifications_block",
       "order": 8,
-      "heading": "CERTIFICATIONS",
+      "heading": "Certifications",
       "tokens": [
         "{{CERT_1}}",
         "{{CERT_2}}",
