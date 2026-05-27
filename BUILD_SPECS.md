@@ -2,7 +2,7 @@
 
 > **Methodology:** Outcome-Driven Development × Spec-Driven Development × Sequential Thinking  
 > **Scope:** Phase 5 Google Workspace Integration (generate_document.py and supporting system)  
-> **Last Updated:** 2026-05-24
+> **Last Updated:** 2026-05-27
 
 ---
 
@@ -25,7 +25,7 @@ The Career Brain Phase 5 engine (`generate_document.py` + `content_engine.py`) i
 | Google Workspace API integration (OAuth + service account + Drive clone) | ✓ Done |
 | `doc_templates.json` schema (template + variant + Drive folder config) | ✓ Done (IDs empty) |
 | `tests/test_generate_document.py` (unit tests for core logic) | ✓ Done |
-| `skills/ats_template_qa/SKILL.md` (ATS linting skill scaffold) | ✓ Done |
+| `agent_skills/ats_template_qa_v3/SKILL.md` (ATS linting skill scaffold) | ✓ Done |
 | Rosetta Stone translation protocol (apply_rosetta_stone, generate_bridge_paragraph) | ✓ Done |
 | Dry-run mode (`--dry-run`) | ✓ Done |
 | Redacted generation report (`doc_generation_report.json`) | ✓ Done (partial fields) |
@@ -69,7 +69,7 @@ The Career Brain Phase 5 engine (`generate_document.py` + `content_engine.py`) i
 
 **Acceptance Criterion:**
 ```
-python3 generate_document.py --type resume --target "Test" --dry-run
+python3 tools/generate_document.py --type resume --target "Test" --dry-run
 ```
 Exits `0`. Dry-run output shows `CONTACT_NAME` is non-empty.
 
@@ -87,7 +87,7 @@ Exits `0`. Dry-run output shows `CONTACT_NAME` is non-empty.
 
 **Acceptance Criterion:**
 ```
-python3 generate_document.py --type resume --target "Case Manager at cohealth" --template-variant chronological
+python3 tools/generate_document.py --type resume --target "Case Manager at cohealth" --template-variant chronological
 ```
 Exits `0`. Terminal prints a Google Docs URL. Doc opens. Zero unresolved `{{...}}` tokens.
 
@@ -113,7 +113,7 @@ Exits `0`. Terminal prints a Google Docs URL. Doc opens. Zero unresolved `{{...}
 
 **Acceptance Criterion:**
 ```
-python3 generate_document.py --type cover_letter --target "Intake Worker at DFFH" --employer-type government
+python3 tools/generate_document.py --type cover_letter --target "Intake Worker at DFFH" --employer-type government
 ```
 Exits `0`. Doc opens. Salutation reads "Selection Panel". Zero unresolved tokens.
 
@@ -137,7 +137,7 @@ Exits `0`. Doc opens. Salutation reads "Selection Panel". Zero unresolved tokens
 
 **Acceptance Criterion:**
 ```
-python3 generate_document.py --type ksc --target "Support Worker at Launch Housing" --criteria criteria.txt
+python3 tools/generate_document.py --type ksc --target "Support Worker at Launch Housing" --criteria context/specs/ksc_template_spec.md
 ```
 Exits `0`. Doc contains correctly structured CAR sections for each parsed criterion. Zero unresolved tokens.
 
@@ -171,7 +171,7 @@ Set the folder IDs in `doc_templates.json`:
 
 ### BS-2.1 — ATS QA Audit: All 5 Golden Master Templates
 
-**What:** Run the ATS Template QA skill (`skills/ats_template_qa/SKILL.md`) against each of the 5 configured templates. Verify all of:
+**What:** Run the ATS Template QA skill (`agent_skills/ats_template_qa_v3/SKILL.md`) against each of the 5 configured templates. Verify all of:
 
 | Check | Pass Condition |
 |---|---|
@@ -236,8 +236,8 @@ Set the folder IDs in `doc_templates.json`:
 
 **Acceptance Criterion:**
 ```bash
-python3 generate_document.py --type resume --target X  # missing JSON engines → exit 2
-python3 generate_document.py --type resume --target X  # success → exit 0
+python3 tools/generate_document.py --type resume --target X  # missing JSON engines → exit 2
+python3 tools/generate_document.py --type resume --target X  # success → exit 0
 echo $?  # prints 0
 ```
 
@@ -261,10 +261,10 @@ echo $?  # prints 0
 
 ```bash
 # File input:
-python3 generate_document.py --type resume --target "Project Worker at Launch Housing" --job-ad job_ad.txt
+python3 tools/generate_document.py --type resume --target "Project Worker at Launch Housing" --job-ad job_ad.txt
 
 # Inline text (existing behaviour preserved):
-python3 generate_document.py --type resume --target "Project Worker" --job-ad "Seeking a trauma-informed..."
+python3 tools/generate_document.py --type resume --target "Project Worker" --job-ad "Seeking a trauma-informed..."
 ```
 
 **Acceptance Criterion:** `--dry-run` with a valid `job_ad.txt` shows non-empty `keyword_scores` in report. Malformed file path raises a clear error message, not a Python traceback.
@@ -277,7 +277,7 @@ python3 generate_document.py --type resume --target "Project Worker" --job-ad "S
 
 **Acceptance Criterion:**
 ```bash
-python3 generate_document.py --type ksc --target "Intake Worker" --criteria criteria.txt --dry-run
+python3 tools/generate_document.py --type ksc --target "Intake Worker" --criteria context/specs/ksc_template_spec.md --dry-run
 ```
 Parses criteria from the file correctly. Report shows the parsed criterion count.
 
@@ -300,7 +300,7 @@ Parses criteria from the file correctly. Report shows the parsed criterion count
 
 **CLI:**
 ```bash
-python3 generate_document.py --validate-templates
+python3 tools/generate_document.py --validate-templates
 # Or:
 python3 batch_validate_templates.py
 ```

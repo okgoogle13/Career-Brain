@@ -2,149 +2,196 @@
 
 ## **Agentic ETL Pipeline, Schema Architecture, and Taxonomy Mapping Logic**
 
-## **1\. VISION AND CORE MISSION**
+---
 
-The goal of this system is to ingest, standardize, and synthesize a vast archive of unstructured historical career documents—spanning over a decade of professional experience—into a highly structured, machine-readable **Career Brain Database**.  
-This database is split into three modular JSON engines to optimize Retrieval-Augmented Generation (RAG). By separating **Facts** (Career History), **Narratives** (STAR Stories/Pivots), and **Translations** (Skills & Taxonomies), we prevent LLM context-bloat and prompt drift.  
-This engine is designed to feed a custom, hardcoded Gemini Copilot Gem in Google AI Studio, as well as serve as a local query engine within our active IDE workspace, enabling instantaneous, precise tailoring of resumes, cover letters, and Key Selection Criteria (KSC) responses via direct Google Workspace Document generation.
+## **1. VISION AND CORE MISSION**
 
-## **2\. THE LOCAL WORKSPACE ARCHITECTURE**
+The goal of this system is to ingest, standardize, and synthesize a vast archive of unstructured historical career documents — spanning over a decade of professional experience — into a highly structured, machine-readable **Career Brain Database**.
 
-├── PROJECT\_MANIFESTO.md     \# This system directive file  
-├── requirements.txt         \# Global Python environment dependencies  
-├── normalize\_vault.py       \# Phase 1: Pure-text extraction script  
-├── compile\_brain.py         \# Phase 2: Semantic extraction & Pydantic mapping  
-├── raw\_docs/                \# User source directories  
-│   ├── resumes/             \# Raw resume variations (.pdf, .docx, legacy .doc)  
-│   ├── cover\_letters/       \# Raw cover letters & introductory templates  
-│   └── ksc/                 \# Raw STAR selection criteria documents  
-├── normalized\_vault/        \# Phase 1 Output: Sanitized .txt files  
-└── output/                  \# Phase 2 Output: Final structural database  
-    ├── career\_history.json  
-    ├── ksc\_and\_narratives.json  
-    ├── skills\_and\_taxonomy.json  
-    ├── doc\_generation\_report.json
-    └── parsing\_errors.log
-├── doc\_templates.json        \# Phase 5: Template config for Google Docs
-├── generate\_document.py      \# Phase 5: Google Workspace generator
+This database is split into three modular JSON engines to optimize Retrieval-Augmented Generation (RAG). By separating **Facts** (Career History), **Narratives** (STAR Stories/Pivots), and **Translations** (Skills & Taxonomies), we prevent LLM context-bloat and prompt drift.
 
-## **3\. STATE MACHINE & GATEKEEPER PROTOCOLS**
+This engine is designed to feed a custom, hardcoded Gemini Copilot Gem in Google AI Studio, as well as serve as a local query engine within our active IDE workspace — enabling instantaneous, precise tailoring of resumes, cover letters, and Key Selection Criteria (KSC) responses via direct Google Workspace Document generation.
 
-This pipeline operates under a strict, user-controlled sequential state gate inside our IDE's Agent Planning Mode. The model must not skip gates without explicit user validation:  
-\<gatekeeper\_machine\>  
-    \<gate id="1" name="Blueprint Validation"\>  
-        \<action\>Assess raw files in directories, verify path layouts, design Python helper libraries (python-docx, PyPDF2), and generate environment scripts.\</action\>  
-        \<transition\>STOP and request user approval in chat before modifying or writing code files.\</transition\>  
-    \</gate\>  
-    \<gate id="2" name="Phase 1 Normalization"\>  
-        \<action\>Execute normalize\_vault.py to batch process all binaries to plain .txt in normalized\_vault/.\</action\>  
-        \<transition\>STOP and present a health ledger (file list, character count, extraction status). Wait for user approval before moving to semantic analysis.\</transition\>  
-    \</gate\>  
-    \<gate id="3" name="Phase 2 Semantic Compilation"\>  
-        \<action\>Execute compile\_brain.py using validated Pydantic model schemas to build output JSON engines.\</action\>  
-        \<transition\>STOP and present final database audit statistics, mapping metrics, and the parsing error logs.\</transition\>  
-    \</gate\>  
-    \<gate id="4" name="Phase 5 Google Docs Export"\>  
-        \<action\>Execute generate\_document.py using Google Workspace APIs to clone templates and map extracted data.\</action\>  
-        \<transition\>STOP and present the generated document IDs/links and the generation report.\</transition\>  
-    \</gate\>  
-\</gatekeeper\_machine\>
+---
 
-## **4\. PHASE 1: SANITIZATION & NORMALIZATION (THE VACUUM)**
+## **2. THE LOCAL WORKSPACE ARCHITECTURE**
 
-\<phase\_1\_normalization\_specs\>  
-    \<objective\>Strip container file liabilities and isolate raw strings cleanly without losing logical formatting.\</objective\>  
-    \<directives\>  
-        1\. Iterate through raw files in raw\_docs/resumes/, raw\_docs/cover\_letters/, and raw\_docs/ksc/.  
-        2\. Programmatically convert all formats (.docx, .pdf, and legacy .doc) into plain text (.txt) files mapped to normalized\_vault/.  
-        3\. Maintain complete downstream lineaging: output text files must retain their original raw name (e.g., "2024\_Resume\_FlatOut.pdf" \-\> "2024\_Resume\_FlatOut.txt").  
-        4\. Integrate robust local text stream converters. If a document format is corrupt or unsupported, immediately write the error trace to output/parsing\_errors.log with the original filename.  
-        5\. DO NOT summarize, redact, correct grammar, or logically process the text in this phase. The objective is pure string dumping.  
-    \</directives\>  
-\</phase\_1\_normalization\_specs\>
+```
+Career Brain/
+├── source_docs/            Raw input files — do not edit manually
+│   ├── resumes/            Raw resume variations (.pdf, .docx, legacy .doc)
+│   ├── cover_letters/      Raw cover letters & introductory templates
+│   ├── ksc/                Raw STAR selection criteria documents
+│   └── knowledge/          Reference knowledge files
+├── processed/              Phase 1 Output: sanitized .txt files
+├── database/               Phase 2–4 Output: final structural database
+│   ├── career_history_enriched.json
+│   ├── ksc_curated.json
+│   ├── skills_and_taxonomy.json
+│   ├── Career_Brain_Knowledge.md
+│   └── parsing_errors.log
+├── pipeline/               ETL scripts (run in phase order)
+│   ├── organise_raw_docs.py
+│   ├── normalize_vault.py
+│   ├── compile_brain.py
+│   ├── curate_narratives.py
+│   ├── inject_metrics.py
+│   ├── clean_knowledge_vault.py
+│   └── query_brain.py
+├── tools/                  Phase 5 Google Workspace generation
+│   ├── generate_document.py
+│   ├── content_engine.py
+│   ├── build_golden_master.py
+│   ├── create_golden_master.py
+│   ├── audit_doc_style.py
+│   ├── qa_docs_check.py
+│   └── validate_template_spec.py
+├── templates/              Google Docs theme JSON configs
+├── config/                 Runtime config: ats_rules.json, doc_templates.json, user_config.json
+├── context/                AI session files: repomix XMLs, prompts, handover docs
+│   └── specs/              Document format specs (resume, cover letter, KSC)
+├── agent_skills/           Versioned AI agent skill definitions
+├── archive/                Legacy source files — do not re-ingest without instruction
+└── tests/
+```
 
-## **5\. PHASE 2: SEMANTIC EXTRACTION & TAXONOMY COMPILATION**
+---
 
-\<phase\_2\_extraction\_specs\>  
-    \<objective\>Deconstruct raw strings in normalized\_vault/ into three LLM-optimized JSON engines utilizing Pydantic runtime model schemas.\</objective\>
+## **3. STATE MACHINE & GATEKEEPER PROTOCOLS**
 
-    \<database\_modules\>  
-        \<\!-- PILLAR 1: FACT MATRIX \--\>  
-        \<module id="career\_history" file="career\_history.json"\>  
-            \<structure\>Chronological list of roles, employers, operational dates, and individual achievement bullet arrays.\</structure\>  
-            \<rule\_variation\_preservation\>  
-                If matching job fingerprints (unique MD5 hash of Company \+ Role \+ StartDate) are identified across multiple historical files:  
-                \- DO NOT choose a single "master" resume to override the others.  
-                \- AGGREGATE all semantically distinct bullet descriptions into the achievements array of that superjob node.  
-                \- Eliminate pure duplicate text strings, but preserve every nuanced variation in phrasing (e.g., NAB described as technical vs. NAB described as stakeholder engagement).  
-            \</rule\_variation\_preservation\>  
-            \<bullet\_structure\_format\>  
-                Deconstruct each bullet into fields: Action Verb, Task/Responsibility, Metric/Outcome (if present), Strategy/Methodology (e.g., MARAM, Oracle BPM), and Source Lineage (the originating filename).  
-            \</bullet\_structure\_format\>  
-            \<domain\_tagging\>  
-                Tag every achievement bullet point dynamically with category lists: \["project\_management", "corporate\_finance"\] vs \["service\_coordination", "quality\_assurance", "harm\_reduction"\]. This allows the Custom Gem to filter and pull exact perspectives on demand.  
-            \</domain\_tagging\>  
-        \</module\>
+This pipeline operates under a strict, user-controlled sequential state gate inside our IDE's Agent Planning Mode. The model must not skip gates without explicit user validation:
 
-        \<\!-- PILLAR 2: NARRATIVE REGISTRY \--\>  
-        \<module id="ksc\_and\_narratives" file="ksc\_and\_narratives.json"\>  
-            \<structure\>High-impact STAR/CAR behavioral stories, cover letter introductory "hooks," and deep lived-experience "pivot narratives."\</structure\>  
-            \<rules\>  
-                \- Extract long-form paragraphs where the candidate navigates the transition from Corporate Finance to Community Services.  
-                \- Index and categorize narratives by core competency benchmarks: \["conflict\_resolution", "complex\_advocacy", "cultural\_humility", "risk\_de-escalation"\].  
-                \- Ensure the original formatting of successful, vetted submissions is strictly preserved.  
-            \</rules\>  
-        \</module\>
+| Gate | Name | Action | Transition |
+|---|---|---|---|
+| **1** | Blueprint Validation | Assess raw files in directories, verify path layouts, propose changes | STOP — request user approval before writing any files |
+| **2** | Phase 1 Normalisation | Execute `pipeline/normalize_vault.py` to batch-process all binaries to plain .txt in `processed/` | STOP — present health ledger (file list, character count, extraction status). Wait for user approval |
+| **3** | Phase 2 Semantic Compilation | Execute `pipeline/compile_brain.py` using validated Pydantic model schemas to build JSON engines in `database/` | STOP — present final database audit statistics, mapping metrics, and parsing error log |
+| **4** | Phase 5 Google Docs Export | Execute `tools/generate_document.py` using Google Workspace APIs to clone templates and map extracted data | STOP — present generated document IDs/links and the generation report |
 
-        \<\!-- PILLAR 3: SKILLS & TAXONOMY ENGINE (THE ROSETTA STONE) \--\>  
-        \<module id="skills\_and\_taxonomy" file="skills\_and\_taxonomy.json"\>  
-            \<structure\>An active translation key mapping corporate project/finance achievements to Community Service standards.\</structure\>  
-            \<mapping\_logic\>  
-                This module acts as the semantic engine, telling the AI how to translate Royal Bank of Scotland (RBS) portfolio governance into social sector assets. Incorporate these three specific translation mappings:  
-                  
-                1\. Project Management / Workstream Leadership  ➔  SERVICE COORDINATION  
-                   \- Corporate Framing: Led cross-departmental regulatory compliance workstreams and managed deliverables.  
-                   \- Community Sector Framing: Coordinates complex wraparound services, case-management pathways, and multi-agency collaborations (allied health, housing, and justice systems).  
-                     
-                2\. Regulatory Compliance / Anti-Tax Avoidance & Audit  ➔  QUALITY ASSURANCE & GOVERNANCE  
-                   \- Corporate Framing: Strengthened anti-tax avoidance protocols, performed audits, and mitigated risk of financial crime.  
-                   \- Community Sector Framing: Executes clinical governance, statutory compliance audit processes, program quality assurance, and MARAM Risk Assessment/Safeguarding frameworks.  
-                     
-                3\. High-Net-Worth Portfolio & Stakeholder Management  ➔  SECTOR ENGAGEMENT & SYSTEM ADVOCACY  
-                   \- Corporate Framing: Managed relationships and negotiated agreements with high-profile global stakeholders and client groups.  
-                   \- Community Sector Framing: High-level systems navigation and strategic client advocacy within complex government, medical, and administrative bureaucracies.  
-            \</mapping\_logic\>  
-        \</module\>  
-    \</database\_modules\>  
-\</phase\_2\_extraction\_specs\>
+---
 
-## **6\. PHASE 5: GOOGLE DOCS TEMPLATE GENERATION (THE EXPORT)**
+## **4. PHASE 0: SOURCE ORGANISATION**
 
-\<phase\_5\_export\_specs\>  
-    \<objective\>Inject structured JSON output into polished, standardized Google Docs formats using the Google Workspace APIs.\</objective\>  
-    \<directives\>  
-        1\. Read config from `doc_templates.json` to identify Golden Master Google Doc IDs for each template type (resume, cover\_letter, etc.).
-        2\. Clone the Golden Master document and perform batch text replacements using fixed placeholders (e.g., `{{TARGET_ROLE}}`, `{{BULLET_1}}`).
-        3\. Output a `doc_generation_report.json` tracking filled placeholders, unresolved tokens, and generated Google Doc links.
-        4\. Do not permanently store PII or OAuth tokens in the repository.
-    \</directives\>  
-\</phase\_5\_export\_specs\>
+**Script:** `pipeline/organise_raw_docs.py`
 
-## **7\. PIPELINE QUALITY CONTROL GUARDRAILS**
+Moves and deduplicates raw career documents from `archive/` into the correct `source_docs/` subdirectory. Applies include/exclude rules to filter personal financial documents and non-career files. Non-reversible — run only once on a fresh workspace, or after adding new source documents.
 
-To guarantee high fidelity and programmatic stability, the Phase 2 compilation engine must validate output data against the following rules:
+---
 
-1. **Strict Type Validation:** All generated JSON structures must be validated at runtime via Pydantic model definitions. Any invalid objects must raise a logging action to parsing\_errors.log and be bypassed rather than crashing the pipeline.  
-2. **The Metric Audit Loop:** For every bullet point compiled inside career\_history.json, calculate the string length. If an achievement bullet has a length exceeding 20 words but contains *zero* numerical metrics (no %, $, client counts, hours, or caseload scale), programmatically set:  
-   needs\_review: true  
-   This flags weak points for immediate, targeted metric injection during future iterations.  
-3. **Data Lineage Integrity:** Every single narrative, skill, and history node in the final database must preserve its source. A field named source\_lineage must record the exact raw filename (e.g., 2024\_Resume\_Flat\_Out\_v2.txt) to maintain total transparency.
+## **5. PHASE 1: SANITISATION & NORMALISATION (THE VACUUM)**
 
-## **8\. MAINTENANCE AND ITERATION PROTOCOL**
+**Script:** `pipeline/normalize_vault.py`  
+**Input:** `source_docs/`  
+**Output:** `processed/`
 
-Whenever a new role, community-service certificate, or successful job application artifact is developed:
+**Objective:** Strip container file liabilities and isolate raw strings cleanly without losing logical formatting.
 
-1. Drop the raw file into the appropriate directory under /raw\_docs/.  
-2. Run Phase 1 to generate a matching standardized text file in normalized\_vault/.  
-3. Run Phase 2 to parse, merge, preserve variations, and compile the update directly into the 3-pillar files.  
-4. The Custom AI Gem's memory layer is instantly kept pristine, synchronized, and optimized for infinite future tailoring.
+**Directives:**
+1. Iterate through raw files in `source_docs/resumes/`, `source_docs/cover_letters/`, `source_docs/ksc/`, `source_docs/knowledge/`, and `source_docs/references/`.
+2. Programmatically convert all formats (.docx, .pdf, .doc) into plain text (.txt) files mapped to `processed/`.
+3. Maintain complete downstream lineaging: output text files must retain their original raw name (e.g., `2024_Resume_FlatOut.pdf` → `resumes__2024_Resume_FlatOut.txt`).
+4. If a document format is corrupt or unsupported, immediately write the error trace to `database/parsing_errors.log` with the original filename.
+5. DO NOT summarize, redact, correct grammar, or logically process the text in this phase. The objective is pure string dumping.
+
+---
+
+## **6. PHASE 2: SEMANTIC EXTRACTION & TAXONOMY COMPILATION**
+
+**Script:** `pipeline/compile_brain.py`  
+**Input:** `processed/`  
+**Output:** `database/`
+
+**Objective:** Deconstruct raw strings into three LLM-optimized JSON engines using Pydantic runtime model schemas.
+
+### Database Modules
+
+**PILLAR 1 — FACT MATRIX** (`database/career_history.json`)
+
+Chronological list of roles, employers, operational dates, and individual achievement bullet arrays.
+
+- **Variation preservation rule:** If matching job fingerprints (unique MD5 hash of Company + Role + StartDate) are identified across multiple historical files, DO NOT choose a single master resume. AGGREGATE all semantically distinct bullet descriptions into the achievements array. Eliminate pure duplicate text strings, but preserve every nuanced variation in phrasing.
+- **Bullet structure:** Deconstruct each bullet into fields: Action Verb, Task/Responsibility, Metric/Outcome (if present), Strategy/Methodology (e.g., MARAM, Oracle BPM), and Source Lineage.
+- **Domain tagging:** Tag every achievement bullet dynamically with domain categories: `["project_management", "corporate_finance"]` vs `["service_coordination", "quality_assurance", "harm_reduction"]`.
+
+**PILLAR 2 — NARRATIVE REGISTRY** (`database/ksc_and_narratives.json`)
+
+High-impact STAR/CAR behavioral stories, cover letter introductory "hooks," and deep lived-experience "pivot narratives."
+
+- Extract long-form paragraphs where the candidate navigates the transition from Corporate Finance to Community Services.
+- Index and categorize narratives by core competency benchmarks: `["conflict_resolution", "complex_advocacy", "cultural_humility", "risk_de-escalation"]`.
+
+**PILLAR 3 — SKILLS & TAXONOMY ENGINE / THE ROSETTA STONE** (`database/skills_and_taxonomy.json`)
+
+An active translation key mapping corporate project/finance achievements to Community Service standards.
+
+Core translation mappings (hardcoded):
+1. **Project Management / Workstream Leadership → SERVICE COORDINATION**
+2. **Regulatory Compliance / Anti-Tax Avoidance & Audit → QUALITY ASSURANCE & GOVERNANCE**
+3. **High-Net-Worth Portfolio & Stakeholder Management → SECTOR ENGAGEMENT & SYSTEM ADVOCACY**
+
+See `pipeline/compile_brain.py` (ROSETTA_STONE constant) for the full 9-mapping implementation.
+
+---
+
+## **7. PHASE 3: NARRATIVE CURATION**
+
+**Script:** `pipeline/curate_narratives.py`  
+**Input:** `database/ksc_and_narratives.json`  
+**Output:** `database/ksc_curated.json`, `database/ksc_curated_tier1.json`, `database/narrative_curation_report.md`
+
+Scores all narratives on 4 axes: length (word count), STAR completeness (keyword coverage), metric presence, and near-duplicate detection (Jaccard similarity ≥85%). Assigns quality_tier (1/2/3) to each narrative. Tier 1 is recommended for Gem upload — precision over volume.
+
+---
+
+## **8. PHASE 4: METRIC INJECTION**
+
+**Script:** `pipeline/inject_metrics.py`  
+**Input:** `database/career_history.json`  
+**Output:** `database/career_history_enriched.json`, `database/metric_injection_targets.md`
+
+Multi-pass heuristic metric injection for all bullets flagged `needs_review: true`:
+- **Pass 1 (Expanded Regex):** Ordinals, frequency, team sizes, caseload language, scale phrases, timeframes — auto-clears flag if signal found.
+- **Pass 2 (Cross-Source Inference):** Near-identical bullet in same role with a metric — extract and annotate.
+- **Pass 3 (Sibling Context):** Suggests a metric from a sibling bullet for human confirmation.
+
+Only bullets that survive all 3 passes go to the manual hit list in `database/metric_injection_targets.md`.
+
+---
+
+## **9. PHASE 5: GOOGLE DOCS TEMPLATE GENERATION (THE EXPORT)**
+
+**Scripts:** `tools/generate_document.py`, `tools/content_engine.py`  
+**Config:** `config/doc_templates.json`, `config/user_config.json`  
+**Templates:** `templates/*.json`
+
+**Objective:** Inject structured JSON output into polished, standardized Google Docs formats using the Google Workspace APIs.
+
+**Directives:**
+1. Read config from `config/doc_templates.json` to identify Golden Master Google Doc IDs for each template type (resume, cover_letter, ksc).
+2. Clone the Golden Master document and perform batch text replacements using fixed placeholders (e.g., `{{TARGET_ROLE}}`, `{{BULLET_1}}`).
+3. Output a `database/doc_generation_report.json` tracking filled placeholders, unresolved tokens, and generated Google Doc links.
+4. Do not permanently store PII or OAuth tokens in the repository.
+
+See `BUILD_SPECS.md` for the full Phase 5 milestone breakdown and definition of done.
+
+---
+
+## **10. PIPELINE QUALITY CONTROL GUARDRAILS**
+
+1. **Strict Type Validation:** All generated JSON structures must be validated at runtime via Pydantic model definitions. Any invalid objects must raise a logging action to `database/parsing_errors.log` and be bypassed rather than crashing the pipeline.
+
+2. **The Metric Audit Loop:** For every bullet point compiled inside `career_history.json`, calculate the string length. If an achievement bullet exceeds 20 words but contains zero numerical metrics (no %, $, client counts, hours, or caseload scale), programmatically set `needs_review: true`. This flags weak points for metric injection in Phase 4.
+
+3. **Data Lineage Integrity:** Every single narrative, skill, and history node in the final database must preserve its source. A field named `source_lineage` must record the exact raw filename to maintain total transparency. If a script strips this field, that is a critical bug.
+
+---
+
+## **11. MAINTENANCE AND ITERATION PROTOCOL**
+
+Whenever a new role, certificate, or successful job application artifact is developed:
+
+1. Drop the raw file into the appropriate directory under `source_docs/`.
+2. Run Phase 1 (`pipeline/normalize_vault.py`) to generate a matching standardized text file in `processed/`.
+3. Run Phase 2 (`pipeline/compile_brain.py`) to parse, merge, preserve variations, and compile the update directly into the 3-pillar files in `database/`.
+4. Optionally run Phases 3–4 to re-score narratives and resolve any new metric gaps.
+5. The Custom AI Gem's memory layer is instantly kept pristine, synchronized, and optimized for future tailoring.

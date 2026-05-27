@@ -1,7 +1,7 @@
 # Theme Spec Guide
 
-> Source of truth for the `doc_templates/` theme library.  
-> All new themes must follow this guide and be validated by `audit_doc_style.py --theme <path>` before a Golden Master is built.
+> Source of truth for the `templates/` theme library.  
+> All new themes must follow this guide and be validated by `tools/audit_doc_style.py --theme <path>` before a Golden Master is built.
 
 ---
 
@@ -25,7 +25,7 @@
 - `theme3` (Bold Executive) — two-column layout, ATS-unsafe
 - `theme5` (Vibrant Creative) — two-column layout, ATS-unsafe
 
-These exist in `CLEANUP/Chromebook Downloads/pdf_themes_json.json` as design references. They may be built as human-submission-only variants in future if a `--no-ats` flag is added to `generate_document.py`.
+These exist in `archive/` as design references. They may be built as human-submission-only variants in future if a `--no-ats` flag is added to `tools/generate_document.py`.
 
 ---
 
@@ -185,16 +185,16 @@ Increment `v<N>` for breaking changes to an existing theme's layout. Create a ne
 [ ] Confirm all ROLE_N tokens present (6 roles × 4 bullets)
 [ ] Confirm bullet glyph is "-" in experience_section.visualConfig.bullet.glyph
 [ ] No forbidden_glyphs appear anywhere in the file
-[ ] Run: python3 audit_doc_style.py --theme doc_templates/<new_file>.json (once --theme flag is implemented)
+[ ] Run: python3 tools/audit_doc_style.py --theme templates/<new_file>.json
 [ ] Build the Golden Master Google Doc using the visualConfig as the build spec
-[ ] Register Doc ID in doc_templates.json under resume.variants.<name>
+[ ] Register Doc ID in config/doc_templates.json under resume.variants.<name>
 ```
 
 ---
 
 ## Relationship to `doc_templates.json`
 
-Theme JSON files in `doc_templates/` are **design specifications only**. They do not contain Google Doc IDs. The registry lives in `doc_templates.json`:
+Theme JSON files in `templates/` are **design specifications only**. They do not contain Google Doc IDs. The registry lives in `config/doc_templates.json`:
 
 ```json
 {
@@ -202,11 +202,11 @@ Theme JSON files in `doc_templates/` are **design specifications only**. They do
     "variants": {
       "chronological": {
         "template_doc_id": "...",
-        "theme": "doc_templates/resume_professional_classic_v1.json"
+        "theme": "templates/resume_professional_classic_v1.json"
       },
       "warm_impact": {
         "template_doc_id": "REPLACE_WITH_DOC_ID",
-        "theme": "doc_templates/resume_warm_impact_v1.json"
+        "theme": "templates/resume_warm_impact_v1.json"
       }
     }
   }
@@ -219,8 +219,8 @@ The `theme` field is currently informational — `generate_document.py` does not
 
 ## Relationship to `audit_doc_style.py`
 
-`audit_doc_style.py` supports `--theme <path>` and loads font family, font sizes, line spacing,
+`tools/audit_doc_style.py` supports `--theme <path>` and loads font family, font sizes, line spacing,
 and colour expectations directly from the theme JSON. Pass `--theme` for every themed Golden
 Master audit. Unthemed/KSC templates are audited without the flag (Calibri defaults apply).
 
-See `skills/docs_style_auditor/SKILL.md` for the full protocol.
+See `agent_skills/docs_style_auditor_v3/SKILL.md` for the full protocol.

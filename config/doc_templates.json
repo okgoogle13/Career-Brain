@@ -1,58 +1,58 @@
 {
   "cover_letter": {
     "template_doc_id": "1T8Bf3IoFqj6wHH2Tok67HwgVVTmIhaLresIqmj1_IwQ",
-    "theme": "doc_templates/cover_letter_base_v1.json",
+    "theme": "templates/cover_letter_base_v1.json",
     "variants": {
       "government": {
         "template_doc_id": "1D_dG4Ath-sWEqVI060A3oeMVkwpFy16ZORVd1MIPNG8",
-        "theme": "doc_templates/cover_letter_government_v1.json"
+        "theme": "templates/cover_letter_government_v1.json"
       },
       "nfp": {
         "template_doc_id": "1WPUDS9CDwbL75pLnEkro0WeCGjVlXIPdSJIzbAT0Dco",
-        "theme": "doc_templates/cover_letter_nfp_v1.json"
+        "theme": "templates/cover_letter_nfp_v1.json"
       },
       "private": {
         "template_doc_id": "1GQcH_XyTzV6kgwXK085_k8TQtPwYYvPTZaxXIMMooSY",
-        "theme": "doc_templates/cover_letter_private_v1.json"
+        "theme": "templates/cover_letter_private_v1.json"
       }
     }
   },
   "drive_folders": {
-    "cover_letters": "REPLACE_WITH_COVER_LETTERS_FOLDER_ID",
-    "ksc_responses": "REPLACE_WITH_KSC_FOLDER_ID",
-    "resumes": "REPLACE_WITH_RESUMES_FOLDER_ID",
+    "cover_letters": "19mfk79x-2yJ-tzsdzr8gbcgoIrn-pWmP",
+    "ksc_responses": "1IJYtEq2BpBMOkKmxHZHrFri8wOpSSGnK",
+    "resumes": "1gimR_X2m1e8f2FT5ctzHNoxMuuz2ZLL3",
     "root": "1U0qpznqgKRbJtCQMRA9_VXL90U9Bk5wl"
   },
   "ksc": {
     "template_doc_id": "1mZ8OSphGNvot6Y3NSp3Ix0UdZdSP3MP1zf4LY8o9bVM",
-    "theme": "doc_templates/ksc_base_v1.json"
+    "theme": "templates/ksc_base_v1.json"
   },
   "resume": {
     "template_doc_id": "1Bc8BMBgmT3YYpdjfdxSfTidUVvrpUGukRlbWIJN-Rb8",
     "variants": {
       "chronological": {
         "template_doc_id": "1EwMEexcrcJcq_94GAhglEuvM_ROGL-4fI3ObdzT6QNA",
-        "theme": "doc_templates/resume_chronological_v1.json"
-      },
-      "hybrid": {
-        "template_doc_id": "16FlPfFjHCYibECNtGORE-KEZtr1ogP_dRayo29L0y_I",
-        "theme": "doc_templates/resume_hybrid_v1.json"
+        "theme": "templates/resume_chronological_v1.json"
       },
       "contemporary_professional": {
         "template_doc_id": "1eZG0SWplIowrxv13En36h_Qqew7ibIWqRhQAV6D7YKM",
-        "theme": "doc_templates/resume_contemporary_professional_v1.json"
+        "theme": "templates/resume_contemporary_professional_v1.json"
       },
-      "professional_classic": {
-        "template_doc_id": "18PUuV8FHuN7upC8dl941qkOhF1cqhgfXJ2R8EFEM56E",
-        "theme": "doc_templates/resume_professional_classic_v1.json"
+      "hybrid": {
+        "template_doc_id": "16FlPfFjHCYibECNtGORE-KEZtr1ogP_dRayo29L0y_I",
+        "theme": "templates/resume_hybrid_v1.json"
       },
       "modern_minimalist": {
         "template_doc_id": "1xpXFsl0OvmPxayiRKIaGE-3DRNkvtD16WPcp9qc324k",
-        "theme": "doc_templates/resume_modern_minimalist_v1.json"
+        "theme": "templates/resume_modern_minimalist_v1.json"
+      },
+      "professional_classic": {
+        "template_doc_id": "18PUuV8FHuN7upC8dl941qkOhF1cqhgfXJ2R8EFEM56E",
+        "theme": "templates/resume_professional_classic_v1.json"
       },
       "warm_impact": {
         "template_doc_id": "1B2Qqzs5ueLyaSRsvSNTpwZJPVyc07tBdUo-UlORu01M",
-        "theme": "doc_templates/resume_warm_impact_v1.json"
+        "theme": "templates/resume_warm_impact_v1.json"
       }
     }
   }
