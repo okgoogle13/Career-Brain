@@ -730,10 +730,10 @@ def build_ksc_response(
     )
 
     if not matched:
-        # Broaden the search — try all narrative types
         matched = select_narratives(
             narratives=narratives,
             competency_targets=competencies,
+            narrative_types=["STAR", "CAR", "achievement", "evidence"],
             max_count=1,
         )
 

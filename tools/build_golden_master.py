@@ -121,7 +121,7 @@ def build_paragraphs(theme: dict) -> list[tuple[str, str, bool, bool, str | None
         )
         max_criteria = criteria_block.get("max_criteria", 3)
         for c in range(1, max_criteria + 1):
-            add(f"{{{{KSC_CRITERION_{c}_TEXT}}}}", "HEADING_2", bold=True, role="h2")
+            add(f"{{{{KSC_CRITERION_{c}_TEXT}}}}", "HEADING_1", bold=True, role="h1")
             add(f"{{{{KSC_{c}_CONTEXT}}}}", "NORMAL_TEXT", role="body")
             add(f"{{{{KSC_{c}_ACTION}}}}", "NORMAL_TEXT", role="body")
             add(f"{{{{KSC_{c}_RESULT}}}}", "NORMAL_TEXT", role="body")
