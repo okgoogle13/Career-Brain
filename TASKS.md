@@ -24,6 +24,32 @@ Steps:
 
 **Gate:** Do not proceed past Step 2 until validator returns exit 0.
 
+**Blocked at Step 7:** Live generation confirmed HEADING_1 structure is correct (Issue 1 resolved). Body content (result, support_bullets) is still being populated with cover letter boilerplate and raw contact text. Root cause is in `build_ksc_response()` — see TASK-003. Step 8 is blocked until TASK-003 resolves.
+
+---
+
+### TASK-003 — Debug build_ksc_response() narrative pool contamination
+**Status:** Ready to investigate
+**Priority:** High — blocks TASK-002 Step 8 and all live KSC generation quality
+**Raised:** 2026-05-27
+
+**Symptom:** `result` and `support_bullet` fields in generated KSC documents contain cover letter boilerplate ("I would love to discuss..."), Bank Australia cover letter fragments, and raw contact text instead of CAR narrative content.
+
+**Suspected root cause:** `build_ksc_response()` in `tools/content_engine.py` calls `select_narratives()` with `narrative_types=["STAR", "CAR", "achievement", "evidence"]` (primary) and falls back to `["STAR", "CAR", "achievement", "evidence"]` with broadened competency matching. Neither call restricts the narrative source file — the full `narratives` list passed in appears to include cover letter hooks and contact text, not just KSC-curated narratives.
+
+**Hypothesis to verify:**
+- What file does `generate_document.py` load `narratives` from? Is it `ksc_curated.json` or a shared `narratives.json` that contains all narrative types including hooks and cover letter paragraphs?
+- Does `select_narratives()` correctly filter on `narrative_type` field when `narrative_types` is specified, or is the `narrative_type` field absent/misnamed in the source data?
+- Is the `_build_ksc_values()` call passing the correct narratives dict?
+
+**Investigation steps:**
+- [ ] 1. Find which file `generate_document.py` loads as `narratives` for doc_type=ksc (grep `load_json`, `NARRATIVES_FILE`, `narratives_path`)
+- [ ] 2. Inspect that file — check `narrative_type` field values present across records
+- [ ] 3. Trace `select_narratives()` with the actual narrative pool — confirm whether type filtering is working
+- [ ] 4. Fix: ensure `build_ksc_response()` only draws from narratives with `narrative_type` in `["STAR", "CAR", "achievement", "evidence"]`, or load from the correct source file if narratives are segregated by file
+- [ ] 5. Re-run live KSC generation — confirm result and support_bullet fields contain clean CAR content
+- [ ] 6. On clean output: close TASK-003, unblock TASK-002 Step 8
+
 ---
 
 ## Completed
