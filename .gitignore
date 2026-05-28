@@ -25,3 +25,4 @@ CareerBrain_Clean.zip
 
 # Scratch audit outputs
 scratch/*.json
+.env

@@ -1,0 +1,23 @@
+{
+  "skill_name": "custom-skills-sync",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a folder called 'agent_skills' in my Projects directory with three custom Claude skills I built in my IDE: ats_template_qa_v3, docs_style_auditor_v3, and gold_template_builder_v3. I want to sync all of them to Cowork mode. The source folder is /Users/okgoogle13/Projects/Career Brain/agent_skills/",
+      "expected_output": "All three skills are discovered, copied to the outputs/synced_skills directory, verified for integrity, and a SYNC_MANIFEST.md is generated showing the status of each skill and any issues found during copy",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I'm migrating my Claude Code setup to Cowork and have a bunch of custom skills scattered across different folders. Some are in ~/.claude/skills, some in my project directories. How do I sync them all together?",
+      "expected_output": "Guidance on how to consolidate skills from multiple directories into a single source folder, then use the sync tool with that consolidated path. Shows example directory structure and explains the recursive discovery process",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "After syncing my skills last week, I updated one of them in my IDE. Now I want to re-sync everything to make sure the newer versions are backed up to Cowork. The original path is /Users/okgoogle13/Projects/Career Brain/agent_skills/ and my previous synced copy is in outputs/synced_skills/",
+      "expected_output": "Re-sync runs, discovers the updated skill, copies it with new timestamp, generates a manifest showing what changed compared to the previous version, and marks the skill as having been updated",
+      "files": []
+    }
+  ]
+}

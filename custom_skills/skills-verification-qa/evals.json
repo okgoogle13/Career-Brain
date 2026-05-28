@@ -1,0 +1,23 @@
+{
+  "skill_name": "skills-verification-qa",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just synced my custom skills to /outputs/synced_skills/ and I want to verify that all files copied correctly and match the originals in /Users/okgoogle13/Projects/Career Brain/agent_skills/. Can you run a full verification check on all three synced skills?",
+      "expected_output": "Verification report showing file-by-file comparison of source vs. synced versions. All files should show as MATCH with byte counts verified. Report should confirm all 3 skills passed verification and are production-ready, or list any issues found",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I noticed one of my synced skills isn't displaying correctly in Cowork — the heading on the first page looks corrupted with a stray backtick. Can you audit the skill and tell me exactly what's wrong and whether I need to re-sync?",
+      "expected_output": "Verification identifies the encoding corruption (stray backtick in heading), reports the exact line number and what should be there, recommends whether to fix manually or re-sync, and shows before/after comparison",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Before I deploy these skills to my production Cowork session, I want to run a strict QA check to make sure everything is perfect. Generate an audit-level verification report that I can archive for compliance purposes.",
+      "expected_output": "Detailed audit report including checksums, file sizes, timestamps, permission status for all files, frontmatter validation, encoding checks, and a summary statement confirming all skills are production-ready with no issues. Report is timestamped and suitable for archival",
+      "files": []
+    }
+  ]
+}

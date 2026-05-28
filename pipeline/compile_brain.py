@@ -57,6 +57,11 @@ class AchievementBullet(BaseModel):
     domain_tags: list[str] = Field(default_factory=list)
     needs_review: bool = False          # True if >20 words but zero numeric metrics
     source_lineage: str = ""
+    # Audit fields — populated by audit_and_repair_database.py
+    is_lived_experience: bool = False
+    car_quality_score: int = 0
+    applied_fixes: list[str] = Field(default_factory=list)
+    suggested_rewrite: Optional[str] = None
 
     @field_validator("raw_text")
     @classmethod
@@ -95,6 +100,11 @@ class Narrative(BaseModel):
     organisation_context: Optional[str] = None
     word_count: int = 0
     source_lineage: str = ""
+    # Audit fields — populated by audit_and_repair_database.py
+    is_lived_experience: bool = False
+    car_quality_score: int = 0
+    applied_fixes: list[str] = Field(default_factory=list)
+    suggested_rewrite: Optional[str] = None
 
     @field_validator("full_text")
     @classmethod
@@ -479,6 +489,79 @@ def extract_role_blocks(text: str) -> list[dict]:
 
 
 # ════════════════════════════════════════════════════════════════════════════
+# SECTION 4b: AUDIT MERGE HELPERS
+# (Preserve audit fields written by audit_and_repair_database.py across re-compiles)
+# ════════════════════════════════════════════════════════════════════════════
+
+_AUDIT_FIELDS = ("is_lived_experience", "car_quality_score", "applied_fixes", "suggested_rewrite")
+
+
+def _norm(text: str) -> str:
+    return re.sub(r"\s+", " ", text.lower().strip())
+
+
+def _load_bullet_audit_map(enriched_path: Path) -> dict[str, dict]:
+    """Build (fingerprint|text_norm) → audit_fields from career_history_enriched.json."""
+    if not enriched_path.exists():
+        return {}
+    try:
+        data = json.loads(enriched_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    out: dict[str, dict] = {}
+    for role in data.get("roles", []):
+        fp = role.get("fingerprint", "")
+        for b in role.get("achievements", []):
+            if not b.get("applied_fixes") and not b.get("is_lived_experience") and not b.get("car_quality_score"):
+                continue
+            key = f"{fp}|{_norm(b.get('raw_text', ''))}"
+            out[key] = {f: b.get(f) for f in _AUDIT_FIELDS}
+    return out
+
+
+def _load_narrative_audit_map(curated_path: Path) -> dict[str, dict]:
+    """Build text_norm → audit_fields from ksc_curated.json."""
+    if not curated_path.exists():
+        return {}
+    try:
+        data = json.loads(curated_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    out: dict[str, dict] = {}
+    for n in data.get("narratives", []):
+        if not n.get("applied_fixes") and not n.get("is_lived_experience") and not n.get("car_quality_score"):
+            continue
+        key = _norm(n.get("full_text", ""))[:300]
+        out[key] = {f: n.get(f) for f in _AUDIT_FIELDS}
+    return out
+
+
+def _merge_bullet_audit(career_db: "CareerHistoryDB", audit_map: dict) -> int:
+    merged = 0
+    for role in career_db.roles:
+        for bullet in role.achievements:
+            key = f"{role.fingerprint}|{_norm(bullet.raw_text)}"
+            if key in audit_map:
+                for field, val in audit_map[key].items():
+                    if val is not None:
+                        setattr(bullet, field, val)
+                merged += 1
+    return merged
+
+
+def _merge_narrative_audit(narratives_db: "NarrativesDB", audit_map: dict) -> int:
+    merged = 0
+    for narrative in narratives_db.narratives:
+        key = _norm(narrative.full_text)[:300]
+        if key in audit_map:
+            for field, val in audit_map[key].items():
+                if val is not None:
+                    setattr(narrative, field, val)
+            merged += 1
+    return merged
+
+
+# ════════════════════════════════════════════════════════════════════════════
 # SECTION 5: PILLAR COMPILERS
 # ════════════════════════════════════════════════════════════════════════════
 
@@ -700,6 +783,11 @@ def main():
 
     # ── PILLAR 1 ────────────────────────────────────────────────────────────
     career_db = compile_career_history(vault_files)
+    bullet_audit = _load_bullet_audit_map(OUTPUT / "career_history_enriched.json")
+    if bullet_audit:
+        n = _merge_bullet_audit(career_db, bullet_audit)
+        if n:
+            log.info(f"  Merged audit fields into {n} bullets from career_history_enriched.json")
     career_path = OUTPUT / "career_history.json"
     career_path.write_text(
         json.dumps(career_db.model_dump(), indent=2, ensure_ascii=False),
@@ -709,6 +797,11 @@ def main():
 
     # ── PILLAR 2 ────────────────────────────────────────────────────────────
     narratives_db = compile_narratives(vault_files)
+    narrative_audit = _load_narrative_audit_map(OUTPUT / "ksc_curated.json")
+    if narrative_audit:
+        n = _merge_narrative_audit(narratives_db, narrative_audit)
+        if n:
+            log.info(f"  Merged audit fields into {n} narratives from ksc_curated.json")
     narratives_path = OUTPUT / "ksc_and_narratives.json"
     narratives_path.write_text(
         json.dumps(narratives_db.model_dump(), indent=2, ensure_ascii=False),

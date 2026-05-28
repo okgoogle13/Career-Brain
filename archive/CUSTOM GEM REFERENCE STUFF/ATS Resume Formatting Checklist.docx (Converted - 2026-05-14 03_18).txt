@@ -1,0 +1,85 @@
+ATS Resume Formatting Checklist
+
+File Format & Structure:
+
+[ ] Save as .docx or PDF (text-based): 
+
+Avoid image-based PDFs.
+
+If possible, use .docx.
+
+[ ] Simple, Single-Column Layout: 
+
+Avoid tables, text boxes, and multiple columns.
+
+[ ] Standard Section Headings: 
+
+Use clear headings like "Summary," "Work Experience," "Education," and "Skills."
+
+Avoid creative or unusual headings.
+
+[ ] Consistent Date Format: 
+
+Use MM/YYYY or Month YYYY.
+
+[ ] 1-inch Margins: 
+
+Ensure adequate white space.
+
+[ ] Avoid Headers and Footers: 
+
+ATS systems often have issues reading these.
+
+Text & Content:
+
+[ ] Simple, Standard Fonts: 
+
+Use Arial, Calibri, Times New Roman, or similar.
+
+Font size: 11-12pt for body text, 14-16pt for headings.
+
+[ ] Use Bullet Points: 
+
+To break up text and make it easy to scan.
+
+[ ] Relevant Keywords: 
+
+Incorporate keywords from the job description naturally.
+
+Use the same terminology as the job posting.
+
+[ ] Plain Text: 
+
+Avoid special characters, symbols, or graphics.
+
+Spell out acronyms, at least the first time that they are used.
+
+[ ] Clear and Concise Language: 
+
+Avoid jargon, and use simple, direct language.
+
+General Best Practices:
+
+[ ] Proofread Carefully: 
+
+Check for spelling and grammar errors.
+
+[ ] Tailor Your Resume: 
+
+Customize your resume for each job application.
+
+[ ] Chronological Order: 
+
+Use reverse chronological order in the work experience section.
+
+[ ] Contact Information: 
+
+Ensure that your contact information is correct.
+
+Key Considerations:
+
+ATS systems are designed to parse text. Therefore, prioritizing clear, simple text-based formatting is crucial.
+
+Keywords are essential for getting your resume noticed by ATS. Carefully analyze job descriptions to identify relevant keywords.
+
+By following this checklist, you'll significantly increase your chances of your resume passing through ATS and reaching human eyes.
