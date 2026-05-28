@@ -965,8 +965,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Employer type for cover letter tone.",
     )
     parser.add_argument(
-        "--criteria", type=Path, default=None,
-        help="Path to KSC criteria text file (required for --type ksc).",
+        "--criteria", default=None,
+        help="KSC criteria text: path to a file OR inline text string (required for --type ksc).",
     )
     parser.add_argument(
         "--user-config", type=Path, default=DEFAULT_USER_CONFIG,
@@ -1058,10 +1058,16 @@ def main(argv: list[str] | None = None) -> int:
         if args.job_ad and args.job_ad.exists():
             job_ad_text = args.job_ad.read_text(encoding="utf-8")
 
-        # Load criteria text if provided
+        # Load criteria text if provided (file path or inline string — BS-4.2)
         criteria_text = None
-        if args.criteria and args.criteria.exists():
-            criteria_text = args.criteria.read_text(encoding="utf-8").split("\n")
+        if args.criteria:
+            criteria_path = Path(args.criteria)
+            if criteria_path.exists():
+                criteria_text = criteria_path.read_text(encoding="utf-8").split("\n")
+            else:
+                # Treat as inline text — use splitlines so parse_criteria
+                # can correctly split numbered/bulleted inline strings
+                criteria_text = args.criteria.splitlines() or [args.criteria]
 
         # Build generation config
         gen_config = GenerationConfig(

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 from dataclasses import dataclass
 from enum import Enum
@@ -319,6 +320,8 @@ def select_narratives(
     competency_targets: list[str] | None = None,
     narrative_types: list[str] | None = None,
     max_count: int = 3,
+    max_word_count: int | None = None,
+    exclude_cover_letters: bool = False,
 ) -> list[dict[str, Any]]:
     """Select narratives by competency match and quality tier.
 
@@ -343,6 +346,16 @@ def select_narratives(
         # Filter by narrative type if specified
         n_type = (narrative.get("narrative_type") or "").lower()
         if type_filter and n_type not in type_filter:
+            continue
+
+        # Filter by maximum word count if specified
+        if max_word_count is not None:
+            wc = narrative.get("word_count") or len(text.split())
+            if wc > max_word_count:
+                continue
+
+        # Filter out cover-letter-style documents when exclude_cover_letters=True
+        if exclude_cover_letters and _looks_like_cover_letter(text):
             continue
 
         tier = narrative.get("quality_tier", 99)
@@ -636,6 +649,132 @@ def generate_professional_summary(
 
 
 # ──────────────────────────────────────────────────────────────────────
+# CAR Recruiter Rewrite
+# ──────────────────────────────────────────────────────────────────────
+
+_RECRUITER_SYSTEM_PROMPT = """\
+You are an expert executive recruiter specialising in Australian public sector and NFP \
+applications. Your task is to rewrite candidate narrative material into polished \
+Context-Action-Result (CAR) sections for a Key Selection Criteria (KSC) response.
+
+Rules:
+1. Context (40-100 words): Set the scene — role, organisation, challenge or mandate.
+2. Action (60-200 words): What the candidate specifically did — concrete steps, methods, \
+skills deployed. Use first person, active voice.
+3. Result (30-100 words): Measurable or observable outcomes. Quantify where evidence supports it.
+4. CRITICAL: Any content you infer, bridge, or synthesise that is NOT directly stated in the \
+source material must be wrapped in [[NEEDS_REVIEW: <your text>]]. This includes inferred \
+metrics, role scope assumptions, or connective tissue you add.
+5. Return ONLY a JSON object with keys "context", "action", "result". No prose outside the JSON.
+6. Do not hallucinate organisation names, dates, or metrics not present in the source.
+"""
+
+
+def _extract_grounding_evidence(
+    history: dict[str, Any],
+    competencies: list[str],
+    max_bullets: int = 8,
+) -> str:
+    """Pull the top matching achievement bullets from career history as grounding evidence."""
+    candidates: list[tuple[int, int, str]] = []
+    for role_idx, role in enumerate(history.get("roles", [])):
+        company = role.get("company", "")
+        role_title = role.get("role", "")
+        for ach_idx, ach in enumerate(role.get("achievements", [])):
+            text = _clean_text(ach.get("raw_text", ""))
+            if not text:
+                continue
+            tags = [t.lower().replace("_", " ") for t in ach.get("domain_tags", []) if isinstance(t, str)]
+            match_count = sum(1 for c in competencies if c in " ".join(tags))
+            if match_count > 0:
+                prefix = f"[{company} / {role_title}] " if (company and company != "Unknown") else ""
+                candidates.append((match_count, role_idx * 1000 + ach_idx, f"{prefix}{text}"))
+    candidates.sort(key=lambda x: (-x[0], x[1]))
+    bullets = [c[2] for c in candidates[:max_bullets]]
+    return "\n".join(f"- {b}" for b in bullets)
+
+
+def _rewrite_car_with_llm(
+    full_text: str,
+    criterion_text: str,
+    competencies: list[str],
+    history: dict[str, Any],
+) -> dict[str, str] | None:
+    """Call the Anthropic API to rewrite narrative into structured CAR sections.
+
+    Returns {"context": ..., "action": ..., "result": ...} or None on failure.
+    """
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        log.debug("ANTHROPIC_API_KEY not set — skipping LLM CAR rewrite")
+        return None
+
+    try:
+        import anthropic  # noqa: PLC0415
+    except ImportError:
+        log.warning("anthropic package not installed — skipping LLM CAR rewrite")
+        return None
+
+    grounding = _extract_grounding_evidence(history, competencies)
+
+    user_content = (
+        f"SELECTION CRITERION:\n{criterion_text}\n\n"
+        f"COMPETENCIES TO ADDRESS: {', '.join(competencies) or 'general'}\n\n"
+        f"SOURCE NARRATIVE (raw career material):\n{full_text[:2000]}\n\n"
+        f"SUPPORTING CAREER EVIDENCE (verified achievements from career history):\n"
+        f"{grounding or '(none matched)'}\n\n"
+        "Rewrite the source narrative into CAR sections addressing the criterion. "
+        "Return JSON only: {{\"context\": \"...\", \"action\": \"...\", \"result\": \"...\"}}."
+    )
+
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+        message = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=600,
+            system=_RECRUITER_SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": user_content}],
+        )
+        raw = message.content[0].text.strip()
+        # Strip markdown fences if present
+        if raw.startswith("```"):
+            raw = re.sub(r"^```[a-z]*\n?", "", raw)
+            raw = re.sub(r"\n?```$", "", raw)
+        parsed = json.loads(raw)
+        result = {
+            "context": str(parsed.get("context", "")),
+            "action": str(parsed.get("action", "")),
+            "result": str(parsed.get("result", "")),
+        }
+        if not any(result.values()):
+            return None
+        return result
+    except Exception as exc:  # noqa: BLE001
+        log.warning("LLM CAR rewrite failed: %s", exc)
+        return None
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Cover Letter Detection Guard
+# ──────────────────────────────────────────────────────────────────────
+
+# Patterns that indicate a narrative is actually a cover letter or address block,
+# not a genuine STAR/CAR achievement narrative. Used to filter ksc_curated.json
+# entries that were mis-tagged as STAR during ETL.
+_COVER_LETTER_RE = re.compile(
+    r"(dear\s|to\s+whom\s+it\s+may\s|attn:|i\s+am\s+writing\s+to"
+    r"|sincerely,|kind\s+regards,|yours\s+faithfully"
+    r"|\d+/\d+\s+[a-z]+\s+street|\d+\s+[a-z]+\s+street\s+[a-z]+\s+vic)",
+    re.IGNORECASE,
+)
+
+
+def _looks_like_cover_letter(text: str) -> bool:
+    """Return True if the text appears to be a cover letter or address block."""
+    return bool(_COVER_LETTER_RE.search(text[:500]))
+
+
+# ──────────────────────────────────────────────────────────────────────
 # KSC Engine
 # ──────────────────────────────────────────────────────────────────────
 
@@ -721,12 +860,16 @@ def build_ksc_response(
     """
     competencies = criterion.get("extracted_competencies", [])
 
+    # KSC narrative guard: exclude cover letters and address blocks mis-tagged
+    # as STAR in ksc_curated.json during ETL. Uses content-based detection.
+
     # Select the best narrative for this criterion
     matched = select_narratives(
         narratives=narratives,
         competency_targets=competencies,
         narrative_types=["STAR", "CAR"],
         max_count=1,
+        exclude_cover_letters=True,
     )
 
     if not matched:
@@ -735,6 +878,7 @@ def build_ksc_response(
             competency_targets=competencies,
             narrative_types=["STAR", "CAR", "achievement", "evidence"],
             max_count=1,
+            exclude_cover_letters=True,
         )
 
     response = {"context": "", "action": "", "result": ""}
@@ -742,25 +886,30 @@ def build_ksc_response(
     if matched:
         narrative = matched[0]
         full_text = _clean_text(narrative.get("full_text", ""))
+        criterion_text = criterion.get("criterion_text", "")
 
-        # Attempt to split into CAR sections
-        # Many narratives have implicit structure — split roughly by thirds
-        sentences = re.split(r"(?<=[.!?])\s+", full_text)
-        total = len(sentences)
-
-        if total >= 3:
-            ctx_end = max(1, total // 4)
-            act_end = max(ctx_end + 1, total * 3 // 4)
-
-            response["context"] = " ".join(sentences[:ctx_end])
-            response["action"] = " ".join(sentences[ctx_end:act_end])
-            response["result"] = " ".join(sentences[act_end:])
-        elif total == 2:
-            response["context"] = sentences[0]
-            response["action"] = sentences[1]
-            response["result"] = ""
-        elif total == 1:
-            response["context"] = sentences[0]
+        # Attempt LLM-driven recruiter rewrite first; fall back to heuristic split
+        llm_car = _rewrite_car_with_llm(full_text, criterion_text, competencies, history)
+        if llm_car:
+            response.update(llm_car)
+        else:
+            # Heuristic fallback: split on sentence boundaries into rough CAR thirds
+            sentences = re.split(r"(?<=[.!?])\s+", full_text)
+            total = len(sentences)
+            if total >= 3:
+                ctx_end = max(1, total // 4)
+                act_end = max(ctx_end + 1, total * 3 // 4)
+                response["context"] = " ".join(sentences[:ctx_end])
+                response["action"] = " ".join(sentences[ctx_end:act_end])
+                response["result"] = " ".join(sentences[act_end:])
+            elif total == 2:
+                response["context"] = sentences[0]
+                response["action"] = sentences[1]
+                response["result"] = "[[NEEDS_REVIEW: result section could not be extracted from available narrative]]"
+            elif total == 1:
+                response["context"] = sentences[0]
+                response["action"] = "[[NEEDS_REVIEW: action section could not be extracted from available narrative]]"
+                response["result"] = "[[NEEDS_REVIEW: result section could not be extracted from available narrative]]"
 
     # Select supporting bullets from career history
     support_bullets = _select_support_bullets(
