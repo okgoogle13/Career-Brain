@@ -30,6 +30,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+# Load .env from project root so ANTHROPIC_API_KEY is available without manual export
+_env_path = Path(__file__).parent.parent / ".env"
+if _env_path.exists():
+    for _line in _env_path.read_text().splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _k, _, _v = _line.partition("=")
+            os.environ.setdefault(_k.strip(), _v.strip().strip('"').strip("'"))
+
 from content_engine import (
     DocumentType,
     EmployerType,
