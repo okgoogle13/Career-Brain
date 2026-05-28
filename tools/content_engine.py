@@ -700,19 +700,19 @@ def _rewrite_car_with_llm(
     competencies: list[str],
     history: dict[str, Any],
 ) -> dict[str, str] | None:
-    """Call the Anthropic API to rewrite narrative into structured CAR sections.
+    """Call the Gemini API to rewrite narrative into structured CAR sections.
 
     Returns {"context": ..., "action": ..., "result": ...} or None on failure.
     """
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        log.debug("ANTHROPIC_API_KEY not set — skipping LLM CAR rewrite")
+        log.debug("GEMINI_API_KEY not set — skipping LLM CAR rewrite")
         return None
 
     try:
-        import anthropic  # noqa: PLC0415
+        import google.generativeai as genai  # noqa: PLC0415
     except ImportError:
-        log.warning("anthropic package not installed — skipping LLM CAR rewrite")
+        log.warning("google-generativeai package not installed — skipping LLM CAR rewrite")
         return None
 
     grounding = _extract_grounding_evidence(history, competencies)
@@ -728,14 +728,19 @@ def _rewrite_car_with_llm(
     )
 
     try:
-        client = anthropic.Anthropic(api_key=api_key)
-        message = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=600,
-            system=_RECRUITER_SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_content}],
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel(
+            model_name="gemini-2.0-flash",
+            system_instruction=_RECRUITER_SYSTEM_PROMPT,
         )
-        raw = message.content[0].text.strip()
+        response = model.generate_content(
+            user_content,
+            generation_config=genai.types.GenerationConfig(
+                max_output_tokens=600,
+                temperature=0.3,
+            ),
+        )
+        raw = response.text.strip()
         # Strip markdown fences if present
         if raw.startswith("```"):
             raw = re.sub(r"^```[a-z]*\n?", "", raw)

@@ -30,7 +30,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-# Load .env from project root so ANTHROPIC_API_KEY is available without manual export
+# Load .env from project root so GEMINI_API_KEY is available without manual export
 _env_path = Path(__file__).parent.parent / ".env"
 if _env_path.exists():
     for _line in _env_path.read_text().splitlines():
