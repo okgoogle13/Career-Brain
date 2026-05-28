@@ -24,35 +24,22 @@ Steps:
 
 **Gate:** Do not proceed past Step 2 until validator returns exit 0.
 
-**Blocked at Step 7:** Live generation confirmed HEADING_1 structure is correct (Issue 1 resolved). Body content (result, support_bullets) is still being populated with cover letter boilerplate and raw contact text. Root cause is in `build_ksc_response()` — see TASK-003. Step 8 is blocked until TASK-003 resolves.
+**Blocked at Step 7 → Unblocked 2026-05-28:** TASK-003 resolved. CAR content is now clean. Step 8 requires one clean live generation with `ANTHROPIC_API_KEY` set to confirm LLM rewrite output before marking design Approved.
 
----
-
-### TASK-003 — Debug build_ksc_response() narrative pool contamination
-**Status:** Ready to investigate
-**Priority:** High — blocks TASK-002 Step 8 and all live KSC generation quality
-**Raised:** 2026-05-27
-
-**Symptom:** `result` and `support_bullet` fields in generated KSC documents contain cover letter boilerplate ("I would love to discuss..."), Bank Australia cover letter fragments, and raw contact text instead of CAR narrative content.
-
-**Suspected root cause:** `build_ksc_response()` in `tools/content_engine.py` calls `select_narratives()` with `narrative_types=["STAR", "CAR", "achievement", "evidence"]` (primary) and falls back to `["STAR", "CAR", "achievement", "evidence"]` with broadened competency matching. Neither call restricts the narrative source file — the full `narratives` list passed in appears to include cover letter hooks and contact text, not just KSC-curated narratives.
-
-**Hypothesis to verify:**
-- What file does `generate_document.py` load `narratives` from? Is it `ksc_curated.json` or a shared `narratives.json` that contains all narrative types including hooks and cover letter paragraphs?
-- Does `select_narratives()` correctly filter on `narrative_type` field when `narrative_types` is specified, or is the `narrative_type` field absent/misnamed in the source data?
-- Is the `_build_ksc_values()` call passing the correct narratives dict?
-
-**Investigation steps:**
-- [ ] 1. Find which file `generate_document.py` loads as `narratives` for doc_type=ksc (grep `load_json`, `NARRATIVES_FILE`, `narratives_path`)
-- [ ] 2. Inspect that file — check `narrative_type` field values present across records
-- [ ] 3. Trace `select_narratives()` with the actual narrative pool — confirm whether type filtering is working
-- [ ] 4. Fix: ensure `build_ksc_response()` only draws from narratives with `narrative_type` in `["STAR", "CAR", "achievement", "evidence"]`, or load from the correct source file if narratives are segregated by file
-- [ ] 5. Re-run live KSC generation — confirm result and support_bullet fields contain clean CAR content
-- [ ] 6. On clean output: close TASK-003, unblock TASK-002 Step 8
+**To complete Step 8:** Set `ANTHROPIC_API_KEY`, run live generation, inspect that context/action/result fields contain coherent CAR paragraphs (not raw bullets), then mark `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md` status Approved.
 
 ---
 
 ## Completed
+
+### TASK-003 — Debug build_ksc_response() narrative pool contamination — 2026-05-28
+**Root cause found:** `ksc_curated.json` type values are `STAR`/`pivot`/`statement`/`hook`, not `CAR`/`achievement`/`evidence`. The type filter was rejecting all records and falling through to unfiltered results (cover letters).
+**Fix (commit `3b40878`):**
+- `_looks_like_cover_letter()` + `_COVER_LETTER_RE`: content-based guard strips 8 mis-tagged cover letter STAR records; 393 clean resume-content STAR records remain.
+- `_rewrite_car_with_llm()`: Anthropic Haiku call rewrites selected narrative into proper CAR sections. Any inferred content wrapped in `[[NEEDS_REVIEW: ...]]`. Falls back to heuristic split if `ANTHROPIC_API_KEY` unset.
+- `_extract_grounding_evidence()`: grounds LLM on matching career history achievements to prevent hallucination.
+
+---
 
 ### TASK-001 — Fix hybrid resume headings (atomically) — 2026-05-27
 - [x] `templates/resume_hybrid_v1.json` — all 5 headings renamed (Summary, Skills, Experience, Education, Certifications)
