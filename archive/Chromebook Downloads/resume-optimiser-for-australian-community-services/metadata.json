@@ -1,0 +1,6 @@
+{
+  "name": "Resume Optimiser for Australian Community Services",
+  "description": "An AI-powered tool to analyze and optimize resumes for Australian community services, social work, and public sector roles. It transforms resumes to be ATS-compliant and tailored to specific job descriptions.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

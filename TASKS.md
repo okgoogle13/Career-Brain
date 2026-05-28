@@ -6,11 +6,30 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 ## Active
 
+### TASK-004 — Database Quality Sweep & Narrative Taxonomy
+**Status:** Ready to execute (Handover to Claude Opus requested)
+**Priority:** High — Garbabe in, garbage out mitigation
+**Problem Description:** A deep audit of `career_history_enriched.json` (1,017 items) and `ksc_curated.json` (1,347 items) found numerous data quality defects. Specifically, the 665 `statement` type narratives (initially flagged as "lacking outcome language") were delineated via sequential reasoning into:
+1. **Valid Lived Experience (113)**: Intentional identity-grounded claims (preserve/upgrade).
+2. **Mislabelled Outcome Statements (104)**: Actually contain outcome verbs, should be STAR/achievement type (reclassify).
+3. **Qualification Fragments (23)**: Structural resume elements, not KSC evidence (archive).
+4. **Role Descriptions (19)**: Valid context but missing results (flag for LLM review).
+5. **Generic Filler (14)**: Clichés harming KSC quality (demote/archive).
+6. **Unclassified (396)**: Mostly structural resume headers or bullet lists masquerading as narratives (archive).
+**Resolution Plan:** Build and execute `pipeline/audit_and_repair_database.py` with deterministic fixes (deduplication moving to archive, markdown stripping, structural filtering) and an LLM-assisted pass (Gemini Flash) to enrich tags and metrics.
+**Leveraging Old Knowledge (Claude Code):** During Mode 3 (LLM enrichment) and Mode 2 (deterministic regex), leverage the deep insights synthesized in `domain_knowledge_insights.md`. This includes:
+- **KSC SAO/STAR Standards & Word Counts**: Enforce 60-120 words for snippets and standard SAO/STAR alignment (Hays 2025 / SEEK / Victoria Gov 2022).
+- **Gold Standard Snippets**: Use the complaints handling (Acme), financial/water audit (Sydney Water), and Youth Social Work challenging behaviour (DOCS ADHD case) examples as few-shot LLM training.
+- **Inclusive Language & Cultural Safety**: Respect First Nations gender terms (*Sistergirl*, *Brotherboy*, *Transmob*) and Victorian DFFH 2025 gender guidelines.
+- **Action Verb Word Bank**: Integrate the 8-category action verb database for deterministic outcome analysis and recruiter system prompts.
+(See [domain_knowledge_insights.md](file:///Users/okgoogle13/.gemini/antigravity-ide/brain/dbd09430-e31e-49b2-b021-36e84638e3a7/domain_knowledge_insights.md)).
+
 ### TASK-002 — KSC v2 end-to-end validation
-**Status:** Ready to execute
+**Status:** Ready to execute (Gemini)
 **Priority:** High — v2 tooling is built but never validated; existing ksc_base was built with v1
 **Spec:** `docs/superpowers/specs/2026-05-27-session-status-and-next-steps-design.md` § Task 2
 **Design doc:** `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md`
+**Leveraging Old Knowledge (Gemini):** Before live generation, update `_RECRUITER_SYSTEM_PROMPT` in `content_engine.py` to enforce Community Services Values. Provide the Gold Standard STAR KSC responses from `archive/Chromebook Downloads/ai_studio_code.txt` as few-shot examples so the LLM perfectly replicates the Australian sector tone and structure.
 
 Steps:
 - [ ] 1. Invoke `gold_template_builder_v3` → produce `context/specs/ksc_standard_v2_spec.md`
@@ -24,9 +43,9 @@ Steps:
 
 **Gate:** Do not proceed past Step 2 until validator returns exit 0.
 
-**Blocked at Step 7 → Unblocked 2026-05-28:** TASK-003 resolved. CAR content is now clean. Step 8 requires one clean live generation with `ANTHROPIC_API_KEY` set to confirm LLM rewrite output before marking design Approved.
+**Blocked at Step 7 → Unblocked 2026-05-28:** TASK-003 resolved. CAR content is now clean. Step 8 requires one clean live generation with `GEMINI_API_KEY` set to confirm LLM rewrite output before marking design Approved.
 
-**To complete Step 8:** Set `ANTHROPIC_API_KEY`, run live generation, inspect that context/action/result fields contain coherent CAR paragraphs (not raw bullets), then mark `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md` status Approved.
+**To complete Step 8:** Set `GEMINI_API_KEY`, run live generation, inspect that context/action/result fields contain coherent CAR paragraphs (not raw bullets), then mark `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md` status Approved.
 
 ---
 
@@ -36,7 +55,7 @@ Steps:
 **Root cause found:** `ksc_curated.json` type values are `STAR`/`pivot`/`statement`/`hook`, not `CAR`/`achievement`/`evidence`. The type filter was rejecting all records and falling through to unfiltered results (cover letters).
 **Fix (commit `3b40878`):**
 - `_looks_like_cover_letter()` + `_COVER_LETTER_RE`: content-based guard strips 8 mis-tagged cover letter STAR records; 393 clean resume-content STAR records remain.
-- `_rewrite_car_with_llm()`: Anthropic Haiku call rewrites selected narrative into proper CAR sections. Any inferred content wrapped in `[[NEEDS_REVIEW: ...]]`. Falls back to heuristic split if `ANTHROPIC_API_KEY` unset.
+- `_rewrite_car_with_llm()`: Gemini Flash call rewrites selected narrative into proper CAR sections. Any inferred content wrapped in `[[NEEDS_REVIEW: ...]]`. Falls back to heuristic split if `GEMINI_API_KEY` unset.
 - `_extract_grounding_evidence()`: grounds LLM on matching career history achievements to prevent hallucination.
 
 ---

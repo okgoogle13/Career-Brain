@@ -1,0 +1,23 @@
+{
+  "skill_name": "career-brain-skill-integration",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to create a new KSC template for a marketing position. The template should have standard sections (contact info, summary, skills, experience, education) plus a custom 'Campaigns' section to showcase marketing campaigns. Walk me through the full template creation pipeline using the Career Brain workflow.",
+      "expected_output": "Invokes Gold Template Builder to design the spec (including Campaigns section with tokens), walks through creating a Golden Master, then guides through Docs Style Auditor validation and final ATS QA. Shows each stage, what outputs are expected, and success criteria",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I've created a Golden Master Google Doc for a contemporary_professional themed resume variant. The Google Doc ID is 1a2b3c4d5e6f7g8h9i0j. I want to make sure it's properly formatted before registration. What do I need to check?",
+      "expected_output": "Invokes Docs Style Auditor with the theme spec, checks for contemporary_professional theme fonts/sizes (Calibri 10.5pt body, 13pt H1, 17pt title, 1.2 line spacing), validates heading styles, and confirms no tables/images. Returns STYLE OK or detailed FAIL items",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "One of our templates isn't producing the right output in the pipeline. The spec says {{KSC_CRITERION_1_TEXT}} but I think the tokens might be wrong, or maybe the Google Doc formatting is broken. How do I debug this to figure out which stage is failing?",
+      "expected_output": "Guides through diagnostic workflow: validate spec with ATS Template QA Stage 1 (checks token validity), then audit Golden Master with Docs Style Auditor (checks formatting), compares results to identify whether issue is in spec structure or document formatting. Shows exactly where to look to fix the problem",
+      "files": []
+    }
+  ]
+}

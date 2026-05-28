@@ -1,18 +1,22 @@
 {
-  "generated_doc_id": null,
-  "generated_doc_link": null,
+  "generated_doc_id": "1ci7np25B1Hy0GvYRRTRP0WnF6e7OVhJQ1S8rsmmBOlQ",
+  "generated_doc_link": "https://docs.google.com/document/d/1ci7np25B1Hy0GvYRRTRP0WnF6e7OVhJQ1S8rsmmBOlQ/edit?usp=drivesdk",
   "placeholder_stats": {
-    "blank": 37,
-    "filled": 5,
+    "blank": 26,
+    "filled": 16,
     "total": 42
   },
-  "run_timestamp": "2026-05-26T19:32:59.194887+00:00",
+  "run_timestamp": "2026-05-27T21:04:48.741266+00:00",
   "template": "ksc",
-  "template_doc_id": "1mZ8OSphGNvot6Y3NSp3Ix0UdZdSP3MP1zf4LY8o9bVM",
+  "template_doc_id": "1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes",
   "template_variant": null,
   "unresolved_tokens": [],
   "warnings": [
-    "no_criteria_provided_or_parsed",
-    "dry_run_no_google_document_created"
+    "criterion_1_ksc_context_too_long: 130 words (max 100)",
+    "criterion_1_ksc_action_too_long: 207 words (max 200)",
+    "criterion_1_ksc_result_too_long: 152 words (max 100)",
+    "criterion_2_ksc_context_too_long: 130 words (max 100)",
+    "criterion_2_ksc_action_too_long: 207 words (max 200)",
+    "criterion_2_ksc_result_too_long: 152 words (max 100)"
   ]
 }

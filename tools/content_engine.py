@@ -241,9 +241,10 @@ def _clean_text(value: Any) -> str:
 
 
 def _bullet_text(achievement: dict[str, Any]) -> str:
-    """Extract the display text from an achievement node."""
+    """Extract the display text from an achievement node, preferring audit-improved text."""
     return _clean_text(
-        achievement.get("raw_text")
+        achievement.get("suggested_rewrite")
+        or achievement.get("raw_text")
         or achievement.get("text")
         or achievement.get("achievement")
     )
@@ -653,20 +654,52 @@ def generate_professional_summary(
 # ──────────────────────────────────────────────────────────────────────
 
 _RECRUITER_SYSTEM_PROMPT = """\
-You are an expert executive recruiter specialising in Australian public sector and NFP \
-applications. Your task is to rewrite candidate narrative material into polished \
-Context-Action-Result (CAR) sections for a Key Selection Criteria (KSC) response.
+<role>
+You are a senior recruitment consultant with 15+ years specialising in Australian public \
+sector, NFP, and community services applications. You write with precision, authenticity, \
+and a deep understanding of merit-based selection frameworks.
+</role>
 
-Rules:
-1. Context (40-100 words): Set the scene — role, organisation, challenge or mandate.
-2. Action (60-200 words): What the candidate specifically did — concrete steps, methods, \
-skills deployed. Use first person, active voice.
-3. Result (30-100 words): Measurable or observable outcomes. Quantify where evidence supports it.
-4. CRITICAL: Any content you infer, bridge, or synthesise that is NOT directly stated in the \
-source material must be wrapped in [[NEEDS_REVIEW: <your text>]]. This includes inferred \
-metrics, role scope assumptions, or connective tissue you add.
-5. Return ONLY a JSON object with keys "context", "action", "result". No prose outside the JSON.
-6. Do not hallucinate organisation names, dates, or metrics not present in the source.
+<task>
+Rewrite the provided candidate narrative into a structured \
+Context-Action-Result (CAR) response for a Key Selection Criteria (KSC) application. \
+The output must be grounded exclusively in the supplied source material. \
+You will produce a single JSON object and nothing else.
+</task>
+
+<output_schema>
+Return ONLY valid JSON with exactly these three keys:
+{
+  "context": "<40-100 words. The organisational setting, role mandate, and challenge or \
+problem being addressed. Third-person framing of the situation.>",
+  "action":  "<80-200 words. What the candidate personally did — concrete steps, methods, \
+tools, and competencies deployed. First person, active voice, strong action verbs. \
+Never begin with 'I am' or 'I have'.>",
+  "result":  "<40-120 words. Measurable or observable outcomes. Quantify with real figures \
+where the source provides them. Name stakeholder impact where relevant.>"
+}
+No text, explanation, or markdown outside the JSON object.
+</output_schema>
+
+<constraints>
+GROUNDING: Use only information explicitly present in the source narrative and supporting \
+career evidence provided. Do not invent, bridge, or extrapolate.
+
+HALLUCINATION GUARD: Never fabricate organisation names, dates, job titles, team sizes, \
+dollar values, or percentages not stated in the source material.
+
+INFERENCE MARKING: Any word, phrase, or sentence you add that is not directly evidenced \
+in the source MUST be wrapped in [[NEEDS_REVIEW: <your addition>]]. This includes \
+connective tissue, implied scope, and estimated metrics.
+
+AUSTRALIAN ENGLISH: Use Australian spelling and terminology throughout \
+(e.g. "organisation" not "organization", "programme" not "program", \
+"behaviour" not "behavior").
+
+QUALITY BAR: A strong CAR response reads as a confident first-person account. \
+Avoid passive voice, hedging language, and generic filler phrases \
+("demonstrated ability to", "strong communication skills", "team player").
+</constraints>
 """
 
 
@@ -730,7 +763,7 @@ def _rewrite_car_with_llm(
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel(
-            model_name="gemini-2.0-flash",
+            model_name="gemini-2.5-flash",
             system_instruction=_RECRUITER_SYSTEM_PROMPT,
         )
         response = model.generate_content(

@@ -1,0 +1,19 @@
+Resume Action Verb Word Bank
+
+Skill Category | Action Verbs
+
+Creativity & Innovation | Conceptualized, Designed, Developed, Engineered, Illustrated, Improvised, Innovated, Invented, Modelled, Pioneered, Reimagined, Transformed, Visualized, Crafted, Devised, Experimented, Composed, Envisioned, Conceived, Customized, Integrated.
+
+Leadership & Management | Appointed, Coached, Coordinated, Cultivated, Delegated, Directed, Empowered, Established, Guided, Implemented, Individualized, Initiated, Inspired, Lead, Managed, Mentored, Motivated, Oversaw, Spearheaded, Strategized, Streamlined, Supervised, Trained, Developed, Monitored.
+
+Accomplishments | Accelerated, Achieved, Automated, Bolstered, Calibrated, Consolidated, Created, Elevated, Expanded, Executed, Expedited, Forecasted, Generated, Launched, Optimized, Orchestrated, Outperformed, Prevented, Remedied, Restructured, Revamped, Salvaged, Strengthened, Troubleshot, Diagnosed.
+
+Research & Analysis | Analysed, Assessed, Calculated, Categorized, Clarified, Collected, Compared, Compiled, Delineated, Diagnosed, Dissected, Discovered, Estimated, Evaluated, Explored, Extracted, Formulated, Identified, Inspected, Interpreted, Investigated, Measured, Quantified, Researched, Reviewed, Summarized, Synthesized, Surveyed.
+
+Teamwork & Communication | Aided, Assisted, Briefed, Clarified, Collaborated, Communicated, Contacted, Contributed, Conveyed, Coordinated, Cooperated, Corresponded, Cultivated, Discussed, Encouraged, Explained, Facilitated, Fostered, Listened, Mediated, Participated, Presented, Provided, Resolved, Shared, Supported, Translated, Unified.
+
+Organization & Problem Solving | Adapted, Allocated, Amplified, Automated, Boosted, Classified, Combined, Compiled, Divided, Documented, Enhanced, Improved, Integrated, Labeled, Listed, Maximized, Measured, Merged, Organized, Overhauled, Prioritized, Reconciled, Reduced, Reorganized, Resolved, Revised, Standardized, Streamlined.
+
+Sales & Customer Service | Achieved, Acquired, Assisted, Boosted, Built, Closed, Communicated, Connected, Cultivated, Engaged, Ensured, Exceeded, Explained, Followed up, Listened, Liaised, Memorized, Negotiated, Networked, Outperformed, Overcame, Persuaded, Promoted, Provided, Raised, Recommended, Responded, Resolved, Retained, Surpassed, Upsold.
+
+Technical Skills | Administered, Audited, Authorized, Blueprinted, Configured, Debugged, Deployed, Installed, Maintained, Migrated, Processed, Programmed, Prototyped, Protected, Refactored, Regulated, Safeguarded, Scripted, Secured, Tested, Tracked, Triaged, Upgraded, Validated, Verified.
