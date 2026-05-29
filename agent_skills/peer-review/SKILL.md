@@ -25,7 +25,7 @@ Four-phase staged audit for pipeline code changes. Phases 1–2 are always manda
 ## Phase 1 — Triage
 
 1. Extract all file paths named in the audit prompt
-2. Run `git diff HEAD -- <files>` to surface all staged and unstaged changes since the last commit
+2. Run `git diff HEAD -- <files>` to surface all staged and unstaged changes since the last commit. If the diff is empty (clean working tree), note this in the report and proceed by reviewing the current committed state of the named files.
 3. Parse the audit prompt into a numbered list of targeted concerns
 4. **Gate:** If no files are named and no specific concerns are stated, stop and ask for a more specific audit prompt before continuing
 
@@ -81,7 +81,7 @@ Print the verdict banner first, then severity-grouped findings in order: FAIL �
 
 Use this report template:
 
-```markdown
+````markdown
 # Peer Review Report
 _Date: YYYY-MM-DD | Files: <list> | Prompt: "<audit prompt>"_
 
@@ -107,7 +107,7 @@ _Date: YYYY-MM-DD | Files: <list> | Prompt: "<audit prompt>"_
 ## Recommended Actions
 _(Only include this section if verdict is WARN or BLOCK)_
 1. ...
-```
+````
 
 ---
 
