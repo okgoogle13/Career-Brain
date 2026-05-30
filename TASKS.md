@@ -7,8 +7,21 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 ## Active
 
 ### TASK-004 — Database Quality Sweep & Narrative Taxonomy
-**Status:** Ready to execute (Handover to Claude Opus requested)
-**Priority:** High — Garbabe in, garbage out mitigation
+**Status:** 🔄 In progress — Full sweep complete; STAR narrative extension pending
+**Priority:** High — Garbage in, garbage out mitigation
+**Progress:**
+- [x] `pipeline/audit_and_repair_database.py` — built (deterministic rules + two-track Gemini LLM)
+- [x] `pipeline/compile_brain.py` — Pydantic models extended with audit fields; fingerprint-aware merge logic added; `needs_review` added to `_AUDIT_FIELDS`
+- [x] `tools/content_engine.py` — `_bullet_text()` updated to prefer `suggested_rewrite`; migrated to `google-genai` SDK
+- [x] Dry-run executed → `database/quality_audit_report_draft.md` generated (12 stratified samples, live LLM rewrites confirmed)
+- [x] `needs_review` idempotency fix — selective reset: only clears `archived_fragment` flags when bullet no longer qualifies; preserves `compile_brain.py` metric-injection flags
+- [x] SDK migration — `google-generativeai` → `google-genai` 2.7.0 (code + environment); old package uninstalled
+- [x] Full sweep run — `python3 pipeline/audit_and_repair_database.py --write` (2026-05-30)
+  - 2,364 items processed | 1,547 fixed | 1,012 LLM rewrites | 270 lived experience flags | 254 archived fragments
+  - Backup: `database/backups/20260530_020209/`
+  - Report: `database/quality_audit_report.md`
+- [ ] **CURRENT:** STAR narrative gap detection — extend auditor to flag narratives missing a clear Result clause; brainstorm pass required before coding
+
 **Problem Description:** A deep audit of `career_history_enriched.json` (1,017 items) and `ksc_curated.json` (1,347 items) found numerous data quality defects. Specifically, the 665 `statement` type narratives (initially flagged as "lacking outcome language") were delineated via sequential reasoning into:
 1. **Valid Lived Experience (113)**: Intentional identity-grounded claims (preserve/upgrade).
 2. **Mislabelled Outcome Statements (104)**: Actually contain outcome verbs, should be STAR/achievement type (reclassify).
@@ -16,13 +29,7 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 4. **Role Descriptions (19)**: Valid context but missing results (flag for LLM review).
 5. **Generic Filler (14)**: Clichés harming KSC quality (demote/archive).
 6. **Unclassified (396)**: Mostly structural resume headers or bullet lists masquerading as narratives (archive).
-**Resolution Plan:** Build and execute `pipeline/audit_and_repair_database.py` with deterministic fixes (deduplication moving to archive, markdown stripping, structural filtering) and an LLM-assisted pass (Gemini Flash) to enrich tags and metrics.
-**Leveraging Old Knowledge (Claude Code):** During Mode 3 (LLM enrichment) and Mode 2 (deterministic regex), leverage the deep insights synthesized in `domain_knowledge_insights.md`. This includes:
-- **KSC SAO/STAR Standards & Word Counts**: Enforce 60-120 words for snippets and standard SAO/STAR alignment (Hays 2025 / SEEK / Victoria Gov 2022).
-- **Gold Standard Snippets**: Use the complaints handling (Acme), financial/water audit (Sydney Water), and Youth Social Work challenging behaviour (DOCS ADHD case) examples as few-shot LLM training.
-- **Inclusive Language & Cultural Safety**: Respect First Nations gender terms (*Sistergirl*, *Brotherboy*, *Transmob*) and Victorian DFFH 2025 gender guidelines.
-- **Action Verb Word Bank**: Integrate the 8-category action verb database for deterministic outcome analysis and recruiter system prompts.
-(See [domain_knowledge_insights.md](file:///Users/okgoogle13/.gemini/antigravity-ide/brain/dbd09430-e31e-49b2-b021-36e84638e3a7/domain_knowledge_insights.md)).
+**Resolution Plan:** `pipeline/audit_and_repair_database.py` applies deterministic fixes (markdown stripping, glyph removal, lived-experience flagging, CAR quality scoring) followed by a two-track Gemini Flash LLM pass. Use `domain_knowledge_insights.md` as reference for KSC SAO/STAR standards, inclusive language, and action verb bank.
 
 ### TASK-002 — KSC v2 end-to-end validation
 **Status:** Ready to execute (Gemini)

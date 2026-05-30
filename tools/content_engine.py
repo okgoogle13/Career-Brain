@@ -743,9 +743,10 @@ def _rewrite_car_with_llm(
         return None
 
     try:
-        import google.generativeai as genai  # noqa: PLC0415
+        from google import genai  # noqa: PLC0415
+        from google.genai import types  # noqa: PLC0415
     except ImportError:
-        log.warning("google-generativeai package not installed — skipping LLM CAR rewrite")
+        log.warning("google-genai package not installed — skipping LLM CAR rewrite")
         return None
 
     grounding = _extract_grounding_evidence(history, competencies)
@@ -761,14 +762,12 @@ def _rewrite_car_with_llm(
     )
 
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(
-            model_name="gemini-2.5-flash",
-            system_instruction=_RECRUITER_SYSTEM_PROMPT,
-        )
-        response = model.generate_content(
-            user_content,
-            generation_config=genai.types.GenerationConfig(
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=user_content,
+            config=types.GenerateContentConfig(
+                system_instruction=_RECRUITER_SYSTEM_PROMPT,
                 max_output_tokens=600,
                 temperature=0.3,
             ),

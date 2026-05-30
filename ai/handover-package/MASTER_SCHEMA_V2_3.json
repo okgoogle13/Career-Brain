@@ -1,0 +1,246 @@
+{
+  "schema_version": "2.3",
+  "template_id": "master_ats_resume_theme",
+  "tier": 1,
+  "tier_label": "ATS Standard",
+  "doc_type": "resume",
+  "target_sector": [],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDERSCHEMAV2",
+  "description": "Strict master schema for ATS-safe resume theme generation.",
+  "visual_identity": {
+    "theme_name": "MASTER_NEUTRAL_BASELINE",
+    "mood": "neutral, legible, disciplined",
+    "motif_name": "nonerequired",
+    "density_target": "baseline-medium",
+    "silhouette": "single-column document silhouette with clear top header and stacked sections",
+    "personality_axis": "professional, restrained, highly readable",
+    "header_silhouette": "plain",
+    "section_emphasis_pattern": "uniform",
+    "contrast_intensity": "low"
+  },
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": [
+      "Arial",
+      "Calibri",
+      "Georgia"
+    ],
+    "content_layer": "all essential content must remain plain text in normal reading order and selectable",
+    "forbidden_glyphs": [
+      "icons",
+      "emoji",
+      "ornamental bullets",
+      "nonstandard ligatures",
+      "special symbols used as decoration",
+      "layout-only unicode art"
+    ]
+  },
+  "palette": {
+    "base_colours": [
+      "#1F1F1F",
+      "#5F6368",
+      "#D9D9D9"
+    ],
+    "complementary_accent": "#2F6F5F",
+    "neutral_surface": "#FFFFFF",
+    "neutral_text": "#1F1F1F",
+    "neutral_background": "#FAFAF8",
+    "supporting_neutral": "#F1F1EE"
+  },
+  "typography": {
+    "base_font": "Arial",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.25,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 1.4,
+    "section_heading_size_pt": 11,
+    "section_heading_weight": 700
+  },
+  "page": {
+    "margins_in": {
+      "top": 0.65,
+      "right": 0.7,
+      "bottom": 0.65,
+      "left": 0.7
+    },
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "single_column": true,
+    "reading_order": "top_to_bottom_left_to_right",
+    "export_safe": "Google Docs and PDF export compatible"
+  },
+  "bands": {
+    "strategy": "theme-defined but always secondary to text flow; must never replace core content hierarchy",
+    "placement": [
+      "header edge",
+      "section label edge",
+      "metadata strip",
+      "section accent band"
+    ],
+    "intensity": "subtle to moderate only",
+    "height_rule": {
+      "min_pt": 2,
+      "max_pt": 12,
+      "default_pt": 6
+    },
+    "band_targets": [
+      "top header edge",
+      "section separator zones",
+      "small metadata strip",
+      "supporting label bands"
+    ],
+    "highlight_band_targets": [
+      "header edge",
+      "metadata strip",
+      "section labels"
+    ],
+    "band_placement_profile": [
+      "header_only",
+      "section_only",
+      "mixed",
+      "divider_led",
+      "minimal_signature"
+    ],
+    "accent_placement_profile": [
+      "metadata_only",
+      "labels_only",
+      "chips_only",
+      "section_headers_only",
+      "mixed_micro_use"
+    ]
+  },
+  "dividers": {
+    "grammar": "simple and explicit; may vary by theme but must remain lightweight and text-safe",
+    "frequency": "moderate enough to create rhythm without over-fragmenting content",
+    "weight": "thin to medium only",
+    "divider_targets": [
+      "between header and body",
+      "between sections",
+      "between grouped metadata blocks",
+      "between role and achievement clusters"
+    ],
+    "divider_rhythm": [
+      "sparse",
+      "moderate",
+      "frequent",
+      "alternating",
+      "progressive"
+    ]
+  },
+  "accent_logic": {
+    "primary_use": [
+      "section headings",
+      "labels",
+      "thin rules",
+      "metadata markers",
+      "chip borders"
+    ],
+    "complementary_accent_role": "creates controlled contrast and must not dominate body text",
+    "allowed_scope": [
+      "heading edges",
+      "small labels",
+      "chip borders",
+      "micro markers",
+      "selected separators"
+    ],
+    "forbidden_scope": [
+      "full paragraphs",
+      "large blocks",
+      "background fills behind essential text",
+      "text-over-image effects",
+      "decorative emphasis that weakens readability"
+    ],
+    "accent_balance": "accent must remain secondary to neutral text and body structure; use sparingly and deliberately",
+    "contrast_intensity": [
+      "low",
+      "medium",
+      "high"
+    ]
+  },
+  "theme_specific_rules": {
+    "must_include": [
+      "single-column text-first structure",
+      "dark body text",
+      "explicit motif",
+      "explicit density target",
+      "explicit band strategy",
+      "explicit divider grammar",
+      "explicit accent placement",
+      "clear header hierarchy"
+    ],
+    "forbidden_repeats": [
+      "same top-of-page structure across themes",
+      "same section label treatment across themes",
+      "same divider grammar as previous theme",
+      "same chip treatment as previous theme",
+      "same band placement as previous theme",
+      "tonal-only palette dependency"
+    ],
+    "visual_differentiators": [
+      "vary silhouette",
+      "vary top header structure",
+      "vary spacing rhythm",
+      "vary section heading treatment",
+      "vary metadata treatment",
+      "vary emphasis hierarchy",
+      "vary band placement"
+    ],
+    "anti_generic_rules": [
+      "do not collapse to a mild recolor",
+      "do not reuse the same header layout",
+      "do not keep the same divider pattern across every theme",
+      "do not soften hierarchy to a safe default",
+      "do not rely only on palette changes",
+      "do not produce visually interchangeable variants",
+      "do not use the same visual recipe as the previous theme",
+      "do not repeat band placement from the previous theme",
+      "do not repeat divider rhythm from the previous theme"
+    ],
+    "non_reuse_constraints": [
+      "no repeated top-of-page pattern",
+      "no repeated divider grammar from previous theme",
+      "no repeated band placement from previous theme"
+    ],
+    "adjacent_theme_difference_rules": [
+      "must differ from previous theme in band placement",
+      "must differ from previous theme in divider rhythm",
+      "must differ from previous theme in accent placement"
+    ]
+  },
+  "section_heading_style": {
+    "font_color": "#2F6F5F",
+    "text_transform": "uppercase",
+    "decoration": "minimal line, band edge, or label treatment only",
+    "accent_color": "#2F6F5F"
+  },
+  "body_text_color": "#1F1F1F",
+  "muted_text_color": "#5F6368",
+  "skills_background_tint": "#F1F1EE",
+  "avoid_list": [
+    "tonal-only palette",
+    "same top-of-page structure",
+    "same divider grammar as previous theme",
+    "same chip treatment as previous theme",
+    "generic safe fallback",
+    "over-softened hierarchy",
+    "repeated band placement",
+    "multi-column layout",
+    "sidebar layout",
+    "text boxes",
+    "layout tables",
+    "floating objects",
+    "decorative graphics",
+    "icons",
+    "images",
+    "headers and footers for essential content",
+    "low-contrast body text",
+    "repeating the previous theme's silhouette",
+    "repeating the previous theme's accent placement",
+    "repeating the previous theme's density target"
+  ]
+}

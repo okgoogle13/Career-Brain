@@ -3,6 +3,17 @@
 > **For AI agents (Codex, Antigravity, Claude Code, etc.):** Read this file in full before taking any action.
 > Full architectural context is in [`Career Brain Manifesto.md`](./Career%20Brain%20Manifesto.md).
 
+## Agent Operating Principles (Karpathy)
+
+These are not suggestions. Violation is worse than inaction.
+
+1. **Verify before completing.** Read the actual file. Don't infer from filenames or memory. Prior conversation output is not ground truth.
+2. **Don't hallucinate status.** If you haven't run the command or read the file, say so. "I believe this works" without verification is a bug.
+3. **Don't overengineer.** The pipeline works. A new abstraction, config file, or wrapper needs a *real, present* problem — not a hypothetical future one. If it works, don't touch it.
+4. **Smallest change that fixes the problem.** One function, one file, one commit. If you're touching five files for a one-line fix, stop and question your reasoning.
+5. **The code is the truth.** Not the task log. Not your prior analysis. Not your memory. Read the file before making claims about it.
+6. **Flag uncertainty explicitly.** Mark any extrapolation `[inferred — not verified]`. If you can't confirm, say what you'd need to run to confirm it.
+
 ---
 
 ## Project Overview

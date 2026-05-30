@@ -1,0 +1,203 @@
+{
+  "schema_version": "2.3",
+  "template_id": "theme_nordic_neon",
+  "tier": 1,
+  "tier_label": "ATS Standard",
+  "doc_type": "resume",
+  "target_sector": [],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDERSCHEMAV2",
+  "description": "Crisp electric divider-led theme with micro-offset accents and sharp solid rules.",
+  "visual_identity": {
+    "theme_name": "Nordic Neon",
+    "mood": "crisp, cool, electric",
+    "motif_name": "micro-accent tension",
+    "density_target": "tight",
+    "silhouette": "divider-led",
+    "personality_axis": "precise, electric, restrained",
+    "header_silhouette": "minimal",
+    "section_emphasis_pattern": "divider-led with micro markers",
+    "contrast_intensity": "high"
+  },
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": [
+      "Arial",
+      "Calibri",
+      "Georgia"
+    ],
+    "content_layer": "all essential content must remain plain text in normal reading order and selectable",
+    "forbidden_glyphs": [
+      "icons",
+      "emoji",
+      "ornamental bullets",
+      "nonstandard ligatures",
+      "special symbols used as decoration",
+      "layout-only unicode art"
+    ]
+  },
+  "palette": {
+    "base_colours": [
+      "#121824",
+      "#63738A",
+      "#D7F4FF"
+    ],
+    "complementary_accent": "#7BE0FF",
+    "neutral_surface": "#F8FCFD",
+    "neutral_text": "#121824",
+    "neutral_background": "#F8FCFD",
+    "supporting_neutral": "#E6F7FA"
+  },
+  "typography": {
+    "base_font": "Arial",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.24,
+    "spacing_after_pt": 5,
+    "section_heading_tracking_pt": 1.6,
+    "section_heading_size_pt": 11,
+    "section_heading_weight": 700
+  },
+  "page": {
+    "margins_in": {
+      "top": 0.65,
+      "right": 0.7,
+      "bottom": 0.65,
+      "left": 0.7
+    },
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "single_column": true,
+    "reading_order": "top_to_bottom_left_to_right",
+    "export_safe": "Google Docs and PDF export compatible"
+  },
+  "bands": {
+    "strategy": "mostly divider-led with only a subtle band",
+    "placement": [
+      "metadata strip",
+      "section label edge"
+    ],
+    "intensity": "subtle",
+    "height_rule": {
+      "min_pt": 2,
+      "max_pt": 5,
+      "default_pt": 3
+    },
+    "band_targets": [
+      "small metadata strip",
+      "supporting label bands"
+    ],
+    "highlight_band_targets": [
+      "metadata strip"
+    ],
+    "band_placement_profile": "divider_led",
+    "accent_placement_profile": "metadata_only"
+  },
+  "dividers": {
+    "grammar": "sharp solid rules with micro-offsets",
+    "frequency": "moderate",
+    "weight": "thin to medium",
+    "divider_targets": [
+      "between header and body",
+      "between sections",
+      "between grouped metadata blocks",
+      "between role and achievement clusters"
+    ],
+    "divider_rhythm": "alternating"
+  },
+  "accent_logic": {
+    "primary_use": [
+      "metadata markers",
+      "section headings",
+      "thin rules",
+      "micro markers"
+    ],
+    "complementary_accent_role": "adds electric contrast while remaining subordinate to body structure",
+    "allowed_scope": [
+      "heading edges",
+      "small labels",
+      "micro markers",
+      "selected separators"
+    ],
+    "forbidden_scope": [
+      "full paragraphs",
+      "large blocks",
+      "background fills behind essential text",
+      "text-over-image effects",
+      "decorative emphasis that weakens readability"
+    ],
+    "accent_balance": "accent stays precise and spare",
+    "contrast_intensity": "high"
+  },
+  "theme_specific_rules": {
+    "must_include": [
+      "single-column text-first structure",
+      "dark body text",
+      "explicit motif",
+      "explicit density target",
+      "explicit band strategy",
+      "explicit divider grammar",
+      "explicit accent placement",
+      "clear header hierarchy"
+    ],
+    "forbidden_repeats": [
+      "same top-of-page structure across themes",
+      "same section label treatment across themes",
+      "same divider grammar as previous theme",
+      "same chip treatment as previous theme",
+      "same band placement as previous theme",
+      "tonal-only palette dependency"
+    ],
+    "visual_differentiators": [
+      "electric cyan neon micro accents",
+      "tight divider-led rhythm with offsets",
+      "minimal header treatment"
+    ],
+    "anti_generic_rules": [
+      "do not blur dividers into soft lines",
+      "do not reduce accent to desaturated grey-blue",
+      "do not use warm accent tones"
+    ],
+    "non_reuse_constraints": [
+      "no repeated top-of-page pattern",
+      "no repeated divider grammar from previous theme",
+      "no repeated band placement from previous theme"
+    ],
+    "adjacent_theme_difference_rules": [
+      "must differ from previous theme in band placement",
+      "must differ from previous theme in divider rhythm",
+      "must differ from previous theme in accent placement"
+    ]
+  },
+  "section_heading_style": {
+    "font_color": "#4F89B9",
+    "text_transform": "uppercase",
+    "decoration": "minimal line with micro-offset edge",
+    "accent_color": "#7BE0FF"
+  },
+  "body_text_color": "#121824",
+  "muted_text_color": "#63738A",
+  "skills_background_tint": "#E6F7FA",
+  "avoid_list": [
+    "tonal-only palette",
+    "same top-of-page structure",
+    "same divider grammar as previous theme",
+    "same chip treatment as previous theme",
+    "generic safe fallback",
+    "over-softened hierarchy",
+    "repeated band placement",
+    "multi-column layout",
+    "sidebar layout",
+    "text boxes",
+    "layout tables",
+    "floating objects",
+    "decorative graphics",
+    "icons",
+    "images",
+    "headers and footers for essential content",
+    "low-contrast body text"
+  ]
+}

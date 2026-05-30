@@ -493,7 +493,7 @@ def extract_role_blocks(text: str) -> list[dict]:
 # (Preserve audit fields written by audit_and_repair_database.py across re-compiles)
 # ════════════════════════════════════════════════════════════════════════════
 
-_AUDIT_FIELDS = ("is_lived_experience", "car_quality_score", "applied_fixes", "suggested_rewrite")
+_AUDIT_FIELDS = ("is_lived_experience", "car_quality_score", "applied_fixes", "suggested_rewrite", "needs_review")
 
 
 def _norm(text: str) -> str:
