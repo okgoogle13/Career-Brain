@@ -667,6 +667,25 @@ The output must be grounded exclusively in the supplied source material. \
 You will produce a single JSON object and nothing else.
 </task>
 
+<community_services_values>
+The Community Services sector in Australia is guided by these core values. \
+Your rewrites must authentically reflect them — not as generic filler, but as \
+demonstrated behaviours woven into the CAR narrative:
+
+- PERSON-CENTRED: The client's dignity, voice, and self-determination are paramount. \
+  Use language that centres the person, not the service system.
+- TRAUMA-INFORMED: Acknowledge that clients carry complex histories. \
+  Actions should reflect safety, trust, choice, collaboration, and empowerment.
+- STRENGTHS-BASED: Frame challenges as opportunities to build capacity. \
+  Highlight client resilience and the candidate's role in amplifying it.
+- SOCIAL JUSTICE: Recognise structural disadvantage. Actions that address \
+  systemic barriers (access, equity, inclusion) are valued over transactional service delivery.
+- COLLABORATIVE: Emphasise partnerships — with clients, families, carers, \
+  multidisciplinary teams, and community organisations.
+- ACCOUNTABILITY: Evidence-based practice, clear documentation, \
+  and outcome measurement matter in this sector.
+</community_services_values>
+
 <output_schema>
 Return ONLY valid JSON with exactly these three keys:
 {
@@ -700,6 +719,64 @@ QUALITY BAR: A strong CAR response reads as a confident first-person account. \
 Avoid passive voice, hedging language, and generic filler phrases \
 ("demonstrated ability to", "strong communication skills", "team player").
 </constraints>
+
+<few_shot_examples>
+Study these gold-standard examples carefully. Match their tone, specificity, \
+sector language, and structural balance exactly.
+
+EXAMPLE 1 — KSC: Experience in providing direct support to vulnerable individuals
+{
+  "context": "Working in a homelessness outreach service, I was assigned a client who had \
+been rough sleeping for over two years and had a deep distrust of support services due to \
+past negative experiences. Rebuilding that trust was the prerequisite for any practical \
+intervention.",
+  "action": "I employed a trauma-informed approach, meeting the client on their terms in \
+familiar public spaces rather than an office. Using active listening, I consistently \
+followed through on small promises — bringing a coffee, a warm blanket — to demonstrate \
+reliability over three weeks. I mapped local services and, with the client's gradual \
+consent, facilitated a warm handover to a community mental health practitioner, ensuring \
+continuity of care rather than a cold referral.",
+  "result": "This patient, client-centred approach successfully broke the cycle of \
+disengagement. The client entered supportive accommodation and began actively \
+participating in their mental health recovery plan — an outcome that had not been \
+achievable through previous service contacts."
+}
+
+EXAMPLE 2 — KSC: Ability to use lived experience of recovery
+{
+  "context": "A new client in our AOD recovery programme was expressing significant \
+hopelessness, stating they did not believe long-term recovery was possible. The clinical \
+team identified an opportunity for peer-led engagement to complement the therapeutic model.",
+  "action": "Using intentional self-disclosure, I briefly shared that I had faced similar \
+feelings early in my own journey, then immediately refocused the conversation on the \
+client — applying motivational interviewing techniques to explore their values and what \
+a life in recovery could mean for them. I shared practical, non-clinical strategies for \
+managing early cravings, drawn from personal experience, without oversharing or \
+making the session about myself.",
+  "result": "The client reported a significant shift in perspective, describing the \
+conversation as a turning point. They remained engaged in the programme and later \
+volunteered as a peer mentor for newer members — demonstrating the multiplier effect \
+of peer-led support."
+}
+
+EXAMPLE 3 — KSC: Demonstrated organisational skills
+{
+  "context": "Our annual community wellness event — serving over 300 residents — was at \
+risk after a key service provider withdrew with 48 hours' notice. The Programme \
+Coordinator needed immediate support to manage replacement sourcing, stakeholder \
+communications, and materials updates simultaneously.",
+  "action": "I created a shared tracking spreadsheet to manage potential replacement \
+providers, their contact details, and communication status in real time. I drafted a \
+clear, concise stakeholder update template so communications could go out the moment \
+a replacement was confirmed. While the Coordinator handled provider negotiations by phone, \
+I updated the event run sheet and promotional materials in parallel, eliminating \
+sequential bottlenecks.",
+  "result": "A replacement provider was secured within 24 hours. All stakeholder \
+communications were distributed with a full day to spare. The event proceeded without \
+disruption to the 300+ attendees, and the Coordinator noted the parallel-workstream \
+approach as a model for future contingency planning."
+}
+</few_shot_examples>
 """
 
 
@@ -768,15 +845,13 @@ def _rewrite_car_with_llm(
             contents=user_content,
             config=types.GenerateContentConfig(
                 system_instruction=_RECRUITER_SYSTEM_PROMPT,
-                max_output_tokens=600,
+                max_output_tokens=2048,
                 temperature=0.3,
+                responseMimeType="application/json",
+                thinkingConfig=types.ThinkingConfig(thinkingBudget=0),
             ),
         )
         raw = response.text.strip()
-        # Strip markdown fences if present
-        if raw.startswith("```"):
-            raw = re.sub(r"^```[a-z]*\n?", "", raw)
-            raw = re.sub(r"\n?```$", "", raw)
         parsed = json.loads(raw)
         result = {
             "context": str(parsed.get("context", "")),

@@ -6,8 +6,8 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 ## Active
 
-### TASK-004 — Database Quality Sweep & Narrative Taxonomy
-**Status:** 🔄 In progress — Full sweep complete; STAR narrative extension pending
+### TASK-004 — Database Quality Sweep & Narrative Taxonomy — ✅ COMPLETE 2026-05-30
+**Status:** ✅ Complete
 **Priority:** High — Garbage in, garbage out mitigation
 **Progress:**
 - [x] `pipeline/audit_and_repair_database.py` — built (deterministic rules + two-track Gemini LLM)
@@ -17,10 +17,12 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [x] `needs_review` idempotency fix — selective reset: only clears `archived_fragment` flags when bullet no longer qualifies; preserves `compile_brain.py` metric-injection flags
 - [x] SDK migration — `google-generativeai` → `google-genai` 2.7.0 (code + environment); old package uninstalled
 - [x] Full sweep run — `python3 pipeline/audit_and_repair_database.py --write` (2026-05-30)
-  - 2,364 items processed | 1,547 fixed | 1,012 LLM rewrites | 270 lived experience flags | 254 archived fragments
-  - Backup: `database/backups/20260530_020209/`
+  - First pass: 2,364 items processed | 1,547 fixed | 1,012 LLM rewrites | 270 lived experience flags | 254 archived fragments (Backup: `database/backups/20260530_020209/`)
+  - Incremental STAR result pass (2026-05-30): Surgically updated `should_process()` to check all 2,363 items and incrementally run Gemini LLM rewrites for the 53 qualifying STAR narratives missing results.
+  - Backup: `database/backups/20260530_192945/`
   - Report: `database/quality_audit_report.md`
-- [ ] **CURRENT:** STAR narrative gap detection — extend auditor to flag narratives missing a clear Result clause; brainstorm pass required before coding
+- [x] STAR narrative gap detection — extend auditor to flag narratives missing a clear Result clause; built, verified, and executed.
+- [x] `_RECRUITER_SYSTEM_PROMPT` updated — Community Services Values block + 3 gold-standard STAR few-shot examples added (2026-05-30)
 
 **Problem Description:** A deep audit of `career_history_enriched.json` (1,017 items) and `ksc_curated.json` (1,347 items) found numerous data quality defects. Specifically, the 665 `statement` type narratives (initially flagged as "lacking outcome language") were delineated via sequential reasoning into:
 1. **Valid Lived Experience (113)**: Intentional identity-grounded claims (preserve/upgrade).
@@ -31,22 +33,24 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 6. **Unclassified (396)**: Mostly structural resume headers or bullet lists masquerading as narratives (archive).
 **Resolution Plan:** `pipeline/audit_and_repair_database.py` applies deterministic fixes (markdown stripping, glyph removal, lived-experience flagging, CAR quality scoring) followed by a two-track Gemini Flash LLM pass. Use `domain_knowledge_insights.md` as reference for KSC SAO/STAR standards, inclusive language, and action verb bank.
 
-### TASK-002 — KSC v2 end-to-end validation
-**Status:** Ready to execute (Gemini)
+### TASK-002 — KSC v2 end-to-end validation — ✅ COMPLETE 2026-05-30
+**Status:** ✅ Complete
 **Priority:** High — v2 tooling is built but never validated; existing ksc_base was built with v1
 **Spec:** `docs/superpowers/specs/2026-05-27-session-status-and-next-steps-design.md` § Task 2
 **Design doc:** `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md`
 **Leveraging Old Knowledge (Gemini):** Before live generation, update `_RECRUITER_SYSTEM_PROMPT` in `content_engine.py` to enforce Community Services Values. Provide the Gold Standard STAR KSC responses from `archive/Chromebook Downloads/ai_studio_code.txt` as few-shot examples so the LLM perfectly replicates the Australian sector tone and structure.
 
 Steps:
-- [ ] 1. Invoke `gold_template_builder_v3` → produce `context/specs/ksc_standard_v2_spec.md`
-- [ ] 2. Run `python3 tools/validate_template_spec.py context/specs/ksc_standard_v2_spec.md` — iterate until `SPEC OK`
-- [ ] 3. Translate validated spec → `templates/ksc_standard_v2.json` (follow `templates/THEME_SPEC_GUIDE.md`)
-- [ ] 4. Run `python3 tools/build_golden_master.py templates/ksc_standard_v2.json` — capture Doc ID
-- [ ] 5. Update `config/doc_templates.json` with new Doc ID under `ksc.variants.standard`
-- [ ] 6. Run dry-run: `python3 tools/generate_document.py --type ksc --target "Test Role at Test Org" --criteria <file> --dry-run`
-- [ ] 7. Run one live KSC generation — inspect output
-- [ ] 8. Mark `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md` status as Approved
+- [x] 0. Pre-work: Updated `_RECRUITER_SYSTEM_PROMPT` in `tools/content_engine.py` — added `<community_services_values>` block + 3 gold-standard STAR few-shot examples (2026-05-30)
+- [x] 1. `context/specs/ksc_standard_v2_spec.md` already existed from prior session
+- [x] 2. `python3 tools/validate_template_spec.py` → `SPEC OK` (2026-05-30); fixed DOC_ID placeholder
+- [x] 3. `templates/ksc_standard_v2.json` already existed from prior session
+- [x] 4. Golden master Doc ID `1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes` already in `config/doc_templates.json`
+- [x] 5. `config/doc_templates.json` already registered under `ksc.template_doc_id`
+- [x] 6. Dry-run: 6/6 LLM CAR rewrites successful, 30/42 filled, 0 unresolved (2026-05-30)
+  - Fixed Gemini 2.5-flash JSON truncation bug: `thinkingBudget=0` + `responseMimeType="application/json"` + `max_output_tokens=2048`
+- [x] 7. Live KSC generation — Doc `1yXUubTrE9U0mQceDBkrz0oSeTcSO9Fnjk9qBI4AZoZ4` created; 6/6 LLM calls succeeded (2026-05-30)
+- [x] 8. `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md` status → Approved (2026-05-30)
 
 **Gate:** Do not proceed past Step 2 until validator returns exit 0.
 
