@@ -1,0 +1,200 @@
+{
+  "schema_version": "2.3",
+  "template_id": "theme_violet_signal",
+  "tier": 1,
+  "tier_label": "ATS Standard",
+  "doc_type": "resume",
+  "target_sector": [],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDERSCHEMAV2",
+  "description": "Expressive editorial theme with violet signal accents and strong divider variation.",
+  "visual_identity": {
+    "theme_name": "Violet Signal",
+    "mood": "expressive, editorial, confident",
+    "motif_name": "signal lines",
+    "density_target": "medium",
+    "silhouette": "divider-led",
+    "personality_axis": "bold, articulate, modern",
+    "header_silhouette": "compact with signal rule",
+    "section_emphasis_pattern": "divider-led with label focus",
+    "contrast_intensity": "medium to high"
+  },
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": [
+      "Georgia",
+      "Calibri",
+      "Arial"
+    ],
+    "content_layer": "all essential content must remain plain text in normal reading order and selectable",
+    "forbidden_glyphs": [
+      "icons",
+      "emoji",
+      "ornamental bullets",
+      "nonstandard ligatures",
+      "special symbols used as decoration",
+      "layout-only unicode art"
+    ]
+  },
+  "palette": {
+    "base_colours": [
+      "#111827",
+      "#4C1D95",
+      "#7C3AED"
+    ],
+    "complementary_accent": "#F97316",
+    "neutral_surface": "#FFFFFF",
+    "neutral_text": "#111827",
+    "neutral_background": "#FFFFFF",
+    "supporting_neutral": "#F3E8FF"
+  },
+  "typography": {
+    "base_font": "Georgia",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.26,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 1.5,
+    "section_heading_size_pt": 11,
+    "section_heading_weight": 700
+  },
+  "page": {
+    "margins_in": {
+      "top": 0.65,
+      "right": 0.7,
+      "bottom": 0.65,
+      "left": 0.7
+    },
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "single_column": true,
+    "reading_order": "top_to_bottom_left_to_right",
+    "export_safe": "Google Docs and PDF export compatible"
+  },
+  "bands": {
+    "strategy": "minimal bands, emphasis on signal-like rules",
+    "placement": [
+      "metadata strip"
+    ],
+    "intensity": "subtle",
+    "height_rule": {
+      "min_pt": 2,
+      "max_pt": 4,
+      "default_pt": 3
+    },
+    "band_targets": [
+      "small metadata strip"
+    ],
+    "highlight_band_targets": [
+      "metadata strip"
+    ],
+    "band_placement_profile": "divider_led",
+    "accent_placement_profile": "labels_and_rules"
+  },
+  "dividers": {
+    "grammar": "mix of thin and slightly heavier rules suggesting editorial signals",
+    "frequency": "moderate to high",
+    "weight": "thin to medium",
+    "divider_targets": [
+      "between header and body",
+      "between sections",
+      "between role and achievement clusters",
+      "between grouped metadata blocks"
+    ],
+    "divider_rhythm": "editorial"
+  },
+  "accent_logic": {
+    "primary_use": [
+      "section headings",
+      "signal lines",
+      "metadata markers"
+    ],
+    "complementary_accent_role": "violet draws attention to structure, optional warm accent adds subtle contrast",
+    "allowed_scope": [
+      "heading edges",
+      "small labels",
+      "signal-like rules",
+      "selected separators"
+    ],
+    "forbidden_scope": [
+      "full paragraphs",
+      "large blocks",
+      "background fills behind essential text",
+      "text-over-image effects",
+      "decorative emphasis that weakens readability"
+    ],
+    "accent_balance": "violet is primary; warm accent remains minimal",
+    "contrast_intensity": "medium to high"
+  },
+  "theme_specific_rules": {
+    "must_include": [
+      "single-column text-first structure",
+      "dark body text",
+      "explicit motif",
+      "explicit density target",
+      "explicit band strategy",
+      "explicit divider grammar",
+      "explicit accent placement",
+      "clear header hierarchy"
+    ],
+    "forbidden_repeats": [
+      "same top-of-page structure across themes",
+      "same section label treatment across themes",
+      "same divider grammar as previous theme",
+      "same chip treatment as previous theme",
+      "same band placement as previous theme",
+      "tonal-only palette dependency"
+    ],
+    "visual_differentiators": [
+      "violet signal lines",
+      "editorial divider rhythm",
+      "minimal bands with strong rule character"
+    ],
+    "anti_generic_rules": [
+      "do not desaturate violet into generic navy",
+      "do not remove variation in rule weight",
+      "do not flatten into standard corporate minimal theme"
+    ],
+    "non_reuse_constraints": [
+      "no repeated top-of-page pattern",
+      "no repeated divider grammar from previous theme",
+      "no repeated band placement from previous theme"
+    ],
+    "adjacent_theme_difference_rules": [
+      "must differ from previous theme in band placement",
+      "must differ from previous theme in divider rhythm",
+      "must differ from previous theme in accent placement"
+    ]
+  },
+  "section_heading_style": {
+    "font_color": "#4C1D95",
+    "text_transform": "uppercase",
+    "decoration": "signal rule under or beside heading",
+    "accent_color": "#7C3AED"
+  },
+  "body_text_color": "#111827",
+  "muted_text_color": "#6B7280",
+  "skills_background_tint": "#F3E8FF",
+  "avoid_list": [
+    "tonal-only palette",
+    "same top-of-page structure",
+    "same divider grammar as previous theme",
+    "same chip treatment as previous theme",
+    "generic safe fallback",
+    "over-softened hierarchy",
+    "repeated band placement",
+    "multi-column layout",
+    "sidebar layout",
+    "text boxes",
+    "layout tables",
+    "floating objects",
+    "decorative graphics",
+    "icons",
+    "images",
+    "headers and footers for essential content",
+    "low-contrast body text"
+  ]
+}

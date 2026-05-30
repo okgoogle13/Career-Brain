@@ -30,12 +30,19 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+import dotenv
 
 # ─── Paths ────────────────────────────────────────────────────────────────────
-BASE     = Path(__file__).parent.parent
-DB       = BASE / "database"
-ENRICHED = DB / "career_history_enriched.json"
-CURATED  = DB / "ksc_curated.json"
+BASE      = Path(__file__).parent.parent
+DB        = BASE / "database"
+ENRICHED  = DB / "career_history_enriched.json"
+CURATED   = DB / "ksc_curated.json"
+ERROR_LOG = DB / "parsing_errors.log"
+
+dotenv.load_dotenv(BASE / ".env")
+
+sys.path.insert(0, str(BASE))
+from tools.content_engine import _looks_like_cover_letter  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
@@ -43,6 +50,13 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 log = logging.getLogger("audit_repair")
+
+
+def _log_pipeline_error(source: str, reason: str) -> None:
+    entry = f"[{datetime.now().isoformat()}] ERROR | {source} | {reason}\n"
+    with ERROR_LOG.open("a", encoding="utf-8") as fh:
+        fh.write(entry)
+    log.warning("AUDIT ERROR: %s → %s", source, reason)
 
 # ─── Patterns ─────────────────────────────────────────────────────────────────
 _GLYPH_RE = re.compile(r"[•✔★❖●✅❌|]|\*\*")
@@ -120,10 +134,36 @@ def run_deterministic(item: dict, text_field: str) -> list[str]:
 
     item["car_quality_score"] = score_car_quality(current)
 
+    # Flag structural headers/fragments for archiving (skip LLM).
+    # Only clear needs_review if the item was previously an archived_fragment that no longer
+    # qualifies — do NOT unconditionally reset, as compile_brain.py sets needs_review=True for
+    # long bullets with zero metrics (consumed by inject_metrics.py).
+    is_fragment = (
+        len(current.split()) < 10
+        and not _METRIC_RE.search(current)
+        and not _RESULT_RE.search(current)
+    )
+    if is_fragment:
+        item["needs_review"] = True
+        fixes.append("archived_fragment")
+    else:
+        if "archived_fragment" in item.get("applied_fixes", []):
+            item["applied_fixes"] = [f for f in item["applied_fixes"] if f != "archived_fragment"]
+            item["needs_review"] = False
+
     if text_field == "raw_text":
         verb = item.get("action_verb", "")
         if not verb or _BAD_VERB_RE.match(verb):
             fixes.append("flagged_bad_action_verb")
+
+    if (
+        item.get("narrative_type") == "STAR"
+        and not _looks_like_cover_letter(current)
+        and not _RESULT_RE.search(current)
+        and len(current.split()) > 15
+    ):
+        item["needs_review"] = True
+        fixes.append("missing_result")
 
     return fixes
 
@@ -163,6 +203,23 @@ Do NOT alter, minimise, or qualify the lived experience.
 Return ONLY the improved text as a plain string.
 """
 
+_SYSTEM_STAR_RESULT = """\
+You are a senior Australian public sector recruitment consultant.
+The following is a KSC (Key Selection Criteria) narrative in STAR format.
+It has a Situation, Task, and Action — but is MISSING a clear Result.
+
+Your task:
+1. Read the existing narrative carefully.
+2. Add a concise Result sentence (1-3 sentences) that completes the STAR structure.
+3. Return ONLY the full improved narrative as plain text — do not add headings or labels.
+
+CONSTRAINTS:
+- Do NOT rewrite or alter the existing Situation/Task/Action content.
+- HALLUCINATION GUARD: Only state results clearly implied by the actions described.
+- Wrap any inferred result in [[NEEDS_REVIEW: <your addition>]].
+- AUSTRALIAN ENGLISH: "organisation", "programme", "behaviour".
+"""
+
 
 def _call_gemini(prompt: str, system: str, max_tokens: int = 500) -> Optional[str]:
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -170,26 +227,25 @@ def _call_gemini(prompt: str, system: str, max_tokens: int = 500) -> Optional[st
         log.debug("GEMINI_API_KEY not set — skipping LLM rewrite")
         return None
     try:
-        import google.generativeai as genai  # noqa: PLC0415
+        from google import genai  # noqa: PLC0415
+        from google.genai import types  # noqa: PLC0415
     except ImportError:
-        log.warning("google-generativeai not installed — skipping LLM rewrite")
+        log.warning("google-genai not installed — skipping LLM rewrite")
         return None
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(
-            model_name="gemini-2.5-flash",
-            system_instruction=system,
-        )
-        resp = model.generate_content(
-            prompt,
-            generation_config=genai.types.GenerationConfig(
+        client = genai.Client(api_key=api_key)
+        resp = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=system,
                 max_output_tokens=max_tokens,
                 temperature=0.3,
             ),
         )
         return resp.text.strip()
     except Exception as exc:
-        log.warning("Gemini call failed: %s", exc)
+        _log_pipeline_error("audit_and_repair_database/_call_gemini", str(exc))
         return None
 
 
@@ -214,11 +270,19 @@ def rewrite_with_llm(item: dict, text_field: str, history: Optional[dict]) -> bo
     text = item.get(text_field, "")
     is_lived = item.get("is_lived_experience", False)
 
+    is_missing_result = "missing_result" in item.get("applied_fixes", [])
+
     if is_lived:
         result = _call_gemini(
             prompt=f"Improve this lived experience statement:\n\n{text}",
             system=_SYSTEM_LIVED_EXP,
             max_tokens=300,
+        )
+    elif is_missing_result:
+        result = _call_gemini(
+            prompt=f"STAR NARRATIVE MISSING RESULT:\n\n{text}",
+            system=_SYSTEM_STAR_RESULT,
+            max_tokens=1500,
         )
     else:
         competencies = item.get("competency_tags") or item.get("domain_tags") or []
@@ -269,9 +333,13 @@ def _categorise(item: dict, text_field: str) -> Optional[str]:
         return "lived_experience"
     if text_field == "raw_text" and (not verb or _BAD_VERB_RE.match(verb)):
         return "bad_action_verb"
+    if len(text.split()) < 10 and not _METRIC_RE.search(text) and not _RESULT_RE.search(text):
+        return "archived_fragment"
     if _SUBJECTIVE_RE.search(text) and not _METRIC_RE.search(text):
         return "subjective_claim"
     if len(text.split()) > 15 and not _METRIC_RE.search(text) and not _RESULT_RE.search(text):
+        if item.get("narrative_type") == "STAR" and not _looks_like_cover_letter(text):
+            return "missing_result"
         return "incomplete_car"
     return None
 
@@ -283,7 +351,7 @@ def sample_stratified(
 ) -> list[dict]:
     """Return up to 10 stratified sample items, 2 per problem category."""
     CATEGORIES = ["formatting_artifact", "lived_experience", "bad_action_verb",
-                  "subjective_claim", "incomplete_car"]
+                  "subjective_claim", "incomplete_car", "archived_fragment", "missing_result"]
     buckets: dict[str, list[dict]] = {c: [] for c in CATEGORIES}
 
     for role in enriched.get("roles", []):
@@ -338,21 +406,32 @@ def process_item(
     if not should_process(item, force, min_score):
         return []
 
-    det_fixes = run_deterministic(item, text_field)
+    try:
+        det_fixes = run_deterministic(item, text_field)
 
-    existing_fixes = item.get("applied_fixes", [])
-    all_fixes = list(set(existing_fixes + det_fixes))
-    item["applied_fixes"] = all_fixes
+        existing_fixes = item.get("applied_fixes", [])
+        all_fixes = list(set(existing_fixes + det_fixes))
+        item["applied_fixes"] = all_fixes
 
-    needs_llm = (
-        item.get("car_quality_score", 0) <= 2
-        or "removed_markdown_glyphs" in det_fixes
-        or "flagged_bad_action_verb" in det_fixes
-    )
-    if needs_llm:
-        rewrite_with_llm(item, text_field, history)
+        needs_llm = (
+            item.get("car_quality_score", 0) <= 2
+            or "removed_markdown_glyphs" in det_fixes
+            or "flagged_bad_action_verb" in det_fixes
+            or "missing_result" in det_fixes
+        )
+        if "archived_fragment" in det_fixes:
+            needs_llm = False
 
-    return det_fixes + (["llm_rewrite"] if "llm_rewrite" in item.get("applied_fixes", []) and "llm_rewrite" not in existing_fixes else [])
+        if needs_llm:
+            rewrite_with_llm(item, text_field, history)
+
+        return det_fixes + (["llm_rewrite"] if "llm_rewrite" in item.get("applied_fixes", []) and "llm_rewrite" not in existing_fixes else [])
+    except Exception as exc:
+        _log_pipeline_error(
+            "audit_and_repair_database/process_item",
+            f"text[:60]={item.get(text_field, '')[:60]!r} | {exc}",
+        )
+        return []
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -398,7 +477,7 @@ def render_report(
             "",
         ]
         if item.get("suggested_rewrite"):
-            lines += [f"**LLM suggested rewrite:** {item['suggested_rewrite'][:400]}", ""]
+            lines += [f"**LLM suggested rewrite:** {item['suggested_rewrite'][:1200]}", ""]
         lines += [
             f"**Fixes applied:** `{'`, `'.join(fixes) if fixes else 'none'}`",
             f"**CAR score:** {item.get('car_quality_score', 0)}/5 | "
