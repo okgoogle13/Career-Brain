@@ -1,7 +1,7 @@
 # Design: KSC Anti-Slop Skill v2
 
 **Date:** 2026-05-25
-**Status:** Draft — awaiting user review
+**Status:** Approved — live generation validated 2026-05-30
 **Scope:** KSC document type only (resume and cover_letter to follow once pattern proven)
 
 ---
