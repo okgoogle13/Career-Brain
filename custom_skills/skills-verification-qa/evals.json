@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "I just synced my custom skills to /outputs/synced_skills/ and I want to verify that all files copied correctly and match the originals in /Users/okgoogle13/Projects/Career Brain/agent_skills/. Can you run a full verification check on all three synced skills?",
+      "prompt": "I just synced my custom skills to /outputs/synced_skills/ and I want to verify that all files copied correctly and match the originals in /Users/okgoogle13/Projects/Career Brain/.claude/skills/. Can you run a full verification check on all three synced skills?",
       "expected_output": "Verification report showing file-by-file comparison of source vs. synced versions. All files should show as MATCH with byte counts verified. Report should confirm all 3 skills passed verification and are production-ready, or list any issues found",
       "files": []
     },

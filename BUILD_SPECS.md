@@ -25,7 +25,7 @@ The Career Brain Phase 5 engine (`generate_document.py` + `content_engine.py`) i
 | Google Workspace API integration (OAuth + service account + Drive clone) | ✓ Done |
 | `doc_templates.json` schema (template + variant + Drive folder config) | ✓ Done (IDs empty) |
 | `tests/test_generate_document.py` (unit tests for core logic) | ✓ Done |
-| `agent_skills/ats_template_qa_v3/SKILL.md` (ATS linting skill scaffold) | ✓ Done |
+| `.claude/skills/ats_template_qa_v3/SKILL.md` (ATS linting skill scaffold) | ✓ Done |
 | Rosetta Stone translation protocol (apply_rosetta_stone, generate_bridge_paragraph) | ✓ Done |
 | Dry-run mode (`--dry-run`) | ✓ Done |
 | Redacted generation report (`doc_generation_report.json`) | ✓ Done (partial fields) |
@@ -171,7 +171,7 @@ Set the folder IDs in `doc_templates.json`:
 
 ### BS-2.1 — ATS QA Audit: All 5 Golden Master Templates
 
-**What:** Run the ATS Template QA skill (`agent_skills/ats_template_qa_v3/SKILL.md`) against each of the 5 configured templates. Verify all of:
+**What:** Run the ATS Template QA skill (`.claude/skills/ats_template_qa_v3/SKILL.md`) against each of the 5 configured templates. Verify all of:
 
 | Check | Pass Condition |
 |---|---|

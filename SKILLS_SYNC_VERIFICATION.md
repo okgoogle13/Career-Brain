@@ -14,7 +14,7 @@ All three custom skills have been copied from your IDE to Cowork mode and verifi
 ## Detailed Verification
 
 ### 1. ats_template_qa_v3 ✓
-- **Source:** `/Users/okgoogle13/Projects/Career Brain/agent_skills/ats_template_qa_v3/SKILL.md`
+- **Source:** `/Users/okgoogle13/Projects/Career Brain/.claude/skills/ats_template_qa_v3/SKILL.md`
 - **Synced to:** `/outputs/synced_skills/ats_template_qa_v3/SKILL.md`
 - **Status:** ✓ VERIFIED & CORRECTED
 - **Issue Found:** Encoding corruption on line 7
@@ -25,7 +25,7 @@ All three custom skills have been copied from your IDE to Cowork mode and verifi
 ---
 
 ### 2. docs_style_auditor_v3 ✓
-- **Source:** `/Users/okgoogle13/Projects/Career Brain/agent_skills/docs_style_auditor_v3/SKILL.md`
+- **Source:** `/Users/okgoogle13/Projects/Career Brain/.claude/skills/docs_style_auditor_v3/SKILL.md`
 - **Synced to:** `/outputs/synced_skills/docs_style_auditor_v3/SKILL.md`
 - **Status:** ✓ IDENTICAL — NO ISSUES FOUND
 - **Verification:** All 92 lines match original exactly
@@ -51,7 +51,7 @@ All three custom skills have been copied from your IDE to Cowork mode and verifi
 
 **Original Source (still active):**
 ```
-/Users/okgoogle13/Projects/Career Brain/agent_skills/
+/Users/okgoogle13/Projects/Career Brain/.claude/skills/
 ```
 
 ---
