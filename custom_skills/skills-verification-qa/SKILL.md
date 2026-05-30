@@ -206,7 +206,7 @@ Compare a synced skill against a previous version:
 
 ```
 Verification: gold-template-builder-v3
-Source: ~/Projects/Career Brain/agent_skills/gold-template-builder-v3
+Source: ~/Projects/Career Brain/.claude/skills/gold-template-builder-v3
 Previous: ~/outputs/synced_skills/gold-template-builder-v3 (from last sync)
 
 Changes detected:

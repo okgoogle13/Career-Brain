@@ -58,7 +58,7 @@ Career Brain/
 ├── config/             Runtime config: ats_rules.json, doc_templates.json, user_config.json
 ├── context/            AI session context: repomix XMLs, prompts, handover docs
 │   └── specs/          Template format specs (resume, cover letter, KSC)
-├── agent_skills/       Versioned AI agent skill definitions
+├── .claude/skills/       Versioned AI agent skill definitions
 │   ├── _archived_v1/
 │   ├── ats_template_qa_v3/
 │   ├── docs_style_auditor_v3/

@@ -33,7 +33,7 @@ Provide the root directory where your skills are stored:
 
 ```bash
 # Example paths that work:
-/Users/yourname/Projects/MyWork/agent_skills/
+/Users/yourname/Projects/MyWork/.claude/skills/
 /Users/yourname/Claude Code/skills/
 ~/.claude/skills/
 /path/to/any/directory/containing/skill-folders/
@@ -92,7 +92,7 @@ A `SYNC_MANIFEST.md` is created listing:
 # Custom Claude Skills — Synced to Cowork
 
 **Sync Date:** May 28, 2026  
-**Source:** `/Users/okgoogle13/Projects/Career Brain/agent_skills/`  
+**Source:** `/Users/okgoogle13/Projects/Career Brain/.claude/skills/`  
 **Status:** ✓ All skills backed up and verified
 
 ## Skills Synced (3 total)

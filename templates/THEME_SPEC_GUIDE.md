@@ -223,4 +223,4 @@ The `theme` field is currently informational — `generate_document.py` does not
 and colour expectations directly from the theme JSON. Pass `--theme` for every themed Golden
 Master audit. Unthemed/KSC templates are audited without the flag (Calibri defaults apply).
 
-See `agent_skills/docs_style_auditor_v3/SKILL.md` for the full protocol.
+See `.claude/skills/docs_style_auditor_v3/SKILL.md` for the full protocol.

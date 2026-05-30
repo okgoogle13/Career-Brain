@@ -171,7 +171,7 @@ Triggers when user mentions:
 
 1. **Copy skills to ~/.claude/skills/** (see installation above)
 2. **Restart Claude Desktop App** to load the skills
-3. **Test by referencing them:** "I have custom skills in ~/Projects/Career Brain/agent_skills - sync them using custom-skills-sync"
+3. **Test by referencing them:** "I have custom skills in ~/Projects/Career Brain/.claude/skills - sync them using custom-skills-sync"
 4. **Keep originals:** Skills in custom_skills/ folder are the canonical versions — back them up or add to version control
 
 ---

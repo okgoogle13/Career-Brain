@@ -1,7 +1,7 @@
 # Custom Claude Skills — Synced to Cowork
 
 **Sync Date:** May 28, 2026  
-**Source:** `/Users/okgoogle13/Projects/Career Brain/agent_skills/`  
+**Source:** `/Users/okgoogle13/Projects/Career Brain/.claude/skills/`  
 **Status:** ✓ All skills backed up and ready to use
 
 ---
@@ -81,7 +81,7 @@ Each skill has detailed internal guidance on exactly what to check and how to re
 `/Users/okgoogle13/Projects/Career Brain/synced_skills/`
 
 **Original source:**  
-`/Users/okgoogle13/Projects/Career Brain/agent_skills/`
+`/Users/okgoogle13/Projects/Career Brain/.claude/skills/`
 
 ---
 
