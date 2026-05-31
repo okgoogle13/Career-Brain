@@ -389,10 +389,24 @@ def sample_stratified(
 # SECTION 4: PROCESS SINGLE ITEM
 # ════════════════════════════════════════════════════════════════════════════
 
-def should_process(item: dict, force: bool, min_score: int) -> bool:
+def should_process(item: dict, text_field: str, force: bool, min_score: int) -> bool:
     if force:
         return item.get("car_quality_score", 0) < min_score if min_score < 5 else True
-    return not bool(item.get("applied_fixes"))
+    if not item.get("applied_fixes"):
+        return True
+    
+    # Surgical increment for missing_result STAR narratives:
+    current = item.get(text_field, "")
+    is_missing_result = (
+        item.get("narrative_type") == "STAR"
+        and not _looks_like_cover_letter(current)
+        and not _RESULT_RE.search(current)
+        and len(current.split()) > 15
+    )
+    if is_missing_result and "llm_rewrite" not in item.get("applied_fixes", []):
+        return True
+        
+    return False
 
 
 def process_item(
@@ -403,7 +417,7 @@ def process_item(
     min_score: int,
 ) -> list[str]:
     """Apply deterministic rules + LLM rewrite. Returns list of new fixes applied."""
-    if not should_process(item, force, min_score):
+    if not should_process(item, text_field, force, min_score):
         return []
 
     try:

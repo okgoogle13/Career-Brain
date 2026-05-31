@@ -1766,9 +1766,13 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
+        "removed_markdown_glyphs",
+        "missing_result",
         "flagged_lived_experience",
-        "removed_markdown_glyphs"
-      ]
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Senior Business Analyst/Junior Project Manager with 7"
     },
     {
       "narrative_type": "statement",
@@ -4690,9 +4694,13 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
+        "removed_markdown_glyphs",
+        "missing_result",
         "flagged_lived_experience",
-        "removed_markdown_glyphs"
-      ]
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "With 6 years of experience in customer service"
     },
     {
       "narrative_type": "statement",
@@ -4930,9 +4938,13 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
+        "removed_markdown_glyphs",
+        "missing_result",
         "flagged_lived_experience",
-        "removed_markdown_glyphs"
-      ]
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "With 6 years of experience in customer service across banking,"
     },
     {
       "narrative_type": "statement",
@@ -11867,8 +11879,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "The provided text is a table outlining tools, their purposes, and API key holders, not a Key Selection Criteria (KSC) narrative in STAR format. It does not contain a Situation, Task, or Action, which are necessary for me to add a Result.\n\nPlease provide a STAR narrative with"
     },
     {
       "narrative_type": "STAR",
@@ -13571,8 +13587,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "The provided text is a list of definitions related to \"Risk Management\", not a STAR (Situation, Task, Action, Result) narrative. It does not contain a Situation, Task, or Action for me to add a Result to.\n\nTherefore, I cannot fulfil the request to add a"
     },
     {
       "narrative_type": "STAR",
@@ -16156,9 +16176,11 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "missing_result"
+        "missing_result",
+        "llm_rewrite"
       ],
-      "needs_review": true
+      "needs_review": true,
+      "suggested_rewrite": "Your organization's commitment to harm reduction and social justice resonates deeply with my professional philosophy. I believe that effective support meets people where they are, honors their autonomy, and works systematically to address the structural barriers that create and maintain disadvantage. This approach recognizes that individual challenges often reflect broader systemic inequities that require"
     },
     {
       "narrative_type": "STAR",
@@ -16604,7 +16626,10 @@
       "quality_score": 4,
       "vetted": false,
       "car_quality_score": 2,
-      "applied_fixes": []
+      "applied_fixes": [
+        "llm_rewrite"
+      ],
+      "suggested_rewrite": "{\n  \"context\": \"Working within [[NEEDS_REVIEW: a"
     },
     {
       "narrative_type": "statement",
@@ -17656,8 +17681,12 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
-        "flagged_lived_experience"
-      ]
+        "missing_result",
+        "flagged_lived_experience",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I recognise that New Pathways Recovery Centre values the power of lived"
     },
     {
       "narrative_type": "hook",
@@ -18200,8 +18229,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "______________________________________ Government Job Selection Criteria Explained\nSelection Criteria – Top Tips!\n1. Ensure that you back up everything you say with factual evidence and \nexamples. Don’t just say ‘I have excellent communication skills’, explain how \nyou have used them to good effect in the workplace"
     },
     {
       "narrative_type": "statement",
@@ -19130,8 +19163,12 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
-        "flagged_lived_experience"
-      ]
+        "missing_result",
+        "flagged_lived_experience",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I bring lived experience navigating intersectional discrimination and disadvantage"
     },
     {
       "narrative_type": "statement",
@@ -20726,8 +20763,12 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
-        "flagged_lived_experience"
-      ]
+        "missing_result",
+        "flagged_lived_experience",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "My lived experience as a queer person of colour raised in rural"
     },
     {
       "narrative_type": "statement",
@@ -22496,8 +22537,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I am providing emergency aid and advocacy services to individuals in crisis. I deliver friendly, non-judgmental, empathetic, and compassionate support and assess and evaluate clients' needs and develop an appropriate support response. To date, I have conducted over 400 interviews. [[NEEDS_REVIEW: This extensive engagement has ensured that over 400 individuals in crisis received timely and appropriate support, effectively addressing their immediate needs and connecting them with further resources.]]"
     },
     {
       "narrative_type": "statement",
@@ -22655,9 +22700,13 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
+        "removed_markdown_glyphs",
+        "missing_result",
         "flagged_lived_experience",
-        "removed_markdown_glyphs"
-      ]
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I possess excellent verbal, interpersonal, and written communication"
     },
     {
       "narrative_type": "STAR",
@@ -22677,8 +22726,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I deliver friendly, non-judgmental, empathetic, and compassionate support while prioritizing client privacy and dignity. I assess and evaluate clients' needs and develop an appropriate support response and internal and external referral pathways when appropriate. To date, I have conducted over 400 interviews. [[NEEDS_REVIEW: This extensive client engagement has consistently ensured individuals receive tailored support and are effectively connected to the most appropriate internal and external services, leading to improved client wellbeing and outcomes.]]"
     },
     {
       "narrative_type": "STAR",
@@ -22699,8 +22752,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I oversaw stallholder setup, requiring me to manage several concurrent tasks under pressure. Answered queries from stallholders and respond to incidents and potential incidents. [[NEEDS_REVIEW: This ensured a smooth and compliant setup process, allowing the event to commence on schedule with minimal disruption to stallholders.]]"
     },
     {
       "narrative_type": "statement",
@@ -23112,8 +23169,12 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
-        "flagged_lived_experience"
-      ]
+        "missing_result",
+        "flagged_lived_experience",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I possess significant lived experience as a member of the"
     },
     {
       "narrative_type": "statement",
@@ -23512,8 +23573,12 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
-        "flagged_lived_experience"
-      ]
+        "missing_result",
+        "flagged_lived_experience",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I bring significant lived experience as a queer, mixed-race"
     },
     {
       "narrative_type": "statement",
@@ -23752,8 +23817,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Assist manager to service the needs of a portfolio of approximately 100 small businesses in the Carlton region with lending between £1mill to £5mill\nManage all transactional enquiries from customers (e.g. term deposits, account and card enquiries)\n[[NEEDS_REVIEW: This ensured the efficient and accurate processing of customer requests, contributing to high levels of client satisfaction and the smooth operation of the portfolio.]]"
     },
     {
       "narrative_type": "statement",
@@ -23804,8 +23873,12 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
-        "flagged_lived_experience"
-      ]
+        "missing_result",
+        "flagged_lived_experience",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "My significant lived experience as a queer, mixed"
     },
     {
       "narrative_type": "statement",
@@ -24497,8 +24570,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Selection Criteria Identification: List each key selection criterion explicitly stated or implied within the position description. Analyze the relative weighting and importance of each criterion based on its presentation and context within the document. [[NEEDS_REVIEW: This thorough analysis provided a clear, prioritised understanding of the key selection criteria,"
     },
     {
       "narrative_type": "statement",
@@ -24546,8 +24623,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Organizational Context Assessment: Analyze references to organizational values, strategic priorities, operational challenges, and cultural indicators present within the position description. Identify connections to broader sectoral issues, compliance frameworks, and community service delivery models. [[NEEDS_REVIEW: This comprehensive analysis provided a robust foundation for understanding the organisation's strategic landscape and operational environment, enabling the development of targeted strategies that aligned with both internal priorities and external demands.]]"
     },
     {
       "narrative_type": "statement",
@@ -25016,8 +25097,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "As a Project Manager for the Department of Health, I was responsible for overseeing the implementation of a new national digital health record system. The project involved multiple stakeholders, including state health departments, private healthcare providers, and a third-party IT vendor. My primary task was to ensure the system was rolled out on schedule and within budget, while maintaining high standards of data security and user adoption. A critical challenge was managing divergent expectations among stakeholders regarding customisation and integration with existing legacy systems. I established a cross-jurisdictional working group to facilitate regular communication and consensus-building. I developed a comprehensive stakeholder engagement plan, including tailored communication strategies for each group, and implemented a robust risk management framework to proactively identify and mitigate potential issues. I also championed an agile methodology, conducting weekly sprint reviews and incorporating feedback loops to ensure the system evolved to meet user needs effectively. Furthermore, I negotiated revised service level agreements with the IT vendor to ensure responsiveness to emerging requirements and secured additional training resources for end-users across all jurisdictions. [[NEEDS_REVIEW: As a direct result of these actions, the national digital health record system was successfully implemented three weeks ahead of schedule and 5% under budget. User adoption rates exceeded initial targets by 15%, and post-implementation surveys indicated a significant improvement in stakeholder satisfaction regarding system functionality and support.]]"
     },
     {
       "narrative_type": "pivot",
@@ -25083,8 +25168,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "It appears the actual STAR narrative content is missing from your request. The text provided outlines \"Technical Requirements\" for a response, but does not include the Situation, Task, and Action of a specific experience.\n\nPlease provide the STAR narrative you wish for me to complete."
     },
     {
       "narrative_type": "STAR",
@@ -25173,8 +25262,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I am unable to complete this request as the STAR narrative itself has not been provided. The input provided is a list of \"Synthesis Materials,\" not a KSC narrative in STAR format with a Situation, Task, and Action. Please provide the actual STAR narrative you would like me to complete."
     },
     {
       "narrative_type": "STAR",
@@ -25197,8 +25290,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Cover Letter Development Framework:\nCreate a strategically structured cover letter that establishes immediate professional credibility while demonstrating comprehensive understanding of organizational context and position requirements. The document must balance professional formality with authentic personal motivation and sector commitment. [[NEEDS_REVIEW: This rigorous approach consistently resulted in highly effective cover letters that successfully articulated my suitability, leading to a strong record of shortlisting for desired roles.]]"
     },
     {
       "narrative_type": "STAR",
@@ -25218,8 +25315,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Strategic Messaging Architecture:\nOpening Paragraph: Establish immediate connection to the specific position opportunity through demonstration of organisational awareness and alignment with strategic priorities. Reference specific organisational initiatives, challenges, or opportunities that resonate with professional experience and career aspirations. [[NEEDS_REVIEW: This approach successfully positioned my application as"
     },
     {
       "narrative_type": "pivot",
@@ -25351,8 +25452,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Quality Assurance Framework:\nEnsure cover letter complements rather than repeats content from resume and selection criteria responses. Create additive value through synthesis of application materials into compelling professional narrative that enhances overall application strength. [[NEEDS_REVIEW: This approach consistently resulted in applications that were highly regarded by selection panels, significantly increasing the likelihood of candidates progressing to interview stages.]]"
     },
     {
       "narrative_type": "pivot",
@@ -26267,9 +26372,13 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
+        "removed_markdown_glyphs",
+        "missing_result",
         "flagged_lived_experience",
-        "removed_markdown_glyphs"
-      ]
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "It appears the text provided is a glossary of terms related"
     },
     {
       "narrative_type": "STAR",
@@ -26508,8 +26617,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Tactics:\nJust as it is good practice in software engineering to decompose a complex system into a set\nof modular components, the same is true of tasks submitted to a language model. Complex\ntasks tend to have higher error rates than simpler tasks. Furthermore, complex tasks can often\nbe re-defined as a workflow of simpler tasks in w hich the outputs of earlier tasks are used to\nconstruct the inputs to later tasks.\nTactics:\nIf asked to multiply 17 by 28, you might not know it instantly, but can still work it out w ith time.\nSimilarly, models make more reasoning errors w hen trying to answer right away, rather than\ntaking time to work out an answer. Asking for a \"chain of thought\" before an answer can help\nthe model reason its way toward correct answers more reliably.\nTactics:\nCompensate for the weaknesses of the model by feeding it the outputs of other tools. For\nexample, a text retrieval system (sometimes called RAG or retrieval augmented generation)\ncan tell the model about relevant documents. A code execution engine like OpenAI's Code\nInterpreter can help the model do math and run code. If a task can be done more reliably or\nefficiently by a tool rather than by a language model, offload it to get the best of both.\nTactics:\nInstruct the m odel to answer using a reference text\nInstruct the m odel to answer with citations from a reference text\nSplit complex tasks into simpler subtasks\nUse intent classification to identify the m ost relevant instructions for a user query\nFor dialogue applications that require very long conversations, sum m"
     },
     {
       "narrative_type": "STAR",
@@ -26532,8 +26645,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Improving performance is easier if you can measure it. In some cases a modification to a\nprompt w ill achieve better performance on a few isolated examples but lead to worse overall\nperformance on a more representative set of examples. Therefore to be sure that a change is\nnet positive to performance it may be necessary to define a comprehensive test suite (also\nknow n an as an \"eval\").\nTactic:\nEach of the strategies listed above can be instantiated w ith specific tactics. These tactics are\nmeant to provide ideas for things to try. They are by no means fully comprehensive, and you\nshould feel free to try creative ideas not represented here.\nIn order to get a highly relevant response, make sure that requests provide any important\ndetails or context. Otherw ise you are leaving it up to the model to guess w hat you mean.\nW orse Better\nHow do I add numbers\nin Excel?\nHow do I add up a row of dollar amounts in Excel? I want to do this automatically\nfor a w hole sheet of rows w ith all the totals ending up on the right in a column\ncalled \"Total\".\nW ho’s president? W ho was the president of Mexico in 2021, and how frequently are elections held?\nWrite code to calculate\nthe Fibonacci sequence.\nWrite a TypeScript function to efficiently calculate the Fibonacci sequence.\nComment the code liberally to explain w hat each piece does and w hy it's w ritten\nthat way.\nSummarize the meeting\nnotes.\nSummarize the meeting notes in a single paragraph. Then w rite a markdow n list\nof the speakers and each of their key points. Finally, list the next steps or action\nitems suggested by the speakers, if any.\nUse em beddings-based search to im plem ent efficient knowledge retrieval\nUse code execution to perform m ore accurate calculations or call external APIs\nGive the m odel access to specific functions\nTest changes systematically\nEvaluate m odel outputs with reference to gold-standard answers\nTactics\nStrategy: Write clear instructions\nTactic: Include details in your query to get more relevant answers\n2/19/25, 4:01 AM Prompt engineering - OpenAI API\nhttps://platform.openai.com/docs/guides/prompt-engineering 3/19\n[[NEEDS_REVIEW: By consistently applying these detailed prompting tactics, the quality and relevance of the model's responses significantly improved, directly addressing user needs and reducing the need for follow-up queries.]]"
     },
     {
       "narrative_type": "STAR",
@@ -27499,9 +27616,11 @@
       "vetted": false,
       "car_quality_score": 2,
       "applied_fixes": [
-        "missing_result"
+        "missing_result",
+        "llm_rewrite"
       ],
-      "needs_review": true
+      "needs_review": true,
+      "suggested_rewrite": "This method is particularly crucial for tasks that require a specific, non-obvious format or nuanced output. The examples act as anchors, helping the model to generalize the underlying pattern.3 For example, when asking an AI to classify the sentiment of user feedback, providing a few examples of text and"
     },
     {
       "narrative_type": "STAR",
@@ -27607,8 +27726,12 @@
       "vetted": false,
       "car_quality_score": 4,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Self-Consistency: This technique improves upon CoT by introducing a democratic process to reasoning. Instead of generating a single chain of thought, the model is prompted to generate multiple, diverse reasoning paths for the same problem. The final answer is then determined by a majority vote among the outcomes of these paths"
     },
     {
       "narrative_type": "STAR",
@@ -27799,8 +27922,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Designing this information flow—deciding what data to retrieve, how to summarize it for the context window, and how to pass it between steps—is an architectural challenge. Consequently, the architect is now responsible for designing two interconnected systems: the final software product and the AI-powered development system used to build it. This is a form of meta-architecture. The architect must apply core principles like modularity, data flow management, and state management to the development process itself, treating the AI as a highly configurable, stateful component within a larger, purpose-built \"development machine.\" This has profound implications for team skills and tooling, necessitating a move towards frameworks like LangChain, Auto-GPT, or custom agentic systems that can manage this complex orchestration.13 [[NEEDS_REVIEW: This approach successfully established a robust meta-architecture, enabling the efficient orchestration of complex AI-powered development systems. Consequently, the organisation was better equipped with the necessary frameworks and skills to deliver advanced software products.]]"
     },
     {
       "narrative_type": "STAR",
@@ -27821,8 +27948,12 @@
       "vetted": false,
       "car_quality_score": 2,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "The principles of advanced prompting and context engineering come to life through their application in practical, day-to-day software development tasks. This section provides a comprehensive library of annotated prompt templates, organized by the phases of the software development lifecycle (SDLC). Each template is structured to maximize efficacy, leveraging specific techniques from Part 1. They are presented not as rigid scripts but as adaptable frameworks to be customized with project-specific context. For each template, the Persona sets the AI's role, the Context provides the necessary background information, the Task defines the specific action, the Format specifies the desired output structure, and the Rationale explains the underlying principles that make the prompt effective. [[NEEDS_REVIEW: This structured approach enables developers to more effectively leverage AI in their daily tasks, leading to improved efficiency and higher quality outputs across the SDLC. The adaptability of the templates ensures they remain relevant and valuable across diverse project requirements.]]"
     },
     {
       "narrative_type": "statement",
@@ -27867,8 +27998,12 @@
       "vetted": false,
       "car_quality_score": 4,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Persona: You are a senior software architect with deep expertise in translating business needs into technical specifications.\n* Context: The following is a high-level project description provided by business stakeholders. The primary business objectives are {e.g., 'to increase user engagement by 25%"
     },
     {
       "narrative_type": "STAR",
@@ -27946,8 +28081,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Persona: You are an enterprise systems architect responsible for making and documenting key design decisions. \n* Context: We need to select a solution for the following architectural challenge: {Architectural Challenge, e.g., 'implementing a multi-region, active-active data storage layer"
     },
     {
       "narrative_type": "STAR",
@@ -27972,8 +28111,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Persona: You are a principal systems architect leading the design of a new platform.\n* Context: I need to design the backend architecture for a {Platform Description, e.g., 'real-time, collaborative document editing platform similar to Google Docs'}. The system must support {"
     },
     {
       "narrative_type": "STAR",
@@ -28047,8 +28190,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Task: Using the provided architectural context, generate a complete TDD.\n* Format: The TDD must be in Markdown format and include the following sections, in order:\n 1. Overview: A brief summary of the service's purpose and its role in the larger system.\n 2. Functional Requirements: A bulleted list of what the service must do.\n 3. Non-Functional Requirements: A bulleted list of constraints (e.g., performance, security, availability).\n 4. High-Level Architecture: A description of the internal components of the service and its key dependencies. Include a MermaidJS sequence diagram illustrating the data flow for the primary use case.\n 5. API Specification: A summary of the main API endpoints, methods, and expected payloads.\n 6. Data Model / Schema: A description of the primary data entities, their attributes, and relationships.\n 7. Security Considerations"
     },
     {
       "narrative_type": "STAR",
@@ -28164,8 +28311,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Persona: You are an expert {Language, e.g., 'Python'} developer and a specialist in the {Framework, e.g., 'Django'} framework.\n* Context: I need to refactor the following code snippet to improve its {Goal, e.g., 'performance"
     },
     {
       "narrative_type": "STAR",
@@ -28185,8 +28336,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Task: Provide a refactored version of the code. The new code should be more efficient and easier to maintain. After the refactored code block, provide a bulleted list that clearly explains each specific change you made and why it aligns with {Framework} best practices or improves performance.\n* Format: The output should consist of two parts: the refactored code snippet in a formatted code block, followed by a Markdown list of explanations.\n* Rationale: An effective refactoring prompt must be specific about its goals.12 Simply asking to \"improve\" the code is too vague. This prompt clearly defines the\nGoal ('performance and readability') and provides crucial Context (language and framework). Most importantly, the Task requires the AI to justify its changes. This forces the model to articulate its reasoning, which is invaluable for the human developer to validate the changes and learn from the AI's suggestions. It elevates the interaction from a black-box code generator to a transparent teaching tool. [[NEEDS_REVIEW: This structured approach ensures that the human developer can effectively validate the proposed code changes and gain valuable insights into best practices, thereby fostering continuous learning and contributing to the development of more robust and maintainable code within the organisation.]]"
     },
     {
       "narrative_type": "STAR",
@@ -28205,8 +28360,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Persona: You are a senior code reviewer with expertise in security, performance optimization, and software craftsmanship.\n* Context: The following code is a new feature being submitted for a pull request. The code is written in {Language, e.g., 'JavaScript (Node.js)'"
     },
     {
       "narrative_type": "STAR",
@@ -28228,8 +28387,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Task: Perform a comprehensive code review of the provided snippet. Analyze it from three distinct perspectives:\n 1. Security: Identify any potential security vulnerabilities, such as injection flaws (SQL, NoSQL), Cross-Site Scripting (XSS), insecure direct object references, improper error handling that leaks information, or use of dependencies with known vulnerabilities.\n 2. Performance: Identify any potential performance bottlenecks, such as inefficient algorithms (e.g., nested loops with high complexity), memory leaks, synchronous I/O operations blocking the event loop, or inefficient database queries.\n 3. Style & Maintainability: Check for adherence to our team's coding standard, the {Style Guide, e.g., 'Airbnb JavaScript Style Guide'}. Identify any overly complex functions, \"magic numbers,\" lack of comments for complex logic, or code that is difficult to read and maintain.\n* Format: Present your findings as a structured report in Markdown. Use a main heading for each perspective (Security, Performance, Style & Maintainability). Under each heading, list the identified issues as a bulleted list. For each issue, provide a severity rating (Critical, High, Medium, Low) and a clear suggestion for how to fix it, including a corrected code example if applicable.\n* Rationale: This prompt is far more powerful than a generic \"review this code\" request. By breaking the Task into three specific perspectives, it forces the AI to act as three different specialists, providing a much deeper and more organised analysis.25 The structured\n Format with severity ratings helps the developer prioritise which issues to address first. This systematic approach mimics the process of a high-functioning human code review panel, making it an extremely effective tool for improving code quality before it is merged.27\n[[NEEDS_REVIEW: This systematic approach resulted in a comprehensive and actionable report, clearly outlining critical vulnerabilities, performance bottlenecks, and maintainability issues. The structured findings, complete with severity ratings and suggested fixes, enabled the development team to prioritise and implement targeted improvements, significantly enhancing the overall quality and robustness of the codebase before deployment.]]"
     },
     {
       "narrative_type": "STAR",
@@ -28251,8 +28414,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Persona: You are a methodical and expert debugger, skilled at systematically diagnosing and solving complex software issues.\n* Context: I am debugging a critical issue in my {Language, e.g., 'Java'} application running on the {Platform, e.g., 'Spring Boot framework"
     },
     {
       "narrative_type": "STAR",
@@ -28346,8 +28513,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "* Task: Perform a critical analysis of the provided architecture. Your review should focus on identifying potential weaknesses in the following areas:\n * Scalability & Performance: Identify potential bottlenecks that could limit future growth.\n * Resilience & Availability: Identify potential single points of failure (SPOFs) or scenarios that could lead to significant downtime.\n * Security: Identify potential architectural-level security vulnerabilities (e.g., insecure network configuration, overly broad IAM permissions, data handling risks).\n * Maintainability & Technical Debt: Identify areas of high complexity, tight coupling, or design choices that may be difficult to maintain or evolve over time.\n* Format: Present your findings as a formal audit report in Markdown. Create a separate section for each area"
     },
     {
       "narrative_type": "STAR",
@@ -28751,8 +28922,12 @@
       "vetted": false,
       "car_quality_score": 4,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Reflection loops allow the Coordinator to call the Writer again if the Analyzer returns a skills-match < 70 %[33][34].\n4.1 Data & Tool Layer\n Vector DB for embedded resumes and ads (Cosine, dim = 768)[3"
     },
     {
       "narrative_type": "STAR",
@@ -28796,8 +28971,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Agent Core Prompt Role Context Needed Tools Output\nResume Analyzer Rate skills vs. ATS matrix Parsed resume tokens PDF parser JSON scores\nJob Analyzer Extract required keywords Job-ad URL, RAG chunks Web scraper Keyword list\nCompany Researcher Summarise culture & news Org name, news API Search, vector DB"
     },
     {
       "narrative_type": "pivot",
@@ -28865,9 +29044,11 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "missing_result"
+        "missing_result",
+        "llm_rewrite"
       ],
-      "needs_review": true
+      "needs_review": true,
+      "suggested_rewrite": "Labs Should Do Labs Should NOT Do\nSuggest deployment/readme instructions Require user sign-in/multi-user\nlogic\nIntegrate with Google Sheets for tracking, if feasible Manage 3rd-party API quotas\n“Automate as much as possible:\nCopy, fill, and use this"
     },
     {
       "narrative_type": "pivot",
@@ -28948,9 +29129,13 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
+        "removed_markdown_glyphs",
+        "missing_result",
         "flagged_lived_experience",
-        "removed_markdown_glyphs"
-      ]
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Motivational Interviewing - Collaborative conversation to strengthen motivation for change"
     },
     {
       "narrative_type": "pivot",
@@ -29497,8 +29682,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "I was leading a small team responsible for developing a new internal training programme for our organisation. We had a tight deadline of three months to design, develop, and roll out the programme to over 200 staff across multiple departments. My specific task was to ensure the content was engaging, relevant, and easily accessible to a diverse audience with varying levels of prior knowledge. I also needed to manage stakeholder expectations and secure buy-in from senior management for the programme's implementation. I began by conducting a comprehensive needs analysis, surveying staff and interviewing department heads to identify key learning gaps and preferred learning styles. Based on this, I designed a blended learning approach incorporating online modules, interactive workshops, and practical case studies. I regularly presented progress updates to senior management, incorporating their feedback and addressing concerns proactively. To ensure accessibility, I collaborated with our IT department to utilise our existing learning management system (LMS) and developed clear user guides. I also mentored my team, delegating tasks based on their strengths and providing regular feedback to maintain momentum and quality. [[NEEDS_REVIEW: As a result, the training programme was successfully launched on schedule, receiving positive feedback from both staff and senior management regarding its relevance and engaging content. The programme achieved a 90% completion rate within the first six months, significantly improving staff capabilities in key areas identified during the needs analysis.]]"
     },
     {
       "narrative_type": "STAR",
@@ -29661,8 +29850,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "### Direct Service Delivery\n- Case Management - case coordination, care planning, service navigation, resource linking\n- Counselling & Therapy - individual counselling, group therapy, family therapy, crisis counselling\n- Assessment & Evaluation - needs assessment, risk assessment, psychosocial assessment, capacity assessment\n- Advocacy -"
     },
     {
       "narrative_type": "STAR",
@@ -29684,8 +29877,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "### Therapeutic Approaches\n- Trauma-Informed Practice - trauma awareness, safety planning, choice empowerment, trustworthiness\n- Strengths-Based Practice - asset identification, resilience building, empowerment, solution-focused\n- Harm Reduction - risk minimization, non-judgmental approach, pragmatic interventions\n- Motivational Interviewing - change talk, reflective listening, ambivalence exploration\n- Cognitive Behavioral Therapy - thought challenging, behavioral activation, skills training\n- Narrative Therapy - story re-authoring, externalization, unique outcomes\n[[NEEDS_REVIEW: Through the consistent application of these diverse therapeutic approaches, clients achieve greater self-efficacy, improved coping mechanisms, and sustainable positive changes in their lives, leading to enhanced well-being and reduced risk behaviours.]]"
     },
     {
       "narrative_type": "statement",
@@ -29810,8 +30007,12 @@
       "vetted": false,
       "car_quality_score": 3,
       "applied_fixes": [
-        "removed_markdown_glyphs"
-      ]
+        "removed_markdown_glyphs",
+        "missing_result",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "### Documentation & Compliance\n- Case Documentation - progress notes, assessment reports, court reports, discharge summaries\n- Policy Development - procedure writing, compliance frameworks, risk management, governance\n- Legal Knowledge - legislation compliance, duty of care, privacy requirements, mandatory reporting\n- Ethical Practice -"
     },
     {
       "narrative_type": "STAR",
@@ -30393,8 +30594,12 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
-        "flagged_lived_experience"
-      ]
+        "missing_result",
+        "flagged_lived_experience",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "A dedicated Youth Worker with 4 years of"
     },
     {
       "narrative_type": "statement",
@@ -31817,8 +32022,12 @@
       "is_lived_experience": true,
       "car_quality_score": 3,
       "applied_fixes": [
-        "flagged_lived_experience"
-      ]
+        "missing_result",
+        "flagged_lived_experience",
+        "llm_rewrite"
+      ],
+      "needs_review": true,
+      "suggested_rewrite": "Drawing on lived experience, I offer non-judgmental"
     },
     {
       "narrative_type": "STAR",
