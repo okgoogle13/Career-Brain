@@ -184,7 +184,12 @@ def _audit(doc: dict, expected: ExpectedStyle) -> list[str]:
             # ── Font family ──
             weighted_font = text_style.get("weightedFontFamily", {})
             font_family = weighted_font.get("fontFamily")
-            if font_family and font_family != expected.font:
+            if font_family is None:
+                failures.append(
+                    f"FAIL: Text run '{run_snippet}' — weightedFontFamily not set "
+                    f"(expected '{expected.font}')"
+                )
+            elif font_family != expected.font:
                 failures.append(
                     f"FAIL: Text run '{run_snippet}' — font is '{font_family}' "
                     f"(expected '{expected.font}')"
@@ -193,7 +198,12 @@ def _audit(doc: dict, expected: ExpectedStyle) -> list[str]:
             # ── Font size ──
             font_size_obj = text_style.get("fontSize", {})
             size_pt = font_size_obj.get("magnitude")
-            if size_pt is not None:
+            if size_pt is None:
+                failures.append(
+                    f"FAIL: Text run '{run_snippet}' — fontSize not set "
+                    f"(expected {expected.normal_size}pt)"
+                )
+            else:
                 if named_style in HEADING_NAMED_STYLES:
                     if abs(size_pt - expected.heading_size) > 0.5:
                         failures.append(

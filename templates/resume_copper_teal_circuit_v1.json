@@ -1,0 +1,379 @@
+{
+  "schema_version": "2.0",
+  "template_id": "resume_copper_teal_circuit_v1",
+  "tier": 2,
+  "tier_label": "ATS Modern",
+  "doc_type": "resume",
+  "target_sector": ["technology", "engineering", "finance", "design", "management_consulting"],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDER_SCHEMA_V2",
+  "description": "Premium dual-tone resume with copper and teal accents on a warm off-white ground. Arial throughout. Compact 11pt headings over near-black body text; structured copper rules under every section heading. ATS-safe: single column, no images, no text boxes.",
+
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": "Arial",
+    "content_layer": "body_only",
+    "forbidden_glyphs": ["•", "✔", "★", "❖", "●", "✅", "❌", "|"]
+  },
+
+  "palette": {
+    "copper_accent": "#9A5A3A",
+    "teal_accent": "#2D8A8A",
+    "body_text": "#1D1C1A",
+    "muted_text": "#7D6A5A",
+    "light_copper": "#E8D4C6",
+    "background": "#FAF8F5"
+  },
+
+  "typography": {
+    "base_font": "Arial",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.26,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 1.4,
+    "section_heading_size_pt": 11
+  },
+
+  "page": {
+    "margin_top_cm": 1.65,
+    "margin_bottom_cm": 1.65,
+    "margin_left_cm": 1.78,
+    "margin_right_cm": 1.78,
+    "background_color": "#FAF8F5"
+  },
+
+  "blocks": [
+    {
+      "block_id": "name_header",
+      "type": "name_block",
+      "order": 1,
+      "tokens": ["{{CONTACT_NAME}}"],
+      "content": "{{CONTACT_NAME}}",
+      "visualConfig": {
+        "font_size_pt": 22,
+        "font_weight": "bold",
+        "font_color": "#9A5A3A",
+        "text_align": "left",
+        "padding_top_pt": 0,
+        "padding_bottom_pt": 2,
+        "letter_spacing": "normal",
+        "border_bottom": {
+          "color": "#2D8A8A",
+          "width_pt": 0.75,
+          "style": "solid"
+        },
+        "margin_bottom_pt": 4
+      }
+    },
+
+    {
+      "block_id": "contact_info",
+      "type": "contact_block",
+      "order": 2,
+      "tokens": [
+        "{{CONTACT_PHONE}}",
+        "{{CONTACT_EMAIL}}",
+        "{{CONTACT_LOCATION}}"
+      ],
+      "content": "{{CONTACT_PHONE}}    {{CONTACT_EMAIL}}    {{CONTACT_LOCATION}}",
+      "visualConfig": {
+        "font_size_pt": 10,
+        "font_color": "#7D6A5A",
+        "text_align": "left",
+        "padding_top_pt": 3,
+        "padding_bottom_pt": 10,
+        "line_spacing": 1.15,
+        "separator": "inline_spaced"
+      }
+    },
+
+    {
+      "block_id": "role_headline",
+      "type": "headline_block",
+      "order": 3,
+      "tokens": ["{{TARGET_ROLE}}"],
+      "content": "{{TARGET_ROLE}}",
+      "visualConfig": {
+        "font_size_pt": 11,
+        "font_weight": "bold",
+        "font_color": "#1D1C1A",
+        "text_align": "left",
+        "padding_top_pt": 2,
+        "padding_bottom_pt": 12
+      }
+    },
+
+    {
+      "block_id": "summary_section",
+      "type": "summary_block",
+      "order": 4,
+      "heading": "PROFESSIONAL SUMMARY",
+      "tokens": ["{{PROFESSIONAL_SUMMARY}}"],
+      "content": "{{PROFESSIONAL_SUMMARY}}",
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 11,
+          "font_weight": "bold",
+          "font_color": "#1D1C1A",
+          "text_transform": "uppercase",
+          "letter_spacing_pt": 1.4,
+          "border_bottom": {
+            "color": "#9A5A3A",
+            "width_pt": 1.0,
+            "style": "solid"
+          },
+          "margin_bottom_pt": 6
+        },
+        "body": {
+          "font_size_pt": 10.5,
+          "font_color": "#1D1C1A",
+          "line_spacing": 1.26
+        }
+      }
+    },
+
+    {
+      "block_id": "skills_section",
+      "type": "skills_block",
+      "order": 5,
+      "heading": "KEY SKILLS",
+      "tokens": [
+        "{{SKILL_1}}",
+        "{{SKILL_2}}",
+        "{{SKILL_3}}",
+        "{{SKILL_4}}",
+        "{{SKILL_5}}",
+        "{{SKILL_6}}"
+      ],
+      "layout": "grouped_inline",
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 11,
+          "font_weight": "bold",
+          "font_color": "#1D1C1A",
+          "text_transform": "uppercase",
+          "letter_spacing_pt": 1.4,
+          "border_bottom": {
+            "color": "#9A5A3A",
+            "width_pt": 1.0,
+            "style": "solid"
+          },
+          "margin_bottom_pt": 6
+        },
+        "container": {
+          "background_color": "#E8D4C6",
+          "padding_top_pt": 6,
+          "padding_bottom_pt": 6,
+          "padding_left_pt": 10,
+          "padding_right_pt": 10
+        },
+        "item": {
+          "font_size_pt": 10.5,
+          "font_color": "#1D1C1A",
+          "separator": "comma",
+          "display": "inline"
+        }
+      }
+    },
+
+    {
+      "block_id": "experience_section",
+      "type": "experience_block",
+      "order": 6,
+      "heading": "WORK EXPERIENCE",
+      "max_roles": 6,
+      "max_bullets_per_role": 4,
+      "roles": [
+        {
+          "role_index": 1,
+          "tokens": {
+            "title": "{{ROLE_1_TITLE}}",
+            "org": "{{ROLE_1_ORG}}",
+            "dates": "{{ROLE_1_DATES}}",
+            "bullets": [
+              "{{ROLE_1_BULLET_1}}",
+              "{{ROLE_1_BULLET_2}}",
+              "{{ROLE_1_BULLET_3}}",
+              "{{ROLE_1_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 2,
+          "tokens": {
+            "title": "{{ROLE_2_TITLE}}",
+            "org": "{{ROLE_2_ORG}}",
+            "dates": "{{ROLE_2_DATES}}",
+            "bullets": [
+              "{{ROLE_2_BULLET_1}}",
+              "{{ROLE_2_BULLET_2}}",
+              "{{ROLE_2_BULLET_3}}",
+              "{{ROLE_2_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 3,
+          "tokens": {
+            "title": "{{ROLE_3_TITLE}}",
+            "org": "{{ROLE_3_ORG}}",
+            "dates": "{{ROLE_3_DATES}}",
+            "bullets": [
+              "{{ROLE_3_BULLET_1}}",
+              "{{ROLE_3_BULLET_2}}",
+              "{{ROLE_3_BULLET_3}}",
+              "{{ROLE_3_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 4,
+          "tokens": {
+            "title": "{{ROLE_4_TITLE}}",
+            "org": "{{ROLE_4_ORG}}",
+            "dates": "{{ROLE_4_DATES}}",
+            "bullets": [
+              "{{ROLE_4_BULLET_1}}",
+              "{{ROLE_4_BULLET_2}}",
+              "{{ROLE_4_BULLET_3}}",
+              "{{ROLE_4_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 5,
+          "tokens": {
+            "title": "{{ROLE_5_TITLE}}",
+            "org": "{{ROLE_5_ORG}}",
+            "dates": "{{ROLE_5_DATES}}",
+            "bullets": [
+              "{{ROLE_5_BULLET_1}}",
+              "{{ROLE_5_BULLET_2}}",
+              "{{ROLE_5_BULLET_3}}",
+              "{{ROLE_5_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 6,
+          "tokens": {
+            "title": "{{ROLE_6_TITLE}}",
+            "org": "{{ROLE_6_ORG}}",
+            "dates": "{{ROLE_6_DATES}}",
+            "bullets": [
+              "{{ROLE_6_BULLET_1}}",
+              "{{ROLE_6_BULLET_2}}",
+              "{{ROLE_6_BULLET_3}}",
+              "{{ROLE_6_BULLET_4}}"
+            ]
+          }
+        }
+      ],
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 11,
+          "font_weight": "bold",
+          "font_color": "#1D1C1A",
+          "text_transform": "uppercase",
+          "letter_spacing_pt": 1.4,
+          "border_bottom": {
+            "color": "#9A5A3A",
+            "width_pt": 1.0,
+            "style": "solid"
+          },
+          "margin_bottom_pt": 8
+        },
+        "role_title": {
+          "font_size_pt": 11,
+          "font_weight": "bold",
+          "font_color": "#2D8A8A",
+          "margin_top_pt": 10
+        },
+        "role_meta": {
+          "font_size_pt": 10,
+          "font_style": "italic",
+          "font_color": "#7D6A5A",
+          "margin_bottom_pt": 4,
+          "format": "{{ROLE_N_ORG}}   {{ROLE_N_DATES}}"
+        },
+        "bullet": {
+          "font_size_pt": 10.5,
+          "font_color": "#1D1C1A",
+          "glyph": "-",
+          "indent_pt": 14,
+          "line_spacing": 1.26,
+          "margin_bottom_pt": 2
+        }
+      }
+    },
+
+    {
+      "block_id": "education_section",
+      "type": "education_block",
+      "order": 7,
+      "heading": "EDUCATION",
+      "tokens": [
+        "{{EDUCATION_1}}",
+        "{{EDUCATION_2}}"
+      ],
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 11,
+          "font_weight": "bold",
+          "font_color": "#1D1C1A",
+          "text_transform": "uppercase",
+          "letter_spacing_pt": 1.4,
+          "border_bottom": {
+            "color": "#9A5A3A",
+            "width_pt": 1.0,
+            "style": "solid"
+          },
+          "margin_bottom_pt": 6
+        },
+        "item": {
+          "font_size_pt": 10.5,
+          "font_color": "#1D1C1A",
+          "line_spacing": 1.26,
+          "separator": "line_break"
+        }
+      }
+    },
+
+    {
+      "block_id": "certifications_section",
+      "type": "certifications_block",
+      "order": 8,
+      "heading": "CERTIFICATIONS",
+      "tokens": [
+        "{{CERT_1}}",
+        "{{CERT_2}}",
+        "{{CERT_3}}"
+      ],
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 11,
+          "font_weight": "bold",
+          "font_color": "#1D1C1A",
+          "text_transform": "uppercase",
+          "letter_spacing_pt": 1.4,
+          "border_bottom": {
+            "color": "#9A5A3A",
+            "width_pt": 1.0,
+            "style": "solid"
+          },
+          "margin_bottom_pt": 6
+        },
+        "item": {
+          "font_size_pt": 10.5,
+          "font_color": "#1D1C1A",
+          "line_spacing": 1.26,
+          "separator": "line_break"
+        }
+      }
+    }
+  ]
+}

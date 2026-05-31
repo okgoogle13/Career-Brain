@@ -1,0 +1,233 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "career-brain-template-v2.0",
+  "title": "Career Brain Template Schema v2.0",
+  "description": "Validates all Career Brain template JSON files for use with build_golden_master.py and generate_document.py. Enforces v2.0 structural contract: cm margins, single-string font, blocks[] with visualConfig. NOTE: JSON Schema cannot enforce cross-field equality; callers must separately verify typography.base_font == ats_constraints.font_family.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "template_id",
+    "tier",
+    "tier_label",
+    "doc_type",
+    "target_sector",
+    "region",
+    "placeholder_schema",
+    "description",
+    "ats_constraints",
+    "palette",
+    "typography",
+    "page",
+    "blocks"
+  ],
+  "additionalProperties": true,
+  "properties": {
+
+    "schema_version": {
+      "type": "string",
+      "const": "2.0",
+      "description": "Must be the string '2.0' — not a number."
+    },
+
+    "template_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*_v[0-9]+$",
+      "description": "Lowercase snake_case with a _vN version suffix, e.g. resume_modern_minimalist_v1."
+    },
+
+    "tier": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3
+    },
+
+    "tier_label": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "doc_type": {
+      "type": "string",
+      "enum": ["resume", "cover_letter", "ksc"]
+    },
+
+    "target_sector": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+
+    "region": {
+      "type": "string",
+      "enum": ["AU"]
+    },
+
+    "placeholder_schema": {
+      "type": "string",
+      "const": "PLACEHOLDER_SCHEMA_V2"
+    },
+
+    "description": {
+      "type": "string",
+      "minLength": 10
+    },
+
+    "ats_constraints": {
+      "type": "object",
+      "required": [
+        "columns",
+        "allows_tables",
+        "allows_images",
+        "allows_text_boxes",
+        "allows_headers_footers",
+        "font_family",
+        "content_layer",
+        "forbidden_glyphs"
+      ],
+      "properties": {
+        "columns": {
+          "type": "integer",
+          "const": 1,
+          "description": "Must be 1 — multi-column layouts are ATS-unsafe."
+        },
+        "allows_tables": { "type": "boolean", "const": false },
+        "allows_images": { "type": "boolean", "const": false },
+        "allows_text_boxes": { "type": "boolean", "const": false },
+        "allows_headers_footers": { "type": "boolean", "const": false },
+        "font_family": {
+          "type": "string",
+          "enum": ["Calibri", "Arial", "Times New Roman", "Helvetica"],
+          "description": "ATS-safe Google Docs fonts. Use Arial as fallback for Helvetica — not reliably available in Google Docs."
+        },
+        "content_layer": {
+          "type": "string",
+          "const": "body_only"
+        },
+        "forbidden_glyphs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "palette": {
+      "type": "object",
+      "description": "Named hex colors. Keys must be descriptive (forest_green, copper_accent) not role-based (primary, secondary). All values must be 6-digit uppercase hex.",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z][a-z0-9_]*$": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$",
+          "description": "Full 6-digit uppercase hex color, e.g. #2F855A."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "typography": {
+      "type": "object",
+      "required": ["base_font", "base_size_pt", "line_spacing", "spacing_after_pt"],
+      "properties": {
+        "base_font": {
+          "type": "string",
+          "enum": ["Calibri", "Arial", "Times New Roman", "Helvetica"],
+          "description": "Must match ats_constraints.font_family (enforced by caller, not schema)."
+        },
+        "base_size_pt": {
+          "type": "number",
+          "minimum": 8,
+          "maximum": 14
+        },
+        "line_spacing": {
+          "type": "number",
+          "minimum": 1.0,
+          "maximum": 2.0,
+          "description": "Multiplier, e.g. 1.15. build_golden_master.py converts to integer percentage via round()."
+        },
+        "spacing_after_pt": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 24
+        },
+        "section_heading_tracking_pt": { "type": "number" },
+        "section_heading_size_pt": { "type": "number" },
+        "section_heading_weight": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+
+    "page": {
+      "type": "object",
+      "description": "All margins in centimetres. v2.3 themes use margins_in (inches) — must be compiled to cm before a template is valid v2.0.",
+      "required": [
+        "margin_top_cm",
+        "margin_bottom_cm",
+        "margin_left_cm",
+        "margin_right_cm"
+      ],
+      "properties": {
+        "margin_top_cm": { "type": "number", "minimum": 0.5, "maximum": 5.0 },
+        "margin_bottom_cm": { "type": "number", "minimum": 0.5, "maximum": 5.0 },
+        "margin_left_cm": { "type": "number", "minimum": 0.5, "maximum": 5.0 },
+        "margin_right_cm": { "type": "number", "minimum": 0.5, "maximum": 5.0 },
+        "background_color": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$",
+          "description": "Must be #FFFFFF or a very light off-white (e.g. #FAF8F5) for ATS safety."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "blocks": {
+      "type": "array",
+      "description": "Ordered content and layout blocks. build_golden_master.py identifies blocks by block_id.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["block_id", "type", "order", "visualConfig"],
+        "properties": {
+          "block_id": {
+            "type": "string",
+            "enum": [
+              "name_header",
+              "contact_info",
+              "role_headline",
+              "summary_section",
+              "skills_section",
+              "experience_section",
+              "education_section",
+              "certifications_section",
+              "employer_info",
+              "salutation",
+              "body_paragraphs",
+              "closing",
+              "application_meta",
+              "criteria_responses"
+            ]
+          },
+          "type": { "type": "string", "minLength": 1 },
+          "order": { "type": "integer", "minimum": 1 },
+          "heading": { "type": "string" },
+          "tokens": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "content": { "type": "string" },
+          "layout": { "type": "string" },
+          "max_roles": { "type": "integer" },
+          "max_bullets_per_role": { "type": "integer" },
+          "max_criteria": { "type": "integer" },
+          "criteria": { "type": "array" },
+          "roles": { "type": "array" },
+          "visualConfig": {
+            "type": "object",
+            "minProperties": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
