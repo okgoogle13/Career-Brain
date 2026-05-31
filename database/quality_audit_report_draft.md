@@ -1,5 +1,5 @@
 # Career Brain — Quality Audit Report
-_Generated: 2026-05-30 07:55 | Mode: DRY-RUN SAMPLE (12 entries)_
+_Generated: 2026-05-30 19:27 | Mode: DRY-RUN SAMPLE (12 entries)_
 
 ## Summary
 | Metric | Value |
@@ -26,9 +26,9 @@ _Generated: 2026-05-30 07:55 | Mode: DRY-RUN SAMPLE (12 entries)_
 
 **After deterministic fixes:** Experienced Peer Worker specializing in community services with a strong background in project management and
 
-**LLM suggested rewrite:** Experienced Peer Worker specializing in community services with a strong background
+**LLM suggested rewrite:** Experienced Peer Worker specializing in community services with a strong background in
 
-**Fixes applied:** `llm_rewrite`, `flagged_bad_action_verb`, `flagged_lived_experience`
+**Fixes applied:** `flagged_lived_experience`, `llm_rewrite`, `flagged_bad_action_verb`
 **CAR score:** 2/5 | **Lived experience:** True
 
 ### [lived_experience] achievement
@@ -36,9 +36,9 @@ _Generated: 2026-05-30 07:55 | Mode: DRY-RUN SAMPLE (12 entries)_
 
 **After deterministic fixes:** Deep understanding of community needs and lived experience: I have a unique perspective on the challenges
 
-**LLM suggested rewrite:** My lived experience provides me with a deep understanding of community
+**LLM suggested rewrite:** My lived experience provides a deep understanding of community needs and
 
-**Fixes applied:** `llm_rewrite`, `flagged_bad_action_verb`, `flagged_lived_experience`
+**Fixes applied:** `flagged_lived_experience`, `llm_rewrite`, `flagged_bad_action_verb`
 **CAR score:** 2/5 | **Lived experience:** True
 
 ### [bad_action_verb] achievement
@@ -47,7 +47,7 @@ _Generated: 2026-05-30 07:55 | Mode: DRY-RUN SAMPLE (12 entries)_
 **After deterministic fixes:** Proven record of successful case management and strong people skills: In my previous role at Diamond Valley
 
 **LLM suggested rewrite:** {
-  "context": "In my previous role at [[NAB]], [[
+  "context": "In my previous role at [[NEEDS
 
 **Fixes applied:** `llm_rewrite`, `flagged_bad_action_verb`
 **CAR score:** 2/5 | **Lived experience:** False
@@ -58,7 +58,7 @@ _Generated: 2026-05-30 07:55 | Mode: DRY-RUN SAMPLE (12 entries)_
 **After deterministic fixes:** Commitment to strengths-based practice and client-centred care: my approach to support is grounded in cultural
 
 **LLM suggested rewrite:** {
-  "context": "[[NEEDS_REVIEW: In my role providing
+  "context": "[[NEEDS_REVIEW: In a community
 
 **Fixes applied:** `llm_rewrite`, `flagged_bad_action_verb`
 **CAR score:** 2/5 | **Lived experience:** False
@@ -118,32 +118,23 @@ _Generated: 2026-05-30 07:55 | Mode: DRY-RUN SAMPLE (12 entries)_
 **After deterministic fixes:** * Collaborated with 20 international students to conduct focus groups and gather qualitative data on client needs.
  * Coded participant responses and conducted a thematic analysis, contributing to a 50-page research findings report to inform culturally sensitive program design.
 
-**LLM suggested rewrite:** Collaborated with 20 international students to conduct focus groups and gather qualitative data on client needs.
-Coded participant responses and conducted a thematic analysis, contributing to a 50-page research findings report to inform culturally sensitive program design. [[NEEDS_REVIEW: The comprehensive findings from this report were subsequently presented to senior management and directly informed the development of new, culturally sensitive support programmes, enhancing the organisation's service delivery to international students.]]
+**LLM suggested rewrite:** * Collaborated with 20 international students to conduct focus groups and gather qualitative data on client needs.
+ * Coded participant responses and conducted a thematic analysis, contributing to a 50-page research findings report to inform culturally sensitive program design. [[NEEDS_REVIEW: The comprehensive findings from this report were subsequently adopted by the organisation, directly informing the development of new, culturally sensitive support programmes that better met the identified needs of international students.]]
 
 **Fixes applied:** `missing_result`, `llm_rewrite`, `removed_markdown_glyphs`
 **CAR score:** 3/5 | **Lived experience:** False
 
 ### [missing_result] narrative
-**Original:** M enu
-Career Advice Job hunting
-Applying for jobs
-10 selection criteria examples for your resumé
-SEEK content team – updated on 07 M ay, 2024
-Share
-When you’re browsing job ads, you’ll notice that many of them ask you to respondto selection criteria in your cover letter. But what are they exactly? T
+**Original:** ### Instructions for Completion
+Fill in each section with your specific experiences, using concrete details and quantifiable outcomes wherever possible. Organize examples by competency areas to enable easy reference during application development.
 
-**After deterministic fixes:** M enu
-Career Advice Job hunting
-Applying for jobs
-10 selection criteria examples for your resumé
-SEEK content team – updated on 07 M ay, 2024
-Share
-When you’re browsing job ads, you’ll notice that many of them ask you to respondto selection criteria in your cover letter. But what are they exactly? T
+**After deterministic fixes:** ### Instructions for Completion
+Fill in each section with your specific experiences, using concrete details and quantifiable outcomes wherever possible. Organize examples by competency areas to enable easy reference during application development.
 
-**LLM suggested rewrite:** I am unable to complete this request as the STAR narrative itself was not provided in the prompt. The text provided is an introduction to Key Selection Criteria, not a STAR narrative with a Situation, Task, and Action. Please provide the actual STAR narrative you wish for me to complete.
+**LLM suggested rewrite:** ### Instructions for Completion
+Fill in each section with your specific experiences, using concrete details and quantifiable outcomes wherever possible. Organize examples by competency areas to enable easy reference during application development. [[NEEDS_REVIEW: This structured approach ensures that all key selection criteria are addressed comprehensively, significantly enhancing the
 
-**Fixes applied:** `missing_result`, `llm_rewrite`
+**Fixes applied:** `llm_rewrite`, `missing_result`
 **CAR score:** 3/5 | **Lived experience:** False
 
 ---
