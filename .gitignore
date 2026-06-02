@@ -26,3 +26,26 @@ CareerBrain_Clean.zip
 # Scratch audit outputs
 scratch/*.json
 .env
+
+# Source documents (backed up on Google Drive — not needed in repo)
+source_docs/
+
+# Legacy archive (do not re-ingest without instruction)
+archive/
+
+# Node / npm
+node_modules/
+package-lock.json
+
+# Context XML dumps (regenerable via repomix)
+context/*.xml
+*.xml
+
+# Database preview artefacts (regenerable)
+database/preview_*.html
+database/preview_*.png
+database/*.log
+
+# Database stale intermediate outputs
+database/ksc_curated_tier1.json
+database/doc_generation_report_*_test.json
