@@ -6,6 +6,42 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 ## Active
 
+### TASK-005 — Theme Standardisation & Golden Master Build — 🔄 IN PROGRESS
+**Status:** 🔄 In progress — PR `claude/refine-local-plan-kr29k` partially merged context
+**Priority:** High
+**Branch:** `claude/refine-local-plan-kr29k`
+**Handover doc:** `context/THEME_HANDOVER_BRIEF.md`
+
+**Two tracks:**
+
+**Track A — Builder fix (needs Google credentials / local session)**
+- [ ] Investigate `updateTextStyle` not-persisting bug: symptom is `textStyle: {}` on all runs after build; hypothesis is `updateParagraphStyle(namedStyleType)` in same batchUpdate resets run-level overrides
+- [ ] Minimal repro: 2-para test doc, re-fetch, confirm runs empty
+- [ ] Fix: reverse order — emit `updateParagraphStyle` first, then `updateTextStyle` per paragraph in `build_golden_master.py`
+- [ ] Verify fix against orphan doc `1vWpzuBOyyKrLWkHWT0bUHH5EQPMBtAKKFAeyGcPNZPc`
+- [ ] Re-audit: `python3 tools/audit_doc_style.py <DOC_ID> --theme templates/resume_copper_teal_circuit_v1.json`
+- **Gate:** Do NOT register new themes or build Golden Masters until this is verified ✋
+
+**Track B — Schema / compile (no credentials needed) — partially complete**
+- [x] `build_golden_master.py`: `int()` → `round()` fix on 4 line_spacing call sites (commit `9d56066`)
+- [x] `audit_doc_style.py`: vacuous-pass fix — now flags absent `weightedFontFamily`/`fontSize` on runs (commit `9d56066`)
+- [x] `templates/resume_copper_teal_circuit_v1.json`: theme-05 compiled v2.3 → v2.0; copper/teal/Arial; 8 blocks; validates against `schema_v2_0` (commit `9d56066`)
+- [x] `templates/schema_v2_0.json`: JSON Schema draft-07; 13/13 v2.0 templates pass; 10/10 v2.3 conceptual themes correctly fail (commit `9d56066`)
+- [x] Context files for Phase-0 Desktop gallery: `context/theme_viz_render_spec.md`, `context/theme_viz_sample_content.md`, `context/theme_project_description.md` (commit `9d56066`)
+- [ ] **Phase 0** — Run Desktop gallery render (this session / Claude.ai Desktop): produce HTML mockups for all 10 v2.3 themes using `theme_viz_render_spec.md` + `theme_viz_sample_content.md`; return ranked keep set
+- [ ] **Phase 1** — Compile kept themes (01–04, 06–10) to v2.0 using `resume_copper_teal_circuit_v1.json` as reference skeleton; validate each against `schema_v2_0.json`; gated on Track A builder fix
+- [ ] Register compiled themes in `config/doc_templates.json`; build + audit Golden Masters; gated on Track A builder fix
+
+**Schema / ontology work (this session — Claude Desktop chat, no credentials):**
+- [ ] Design unified canonical JSON schema (v2.3 → single format) — merge legacy 300–400 line templates with newer ~200 line v2.3 themes
+- [ ] Produce critique rubric (Markdown) for evaluating theme differentiation, ATS safety, accessibility, and Career Brain sector alignment
+- [ ] Normalise all 10 v2.3 themes against unified schema; surface incompatible fields under `legacy_fields` rather than silently dropping
+
+**Phase 0 note — switching from Claude Code Desktop to standard Claude Desktop chat:**
+Phase 0 (gallery render) is designed to run in **Claude.ai Desktop / Web chat** (this interface), not Claude Code. The 10 v2.3 theme JSONs and render spec are loaded as Project files. Produce the HTML gallery artifact here, rank themes, return the keep set to Claude Code for Phase 1 compilation.
+
+---
+
 ### TASK-004 — Database Quality Sweep & Narrative Taxonomy — ✅ COMPLETE 2026-05-30
 **Status:** ✅ Complete
 **Priority:** High — Garbage in, garbage out mitigation
@@ -24,21 +60,11 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [x] STAR narrative gap detection — extend auditor to flag narratives missing a clear Result clause; built, verified, and executed.
 - [x] `_RECRUITER_SYSTEM_PROMPT` updated — Community Services Values block + 3 gold-standard STAR few-shot examples added (2026-05-30)
 
-**Problem Description:** A deep audit of `career_history_enriched.json` (1,017 items) and `ksc_curated.json` (1,347 items) found numerous data quality defects. Specifically, the 665 `statement` type narratives (initially flagged as "lacking outcome language") were delineated via sequential reasoning into:
-1. **Valid Lived Experience (113)**: Intentional identity-grounded claims (preserve/upgrade).
-2. **Mislabelled Outcome Statements (104)**: Actually contain outcome verbs, should be STAR/achievement type (reclassify).
-3. **Qualification Fragments (23)**: Structural resume elements, not KSC evidence (archive).
-4. **Role Descriptions (19)**: Valid context but missing results (flag for LLM review).
-5. **Generic Filler (14)**: Clichés harming KSC quality (demote/archive).
-6. **Unclassified (396)**: Mostly structural resume headers or bullet lists masquerading as narratives (archive).
-**Resolution Plan:** `pipeline/audit_and_repair_database.py` applies deterministic fixes (markdown stripping, glyph removal, lived-experience flagging, CAR quality scoring) followed by a two-track Gemini Flash LLM pass. Use `domain_knowledge_insights.md` as reference for KSC SAO/STAR standards, inclusive language, and action verb bank.
-
 ### TASK-002 — KSC v2 end-to-end validation — ✅ COMPLETE 2026-05-30
 **Status:** ✅ Complete
 **Priority:** High — v2 tooling is built but never validated; existing ksc_base was built with v1
 **Spec:** `docs/superpowers/specs/2026-05-27-session-status-and-next-steps-design.md` § Task 2
 **Design doc:** `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md`
-**Leveraging Old Knowledge (Gemini):** Before live generation, update `_RECRUITER_SYSTEM_PROMPT` in `content_engine.py` to enforce Community Services Values. Provide the Gold Standard STAR KSC responses from `archive/Chromebook Downloads/ai_studio_code.txt` as few-shot examples so the LLM perfectly replicates the Australian sector tone and structure.
 
 Steps:
 - [x] 0. Pre-work: Updated `_RECRUITER_SYSTEM_PROMPT` in `tools/content_engine.py` — added `<community_services_values>` block + 3 gold-standard STAR few-shot examples (2026-05-30)
@@ -51,12 +77,6 @@ Steps:
   - Fixed Gemini 2.5-flash JSON truncation bug: `thinkingBudget=0` + `responseMimeType="application/json"` + `max_output_tokens=2048`
 - [x] 7. Live KSC generation — Doc `1yXUubTrE9U0mQceDBkrz0oSeTcSO9Fnjk9qBI4AZoZ4` created; 6/6 LLM calls succeeded (2026-05-30)
 - [x] 8. `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md` status → Approved (2026-05-30)
-
-**Gate:** Do not proceed past Step 2 until validator returns exit 0.
-
-**Blocked at Step 7 → Unblocked 2026-05-28:** TASK-003 resolved. CAR content is now clean. Step 8 requires one clean live generation with `GEMINI_API_KEY` set to confirm LLM rewrite output before marking design Approved.
-
-**To complete Step 8:** Set `GEMINI_API_KEY`, run live generation, inspect that context/action/result fields contain coherent CAR paragraphs (not raw bullets), then mark `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md` status Approved.
 
 ---
 
