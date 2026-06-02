@@ -258,21 +258,6 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
             line_spacing = round(typo.get("line_spacing", 1.15) * 100)
             space_below = typo.get("spacing_after_pt", 6.0)
 
-        # Text style request
-        requests.append({
-            "updateTextStyle": {
-                "range": {"startIndex": start, "endIndex": end},
-                "textStyle": {
-                    "bold": bold,
-                    "italic": italic,
-                    "fontSize": pt(font_size),
-                    "foregroundColor": {"color": {"rgbColor": hex_to_rgb(color)}},
-                    "weightedFontFamily": {"fontFamily": font},
-                },
-                "fields": "bold,italic,fontSize,foregroundColor,weightedFontFamily",
-            }
-        })
-
         # Paragraph style request
         para_style = {
             "namedStyleType": named_style,
@@ -333,6 +318,21 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
                 "range": {"startIndex": start, "endIndex": end},
                 "paragraphStyle": para_style,
                 "fields": para_fields,
+            }
+        })
+
+        # Text style request (Must come AFTER paragraph style to avoid being overwritten)
+        requests.append({
+            "updateTextStyle": {
+                "range": {"startIndex": start, "endIndex": end},
+                "textStyle": {
+                    "bold": bold,
+                    "italic": italic,
+                    "fontSize": pt(font_size),
+                    "foregroundColor": {"color": {"rgbColor": hex_to_rgb(color)}},
+                    "weightedFontFamily": {"fontFamily": font},
+                },
+                "fields": "bold,italic,fontSize,foregroundColor,weightedFontFamily",
             }
         })
 

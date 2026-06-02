@@ -1,49 +1,60 @@
-# Claude Desktop Project — Career Brain Theme Gallery
+# Career Brain — Template Schema & Critique (Design-Time)
 
-## Project purpose
+> Canonical Project description / custom instructions. Mirrors the Claude Desktop Project context so
+> the repo and the design workspace stay in sync.
 
-You are helping assess 10 candidate resume themes for the Career Brain pipeline. Career Brain generates tailored Google Docs resumes, cover letters, and KSC responses for community-services and social-work job seekers in Australia.
+**What this is:** Career Brain is a career-justice tool for community-services and social-work
+contexts in Australia. This is the **design-time workspace** for standardising its resume /
+cover-letter / KSC and theme templates.
 
-The existing production library has 6 registered templates. The task is to evaluate 10 new conceptual themes and decide which are visually distinct, strong, and safe to compile into production templates.
+**Goal:** Produce (a) **one canonical, validatable JSON schema** that unifies a mixed library into a
+single format, and (b) a **critique rubric** for evaluating any template on: clarity, non-overlap
+(themes must be visually/structurally distinct), accessibility, ATS-safety, and alignment with
+Career Brain's career-justice aims.
 
----
+## The library has two existing halves — the canonical schema is their union
 
-## Files in this Project
+1. **Content/structure half** — the older 300–400-line **v2.0 production templates** (`resume_*`,
+   `cover_letter_*`, `ksc_*`). These hold the concrete `blocks[]`, tokens (`{{ROLE_N_…}}`, etc.),
+   cm margins, and single-string fonts the production pipeline actually consumes. This is the *what*.
+2. **Design-token half** — the newer ~200-line **v2.3 themes** (`theme-01…10`) plus
+   `MASTER_SCHEMA_V2_3.json`. These hold `visual_identity`, `bands`, `dividers`, `accent_logic` —
+   the *how-it-looks*.
 
-| File | Purpose |
-|---|---|
-| `theme-01-graphite-ledger.json` … `theme-10-rainbow-minimal.json` | v2.3 conceptual theme specs — palette, typography, section heading style, visual identity |
-| `context/theme_viz_render_spec.md` | Full instructions for the render task |
-| `context/theme_viz_sample_content.md` | Fixed AU resume content to use in all 10 mockups |
+## Status of `MASTER_SCHEMA_V2_3.json` (important)
 
----
+Despite its name it is a **filled-in theme instance, not a validatable schema** (no
+`$schema`/`properties`/`required`), it is **resume-only**, has **no `blocks[]`**, and uses inch
+margins + a `font_family` array (production-incompatible). Treat it as: (a) the **seed for the
+design-token vocabulary**, and (b) a **rubric goldmine** — lift `theme_specific_rules`,
+`anti_generic_rules`, `forbidden_repeats`, `adjacent_theme_difference_rules`, and `avoid_list` as
+the non-overlap/clarity/accessibility criteria. Do **not** treat it as the canonical schema.
 
-## Your task
+## The canonical schema must
 
-1. Read `theme_viz_render_spec.md` for detailed instructions.
-2. Render all 10 themes as a single HTML gallery using the fixed sample content.
-3. Produce a ranked assessment table and a "keep set" — the theme IDs to compile.
+- Merge both halves.
+- Cover all three `doc_type`s (resume, cover_letter, ksc).
+- Normalise to one convention set (cm margins, single-string font).
+- Express the design tokens **and** the `blocks`/token contract.
+- Be an **actual validatable schema** so faster models can validate normalised output in Phase 2.
 
----
+## Hard constraint — model-agnostic outputs
 
-## Constraints
+Claude is **design-time only**. Production runs on **Google Gemini**, not Anthropic APIs. Every
+artifact (schema, rubric, normalised themes, critique objects) must be plain, portable JSON/markdown
+reusable as Gemini system/context — no Anthropic-specific SDKs, tools, or assumptions.
 
-- **ATS safety is critical.** Dark backgrounds (theme-02), strong neon accents (theme-08), and low-contrast colour combinations are disqualifying or high-risk flags.
-- **Distinctiveness matters.** The existing 6 templates use: Forest Green + Calibri, Deep Navy + Times New Roman, Slate Blue/Teal + Arial, Gold/Red + Calibri. A new theme that looks like one of these is low-value.
-- **Career-justice fit.** Themes should work for community services, government, NFP, and healthcare sectors — not just corporate or tech aesthetics.
-- **Do not invent content.** Use `theme_viz_sample_content.md` verbatim for every card.
+## Phased plan (multi-session)
 
----
+1. **Schema + rubric design** (Opus 4.8) — synthesise the canonical schema from both halves; draft
+   the rubric seeded from `MASTER_SCHEMA_V2_3`'s rule blocks; validate against a few representative
+   old + new templates.
+2. **Bulk normalisation + critique** (faster models) — convert the full library to the canonical
+   schema; emit one critique object per template against the rubric.
+3. **Final audit** (Opus 4.8) — refine the ontology, resolve overlaps, tidy repo structure.
 
-## Output format
+## Working principles
 
-1. One self-contained HTML file with all 10 cards in a 2×5 grid.
-2. A ranked markdown table with your assessment.
-3. A "KEEP SET" line at the end, e.g.:
-
-```
-KEEP SET (for Claude Code compilation):
-theme-01, theme-04, theme-05, theme-06, theme-09
-```
-
-Copy this keep set back to Claude Code to trigger Phase 1 compilation.
+Smallest change that works; verify against the actual files, don't infer; surface tradeoffs and
+ambiguity explicitly; keep outputs human-readable and reusable. ATS-safety and accessibility are
+non-negotiable evaluation axes.

@@ -1,69 +1,83 @@
-# Theme Gallery Render Spec — Instructions for Claude Desktop
+# Theme Visualization Render Spec — for Claude Desktop
 
-## Task
+> **Purpose:** render all 10 conceptual themes (`templates/theme-01…theme-10.json`, schema v2.3)
+> as comparable single-page resume mockups so a human can rank them on look-and-feel.
+> Use this spec **together with** the other files in this Project: `theme_viz_sample_content.md`
+> (the fixed sample resume), the 10 theme specs `theme-01-*.json` … `theme-10-*.json`, and
+> `THEME_SPEC_GUIDE.md`.
 
-Produce a single HTML artifact that renders all 10 Career Brain themes side-by-side using fixed sample content. The output is a gallery for visual assessment — the user will pick which themes are distinct and strong enough to compile and register as production templates.
+## What to produce
 
----
+Produce **one self-contained HTML artifact** containing **all 10 themes** as a responsive
+side-by-side gallery of single-A4-page mockups, so they can be compared and ranked directly. It
+renders live inline — iterate on it with follow-up prompts (e.g. "tighten theme-07 headings",
+"warm up theme-09's palette") and it re-renders in place. Use the **same sample content for every
+theme** — the only thing that changes between mockups is the visual treatment. This is what makes
+them rankable.
 
-## Source files (load these into Project context)
+## Hard rules (every mockup)
 
-- `templates/theme-01-graphite-ledger.json` through `templates/theme-10-rainbow-minimal.json` — the 10 v2.3 theme specs
-- `context/theme_viz_sample_content.md` — fixed resume content to use in every card
-- `context/theme_viz_render_spec.md` — this file
+- **A4 portrait, single column.** White (`#FFFFFF`) or `#FAFAFA` page background only.
+- **No multi-column, no tables, no text boxes, no images, no icons.** These themes are ATS-safe by
+  definition — do not add layout chrome that the production pipeline can't emit.
+- **Bullet glyph is `-` only.** Never `•`, `●`, `◆`, `✔`, `★`, or any `forbidden_glyphs` entry.
+- Body text near-black (`body_text_color` / palette body), never pure `#000000`.
 
----
+## Map each theme's v2.3 tokens to the mockup
 
-## What to render per card
+Read these keys from the theme JSON and honor them:
 
-Each card represents one theme. Render a scaled-down single-page resume using:
+| Token | Apply to |
+|---|---|
+| `typography.base_font` / `ats_constraints.font_family[0]` | Whole document font (use the **first** font in the array) |
+| `typography.base_size_pt`, `line_spacing`, `spacing_after_pt` | Body text size / leading / paragraph spacing |
+| `typography.section_heading_size_pt`, `section_heading_weight`, `section_heading_tracking_pt` | Section headings |
+| `palette` (`base_colours`, `complementary_accent`, `neutral_surface`, `neutral_text`, `supporting_neutral`) | Heading color, accent rules/markers, page surface, body text |
+| `section_heading_style` (`font_color`, `text_transform`, `decoration`, `accent_color`) | How section headings look (e.g. UPPERCASE + accent rule) |
+| `dividers` (`grammar`, `frequency`, `weight`, `divider_rhythm`) | Rules between header/sections/roles — interpret the prose (e.g. "dashed rules", "progressive rhythm") visually |
+| `bands` (`placement`, `intensity`, `height_rule`) | Thin accent bands at header edge / metadata strip / section accents |
+| `accent_logic` (`primary_use`, `allowed_scope`) | Where the accent color is allowed — headings, labels, thin rules, chip borders, micro markers **only** |
+| `skills_background_tint` | Light fill behind the Skills block only |
+| `page.margins_in` | Page margins (these are in **inches** in v2.3) |
 
-1. **Sample content** from `theme_viz_sample_content.md` — name, contact, target role, summary (2 sentences), skills (first 4), one role with 2 bullets, education line.
-2. **Typography**: `typography.base_font`, `typography.base_size_pt`, `typography.line_spacing`
-3. **Palette**: use `palette.complementary_accent` for section heading colour; `palette.neutral_text` or `body_text_color` for body; `palette.neutral_surface` or `neutral_background` for page background
-4. **Section headings**: apply `section_heading_style.font_color` and `section_heading_style.accent_color`; if `"decoration"` mentions "rule", render a 1px bottom border on section headings using the accent colour
-5. **Page margins**: convert `page.margins_in` to px at 96 dpi (1 in = 96 px)
-6. **Name**: largest text (1.8× body size), use the copper/primary accent if available; fallback to `palette.complementary_accent`
-7. **Contact line**: slightly muted — use `muted_text_color` or the second `palette.base_colours` entry
+The `dividers`/`bands`/`accent_logic` values are intentionally **prose, not pixel specs** — that
+is why a human is rendering them. Interpret each theme's described motif faithfully and distinctly
+(e.g. Copper Teal Circuit = dual-tone copper structure + teal micro-accents + dashed section rules;
+Midnight Blueprint = light text on dark surface; Graphite Ledger = thin solid ledger lines).
 
----
+## Layout skeleton (same 8 blocks, in this order — matches production v2.0)
 
-## Gallery layout
+1. Name (large, theme heading color)
+2. Contact line (phone · email · location, muted)
+3. Target-role headline (accent color)
+4. **SUMMARY** heading + paragraph
+5. **SKILLS** heading + inline comma-separated list (with `skills_background_tint`)
+6. **EXPERIENCE** heading + 3 roles, each: bold title, muted `org   dates`, `-` bullets
+7. **EDUCATION** heading + entries
+8. **CERTIFICATIONS** heading + entries
 
-- 2 columns × 5 rows, each card at roughly A4 proportions (scaled to ~280px wide)
-- Theme name, mood, and font as caption below each card
-- Add a visual ATS-risk badge in red if `theme-02-midnight-blueprint` (dark background) — note "dark mode: ATS risk"
-- Keep all 10 in the same HTML file
+Use the **same 8-block skeleton** so a chosen mockup transfers cleanly to the production v2.0
+template that Claude Code compiles.
 
----
+## Fidelity caveat (state this to the user)
 
-## Ranking output
+These mockups approximate **palette + typography + heading/divider treatment**. The production
+builder (`build_golden_master.py`) is deliberately ATS-minimal: it applies font, sizes, colors,
+line spacing, heading top/left accent borders, and the skills tint — but it does **not** emit
+dashed "circuit" rules, decorative bands, or chips. So the real Google Doc Golden Master will be a
+cleaner, flatter version of these mockups. Rank on **palette, font pairing, heading style, and
+overall tone** — those survive into production; fine decorative motifs may not.
 
-After the gallery HTML, append a markdown ranking table:
+## Output back to Claude Code
 
-| Rank | Theme | Strengths | Concerns | Keep? |
-|---|---|---|---|---|
-| 1 | ... | ... | ... | ✅ / ❌ |
-
-Evaluate each on:
-- **Distinctiveness** from the 6 existing registered themes (Forest Green, Navy, Slate Blue, Gold/Red, Navy/Charcoal — the registered palette set)
-- **Visual appeal** — premium, clear, purposeful
-- **ATS safety** — light background, no decorative elements that create structural noise
-- **Career-justice fit** — does it work for community services, government, NFP contexts?
-
-Flag `theme-02` as high ATS risk due to dark background. Flag any theme with yellow (`theme-03`) or neon (`theme-08`) as accessibility concern for low-contrast body text.
-
----
-
-## Deliverable
-
-One self-contained HTML file. Output it in a code block so it can be copied and opened directly in a browser.
-
-Then output a short "keep set" list — the theme IDs to compile to v2.0 — formatted as:
+A short ranked list, e.g.:
 
 ```
-KEEP SET (for Claude Code compilation):
-theme-01, theme-04, theme-05, theme-06, theme-09
+1. theme-05 copper-teal-circuit — ship first
+2. theme-08 nordic-neon — strong, slate alternative
+3. theme-01 graphite-ledger — conservative pick
+... (+ any palette/typography tweak notes per theme)
+exclude: theme-02 midnight-blueprint (dark-mode ATS/print risk)
 ```
 
-(Fill in based on your assessment — this is a placeholder.)
+Claude Code then compiles the winners v2.3 → v2.0, builds the Golden Master, audits, and registers.

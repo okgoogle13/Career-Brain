@@ -1,73 +1,52 @@
-# Theme Visualisation — Fixed Sample Content
+# Theme Visualization — Fixed Sample Resume Content
 
-Use this content verbatim for all 10 theme mockups. Do not vary it between themes.
+> Use this **exact** content for **every** theme mockup. Identical content across all 10 means the
+> only visible difference is the theme's visual treatment — that is what makes them rankable.
+> This is generic placeholder content (not the real `database/` data) so the render is fast and
+> the focus stays on visual identity.
 
----
+## Header
 
-## Candidate
+- **Name:** Jordan A. Rivera
+- **Contact line:** 0400 000 000 · jordan.rivera@example.com · Melbourne VIC
+- **Target-role headline:** Program Coordinator — Community Services
 
-**Name:** Alexandra Nguyen  
-**Phone:** 0412 345 678  
-**Email:** a.nguyen@email.com.au  
-**Location:** Melbourne, VIC 3000  
-**Target Role:** Senior Community Services Manager
+## Summary
 
----
+Community-services professional with 8+ years coordinating frontline programs across health,
+housing, and youth services. Track record of lifting service reach while holding to compliance and
+trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes
+for clients and funders alike.
 
-## Professional Summary
+## Skills
 
-Experienced community services leader with 14 years driving service delivery reform, workforce development, and systems advocacy across homelessness, mental health, and family services sectors in Victoria. Track record of securing $3.2M in government funding, leading teams of 22+ staff, and building cross-sector partnerships that have improved outcomes for over 4,000 clients annually. Known for translating policy intent into front-line practice change.
+Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data & Outcomes
+Measurement, Risk & Compliance, Volunteer Management, Trauma-Informed Practice
 
----
+## Experience (3 roles, 3 bullets each)
 
-## Key Skills
+**Program Coordinator** — Hope Community Network · Jan 2021 – Present
+- Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.
+- Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.
+- Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.
 
-Trauma-informed practice, Case management frameworks, Grant writing & acquittal, Workforce development, Stakeholder engagement, NDIS & HACC knowledge, Data-driven reporting, Cultural safety
+**Case Manager** — Southside Housing Services · Mar 2017 – Dec 2020
+- Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.
+- Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.
+- Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.
 
----
-
-## Work Experience
-
-### Role 1
-**Title:** Senior Manager, Housing & Homelessness Services  
-**Organisation:** VincentCare Victoria  
-**Dates:** Mar 2019 – Present
-
-- Led end-to-end redesign of intake and assessment processes, reducing average wait time from 18 days to 6 days for 1,200 clients per year.
-- Secured $1.8M in DHHS innovation funding over three grant cycles; achieved 98% acquittal compliance across all funded programs.
-- Grew the division from 9 to 22 staff in 18 months; developed a structured induction and supervision framework that reduced 90-day turnover from 34% to 11%.
-- Partnered with three local councils and two acute health services to establish a shared risk assessment protocol adopted across the Inner North catchment.
-
-### Role 2
-**Title:** Team Leader, Family Services  
-**Organisation:** Berry Street  
-**Dates:** Jun 2015 – Feb 2019
-
-- Supervised a team of 8 practitioners delivering intensive family preservation to 120 families annually under the FCRB model.
-- Implemented a strengths-based practice framework that lifted positive case closure rates from 54% to 71% over two years.
-- Coordinated a DV co-location pilot with Victoria Police; initiative cited in departmental good-practice review.
-- Maintained compliance with Child Protection mandatory reporting standards across all 8 practitioners for four consecutive audit cycles.
-
-### Role 3
-**Title:** Case Manager, Mental Health & AOD  
-**Organisation:** Neami National  
-**Dates:** Jan 2012 – May 2015
-
-- Managed a caseload of 28 clients with co-occurring mental health and alcohol-and-other-drug support needs.
-- Contributed to a service-wide outcome measurement project that resulted in adoption of the SCORE framework across 12 Neami sites.
-- Facilitated weekly group sessions (capacity 12 participants) with consistently high participant retention (89% average attendance).
-
----
+**Support Worker** — Youth Connect Victoria · Feb 2015 – Feb 2017
+- Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.
+- Co-designed a peer-mentoring pilot later scaled to four additional sites.
+- Maintained incident and safeguarding records to full compliance across 24 monthly audits.
 
 ## Education
 
-Bachelor of Social Work — RMIT University, 2011  
-Graduate Certificate in Management (Community Sector) — Swinburne University, 2017
-
----
+- Bachelor of Social Work — RMIT University, 2014
+- Diploma of Community Services — Holmesglen Institute, 2011
 
 ## Certifications
 
-Mental Health First Aid (MHFA) Certificate — current to 2026  
-Applied Suicide Intervention Skills Training (ASIST) — current to 2025  
-Working with Children Check (Employee) — Card No. 0187432B, expires 2027
+- Mental Health First Aid (Accredited), 2023
+- Working with Children Check (VIC), current
+- Cert IV Training & Assessment, 2019
