@@ -206,7 +206,7 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
         elif role == "contact":
             font_size = cv.get("font_size_pt", 11)
             color = cv.get("font_color", "#444444")
-            line_spacing = int(cv.get("line_spacing", 1.15) * 100)
+            line_spacing = round(cv.get("line_spacing", 1.15) * 100)
             space_below = cv.get("margin_bottom_pt", 2.0)
         elif role == "headline":
             font_size = hv.get("font_size_pt", 12)
@@ -216,7 +216,7 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
         elif role == "employer":
             font_size = body_size
             color = body_color
-            line_spacing = int(typo.get("line_spacing", 1.15) * 100)
+            line_spacing = round(typo.get("line_spacing", 1.15) * 100)
             space_below = 2.0
         elif role == "h1":
             font_size = h1_vc.get("font_size_pt", 14)
@@ -244,7 +244,7 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
             b_vc = ev.get("bullet", {})
             font_size = b_vc.get("font_size_pt", body_size)
             color = b_vc.get("font_color", body_color)
-            line_spacing = int(b_vc.get("line_spacing", 1.2) * 100)
+            line_spacing = round(b_vc.get("line_spacing", 1.2) * 100)
             space_below = b_vc.get("margin_bottom_pt", 2.0)
         elif role == "skills_body":
             item = sv.get("item", {})
@@ -255,23 +255,8 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
         else:  # body
             font_size = body_size
             color = body_color
-            line_spacing = int(typo.get("line_spacing", 1.15) * 100)
+            line_spacing = round(typo.get("line_spacing", 1.15) * 100)
             space_below = typo.get("spacing_after_pt", 6.0)
-
-        # Text style request
-        requests.append({
-            "updateTextStyle": {
-                "range": {"startIndex": start, "endIndex": end},
-                "textStyle": {
-                    "bold": bold,
-                    "italic": italic,
-                    "fontSize": pt(font_size),
-                    "foregroundColor": {"color": {"rgbColor": hex_to_rgb(color)}},
-                    "weightedFontFamily": {"fontFamily": font},
-                },
-                "fields": "bold,italic,fontSize,foregroundColor,weightedFontFamily",
-            }
-        })
 
         # Paragraph style request
         para_style = {
@@ -333,6 +318,21 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
                 "range": {"startIndex": start, "endIndex": end},
                 "paragraphStyle": para_style,
                 "fields": para_fields,
+            }
+        })
+
+        # Text style request (Must come AFTER paragraph style to avoid being overwritten)
+        requests.append({
+            "updateTextStyle": {
+                "range": {"startIndex": start, "endIndex": end},
+                "textStyle": {
+                    "bold": bold,
+                    "italic": italic,
+                    "fontSize": pt(font_size),
+                    "foregroundColor": {"color": {"rgbColor": hex_to_rgb(color)}},
+                    "weightedFontFamily": {"fontFamily": font},
+                },
+                "fields": "bold,italic,fontSize,foregroundColor,weightedFontFamily",
             }
         })
 
