@@ -9,6 +9,10 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .venv/
+.venv_sys/
+
+# Pipeline intermediate outputs (regeneratable from source_docs via normalize_vault.py)
+processed/
 
 # Credentials & secrets
 credentials.json
