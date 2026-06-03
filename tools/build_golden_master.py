@@ -340,17 +340,38 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 build_golden_master.py <theme_json_path>", file=sys.stderr)
+    # positional theme path + optional --dry-run flag
+    positional = [a for a in sys.argv[1:] if not a.startswith("-")]
+    dry_run = "--dry-run" in sys.argv[1:]
+    if len(positional) != 1:
+        print("Usage: python3 build_golden_master.py <theme_json_path> [--dry-run]", file=sys.stderr)
         sys.exit(1)
 
-    theme_path = Path(sys.argv[1])
+    theme_path = Path(positional[0])
     if not theme_path.exists():
         print(f"Error: {theme_path} not found", file=sys.stderr)
         sys.exit(1)
 
     theme = json.loads(theme_path.read_text(encoding="utf-8"))
     template_name = theme.get("template_id", theme_path.stem)
+
+    paragraphs = build_paragraphs(theme)
+    full_text = "\n".join(text for text, *_ in paragraphs)
+    insert_request = {"insertText": {"location": {"index": 1}, "text": full_text + "\n"}}
+
+    if dry_run:
+        # Offline payload dump — no Google API calls, no quota. Lets us validate
+        # request ordering (paragraph style before text style) and payload shapes
+        # before spending a live build. doc_id is unused by build_requests().
+        style_requests = build_requests(theme, paragraphs, doc_id="DRY_RUN")
+        print(json.dumps({
+            "template_id": template_name,
+            "doc_type": theme.get("doc_type", "resume"),
+            "paragraph_count": len(paragraphs),
+            "insert_request": insert_request,
+            "style_requests": style_requests,
+        }, indent=2))
+        return
 
     from generate_document import build_google_services
     docs_service, drive_service = build_google_services()
@@ -366,15 +387,10 @@ def main():
     doc_id = file_meta["id"]
     print(f"  Created doc ID: {doc_id}", file=sys.stderr)
 
-    paragraphs = build_paragraphs(theme)
-    full_text = "\n".join(text for text, *_ in paragraphs)
-
     print("  Inserting content ...", file=sys.stderr)
     docs_service.documents().batchUpdate(
         documentId=doc_id,
-        body={"requests": [
-            {"insertText": {"location": {"index": 1}, "text": full_text + "\n"}}
-        ]},
+        body={"requests": [insert_request]},
     ).execute()
 
     print("  Applying styles ...", file=sys.stderr)

@@ -1,0 +1,193 @@
+{
+  "schema_version": "2.3",
+  "template_id": "theme_horizon_edge",
+  "tier": 1,
+  "tier_label": "ATS Standard",
+  "doc_type": "resume",
+  "target_sector": [
+    "private_sector",
+    "creative"
+  ],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDERSCHEMAV2",
+  "description": "Cinematic widescreen theme pairing deep midnight-navy typography with thick sweeping coral framing rules and an asymmetrical stepped header.",
+  "visual_identity": {
+    "theme_name": "Horizon Edge",
+    "mood": "expansive, optimistic, cinematic, warm",
+    "motif_name": "thick cinematic framing rules",
+    "density_target": "medium",
+    "silhouette": "wide, horizontal-sweeping",
+    "personality_axis": "visionary, modern, bold",
+    "header_silhouette": "asymmetrical stepped header (name flush left, contact far right) with thick top and bottom coral framing",
+    "section_emphasis_pattern": "band-led",
+    "contrast_intensity": "medium"
+  },
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": [
+      "Arial",
+      "Calibri",
+      "Georgia"
+    ],
+    "content_layer": "all essential content must remain plain text in normal reading order and selectable",
+    "forbidden_glyphs": [
+      "icons",
+      "emoji",
+      "ornamental bullets",
+      "nonstandard ligatures",
+      "special symbols used as decoration",
+      "layout-only unicode art"
+    ]
+  },
+  "palette": {
+    "base_colours": [
+      "#0B192C",
+      "#1E3E62",
+      "#476685"
+    ],
+    "complementary_accent": "#FF5722",
+    "neutral_surface": "#FFFFFF",
+    "neutral_text": "#0B192C",
+    "neutral_background": "#F9F9F9",
+    "supporting_neutral": "#E0E0E0"
+  },
+  "typography": {
+    "base_font": "Arial",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.26,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 1.8,
+    "section_heading_size_pt": 12,
+    "section_heading_weight": 800
+  },
+  "page": {
+    "margins_in": {
+      "top": 0.7,
+      "right": 0.6,
+      "bottom": 0.7,
+      "left": 0.6
+    },
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "single_column": true,
+    "reading_order": "top_to_bottom_left_to_right",
+    "export_safe": "Google Docs and PDF export compatible"
+  },
+  "bands": {
+    "strategy": "thick, sweeping horizontal bands that act as cinematic letterboxes for sections",
+    "placement": [
+      "section separator zones"
+    ],
+    "intensity": "moderate",
+    "height_rule": {
+      "min_pt": 4,
+      "max_pt": 6,
+      "default_pt": 4
+    },
+    "band_targets": [
+      "section separator zones"
+    ],
+    "highlight_band_targets": [
+      "section labels"
+    ],
+    "band_placement_profile": "section_only",
+    "accent_placement_profile": "section_headers_only"
+  },
+  "dividers": {
+    "grammar": "solid",
+    "frequency": "sparse",
+    "weight": "medium",
+    "divider_targets": [
+      "between major sections only"
+    ],
+    "divider_rhythm": "sparse"
+  },
+  "accent_logic": {
+    "primary_use": [
+      "thick horizontal framing rules around section headings"
+    ],
+    "complementary_accent_role": "coral exists only as vast horizontal framing, providing cinematic structure without touching body text",
+    "allowed_scope": [
+      "section horizontal boundaries"
+    ],
+    "forbidden_scope": [
+      "body text",
+      "small labels",
+      "bullet points"
+    ],
+    "accent_balance": "coral must only exist as vast, sweeping horizontal lines, never as delicate micro-markers",
+    "contrast_intensity": "medium"
+  },
+  "theme_specific_rules": {
+    "must_include": [
+      "deep navy body text",
+      "thick coral horizontal rules",
+      "extra-wide tracking on headers",
+      "asymmetrical header layout"
+    ],
+    "forbidden_repeats": [
+      "same top-of-page structure across themes",
+      "same section label treatment across themes",
+      "same divider grammar as previous theme",
+      "same chip treatment as previous theme",
+      "same band placement as previous theme",
+      "tonal-only palette dependency"
+    ],
+    "visual_differentiators": [
+      "cinematic/widescreen feel",
+      "vibrant sunset palette against midnight blue",
+      "stepped header alignment"
+    ],
+    "anti_generic_rules": [
+      "no centered name blocks",
+      "no thin/faint grey lines",
+      "no standard black text"
+    ],
+    "non_reuse_constraints": [
+      "no repeated top-of-page pattern",
+      "no repeated divider grammar from previous theme",
+      "no repeated band placement from previous theme"
+    ],
+    "adjacent_theme_difference_rules": [
+      "must differ from previous theme in band placement",
+      "must differ from previous theme in divider rhythm",
+      "must differ from previous theme in accent placement"
+    ]
+  },
+  "section_heading_style": {
+    "font_color": "#0B192C",
+    "text_transform": "uppercase",
+    "decoration": "thick top and bottom coral framing",
+    "accent_color": "#FF5722"
+  },
+  "body_text_color": "#0B192C",
+  "muted_text_color": "#476685",
+  "skills_background_tint": "#E0E0E0",
+  "avoid_list": [
+    "tonal-only palette",
+    "same top-of-page structure",
+    "same divider grammar as previous theme",
+    "same chip treatment as previous theme",
+    "generic safe fallback",
+    "over-softened hierarchy",
+    "repeated band placement",
+    "multi-column layout",
+    "sidebar layout",
+    "text boxes",
+    "layout tables",
+    "floating objects",
+    "decorative graphics",
+    "icons",
+    "images",
+    "headers and footers for essential content",
+    "low-contrast body text",
+    "black body text",
+    "centered headers",
+    "thin grey dividers",
+    "cramped margins"
+  ]
+}
