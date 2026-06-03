@@ -486,3 +486,11 @@ Create a summary report documenting:
 5. **Section Splitting** — Plan divided into sections for parallel execution
 6. **Execute Sections** — Section-writer subagents execute each phase in parallel
 7. **Final Verification** — All artifacts validated; output summary generated
+
+---
+
+## Tech Debt / Refactoring (Deferred Tasks)
+
+The following low-priority polish items were identified during PR review and should be executed in a future chore branch:
+1. **Refactor `verify_themes_2125.py`:** Move the hardcoded expected values map to a structured fixture (JSON/YAML) generated from `planning/phase1-design-synthesis.md` to reduce maintenance cost and drift risk.
+2. **Terminology Normalization:** Standardize terminology across themes (e.g., align "section headers" vs "section headings") to prevent wording drift and simplify diff-based QA.
