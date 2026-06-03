@@ -69,6 +69,20 @@ option — not a single winner. Track 1 (Desktop preview) decides which qualify.
 > the styling-bake bug is fixed. Track 1 previewing is **unaffected** (Desktop renders from JSON
 > tokens, not from the builder). Evidence: identical named-style defs + empty run `textStyle: {}` on
 > both `theme-05` and `modern_minimalist`. Root cause not yet diagnosed.
+>
+> **UPDATE 2026-06-03 — diagnosed & fixed (pending live re-verify):** old code emitted
+> `updateTextStyle` *before* `updateParagraphStyle(namedStyleType)`; applying the named style
+> re-asserted its text formatting over the runs and wiped the overrides → `textStyle: {}`. Reordered
+> so the text-style request is emitted *after* the paragraph-style request, in commit `30d00de`
+> (2026-06-02), `build_golden_master.py:316-337`. **This blocker was logged 2026-05-31, before that
+> fix.** Live re-verification (built doc → non-empty run `textStyle` + PDF visual proof) is being run
+> this session; the success criterion is non-empty run `textStyle`, NOT a vacuous `STYLE OK`.
+>
+> **CONFIRMED 2026-06-03 — BLOCKER LIFTED.** Built two Golden Masters and re-fetched: **0/53
+> runs with empty `textStyle`** (bug gone), `foregroundColor` 53/53. Font path proven by control
+> build — Calibri `weightedFontFamily` 53/53 vs Arial 0/53. Note `weightedFontFamily`/`fontSize`
+> normalize to *absent* when a run's value equals the doc default (Arial/11pt) — expected, not a
+> regression. Registration of compiled themes is unblocked (still per Phase-5 Gate 4).
 
 **Prerequisite before any registration:** fix the run-styling persistence in `build_golden_master.py`
 (diagnose first — paragraph styles land at the same ranges where run styles don't), then re-verify
