@@ -14,13 +14,15 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 **Two tracks:**
 
-**Track A — Builder fix (needs Google credentials / local session)**
-- [ ] Investigate `updateTextStyle` not-persisting bug: symptom is `textStyle: {}` on all runs after build; hypothesis is `updateParagraphStyle(namedStyleType)` in same batchUpdate resets run-level overrides
-- [ ] Minimal repro: 2-para test doc, re-fetch, confirm runs empty
-- [ ] Fix: reverse order — emit `updateParagraphStyle` first, then `updateTextStyle` per paragraph in `build_golden_master.py`
-- [ ] Verify fix against orphan doc `1vWpzuBOyyKrLWkHWT0bUHH5EQPMBtAKKFAeyGcPNZPc`
-- [ ] Re-audit: `python3 tools/audit_doc_style.py <DOC_ID> --theme templates/resume_copper_teal_circuit_v1.json`
-- **Gate:** Do NOT register new themes or build Golden Masters until this is verified ✋
+**Track A — Builder fix — code fix already applied (commit `30d00de`, 2026-06-02); live verification this session (2026-06-03)**
+- [x] Investigate `updateTextStyle` not-persisting bug (symptom `textStyle: {}` on all runs). **Confirmed via `git show 30d00de`:** old code emitted `updateTextStyle` BEFORE `updateParagraphStyle(namedStyleType)`; applying the named style re-asserted its text formatting over the runs, wiping the overrides. Hypothesis was correct.
+- [x] Fix: reverse order — emit `updateParagraphStyle` first, then `updateTextStyle` per paragraph. **Already applied in commit `30d00de` (2026-06-02)** ("fix text style sequence"), `build_golden_master.py:316-337`. The blocker logged below in `THEME_HANDOVER_BRIEF.md` (2026-05-31) predated this commit — it was stale, not unfixed.
+- [x] Regression guard (2026-06-03): added `--dry-run` payload-dump mode to `build_golden_master.py` + `tests/test_build_golden_master.py` asserting `updateParagraphStyle` precedes `updateTextStyle` for each paragraph range and that text runs carry `fontSize`/`weightedFontFamily`.
+- [x] **Verified live (2026-06-03):** built Golden Masters from `resume_copper_teal_circuit_v1.json` (Arial) and `resume_contemporary_professional_v1.json` (Calibri); re-fetched both → **0/53 runs with empty `textStyle`** (original bug gone), `foregroundColor` 53/53 both. Font path proven by cross-build contrast: Calibri `weightedFontFamily` 53/53 vs Arial 0/53. Verified via `scratch/verify_golden_master.py` (font-aware verdict), NOT the vacuous `STYLE OK`. PDFs: `scratch/golden_master_*_verification.pdf`.
+  - ⚠️ **Normalization caveat (do NOT re-open as a bug):** `weightedFontFamily`/`fontSize` read as *absent* on runs whose value equals the doc default (Arial / 11pt). Google Docs stores only deltas from the inherited named style — the text still renders correctly. The Arial doc showing font `0/53` is expected, not a regression.
+  - Doc IDs (My Drive root): Arial `10DOWxFD_53V3tHu1vjPux4gezwvJAC1jM_0rQrO40i4`; Calibri `1M3MZw69oSTSaMqWhKr3mUFc2BKrcPivKaK35nCCCMvc` (built only as the font-path control — safe to trash).
+- [x] Hardened `tools/generate_document.py::build_google_services` (2026-06-03): `credentials.refresh()` wrapped in `try/except RefreshError` → falls through to interactive auth instead of crashing on a revoked token.
+- **Gate:** ✅ Builder styling-bake **verified** — registering compiled themes is unblocked (each live build still honours AGENTS.md Phase-5 Gate 4).
 
 **Track B — Schema / compile (no credentials needed) — partially complete**
 - [x] `build_golden_master.py`: `int()` → `round()` fix on 4 line_spacing call sites (commit `9d56066`)
