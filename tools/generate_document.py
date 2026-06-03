@@ -792,6 +792,7 @@ def build_google_services() -> tuple[Any, Any]:
         from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
         from google.auth.transport.requests import Request
+        from google.auth.exceptions import RefreshError
         from googleapiclient.discovery import build
     except ImportError as exc:
         raise DocumentGenerationError(
@@ -816,7 +817,17 @@ def build_google_services() -> tuple[Any, Any]:
         if token_path.exists():
             credentials = Credentials.from_authorized_user_file(str(token_path), scopes)
         if credentials and credentials.expired and credentials.refresh_token:
-            credentials.refresh(Request())
+            try:
+                credentials.refresh(Request())
+            except RefreshError as exc:
+                # Stale/revoked refresh token (e.g. invalid_grant). Don't crash —
+                # discard the dead credentials and fall through to interactive auth,
+                # which re-mints token.json below.
+                print(
+                    f"  OAuth token refresh failed ({exc}); re-authenticating via browser ...",
+                    file=sys.stderr,
+                )
+                credentials = None
         if not credentials or not credentials.valid:
             if not client_secrets_path.exists():
                 raise DocumentGenerationError(
