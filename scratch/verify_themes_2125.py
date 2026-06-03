@@ -6,6 +6,8 @@ the QUALITY_SUMMARY deviation inventory is provably complete (not spot-checked).
 Not part of the pipeline. Re-runnable, read-only.
 """
 import json
+import sys
+import re
 from pathlib import Path
 
 T = Path("templates")
@@ -216,7 +218,7 @@ SPECS = {
         "dividers.grammar": "signal-mix",
         "dividers.frequency": "moderate",
         "dividers.weight": "thin-to-medium",
-        "dividers.divider_rhythm": "alternating",
+        "dividers.divider_rhythm": "regular",
         "dividers.divider_targets": ["between sections", "between header and body"],
         "accent_logic.primary_use": ["small inline labels", "top header edge band"],
         "accent_logic.allowed_scope": ["top edge framing", "tiny metadata labels"],
@@ -236,11 +238,58 @@ def dig(d, dotted):
         cur = cur[part]
     return cur
 
+def get_all_keys(d, prefix=""):
+    keys = set()
+    for k, v in d.items():
+        path = f"{prefix}.{k}" if prefix else k
+        keys.add(path)
+        if isinstance(v, dict):
+            keys.update(get_all_keys(v, path))
+    return keys
+
+
+theme01_path = T / "theme-01-graphite-ledger.json"
+if theme01_path.exists():
+    j01 = json.loads(theme01_path.read_text())
+    base_keys = get_all_keys(j01)
+else:
+    print("Warning: theme-01-graphite-ledger.json not found for baseline check.")
+    base_keys = None
 
 total_dev = 0
+structural_failures = 0
+
 for fname, spec in SPECS.items():
     j = json.loads((T / fname).read_text())
     print(f"\n{'='*78}\n{fname}\n{'='*78}")
+    
+    if base_keys:
+        j_keys = get_all_keys(j)
+        missing = base_keys - j_keys
+        extra = j_keys - base_keys
+        if missing or extra:
+            print(f"  STRUCTURAL DEVIATION: Keys do not match theme-01.")
+            if missing: print(f"    Missing: {missing}")
+            if extra: print(f"    Extra: {extra}")
+            structural_failures += 1
+            
+    base_font = dig(j, "typography.base_font")
+    if base_font not in {"Arial", "Calibri", "Georgia"}:
+        print(f"  STRUCTURAL DEVIATION: base_font {base_font!r} not in ATS whitelist.")
+        structural_failures += 1
+        
+    for k, v in j.get("palette", {}).items():
+        if isinstance(v, str) and v.startswith("#"):
+            if not re.match(r"^#[0-9A-F]{6}$", v):
+                print(f"  STRUCTURAL DEVIATION: palette.{k} {v!r} is not a 6-digit uppercase hex.")
+                structural_failures += 1
+        elif isinstance(v, list):
+            for i, c in enumerate(v):
+                if isinstance(c, str) and c.startswith("#"):
+                    if not re.match(r"^#[0-9A-F]{6}$", c):
+                        print(f"  STRUCTURAL DEVIATION: palette.{k}[{i}] {c!r} is not a 6-digit uppercase hex.")
+                        structural_failures += 1
+
     for path, want in spec.items():
         if path == "_avoid_additions":
             got = j["avoid_list"]
@@ -264,3 +313,13 @@ for fname, spec in SPECS.items():
     print("  (only deviations shown above; everything else MATCHES spec)")
 
 print(f"\n\nTOTAL DEVIATION FIELDS ACROSS ALL 5 THEMES: {total_dev}")
+print(f"TOTAL STRUCTURAL FAILURES: {structural_failures}")
+
+# Enforce exactly 16 intentional deviations (no more, no less) and 0 structural failures
+EXPECTED_DEVIATIONS = 16
+if total_dev != EXPECTED_DEVIATIONS or structural_failures > 0:
+    print("\nFAIL: Unexpected deviations or structural errors found.")
+    sys.exit(1)
+else:
+    print("\nOK: Only expected deviations found. Structural checks passed.")
+    sys.exit(0)
