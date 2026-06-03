@@ -1,0 +1,196 @@
+{
+  "schema_version": "2.3",
+  "template_id": "theme_cyan_blueprint",
+  "tier": 1,
+  "tier_label": "ATS Standard",
+  "doc_type": "resume",
+  "target_sector": [
+    "engineering",
+    "tech"
+  ],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDERSCHEMAV2",
+  "description": "Architectural blueprint theme with deep-slate Arial typography, an edge-to-edge cyan top band, and signal-mix alternating rules.",
+  "visual_identity": {
+    "theme_name": "Cyan Blueprint",
+    "mood": "structural, analytical, precise, calculated",
+    "motif_name": "technical cyan grid-markers",
+    "density_target": "high",
+    "silhouette": "framed, measured, block-led",
+    "personality_axis": "systematic, organized, methodical",
+    "header_silhouette": "technical multi-line block anchored to the top edge",
+    "section_emphasis_pattern": "band-led",
+    "contrast_intensity": "high"
+  },
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": [
+      "Arial",
+      "Calibri",
+      "Georgia"
+    ],
+    "content_layer": "all essential content must remain plain text in normal reading order and selectable",
+    "forbidden_glyphs": [
+      "icons",
+      "emoji",
+      "ornamental bullets",
+      "nonstandard ligatures",
+      "special symbols used as decoration",
+      "layout-only unicode art"
+    ]
+  },
+  "palette": {
+    "base_colours": [
+      "#1C2833",
+      "#34495E",
+      "#5D6D7E"
+    ],
+    "complementary_accent": "#0088A0",
+    "neutral_surface": "#FFFFFF",
+    "neutral_text": "#1C2833",
+    "neutral_background": "#F4F6F7",
+    "supporting_neutral": "#E5E8E8"
+  },
+  "typography": {
+    "base_font": "Arial",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.25,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 1.4,
+    "section_heading_size_pt": 11,
+    "section_heading_weight": 600
+  },
+  "page": {
+    "margins_in": {
+      "top": 0.6,
+      "right": 0.65,
+      "bottom": 0.6,
+      "left": 0.65
+    },
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "single_column": true,
+    "reading_order": "top_to_bottom_left_to_right",
+    "export_safe": "Google Docs and PDF export compatible"
+  },
+  "bands": {
+    "strategy": "strict edge-to-edge top banding setting a structural blueprint feel",
+    "placement": [
+      "top header edge"
+    ],
+    "intensity": "moderate",
+    "height_rule": {
+      "min_pt": 6,
+      "max_pt": 8,
+      "default_pt": 8
+    },
+    "band_targets": [
+      "top header edge"
+    ],
+    "highlight_band_targets": [
+      "header edge"
+    ],
+    "band_placement_profile": "header_only",
+    "accent_placement_profile": "labels_only"
+  },
+  "dividers": {
+    "grammar": "alternating thin and medium rules suggesting a technical signal grid",
+    "frequency": "moderate",
+    "weight": "thin-to-medium",
+    "divider_targets": [
+      "between sections",
+      "between header and body"
+    ],
+    "divider_rhythm": "alternating"
+  },
+  "accent_logic": {
+    "primary_use": [
+      "small inline labels",
+      "top header edge band"
+    ],
+    "complementary_accent_role": "cyan highlights structural boundaries and tiny labels only, never continuous reading text",
+    "allowed_scope": [
+      "top edge framing",
+      "tiny metadata labels"
+    ],
+    "forbidden_scope": [
+      "body text",
+      "major section headings",
+      "standard dividers"
+    ],
+    "accent_balance": "cyan must only be used as a \"highlighter\" for structural boundaries and labels, never for continuous reading",
+    "contrast_intensity": "high"
+  },
+  "theme_specific_rules": {
+    "must_include": [
+      "edge-to-edge cyan top band",
+      "slate grey body text",
+      "Arial sans-serif font",
+      "signal-mix alternating dividers"
+    ],
+    "forbidden_repeats": [
+      "same top-of-page structure across themes",
+      "same section label treatment across themes",
+      "same divider grammar as previous theme",
+      "same chip treatment as previous theme",
+      "same band placement as previous theme",
+      "tonal-only palette dependency"
+    ],
+    "visual_differentiators": [
+      "architectural blueprint aesthetic",
+      "stark cyan against slate grey",
+      "highly measured and organized grid spacing"
+    ],
+    "anti_generic_rules": [
+      "do not use standard black text",
+      "do not center the layout",
+      "do not use faint/invisible dividers"
+    ],
+    "non_reuse_constraints": [
+      "no repeated top-of-page pattern",
+      "no repeated divider grammar from previous theme",
+      "no repeated band placement from previous theme"
+    ],
+    "adjacent_theme_difference_rules": [
+      "must differ from previous theme in band placement",
+      "must differ from previous theme in divider rhythm",
+      "must differ from previous theme in accent placement"
+    ]
+  },
+  "section_heading_style": {
+    "font_color": "#1C2833",
+    "text_transform": "uppercase",
+    "decoration": "alternating thin and medium rules suggesting a technical signal grid",
+    "accent_color": "#0088A0"
+  },
+  "body_text_color": "#1C2833",
+  "muted_text_color": "#5D6D7E",
+  "skills_background_tint": "#E5E8E8",
+  "avoid_list": [
+    "tonal-only palette",
+    "same top-of-page structure",
+    "same divider grammar as previous theme",
+    "same chip treatment as previous theme",
+    "generic safe fallback",
+    "over-softened hierarchy",
+    "repeated band placement",
+    "multi-column layout",
+    "sidebar layout",
+    "text boxes",
+    "layout tables",
+    "floating objects",
+    "decorative graphics",
+    "icons",
+    "images",
+    "headers and footers for essential content",
+    "low-contrast body text",
+    "standard black text",
+    "centered text",
+    "invisible structure",
+    "warm/earthy colors"
+  ]
+}
