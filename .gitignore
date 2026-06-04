@@ -16,8 +16,9 @@ processed/
 
 # Credentials & secrets
 credentials.json
-token.json
+token.json*
 user_config.json
+
 
 # Generated repomix outputs (regenerable)
 repomix-output.xml
