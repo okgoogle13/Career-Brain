@@ -27,7 +27,7 @@ Verified: 3/3 existing tests pass; `--dry-rn` → exit 1; `--dry-run` → exit 0
 | **(b) Builder styling-bake fix** | `build_golden_master.py` run-level styling | ✅ empirically verified live on **v2.0 production templates** (Arial + Calibri). Unrelated to the look of these themes. |
 | **(c) Buildability** | v2.3 themes (01–10, 21–25) | ⚠️ **cannot be built directly** — they have no `blocks[]`. They are design-token specs; they must be compiled v2.3→v2.0 *after* you pick winners. |
 
-**This handover is about sense (a):** previewing the 15 design specs so you can choose a keep-set. The visual review does **not** require building anything.
+**This handover is about sense (a):** previewing all 15 design specs to identify aesthetic tweaks, check spacing, and ensure they look highly polished and distinct. The visual review does **not** require building anything.
 
 ---
 
@@ -92,23 +92,44 @@ All fifteen passed Phase-3 validation (95-key parity, ATS-whitelist fonts, 6-dig
 > Attach to the Desktop chat/project first: all 15 JSON theme files (`templates/theme-01..10-*.json` and `templates/theme-21..25-*.json`), plus `context/theme_viz_sample_content.md` (fixed sample resume) and `context/theme_viz_render_spec.md`. Then paste everything between the lines.
 
 ---
-You are a senior typographic designer. I have attached **15 ATS resume theme specs** (v2.3 JSON format, themes 01–10 and 21–25), a visual render specification (theme_viz_render_spec.md), and a fixed sample resume (theme_viz_sample_content.md).
+<role>You are a senior typographic designer producing print-accurate resume previews.</role>
 
-**Task:** produce **one self-contained HTML artifact** (raw HTML + CSS, **no React, no Tailwind, no external fonts/CDNs/JS**) that renders **all 15 themes** as **A4 pages**, one per theme, stacked vertically, each labeled with its theme name. Use the **same** sample-resume content in every page so they're directly comparable.
+<context>
+I have attached:
+- 15 ATS resume theme specs (v2.3 JSON): themes 01–10 and 21–25
+- theme_viz_sample_content.md — the fixed sample resume (use this verbatim for every page)
+- theme_viz_render_spec.md — layout skeleton and token mapping rules
+</context>
 
-**Fidelity rules — map each JSON field exactly, do not approximate:**
-- Page box: `width:210mm; min-height:297mm; box-sizing:border-box;` `padding` = `page.margins_in` (in inches); `background` = `palette.neutral_surface`.
-- Body: `font-family` = `typography.base_font` (+ generic fallback); `font-size` = `base_size_pt` in `pt`; `line-height` = `line_spacing` (unitless); `color` = `body_text_color`.
-- Section headings: `font-size`/`font-weight`/`letter-spacing` from `section_heading_*` (pt where stated); color/transform/decoration from `section_heading_style`.
-- Accent (`complementary_accent`): use **only** for headings, thin rules, bands, and metadata markers. **Never** put the accent on body text or as a background behind body text** (`accent_logic.forbidden_scope`).
-- Bands (`bands`): render as colored blocks of the stated `height_rule` pt at the stated `placement` (e.g. top edge / section separators).
-- Dividers (`dividers`): match `grammar` (solid/dotted/dashed/offset), `weight` (thin/medium), and `frequency`.
-- Honor each theme's `theme_specific_rules.must_include` and `anti_generic_rules`; respect single-column, no-image ATS constraints.
-- All hex codes exactly as given (6-digit). Don't invent fonts outside the spec.
+<task>
+Produce one self-contained HTML artifact (raw HTML + inline CSS — no React, no Tailwind,
+no external fonts, no JS) rendering all 15 themes as A4 pages stacked vertically, each
+labeled with its theme name. Identical content on every page; only the visual treatment changes.
+</task>
 
-**After the artifact**, output a short table: for each theme — a 1-line aesthetic verdict, a **keep / cut** recommendation, and any concrete tweak (e.g. "accent too low-contrast → try #X", "heading 14pt feels heavy → 13pt"). Rank the keepers best-to-worst.
+<fidelity_rules>
+Map each JSON field to CSS exactly — no approximations:
+- Page box: `width:210mm; min-height:297mm;` `padding` = `page.margins_in` (in inches); `background` = `palette.neutral_surface`
+- Body: `font-family` = `typography.base_font` + generic fallback; `font-size` = `base_size_pt pt`; `line-height` = `line_spacing` (unitless); `color` = `body_text_color`
+- Section headings: `font-size`/`font-weight`/`letter-spacing` from `section_heading_*` (pt); color/transform/decoration from `section_heading_style`
+- Bands: colored block at stated `placement`, height from `bands.height_rule` (pt)
+- Dividers: `border-style` matches `dividers.grammar` (solid/dotted/dashed); weight and frequency as stated
+- Accent (`complementary_accent`): headings, rules, bands, micro-markers ONLY — **never body text, never background fills** (`accent_logic.forbidden_scope` is a hard constraint)
+- All hex codes exactly as given; no invented fonts; single column; no images or icons
+</fidelity_rules>
 
-**Caveat to weigh:** the production builder is ATS-minimal (font, sizes, colors, line-spacing, heading border, skills tint) — decorative bands/dotted "circuit" rules/chips may **not** survive into the final Google Doc. Rank primarily on palette, font pairing, heading treatment, and overall tone.
+<caveat>
+The production builder is ATS-minimal: it applies font, sizes, colors, line-spacing, and heading
+borders — it does NOT emit decorative bands, dashed circuit rules, or chips. Rank on palette, font
+pairing, heading treatment, and tone. Decorative motifs may not survive into the final Google Doc.
+theme-02 (dark background) is a known ATS/print risk — flag it if it merits exclusion.
+</caveat>
+
+<output>
+1. The HTML artifact (self-contained, renders all 15 A4 pages).
+2. A table — one row per theme: 1-line aesthetic verdict | visual tweaks & improvements | distinctiveness rating.
+   Rank the themes from favorite/most distinctive to least.
+</output>
 ---
 
 ---
@@ -128,13 +149,13 @@ You are a senior typographic designer. I have attached **15 ATS resume theme spe
 ┌─ Claude Desktop (Opus 4.8) ──────────────────────────────────────────────┐
 │ • Renders the HTML gallery artifact (visual, can't be done in CLI)       │
 │ • You eyeball side-by-side, rank, note palette/type tweaks               │
-│ • Decides the KEEP-SET                                                    │
+│ • Verifies aesthetics & tweaks for all 15 themes                         │
 └───────────────┬───────────────────────────────────────────────────────┘
                 │  paste the decision back into the CLI (template below)
                 ▼
 ┌─ Antigravity IDE (Claude Code) — Phase 5 ────────────────────────────────┐
 │ 1. apply tweaks to the v2.3 JSON → re-run Phase-3 validation             │
-│ 2. compile each KEEP theme v2.3 → v2.0 (skeleton:                        │
+│ 2. compile all 15 themes v2.3 → v2.0 (skeleton:                          │
 │    resume_copper_teal_circuit_v1.json)                                   │
 │ 3. build Golden Master  ✅ styling-bake now verified                     │
 │    (each build = AGENTS.md Phase-5 Gate 4 → present Doc link, wait)      │
@@ -147,12 +168,12 @@ You are a senior typographic designer. I have attached **15 ATS resume theme spe
 
 ```
 VISUAL REVIEW RESULT (from Claude Desktop, 2026-06-0X)
-KEEP (ranked): theme-23, theme-21, theme-25
-CUT: theme-22 (coral bands too heavy for ATS), theme-24 (contrast too low)
+RANKED THEMES (favorite to least): theme-23, theme-21, theme-25, theme-22, theme-24, theme-01, ...
 TWEAKS:
   - theme-21: restore vivid accent #00FF00? (decide vs contrast)
   - theme-25: heading 11pt → 12pt
-NEXT: compile keepers v2.3→v2.0 and build Golden Masters
+  - theme-22: dial back band thickness for cleaner look
+NEXT: compile all 15 themes v2.3→v2.0 and build Golden Masters
 ```
 
 I'll then apply tweaks, re-validate, compile, and build under Gate 4.
