@@ -792,7 +792,7 @@ def build_google_services() -> tuple[Any, Any]:
         from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
         from google.auth.transport.requests import Request
-        from google.auth.exceptions import RefreshError
+        from google.auth.exceptions import RefreshError, TransportError
         from googleapiclient.discovery import build
     except ImportError as exc:
         raise DocumentGenerationError(
@@ -819,12 +819,12 @@ def build_google_services() -> tuple[Any, Any]:
         if credentials and credentials.expired and credentials.refresh_token:
             try:
                 credentials.refresh(Request())
-            except RefreshError as exc:
-                # Stale/revoked refresh token (e.g. invalid_grant). Don't crash —
-                # discard the dead credentials and fall through to interactive auth,
-                # which re-mints token.json below.
+            except (RefreshError, TransportError) as exc:
+                # Stale/revoked refresh token (invalid_grant) or network error
+                # during refresh. Don't crash — discard dead credentials and fall
+                # through to interactive auth, which re-mints token.json below.
                 print(
-                    f"  OAuth token refresh failed ({exc}); re-authenticating via browser ...",
+                    f"  OAuth token refresh failed ({type(exc).__name__}: {exc}); re-authenticating via browser ...",
                     file=sys.stderr,
                 )
                 credentials = None
@@ -835,6 +835,12 @@ def build_google_services() -> tuple[Any, Any]:
                     "or GOOGLE_APPLICATION_CREDENTIALS."
                 )
             flow = InstalledAppFlow.from_client_secrets_file(str(client_secrets_path), scopes)
+            if not sys.stdin.isatty():
+                raise DocumentGenerationError(
+                    "OAuth re-authentication required but running in a non-interactive "
+                    "environment (CI/SSH/headless). Mint a fresh token.json locally first "
+                    "by running this script in an interactive terminal."
+                )
             credentials = flow.run_local_server(port=0)
             token_path.write_text(credentials.to_json(), encoding="utf-8")
 

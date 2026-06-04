@@ -341,8 +341,14 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
 
 def main():
     # positional theme path + optional --dry-run flag
+    KNOWN_FLAGS = {"--dry-run"}
     positional = [a for a in sys.argv[1:] if not a.startswith("-")]
     dry_run = "--dry-run" in sys.argv[1:]
+    unknown_flags = [a for a in sys.argv[1:] if a.startswith("-") and a not in KNOWN_FLAGS]
+    if unknown_flags:
+        print(f"Error: unrecognised flag(s): {' '.join(unknown_flags)}", file=sys.stderr)
+        print("Usage: python3 build_golden_master.py <theme_json_path> [--dry-run]", file=sys.stderr)
+        sys.exit(1)
     if len(positional) != 1:
         print("Usage: python3 build_golden_master.py <theme_json_path> [--dry-run]", file=sys.stderr)
         sys.exit(1)
