@@ -22,6 +22,11 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
   - ⚠️ **Normalization caveat (do NOT re-open as a bug):** `weightedFontFamily`/`fontSize` read as *absent* on runs whose value equals the doc default (Arial / 11pt). Google Docs stores only deltas from the inherited named style — the text still renders correctly. The Arial doc showing font `0/53` is expected, not a regression.
   - Doc IDs (My Drive root): Arial `10DOWxFD_53V3tHu1vjPux4gezwvJAC1jM_0rQrO40i4`; Calibri `1M3MZw69oSTSaMqWhKr3mUFc2BKrcPivKaK35nCCCMvc` (built only as the font-path control — safe to trash).
 - [x] Hardened `tools/generate_document.py::build_google_services` (2026-06-03): `credentials.refresh()` wrapped in `try/except RefreshError` → falls through to interactive auth instead of crashing on a revoked token.
+- [x] **Bug fixes from code review audit (2026-06-04):** Three actionable bugs identified by multi-angle code review audit and fixed surgically:
+  - [x] `build_golden_master.py` L344 — **Silent flag swallowing** (most urgent): single-dash filter stripped `--dry-rn` typo as a positional, triggering a live Google Docs build. Fixed: added `KNOWN_FLAGS = {"--dry-run"}`; any unrecognised dash-prefixed arg now exits 1 with `Error: unrecognised flag(s): ...` before touching any API.
+  - [x] `generate_document.py` L795 — **`TransportError` not caught**: only `RefreshError` was caught; network error during token refresh crashed with a raw `google.auth` traceback. Fixed: `except (RefreshError, TransportError)` catches both; error message now includes the exception class name.
+  - [x] `generate_document.py` L838 — **Headless blocking**: `flow.run_local_server(port=0)` was called unconditionally after a failed token refresh, hanging forever in CI/SSH. Fixed: `sys.stdin.isatty()` guard raises `DocumentGenerationError` with a clear message before attempting browser auth in non-interactive environments.
+  - All 3 fixes verified: existing 3-test suite 3/3 pass; `--dry-rn` → exit 1; `--dry-run` still works; `TransportError` + `isatty` confirmed in source.
 - **Gate:** ✅ Builder styling-bake **verified** — registering compiled themes is unblocked (each live build still honours AGENTS.md Phase-5 Gate 4).
 
 **Track B — Schema / compile (no credentials needed) — partially complete**
@@ -30,17 +35,17 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [x] `templates/resume_copper_teal_circuit_v1.json`: theme-05 compiled v2.3 → v2.0; copper/teal/Arial; 8 blocks; validates against `schema_v2_0` (commit `9d56066`)
 - [x] `templates/schema_v2_0.json`: JSON Schema draft-07; 13/13 v2.0 templates pass; 10/10 v2.3 conceptual themes correctly fail (commit `9d56066`)
 - [x] Context files for Phase-0 Desktop gallery: `context/theme_viz_render_spec.md`, `context/theme_viz_sample_content.md`, `context/theme_project_description.md` (commit `9d56066`)
-- [ ] **Phase 0** — Run Desktop gallery render (this session / Claude.ai Desktop): produce HTML mockups for all 10 v2.3 themes using `theme_viz_render_spec.md` + `theme_viz_sample_content.md`; return ranked keep set
-- [ ] **Phase 1** — Compile kept themes (01–04, 06–10) to v2.0 using `resume_copper_teal_circuit_v1.json` as reference skeleton; validate each against `schema_v2_0.json`; gated on Track A builder fix
-- [ ] Register compiled themes in `config/doc_templates.json`; build + audit Golden Masters; gated on Track A builder fix
+- [ ] **Phase 0 — Visual QA (NEXT)** — Run Desktop gallery render: open Claude Desktop, attach all **15 JSON theme specs** (`templates/theme-01..10-*.json` + `templates/theme-21..25-*.json`) + [theme_viz_sample_content.md](file:///Users/okgoogle13/Projects/Career%20Brain/context/theme_viz_sample_content.md) + [theme_viz_render_spec.md](file:///Users/okgoogle13/Projects/Career%20Brain/context/theme_viz_render_spec.md), paste the §3 prompt from [THEME_REVIEW_HANDOVER.md](file:///Users/okgoogle13/Projects/Career%20Brain/planning/THEME_REVIEW_HANDOVER.md). Return ranked keep/cut table to Claude Code.
+- [ ] **Phase 1** — Compile kept themes to v2.0 using [resume_copper_teal_circuit_v1.json](file:///Users/okgoogle13/Projects/Career%20Brain/templates/resume_copper_teal_circuit_v1.json) as reference skeleton; validate each against [schema_v2_0.json](file:///Users/okgoogle13/Projects/Career%20Brain/templates/schema_v2_0.json); gated on Track A builder fix
+- [ ] Register compiled themes in [doc_templates.json](file:///Users/okgoogle13/Projects/Career%20Brain/config/doc_templates.json); build + audit Golden Masters; gated on Track A builder fix
 
 **Schema / ontology work (this session — Claude Desktop chat, no credentials):**
 - [ ] Design unified canonical JSON schema (v2.3 → single format) — merge legacy 300–400 line templates with newer ~200 line v2.3 themes
 - [ ] Produce critique rubric (Markdown) for evaluating theme differentiation, ATS safety, accessibility, and Career Brain sector alignment
-- [ ] Normalise all 10 v2.3 themes against unified schema; surface incompatible fields under `legacy_fields` rather than silently dropping
+- [ ] Normalise all 15 v2.3 themes against unified schema; surface incompatible fields under `legacy_fields` rather than silently dropping
 
 **Phase 0 note — switching from Claude Code Desktop to standard Claude Desktop chat:**
-Phase 0 (gallery render) is designed to run in **Claude.ai Desktop / Web chat** (this interface), not Claude Code. The 10 v2.3 theme JSONs and render spec are loaded as Project files. Produce the HTML gallery artifact here, rank themes, return the keep set to Claude Code for Phase 1 compilation.
+Phase 0 (gallery render) is designed to run in **Claude.ai Desktop / Web chat** (this interface), not Claude Code. The 15 v2.3 theme JSONs and render spec are loaded as Project files. Produce the HTML gallery artifact here, rank themes, return the keep set to Claude Code for Phase 1 compilation.
 
 ---
 

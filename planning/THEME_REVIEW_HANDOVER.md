@@ -1,7 +1,21 @@
 # Theme Visual-Review Handover → Claude Desktop (Opus 4.8)
 
-**Date:** 2026-06-03 · **From:** Claude Code (Antigravity IDE) · **To:** Claude Desktop visual QA
-**Purpose:** Render themes **21–25** as print-accurate HTML previews so a human can rank them and note tweaks. CLI tools can't do visual aesthetic review — this is the Track-1 "Visualize" step.
+**Date:** 2026-06-04 · **From:** Claude Code (Antigravity IDE) · **To:** Claude Desktop visual QA
+**Purpose:** Render themes **01–10 and 21–25** as print-accurate HTML previews so a human can rank them and note tweaks. CLI tools can't do visual aesthetic review — this is the Track-1 "Visualize" step.
+
+---
+
+## ✅ Pre-flight: pipeline bugs fixed — 2026-06-04 (do NOT re-investigate)
+
+A multi-angle code review of the builder tools surfaced 3 bugs. All three were fixed and verified by Claude Code before this handover was opened. **Claude Desktop has no action here — these are recorded for context only.**
+
+| # | File | Bug | Fix applied |
+|---|---|---|---|
+| 1 | `tools/build_golden_master.py` L344 | Flag typo (e.g. `--dry-rn`) silently stripped as a positional, triggering a **live** Google Docs build | `KNOWN_FLAGS` whitelist added; unrecognised flags → `exit 1` immediately |
+| 2 | `tools/generate_document.py` L795 | `TransportError` (network down during token refresh) was not caught → raw traceback | `except (RefreshError, TransportError)` now catches both |
+| 3 | `tools/generate_document.py` L838 | `run_local_server()` called unconditionally → hangs forever in CI/SSH | `sys.stdin.isatty()` guard raises a clear `DocumentGenerationError` before attempting browser auth |
+
+Verified: 3/3 existing tests pass; `--dry-rn` → exit 1; `--dry-run` → exit 0 with payload; `TransportError` + `isatty` confirmed in source.
 
 ---
 
@@ -9,25 +23,35 @@
 
 | Sense | Applies to | Status |
 |---|---|---|
-| **(a) Structurally + spec-validated** | themes **21–25** (v2.3 JSON) | ✅ done 2026-06-03 — see `planning/QUALITY_SUMMARY.md`. **NOT visually reviewed, NOT compiled to v2.0, no Golden Master built.** |
-| **(b) Builder styling-bake fix** | `build_golden_master.py` run-level styling | ✅ empirically verified live on **v2.0 production templates** (Arial + Calibri). Unrelated to the look of 21–25. |
+| **(a) Structurally + spec-validated** | themes **01–10 & 21–25** (v2.3 JSON) | ✅ done — see `planning/QUALITY_SUMMARY.md`. **NOT visually reviewed, NOT compiled to v2.0, no Golden Master built.** |
+| **(b) Builder styling-bake fix** | `build_golden_master.py` run-level styling | ✅ empirically verified live on **v2.0 production templates** (Arial + Calibri). Unrelated to the look of these themes. |
 | **(c) Buildability** | v2.3 themes (01–10, 21–25) | ⚠️ **cannot be built directly** — they have no `blocks[]`. They are design-token specs; they must be compiled v2.3→v2.0 *after* you pick winners. |
 
-**This handover is about sense (a):** previewing the 5 design specs so you can choose a keep-set. The visual review does **not** require building anything.
+**This handover is about sense (a):** previewing the 15 design specs so you can choose a keep-set. The visual review does **not** require building anything.
 
 ---
 
-## 1. Ready for visual review — themes 21–25
+## 1. Ready for visual review — themes 01–10 and 21–25
 
-All five passed Phase-3 validation (95-key parity, ATS-whitelist fonts, 6-digit hex, adjacency rules). Full record: `planning/QUALITY_SUMMARY.md`.
+All fifteen passed Phase-3 validation (95-key parity, ATS-whitelist fonts, 6-digit hex, adjacency rules). Full record: `planning/QUALITY_SUMMARY.md`.
 
 | File | Theme | Font | Accent | Heading | Identity |
 |---|---|---|---|---|---|
-| `templates/theme-21-terminal-signal.json` | Terminal Signal | Arial | `#008800` | 11pt/700 | cyber, utilitarian, stark — neon micro-accents, dotted dividers, flush-left |
-| `templates/theme-22-horizon-edge.json` | Horizon Edge | Arial | `#FF5722` | 12pt/800 | expansive, cinematic, warm — thick coral framing bands, stepped header |
-| `templates/theme-23-broadside-press.json` | Broadside Press | Georgia | `#8B0000` | 14pt/700 | journalistic, urgent — massive serif header, crimson "editor's ink" metadata |
-| `templates/theme-24-clay-canvas.json` | Clay Canvas | Georgia | `#D84315` | 13pt/400 | tactile, artisanal, soft — espresso body, terracotta chip borders, airy |
-| `templates/theme-25-cyan-blueprint.json` | Cyan Blueprint | Arial | `#0088A0` | 11pt/600 | structural, analytical — edge-to-edge cyan top band, slate body |
+| `templates/theme-01-graphite-ledger.json` | Graphite Ledger | Georgia | `#6B7280` | 11pt/700 | ledger-like horizontal rules, monochrome palette, header bar plus minimal metadata strip |
+| `templates/theme-02-midnight-blueprint.json` | Midnight Blueprint | Arial | `#38BDF8` | 11pt/700 | light text on deep midnight background, technical grid-like divider rhythm, blueprint palette with electric accent |
+| `templates/theme-03-citrus-edge.json` | Citrus Edge | Calibri | `#FACC15` | 11pt/700 | citrus orange/yellow accents, edge-based bands rather than full-width blocks, light, open spacing |
+| `templates/theme-04-emerald-transit.json` | Emerald Transit | Calibri | `#22C55E` | 11pt/700 | emerald transit bands, stop-based section feel, connecting rules instead of full grids |
+| `templates/theme-05-copper-teal-circuit.json` | Copper Teal Circuit | Arial | `#2D8A8A` | 11pt/700 | dual-tone copper and teal logic, dashed rules with label breaks, mixed header and section accent behaviour |
+| `templates/theme-06-violet-signal.json` | Violet Signal | Georgia | `#F97316` | 11pt/700 | violet signal lines, editorial divider rhythm, minimal bands with strong rule character |
+| `templates/theme-07-solar-gradient.json` | Solar Gradient | Georgia | `#C9825C` | 11pt/700 | layered warm bands, soft dashed divider texture, open airy spacing |
+| `templates/theme-08-nordic-neon.json` | Nordic Neon | Arial | `#7BE0FF` | 11pt/700 | electric cyan neon micro accents, tight divider-led rhythm with offsets, minimal header treatment |
+| `templates/theme-09-terracotta-service.json` | Terracotta Service | Georgia | `#D4865A` | 11pt/700 | earthy terracotta bands and labels, soft dotted dividers instead of solid rules, section-led hierarchy with chip emphasis |
+| `templates/theme-10-rainbow-minimal.json` | Rainbow Minimal | Calibri | `#F472B6` | 11pt/700 | multi-hue spectrum used only in micro elements, very clean neutral canvas, minimal dividers and bands compared to other themes |
+| `templates/theme-21-terminal-signal.json` | Terminal Signal | Arial | `#008800` | 11pt/700 | command-line aesthetic, neon vs charcoal contrast, strict rigid left-edge anchoring |
+| `templates/theme-22-horizon-edge.json` | Horizon Edge | Arial | `#FF5722` | 12pt/800 | cinematic/widescreen feel, vibrant sunset palette against midnight blue, stepped header alignment |
+| `templates/theme-23-broadside-press.json` | Broadside Press | Georgia | `#8B0000` | 14pt/700 | editorial/newspaper broadsheet aesthetic, ultra-high contrast serif, deep crimson editor's-ink accents |
+| `templates/theme-24-clay-canvas.json` | Clay Canvas | Georgia | `#D84315` | 13pt/400 | earthy/tactile palette, absence of solid black lines, airy lowercase styling |
+| `templates/theme-25-cyan-blueprint.json` | Cyan Blueprint | Arial | `#0088A0` | 11pt/600 | architectural blueprint aesthetic, stark cyan against slate grey, highly measured and organized grid spacing |
 
 > Two accents (21 `#008800`, 25 `#0088A0`) were darkened from the literal spec (`#00FF00`, `#00E5FF`) for contrast — see QUALITY_SUMMARY §5c. If a vivid look reads better on screen, note it as a tweak.
 
@@ -65,12 +89,12 @@ All five passed Phase-3 validation (95-key parity, ATS-whitelist fonts, 6-digit 
 
 ## 3. Copy-paste prompt for Claude Desktop (Opus 4.8)
 
-> Attach to the Desktop chat/project first: `templates/theme-21-…` … `theme-25-…json`, plus `context/theme_viz_sample_content.md` (fixed sample resume) and `context/theme_viz_render_spec.md`. Then paste everything between the lines.
+> Attach to the Desktop chat/project first: all 15 JSON theme files (`templates/theme-01..10-*.json` and `templates/theme-21..25-*.json`), plus `context/theme_viz_sample_content.md` (fixed sample resume) and `context/theme_viz_render_spec.md`. Then paste everything between the lines.
 
 ---
-You are a senior typographic designer. I have attached **5 ATS resume theme specs** (v2.3 JSON: `theme-21`…`theme-25`) and a fixed sample resume (`theme_viz_sample_content.md`).
+You are a senior typographic designer. I have attached **15 ATS resume theme specs** (v2.3 JSON format, themes 01–10 and 21–25), a visual render specification (theme_viz_render_spec.md), and a fixed sample resume (theme_viz_sample_content.md).
 
-**Task:** produce **one self-contained HTML artifact** (raw HTML + CSS, **no React, no Tailwind, no external fonts/CDNs/JS**) that renders **all 5 themes** as **A4 pages**, one per theme, stacked vertically, each labeled with its theme name. Use the **same** sample-resume content in every page so they're directly comparable.
+**Task:** produce **one self-contained HTML artifact** (raw HTML + CSS, **no React, no Tailwind, no external fonts/CDNs/JS**) that renders **all 15 themes** as **A4 pages**, one per theme, stacked vertically, each labeled with its theme name. Use the **same** sample-resume content in every page so they're directly comparable.
 
 **Fidelity rules — map each JSON field exactly, do not approximate:**
 - Page box: `width:210mm; min-height:297mm; box-sizing:border-box;` `padding` = `page.margins_in` (in inches); `background` = `palette.neutral_surface`.
@@ -98,7 +122,7 @@ You are a senior typographic designer. I have attached **5 ATS resume theme spec
 │ • Phase 2/3: generate + validate theme JSON  ✅ (21–25 done)             │
 │ • Produces THIS handover                                                 │
 └───────────────┬───────────────────────────────────────────────────────┘
-                │  attach 21–25 JSON + sample content + render spec;
+                │  attach all 15 JSON specs + sample content + render spec;
                 │  paste the §3 prompt
                 ▼
 ┌─ Claude Desktop (Opus 4.8) ──────────────────────────────────────────────┐
@@ -137,6 +161,6 @@ I'll then apply tweaks, re-validate, compile, and build under Gate 4.
 
 ## 5. Attachments & caveats
 
-- **Attach to Desktop:** `templates/theme-21..25-*.json`, `context/theme_viz_sample_content.md`, `context/theme_viz_render_spec.md` (optionally `templates/MASTER_SCHEMA_V2_3.json` for field semantics).
+- **Attach to Desktop:** all 15 JSON theme files (`templates/theme-01..10-*.json` and `templates/theme-21..25-*.json`), `context/theme_viz_sample_content.md`, `context/theme_viz_render_spec.md` (optionally `templates/MASTER_SCHEMA_V2_3.json` for field semantics).
 - **Fidelity caveat:** the HTML preview can be richer than the eventual ATS-minimal production doc; rank on palette / type / heading / tone, not on fine decorative motifs.
 - **Do not** treat the preview as proof a Golden Master will look identical — production is sense (c)→(b), compiled + built later.
