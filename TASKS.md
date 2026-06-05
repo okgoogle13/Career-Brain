@@ -6,6 +6,41 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 ## Active
 
+### TASK-006 — Premium Font Upgrade & Cover Letter / KSC Template Suite
+**Status:** 🔵 In Progress
+**Priority:** High
+**Branch:** `main`
+
+#### Stage 1 — Premium Font Upgrade to Golden Masters (Gate 4 — needs approval)
+- [x] **`build_golden_master.py` patched** (2026-06-06): `heading_font_family` + `section_heading_weight` support added; heading roles (name, headline, h1, h2) now use their own typeface and optional weight, separate from the body font.
+- [x] **`apply_theme_patches.py`** run: 15/15 v2.3 spec files patched with WCAG-corrected palettes + Google Fonts design identities. Output: `templates/patched/`.
+- [x] **15 v2.0 compiled templates updated**: `heading_font_family` injected + `typography.base_font` upgraded to premium Google Font per theme; theme-24 gets `section_heading_weight=650`. Dry-run 15/15 pass (53 paragraphs, 107 style requests, 0 errors).
+- [x] **HTML preview gallery**: `Career_Brain___15-Theme_A4_Preview_Gallery_PREMIUM.html` — full A4 gallery with Google Fonts and `--headingfont` CSS variable per theme. Committed 2026-06-06.
+- [ ] **Rebuild Golden Masters** (Gate 4 — user approval required): For each of the 15 themes, run `python3 tools/build_golden_master.py templates/resume_*_v1.json` to create new Google Doc with premium fonts baked in. Update Doc IDs in `config/doc_templates.json`.
+
+#### Stage 2 — Cover Letter & KSC Template Suite (BUILD_SPECS Milestones 1–2)
+**Context:** `archive/planning/claude-plan.md` + `planning/master_agentic_workflow_prompt.md` planned cover letter / KSC scale-up matching the resume themes. BUILD_SPECS.md defines acceptance criteria.
+- [ ] BS-1.1 — Populate `config/user_config.json` with real contact, education, certification data
+- [ ] BS-1.4 — Build Golden Master: Cover Letter (Government) from `templates/cover_letter_government_v1.json`
+- [ ] BS-1.5 — Build Golden Master: Cover Letter (NFP) from `templates/cover_letter_nfp_v1.json`
+- [ ] BS-1.6 — Verify KSC Golden Master (`ksc_standard_v2.json`) still valid after font changes
+- [ ] BS-1.7 — Confirm Drive subfolder IDs configured in `config/doc_templates.json`
+- [ ] BS-2.1 — ATS QA audit on all active Golden Masters (0 failures required)
+- [ ] BS-2.2 — Lock template versions
+
+#### Stage 3 — Report & Constraint Enhancements (BUILD_SPECS Milestones 3–6, deferred)
+- [ ] BS-3.1–3.5 — Report enrichment (derived_summary_used, exclusions count, word count warnings, exit codes, source_files_used)
+- [ ] BS-4.1 — `--job-ad` file flag for content tailoring
+- [ ] BS-5.1 — Batch template validator
+- [ ] BS-6.1 — Australian terminology post-processing
+- [ ] BS-6.2 — Rosetta Stone on resume bullets
+- [ ] BS-6.3 — Integration tests: all 3 document types (dry-run)
+
+**Stage 1 gate:** User approves Golden Master rebuild → execute sequentially per AGENTS.md Gate 4.
+**Stage 2 gate:** BS-1.x cover letter/KSC builds each need Gate 4 approval per AGENTS.md.
+
+---
+
 ### TASK-005 — Theme Standardisation & Golden Master Build — ✅ COMPLETE 2026-06-04
 **Status:** ✅ Complete — Compiled, built, audited, and registered all 15 visual themes.
 **Priority:** High
