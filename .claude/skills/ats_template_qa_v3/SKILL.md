@@ -1,9 +1,9 @@
 ---
-name: ats-template-qa-v2
+name: ats-template-qa-v3
 description: Use to QA-check a KSC template spec or a live Golden Master Google Doc (including themed resume variants) before registration or a live pipeline run. Runs validate_template_spec.py then checks the Docs-API-only items the script cannot see.
 ---
 
-# ATS Template QA v2 (KSC)
+# ATS Template QA v3 (KSC)
 
 ## Overview
 
