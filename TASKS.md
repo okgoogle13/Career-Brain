@@ -16,7 +16,7 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [x] **`apply_theme_patches.py`** run: 15/15 v2.3 spec files patched with WCAG-corrected palettes + Google Fonts design identities. Output: `templates/patched/`.
 - [x] **15 v2.0 compiled templates updated**: `heading_font_family` injected + `typography.base_font` upgraded to premium Google Font per theme; theme-24 gets `section_heading_weight=650`. Dry-run 15/15 pass (53 paragraphs, 107 style requests, 0 errors).
 - [x] **HTML preview gallery**: `Career_Brain___15-Theme_A4_Preview_Gallery_PREMIUM.html` — full A4 gallery with Google Fonts and `--headingfont` CSS variable per theme. Committed 2026-06-06.
-- [ ] **Rebuild Golden Masters** (Gate 4 — user approval required): For each of the 15 themes, run `python3 tools/build_golden_master.py templates/resume_*_v1.json` to create new Google Doc with premium fonts baked in. Update Doc IDs in `config/doc_templates.json`.
+- [x] **Rebuild Golden Masters** (Gate 4 — user approval required): Built, style-audited (15/15 STYLE OK), and registered all 15 visual themes with premium fonts baked in. Doc IDs updated in `config/doc_templates.json`.
 
 #### Stage 2 — Cover Letter & KSC Template Suite (BUILD_SPECS Milestones 1–2)
 **Context:** `archive/planning/claude-plan.md` + `planning/master_agentic_workflow_prompt.md` planned cover letter / KSC scale-up matching the resume themes. BUILD_SPECS.md defines acceptance criteria.

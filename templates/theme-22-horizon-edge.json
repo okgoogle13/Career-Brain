@@ -29,9 +29,8 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Arial",
-      "Calibri",
-      "Georgia"
+      "Libre Franklin",
+      "Arial"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -45,20 +44,20 @@
   },
   "palette": {
     "base_colours": [
-      "#0B192C",
+      "#0A1A2F",
       "#1E3E62",
       "#476685"
     ],
     "complementary_accent": "#FF5722",
     "neutral_surface": "#FFFFFF",
-    "neutral_text": "#0B192C",
+    "neutral_text": "#0A1A2F",
     "neutral_background": "#F9F9F9",
     "supporting_neutral": "#E0E0E0"
   },
   "typography": {
-    "base_font": "Arial",
+    "base_font": "Libre Franklin",
     "base_size_pt": 10.5,
-    "line_spacing": 1.26,
+    "line_spacing": 1.3,
     "spacing_after_pt": 6,
     "section_heading_tracking_pt": 1.8,
     "section_heading_size_pt": 12,
@@ -159,14 +158,14 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#0B192C",
+    "font_color": "#0A1A2F",
     "text_transform": "uppercase",
     "decoration": "thick top and bottom coral framing",
-    "accent_color": "#FF5722"
+    "accent_color": "#C4441E"
   },
-  "body_text_color": "#0B192C",
-  "muted_text_color": "#476685",
-  "skills_background_tint": "#E0E0E0",
+  "body_text_color": "#0A1A2F",
+  "muted_text_color": "#3E5570",
+  "skills_background_tint": "#E0E8F0",
   "avoid_list": [
     "tonal-only palette",
     "same top-of-page structure",
@@ -189,5 +188,33 @@
     "centered headers",
     "thin grey dividers",
     "cramped margins"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Arial",
+        "Calibri",
+        "Georgia"
+      ],
+      "typography.base_font": "Arial",
+      "typography.line_spacing": 1.26,
+      "typography.spacing_after_pt": 6,
+      "palette.base_colours": [
+        "#0B192C",
+        "#1E3E62",
+        "#476685"
+      ],
+      "palette.neutral_text": "#0B192C",
+      "body_text_color": "#0B192C",
+      "muted_text_color": "#476685",
+      "section_heading_style.font_color": "#0B192C",
+      "section_heading_style.accent_color": "#FF5722",
+      "skills_background_tint": "#E0E0E0"
+    }
+  },
+  "complementary_accent": "#FF5A3C",
+  "heading_font_family": [
+    "Archivo",
+    "Arial"
   ]
 }

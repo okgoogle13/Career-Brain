@@ -26,9 +26,8 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Arial",
-      "Calibri",
-      "Georgia"
+      "IBM Plex Sans",
+      "Arial"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -42,20 +41,20 @@
   },
   "palette": {
     "base_colours": [
-      "#020617",
-      "#1D4ED8",
-      "#0F172A"
+      "#0B1B2B",
+      "#2E5A8C",
+      "#16324A"
     ],
     "complementary_accent": "#38BDF8",
-    "neutral_surface": "#020617",
-    "neutral_text": "#E5E7EB",
-    "neutral_background": "#020617",
-    "supporting_neutral": "#1E293B"
+    "neutral_surface": "#0B1B2B",
+    "neutral_text": "#E8EEF4",
+    "neutral_background": "#0B1B2B",
+    "supporting_neutral": "#16324A"
   },
   "typography": {
-    "base_font": "Arial",
+    "base_font": "IBM Plex Sans",
     "base_size_pt": 10.5,
-    "line_spacing": 1.22,
+    "line_spacing": 1.2,
     "spacing_after_pt": 4,
     "section_heading_tracking_pt": 1.5,
     "section_heading_size_pt": 11,
@@ -171,14 +170,14 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#E5E7EB",
+    "font_color": "#E8EEF4",
     "text_transform": "uppercase",
     "decoration": "thin technical rule",
-    "accent_color": "#38BDF8"
+    "accent_color": "#5CC8FF"
   },
-  "body_text_color": "#E5E7EB",
-  "muted_text_color": "#9CA3AF",
-  "skills_background_tint": "#1E293B",
+  "body_text_color": "#E8EEF4",
+  "muted_text_color": "#9FB2C4",
+  "skills_background_tint": "#16324A",
   "avoid_list": [
     "tonal-only palette",
     "same top-of-page structure",
@@ -197,5 +196,36 @@
     "images",
     "headers and footers for essential content",
     "low-contrast body text"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Arial",
+        "Calibri",
+        "Georgia"
+      ],
+      "typography.base_font": "Arial",
+      "typography.line_spacing": 1.22,
+      "typography.spacing_after_pt": 4,
+      "palette.base_colours": [
+        "#020617",
+        "#1D4ED8",
+        "#0F172A"
+      ],
+      "palette.neutral_surface": "#020617",
+      "palette.neutral_background": "#020617",
+      "palette.neutral_text": "#E5E7EB",
+      "palette.supporting_neutral": "#1E293B",
+      "body_text_color": "#E5E7EB",
+      "muted_text_color": "#9CA3AF",
+      "section_heading_style.font_color": "#E5E7EB",
+      "section_heading_style.accent_color": "#38BDF8",
+      "skills_background_tint": "#1E293B"
+    }
+  },
+  "complementary_accent": "#5CC8FF",
+  "heading_font_family": [
+    "IBM Plex Mono",
+    "Consolas"
   ]
 }

@@ -328,7 +328,7 @@ PATCHES = {
     "fields": {
         "ats_constraints.font_family":              ["Lora", "Georgia"],
         "typography.base_font":                     "Lora",
-        "typography.section_heading_weight":        650,         # KEY FIX — was 400 (inverted hierarchy)
+        "typography.section_heading_weight":        600,         # KEY FIX — was 400 (inverted hierarchy)
         "typography.line_spacing":                  1.34,
         "typography.spacing_after_pt":              9,
         "palette.base_colours":                     ["#2E1F18", "#6A4A3A", "#9A7A6A"],
@@ -345,8 +345,8 @@ PATCHES = {
     "heading_font_family": ["Fraunces", "Georgia"],
     "wcag_checks": [("#2E1F18","#FBF8F4"),("#B24A2B","#FFFFFF"),("#6E5346","#FBF8F4")],
     "notes": [
-        "section_heading_weight raised 400 → 650 to restore hierarchy. "
-        "text_transform 'lowercase' is kept — Fraunces at 650 is visually distinct from body.",
+        "section_heading_weight raised 400 → 600 to restore hierarchy. "
+        "text_transform 'lowercase' is kept — Fraunces at 600 is visually distinct from body.",
     ],
 },
 

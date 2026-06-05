@@ -26,9 +26,8 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Georgia",
-      "Calibri",
-      "Arial"
+      "Newsreader",
+      "Georgia"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -42,21 +41,21 @@
   },
   "palette": {
     "base_colours": [
-      "#111827",
-      "#4C1D95",
-      "#7C3AED"
+      "#15131A",
+      "#3D1A78",
+      "#6A2CC9"
     ],
     "complementary_accent": "#7C3AED",
     "neutral_surface": "#FFFFFF",
-    "neutral_text": "#111827",
+    "neutral_text": "#15131A",
     "neutral_background": "#FFFFFF",
     "supporting_neutral": "#F3E8FF"
   },
   "typography": {
-    "base_font": "Georgia",
+    "base_font": "Newsreader",
     "base_size_pt": 10.5,
-    "line_spacing": 1.26,
-    "spacing_after_pt": 6,
+    "line_spacing": 1.32,
+    "spacing_after_pt": 7,
     "section_heading_tracking_pt": 1.5,
     "section_heading_size_pt": 11,
     "section_heading_weight": 700
@@ -170,14 +169,14 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#4C1D95",
+    "font_color": "#3D1A78",
     "text_transform": "uppercase",
     "decoration": "signal rule under or beside heading",
-    "accent_color": "#7C3AED"
+    "accent_color": "#6A2CC9"
   },
-  "body_text_color": "#111827",
-  "muted_text_color": "#6B7280",
-  "skills_background_tint": "#F3E8FF",
+  "body_text_color": "#15131A",
+  "muted_text_color": "#5A5560",
+  "skills_background_tint": "#EFE6FF",
   "avoid_list": [
     "tonal-only palette",
     "same top-of-page structure",
@@ -196,5 +195,33 @@
     "images",
     "headers and footers for essential content",
     "low-contrast body text"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Georgia",
+        "Calibri",
+        "Arial"
+      ],
+      "typography.base_font": "Georgia",
+      "typography.line_spacing": 1.26,
+      "typography.spacing_after_pt": 6,
+      "palette.base_colours": [
+        "#111827",
+        "#4C1D95",
+        "#7C3AED"
+      ],
+      "palette.neutral_text": "#111827",
+      "body_text_color": "#111827",
+      "muted_text_color": "#6B7280",
+      "section_heading_style.font_color": "#4C1D95",
+      "section_heading_style.accent_color": "#7C3AED",
+      "skills_background_tint": "#F3E8FF"
+    }
+  },
+  "complementary_accent": "#C2410C",
+  "heading_font_family": [
+    "Space Grotesk",
+    "Arial"
   ]
 }

@@ -29,9 +29,8 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Arial",
-      "Calibri",
-      "Georgia"
+      "IBM Plex Sans",
+      "Arial"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -45,20 +44,20 @@
   },
   "palette": {
     "base_colours": [
-      "#111111",
-      "#333333",
-      "#555555"
+      "#0A0A0A",
+      "#3A3A3A",
+      "#6A6A6A"
     ],
     "complementary_accent": "#008800",
     "neutral_surface": "#FFFFFF",
-    "neutral_text": "#111111",
+    "neutral_text": "#0A0A0A",
     "neutral_background": "#FAFAFA",
     "supporting_neutral": "#EAEAEA"
   },
   "typography": {
-    "base_font": "Arial",
+    "base_font": "IBM Plex Sans",
     "base_size_pt": 10.5,
-    "line_spacing": 1.22,
+    "line_spacing": 1.2,
     "spacing_after_pt": 4,
     "section_heading_tracking_pt": 2.0,
     "section_heading_size_pt": 11,
@@ -163,13 +162,13 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#111111",
+    "font_color": "#0A0A0A",
     "text_transform": "uppercase",
     "decoration": "stark flush-left block with neon underscore",
-    "accent_color": "#008800"
+    "accent_color": "#0A6E2E"
   },
-  "body_text_color": "#111111",
-  "muted_text_color": "#555555",
+  "body_text_color": "#0A0A0A",
+  "muted_text_color": "#4A4A4A",
   "skills_background_tint": "#EAEAEA",
   "avoid_list": [
     "tonal-only palette",
@@ -193,5 +192,33 @@
     "solid grey dividers",
     "soft palettes",
     "serif fonts"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Arial",
+        "Calibri",
+        "Georgia"
+      ],
+      "typography.base_font": "Arial",
+      "typography.line_spacing": 1.22,
+      "typography.spacing_after_pt": 4,
+      "palette.base_colours": [
+        "#111111",
+        "#333333",
+        "#555555"
+      ],
+      "palette.neutral_text": "#111111",
+      "body_text_color": "#111111",
+      "muted_text_color": "#555555",
+      "section_heading_style.font_color": "#111111",
+      "section_heading_style.accent_color": "#008800",
+      "skills_background_tint": "#EAEAEA"
+    }
+  },
+  "complementary_accent": "#00B341",
+  "heading_font_family": [
+    "JetBrains Mono",
+    "Consolas"
   ]
 }

@@ -30,9 +30,8 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Georgia",
-      "Calibri",
-      "Arial"
+      "Lora",
+      "Georgia"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -46,21 +45,21 @@
   },
   "palette": {
     "base_colours": [
-      "#3E2723",
-      "#5D4037",
-      "#8D6E63"
+      "#2E1F18",
+      "#6A4A3A",
+      "#9A7A6A"
     ],
     "complementary_accent": "#D84315",
     "neutral_surface": "#FFFFFF",
-    "neutral_text": "#3E2723",
-    "neutral_background": "#FCFBF8",
+    "neutral_text": "#2E1F18",
+    "neutral_background": "#FBF8F4",
     "supporting_neutral": "#EFEBE9"
   },
   "typography": {
-    "base_font": "Georgia",
+    "base_font": "Lora",
     "base_size_pt": 10.5,
-    "line_spacing": 1.28,
-    "spacing_after_pt": 8,
+    "line_spacing": 1.34,
+    "spacing_after_pt": 9,
     "section_heading_tracking_pt": 1.0,
     "section_heading_size_pt": 13,
     "section_heading_weight": 600
@@ -163,14 +162,14 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#3E2723",
+    "font_color": "#2E1F18",
     "text_transform": "lowercase",
     "decoration": "terracotta chip border outlining section headings",
-    "accent_color": "#D84315"
+    "accent_color": "#B24A2B"
   },
-  "body_text_color": "#3E2723",
-  "muted_text_color": "#8D6E63",
-  "skills_background_tint": "#EFEBE9",
+  "body_text_color": "#2E1F18",
+  "muted_text_color": "#6E5346",
+  "skills_background_tint": "#EFE6DD",
   "avoid_list": [
     "tonal-only palette",
     "same top-of-page structure",
@@ -193,5 +192,36 @@
     "solid dividers",
     "stark white/black contrast",
     "pure black text"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Georgia",
+        "Calibri",
+        "Arial"
+      ],
+      "typography.base_font": "Georgia",
+      "typography.section_heading_weight": 600,
+      "typography.line_spacing": 1.28,
+      "typography.spacing_after_pt": 8,
+      "palette.base_colours": [
+        "#3E2723",
+        "#5D4037",
+        "#8D6E63"
+      ],
+      "palette.neutral_surface": "#FFFFFF",
+      "palette.neutral_background": "#FCFBF8",
+      "palette.neutral_text": "#3E2723",
+      "body_text_color": "#3E2723",
+      "muted_text_color": "#8D6E63",
+      "section_heading_style.font_color": "#3E2723",
+      "section_heading_style.accent_color": "#D84315",
+      "skills_background_tint": "#EFEBE9"
+    }
+  },
+  "complementary_accent": "#B24A2B",
+  "heading_font_family": [
+    "Fraunces",
+    "Georgia"
   ]
 }
