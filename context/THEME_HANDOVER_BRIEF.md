@@ -39,7 +39,7 @@ packs.
 ## Track 1 — Visualize (Claude Desktop)
 
 **Inputs to give Desktop:**
-- `context/CareerBrain_Themes_Handover_Context.xml`
+- The 15 individual JSON theme files (`templates/theme-*.json`)
 - `context/theme_viz_render_spec.md` — render instructions
 - `context/theme_viz_sample_content.md` — the fixed sample resume
 

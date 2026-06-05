@@ -96,7 +96,7 @@
         "allows_headers_footers": { "type": "boolean", "const": false },
         "font_family": {
           "type": "string",
-          "enum": ["Calibri", "Arial", "Times New Roman", "Helvetica"],
+          "enum": ["Calibri", "Arial", "Times New Roman", "Helvetica", "Georgia"],
           "description": "ATS-safe Google Docs fonts. Use Arial as fallback for Helvetica — not reliably available in Google Docs."
         },
         "content_layer": {
@@ -131,7 +131,7 @@
       "properties": {
         "base_font": {
           "type": "string",
-          "enum": ["Calibri", "Arial", "Times New Roman", "Helvetica"],
+          "enum": ["Calibri", "Arial", "Times New Roman", "Helvetica", "Georgia"],
           "description": "Must match ats_constraints.font_family (enforced by caller, not schema)."
         },
         "base_size_pt": {

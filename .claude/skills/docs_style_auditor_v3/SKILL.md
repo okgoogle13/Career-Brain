@@ -1,9 +1,9 @@
 ---
-name: docs-style-auditor
+name: docs-style-auditor-v3
 description: Use when verifying that a Career Brain Google Docs Golden Master template is structurally and typographically compliant before a live pipeline run — catches font, spacing, heading style, and layout violations that LLM review cannot reliably detect.
 ---
 
-# Docs Style Auditor
+# Docs Style Auditor v3
 
 ## Overview
 

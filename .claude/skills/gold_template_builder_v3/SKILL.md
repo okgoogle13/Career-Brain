@@ -1,9 +1,9 @@
 ---
-name: gold-template-builder-v2
+name: gold-template-builder-v3
 description: Use when designing or specifying a new KSC template for the Career Brain pipeline. Produces a machine-parseable spec that validate_template_spec.py can hard-gate before registration.
 ---
 
-# Gold Template Builder v2 (KSC)
+# Gold Template Builder v3 (KSC)
 
 ## What this skill does
 

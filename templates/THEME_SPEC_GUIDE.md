@@ -15,6 +15,21 @@
 | `resume_warm_impact_v1.json` | resume | Warm Impact | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | Community services, career-transition | ✅ Registered |
 | `resume_chronological_v1.json` | resume | Chronological | Times New Roman | Deep Navy / Charcoal | 1 — ATS Standard | Finance, law, corporate | ✅ Registered |
 | `resume_hybrid_v1.json` | resume | Hybrid | Calibri | Forest Green / Sage | 1 — ATS Clean | Government, community services | ✅ Registered |
+| `resume_graphite_ledger_v1.json` | resume | Graphite Ledger | Calibri | Graphite / Grey | 1 — ATS Clean | Finance, law, corporate, government | ✅ Registered |
+| `resume_midnight_blueprint_v1.json` | resume | Midnight Blueprint | Arial | Deep Navy / Cyan | 2 — ATS Modern | Tech, engineering, specialty | ✅ Registered |
+| `resume_citrus_edge_v1.json` | resume | Citrus Edge | Calibri | Charcoal / Orange | 2 — ATS Modern | Community services, social work | ✅ Registered |
+| `resume_emerald_transit_v1.json` | resume | Emerald Transit | Calibri | Emerald / Mint | 1 — ATS Clean | Health, transport, logistics | ✅ Registered |
+| `resume_copper_teal_circuit_v1.json` | resume | Copper Teal Circuit | Arial | Copper / Teal | 2 — ATS Modern | Engineering, tech, architecture | ✅ Registered |
+| `resume_violet_signal_v1.json` | resume | Violet Signal | Georgia | Violet / Amethyst | 1 — ATS Standard | Creative, arts, marketing | ✅ Registered |
+| `resume_solar_gradient_v1.json` | resume | Solar Gradient | Georgia | Brown / Warm Cream | 1 — ATS Standard | Non-profit, education, community | ✅ Registered |
+| `resume_nordic_neon_v1.json` | resume | Nordic Neon | Arial | Cyan / Teal | 2 — ATS Modern | Design, tech, startups | ✅ Registered |
+| `resume_terracotta_service_v1.json` | resume | Terracotta Service | Georgia | Terracotta / Cream | 1 — ATS Standard | Community services, social work | ✅ Registered |
+| `resume_rainbow_minimal_v1.json` | resume | Rainbow Minimal | Calibri | Slate / Multi-color | 2 — ATS Modern | General, entry-level, tech | ✅ Registered |
+| `resume_terminal_signal_v1.json` | resume | Terminal Signal | Arial | Green / Charcoal | 2 — ATS Modern | Dev, IT, cybersecurity | ✅ Registered |
+| `resume_horizon_edge_v1.json` | resume | Horizon Edge | Arial | Navy / Coral | 2 — ATS Modern | Media, communication, corporate | ✅ Registered |
+| `resume_broadside_press_v1.json` | resume | Broadside Press | Georgia | Crimson / Black | 1 — ATS Standard | Editorial, publishing, policy | ✅ Registered |
+| `resume_clay_canvas_v1.json` | resume | Clay Canvas | Georgia | Clay / Espresso | 1 — ATS Standard | Artisanal, design, education | ✅ Registered |
+| `resume_cyan_blueprint_v1.json` | resume | Cyan Blueprint | Arial | Cyan / Charcoal | 2 — ATS Modern | Tech, engineering, corporate | ✅ Registered |
 | `cover_letter_base_v1.json` | cover_letter | Cover Letter Base | Times New Roman | Deep Navy | 1 — ATS Standard | All sectors | ✅ Registered |
 | `cover_letter_government_v1.json` | cover_letter | Cover Letter Government | Calibri | Forest Green | 1 — ATS Clean | Government, public service | ✅ Registered |
 | `cover_letter_nfp_v1.json` | cover_letter | Cover Letter NFP | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | NFP, community services | ✅ Registered |
