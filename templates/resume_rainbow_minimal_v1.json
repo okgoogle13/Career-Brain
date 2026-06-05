@@ -21,13 +21,13 @@
     "font_family": "Calibri",
     "content_layer": "body_only",
     "forbidden_glyphs": [
-      "\u2022",
-      "\u2714",
-      "\u2605",
-      "\u2756",
-      "\u25cf",
-      "\u2705",
-      "\u274c",
+      "•",
+      "✔",
+      "★",
+      "❖",
+      "●",
+      "✅",
+      "❌",
       "|"
     ]
   },
@@ -41,13 +41,12 @@
     "white": "#FFFFFF"
   },
   "typography": {
-    "base_font": "Calibri",
+    "base_font": "Work Sans",
     "base_size_pt": 10.5,
     "line_spacing": 1.24,
     "spacing_after_pt": 5,
     "section_heading_tracking_pt": 1.1,
-    "section_heading_size_pt": 11,
-    "section_heading_weight": 700
+    "section_heading_size_pt": 11
   },
   "page": {
     "margin_top_cm": 1.65,
@@ -381,5 +380,9 @@
         }
       }
     }
+  ],
+  "heading_font_family": [
+    "Outfit",
+    "Arial"
   ]
 }

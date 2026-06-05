@@ -1,0 +1,235 @@
+{
+  "schema_version": "2.3",
+  "template_id": "theme_copper_teal_circuit",
+  "tier": 1,
+  "tier_label": "ATS Standard",
+  "doc_type": "resume",
+  "target_sector": [],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDERSCHEMAV2",
+  "description": "Premium engineered hybrid theme with mixed header plus section accents and dashed rules with precise label breaks.",
+  "visual_identity": {
+    "theme_name": "Copper Teal Circuit",
+    "mood": "premium, engineered, slightly futuristic",
+    "motif_name": "dual-tone logic",
+    "density_target": "medium",
+    "silhouette": "hybrid",
+    "personality_axis": "precise, premium, engineered",
+    "header_silhouette": "structured",
+    "section_emphasis_pattern": "hybrid header plus section accents",
+    "contrast_intensity": "medium"
+  },
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": [
+      "IBM Plex Sans",
+      "Arial"
+    ],
+    "content_layer": "all essential content must remain plain text in normal reading order and selectable",
+    "forbidden_glyphs": [
+      "icons",
+      "emoji",
+      "ornamental bullets",
+      "nonstandard ligatures",
+      "special symbols used as decoration",
+      "layout-only unicode art"
+    ]
+  },
+  "palette": {
+    "base_colours": [
+      "#1D1C1A",
+      "#A85A34",
+      "#6B5A4A"
+    ],
+    "complementary_accent": "#2D8A8A",
+    "neutral_surface": "#FAF8F5",
+    "neutral_text": "#1D1C1A",
+    "neutral_background": "#FAF8F5",
+    "supporting_neutral": "#E8D4C6"
+  },
+  "typography": {
+    "base_font": "IBM Plex Sans",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.28,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 1.4,
+    "section_heading_size_pt": 11,
+    "section_heading_weight": 700
+  },
+  "page": {
+    "margins_in": {
+      "top": 0.65,
+      "right": 0.7,
+      "bottom": 0.65,
+      "left": 0.7
+    },
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "single_column": true,
+    "reading_order": "top_to_bottom_left_to_right",
+    "export_safe": "Google Docs and PDF export compatible"
+  },
+  "bands": {
+    "strategy": "mixed header plus section accents",
+    "placement": [
+      "header edge",
+      "metadata strip",
+      "section accent band"
+    ],
+    "intensity": "subtle to moderate",
+    "height_rule": {
+      "min_pt": 3,
+      "max_pt": 8,
+      "default_pt": 5
+    },
+    "band_targets": [
+      "top header edge",
+      "small metadata strip",
+      "section separator zones"
+    ],
+    "highlight_band_targets": [
+      "header edge",
+      "metadata strip"
+    ],
+    "band_placement_profile": "mixed",
+    "accent_placement_profile": "mixed_microuse"
+  },
+  "dividers": {
+    "grammar": "dashed rules with precise label breaks",
+    "frequency": "moderate",
+    "weight": "thin to medium",
+    "divider_targets": [
+      "between header and body",
+      "between sections",
+      "between role and achievement clusters",
+      "between grouped metadata blocks"
+    ],
+    "divider_rhythm": "progressive"
+  },
+  "accent_logic": {
+    "primary_use": [
+      "header edges",
+      "metadata markers",
+      "section headings",
+      "thin rules",
+      "chip borders"
+    ],
+    "complementary_accent_role": "adds teal contrast to copper structure without dominating the document",
+    "allowed_scope": [
+      "heading edges",
+      "small labels",
+      "chip borders",
+      "micro markers",
+      "selected separators"
+    ],
+    "forbidden_scope": [
+      "full paragraphs",
+      "large blocks",
+      "background fills behind essential text",
+      "text-over-image effects",
+      "decorative emphasis that weakens readability"
+    ],
+    "accent_balance": "copper structure first, teal as precise highlight",
+    "contrast_intensity": "medium"
+  },
+  "theme_specific_rules": {
+    "must_include": [
+      "single-column text-first structure",
+      "dark body text",
+      "explicit motif",
+      "explicit density target",
+      "explicit band strategy",
+      "explicit divider grammar",
+      "explicit accent placement",
+      "clear header hierarchy"
+    ],
+    "forbidden_repeats": [
+      "same top-of-page structure across themes",
+      "same section label treatment across themes",
+      "same divider grammar as previous theme",
+      "same chip treatment as previous theme",
+      "same band placement as previous theme",
+      "tonal-only palette dependency"
+    ],
+    "visual_differentiators": [
+      "dual-tone copper and teal logic",
+      "dashed rules with label breaks",
+      "mixed header and section accent behaviour"
+    ],
+    "anti_generic_rules": [
+      "do not flatten copper/teal duality into a single neutral accent",
+      "do not remove dashed rule character",
+      "do not convert to plain monochrome corporate template"
+    ],
+    "non_reuse_constraints": [
+      "no repeated top-of-page pattern",
+      "no repeated divider grammar from previous theme",
+      "no repeated band placement from previous theme"
+    ],
+    "adjacent_theme_difference_rules": [
+      "must differ from previous theme in band placement",
+      "must differ from previous theme in divider rhythm",
+      "must differ from previous theme in accent placement"
+    ]
+  },
+  "section_heading_style": {
+    "font_color": "#8A4A2C",
+    "text_transform": "uppercase",
+    "decoration": "structured rule with copper emphasis",
+    "accent_color": "#1F7A7A"
+  },
+  "body_text_color": "#1D1C1A",
+  "muted_text_color": "#6B5A4A",
+  "skills_background_tint": "#E8D4C6",
+  "avoid_list": [
+    "tonal-only palette",
+    "same top-of-page structure",
+    "same divider grammar as previous theme",
+    "same chip treatment as previous theme",
+    "generic safe fallback",
+    "over-softened hierarchy",
+    "repeated band placement",
+    "multi-column layout",
+    "sidebar layout",
+    "text boxes",
+    "layout tables",
+    "floating objects",
+    "decorative graphics",
+    "icons",
+    "images",
+    "headers and footers for essential content",
+    "low-contrast body text"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Arial",
+        "Calibri",
+        "Georgia"
+      ],
+      "typography.base_font": "Arial",
+      "typography.line_spacing": 1.26,
+      "typography.spacing_after_pt": 6,
+      "palette.base_colours": [
+        "#1D1C1A",
+        "#9A5A3A",
+        "#7D6A5A"
+      ],
+      "palette.neutral_text": "#1D1C1A",
+      "body_text_color": "#1D1C1A",
+      "muted_text_color": "#7D6A5A",
+      "section_heading_style.font_color": "#1D1C1A",
+      "section_heading_style.accent_color": "#2D8A8A",
+      "skills_background_tint": "#E8D4C6"
+    }
+  },
+  "complementary_accent": "#1F7A7A",
+  "heading_font_family": [
+    "Space Grotesk",
+    "Arial"
+  ]
+}

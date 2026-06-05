@@ -135,6 +135,8 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
     """Build all batchUpdate requests for styling after content is inserted."""
     doc_type = theme.get("doc_type", "resume")
     font = theme["typography"]["base_font"]
+    heading_font = (theme.get("heading_font_family") or [font])[0]
+    heading_weight = theme["typography"].get("section_heading_weight")
     page = theme.get("page", {
         "margin_top_cm": 2.0, "margin_bottom_cm": 2.0, 
         "margin_left_cm": 2.0, "margin_right_cm": 2.0, 
@@ -330,7 +332,10 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
                     "italic": italic,
                     "fontSize": pt(font_size),
                     "foregroundColor": {"color": {"rgbColor": hex_to_rgb(color)}},
-                    "weightedFontFamily": {"fontFamily": font},
+                    "weightedFontFamily": {
+                        "fontFamily": heading_font if role in ("name", "headline", "h1", "h2") else font,
+                        **({"weight": heading_weight} if role in ("name", "headline", "h1", "h2") and heading_weight else {}),
+                    },
                 },
                 "fields": "bold,italic,fontSize,foregroundColor,weightedFontFamily",
             }
