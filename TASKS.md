@@ -6,8 +6,8 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 ## Active
 
-### TASK-005 — Theme Standardisation & Golden Master Build — 🔄 IN PROGRESS
-**Status:** 🔄 In progress — PR `claude/refine-local-plan-kr29k` partially merged context
+### TASK-005 — Theme Standardisation & Golden Master Build — ✅ COMPLETE 2026-06-04
+**Status:** ✅ Complete — Compiled, built, audited, and registered all 15 visual themes.
 **Priority:** High
 **Branch:** `claude/refine-local-plan-kr29k`
 **Handover doc:** `context/THEME_HANDOVER_BRIEF.md`
@@ -35,9 +35,16 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [x] `templates/resume_copper_teal_circuit_v1.json`: theme-05 compiled v2.3 → v2.0; copper/teal/Arial; 8 blocks; validates against `schema_v2_0` (commit `9d56066`)
 - [x] `templates/schema_v2_0.json`: JSON Schema draft-07; 13/13 v2.0 templates pass; 10/10 v2.3 conceptual themes correctly fail (commit `9d56066`)
 - [x] Context files for Phase-0 Desktop gallery: `context/theme_viz_render_spec.md`, `context/theme_viz_sample_content.md`, `context/theme_project_description.md` (commit `9d56066`)
-- [ ] **Phase 0 — Visual QA (NEXT)** — Run Desktop gallery render: open Claude Desktop, attach all **15 JSON theme specs** (`templates/theme-01..10-*.json` + `templates/theme-21..25-*.json`) + [theme_viz_sample_content.md](file:///Users/okgoogle13/Projects/Career%20Brain/context/theme_viz_sample_content.md) + [theme_viz_render_spec.md](file:///Users/okgoogle13/Projects/Career%20Brain/context/theme_viz_render_spec.md), paste the §3 prompt from [THEME_REVIEW_HANDOVER.md](file:///Users/okgoogle13/Projects/Career%20Brain/planning/THEME_REVIEW_HANDOVER.md). Return ranked feedback & styling tweaks table to Claude Code (aiming to refine and keep all 15 quality themes for a wide design selection).
-- [ ] **Phase 1** — Compile all verified themes to v2.0 using [resume_copper_teal_circuit_v1.json](file:///Users/okgoogle13/Projects/Career%20Brain/templates/resume_copper_teal_circuit_v1.json) as reference skeleton; validate each against [schema_v2_0.json](file:///Users/okgoogle13/Projects/Career%20Brain/templates/schema_v2_0.json); gated on Track A builder fix
-- [ ] Register all compiled themes in [doc_templates.json](file:///Users/okgoogle13/Projects/Career%20Brain/config/doc_templates.json); build + audit Golden Masters; gated on Track A builder fix
+- [x] **Phase 0 — Visual QA** — Run Desktop gallery render: verified mockups, ranked them, and decided to keep all 15 themes with 8 visual JSON tweaks.
+- [x] **Phase 1** — Compile all verified themes to v2.0; validated all 15 templates successfully against `schema_v2_0.json`.
+- [x] **Phase 2 & 5** — Register all compiled themes in `doc_templates.json`, build all 15 Golden Masters, and audit them successfully (all report `STYLE OK`).
+
+**Visual-review rebuild pass (2026-06-06) — `planning/THEME_DESKTOP_REVIEW_2026-06-04.md`:**
+Applied the 8 accessibility/identity JSON tweaks from the Claude-Desktop visual review, then re-built and re-registered all 15 themed Golden Masters with fresh Doc IDs (replacing the prior 2026-06-04 build).
+- [x] §1 tweaks applied to 8 source themes (03 `#90440E`, 04 `#047857`, 06 `#7C3AED`, 07 heading `#7A5238`, 08 `#0E7490`, 09 `#8A4F36`/`#8A6A57`, 23 size→13, 24 weight→600). theme-08 `accent_color` left at original `#7BE0FF` (revert kept §1 scope to `complementary_accent` only).
+- [x] Each theme: compiled-file verification → dry-run → live `build_golden_master.py` → `docs_style_auditor_v3 --theme` (15/15 `STYLE OK`) → registered.
+- [x] All 15 themed `resume.variants.*` in `config/doc_templates.json` now hold fresh Doc IDs.
+- ⚠️ theme-23 CONFIRM-OVERRIDE (heading 14→13) applied per user instruction; body `#000000` verified intact. theme-02 dark-bg ATS risk accepted; built last.
 
 
 **Schema / ontology work (this session — Claude Desktop chat, no credentials):**

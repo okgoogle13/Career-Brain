@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "template_id": "resume_copper_teal_circuit_v1",
+  "template_id": "resume_terracotta_service_v1",
   "tier": 2,
   "tier_label": "ATS Modern",
   "doc_type": "resume",
@@ -11,14 +11,14 @@
   ],
   "region": "AU",
   "placeholder_schema": "PLACEHOLDER_SCHEMA_V2",
-  "description": "Production template compiled from theme theme-05-copper-teal-circuit. Premium engineered hybrid theme with mixed header plus section accents and dashed rules with precise label breaks.",
+  "description": "Production template compiled from theme theme-09-terracotta-service. Compassionate earthy section-led theme with gentle dotted rules and chip-friendly label emphasis.",
   "ats_constraints": {
     "columns": 1,
     "allows_tables": false,
     "allows_images": false,
     "allows_text_boxes": false,
     "allows_headers_footers": false,
-    "font_family": "Arial",
+    "font_family": "Georgia",
     "content_layer": "body_only",
     "forbidden_glyphs": [
       "\u2022",
@@ -32,20 +32,20 @@
     ]
   },
   "palette": {
-    "primary_color": "#9A5A3A",
-    "body_text": "#1D1C1A",
-    "muted_text": "#7D6A5A",
-    "accent_color": "#2D8A8A",
-    "skills_tint": "#E8D4C6",
-    "surface_color": "#FAF8F5",
+    "primary_color": "#B77456",
+    "body_text": "#3A2A22",
+    "muted_text": "#8A6A57",
+    "accent_color": "#D4865A",
+    "skills_tint": "#F3E0D3",
+    "surface_color": "#FEFAF6",
     "white": "#FFFFFF"
   },
   "typography": {
-    "base_font": "Arial",
+    "base_font": "Georgia",
     "base_size_pt": 10.5,
     "line_spacing": 1.26,
     "spacing_after_pt": 6,
-    "section_heading_tracking_pt": 1.4,
+    "section_heading_tracking_pt": 1.2,
     "section_heading_size_pt": 11,
     "section_heading_weight": 700
   },
@@ -54,7 +54,7 @@
     "margin_bottom_cm": 1.65,
     "margin_left_cm": 1.78,
     "margin_right_cm": 1.78,
-    "background_color": "#FAF8F5"
+    "background_color": "#FEFAF6"
   },
   "blocks": [
     {
@@ -68,7 +68,7 @@
       "visualConfig": {
         "font_size_pt": 20,
         "font_weight": "bold",
-        "font_color": "#9A5A3A",
+        "font_color": "#B77456",
         "text_align": "left",
         "padding_top_pt": 0,
         "padding_bottom_pt": 2,
@@ -88,7 +88,7 @@
       "content": "{{CONTACT_PHONE}}    {{CONTACT_EMAIL}}    {{CONTACT_LOCATION}}",
       "visualConfig": {
         "font_size_pt": 9,
-        "font_color": "#7D6A5A",
+        "font_color": "#8A6A57",
         "text_align": "left",
         "padding_top_pt": 3,
         "padding_bottom_pt": 14,
@@ -108,7 +108,7 @@
       "visualConfig": {
         "font_size_pt": 11,
         "font_weight": "bold",
-        "font_color": "#2D8A8A",
+        "font_color": "#D4865A",
         "text_align": "left",
         "padding_top_pt": 0,
         "padding_bottom_pt": 16,
@@ -128,11 +128,11 @@
         "heading": {
           "font_size_pt": 11,
           "font_weight": "bold",
-          "font_color": "#1D1C1A",
+          "font_color": "#8A4F36",
           "text_transform": "uppercase",
-          "letter_spacing_pt": 1.4,
+          "letter_spacing_pt": 1.2,
           "border_bottom": {
-            "color": "#2D8A8A",
+            "color": "#D4865A",
             "width_pt": 1.0,
             "style": "solid"
           },
@@ -140,7 +140,7 @@
         },
         "body": {
           "font_size_pt": 10.5,
-          "font_color": "#1D1C1A",
+          "font_color": "#3A2A22",
           "line_spacing": 1.26
         }
       }
@@ -163,18 +163,18 @@
         "heading": {
           "font_size_pt": 11,
           "font_weight": "bold",
-          "font_color": "#1D1C1A",
+          "font_color": "#8A4F36",
           "text_transform": "uppercase",
-          "letter_spacing_pt": 1.4,
+          "letter_spacing_pt": 1.2,
           "border_bottom": {
-            "color": "#2D8A8A",
+            "color": "#D4865A",
             "width_pt": 1.0,
             "style": "solid"
           },
           "margin_bottom_pt": 6
         },
         "container": {
-          "background_color": "#E8D4C6",
+          "background_color": "#F3E0D3",
           "padding_top_pt": 6,
           "padding_bottom_pt": 6,
           "padding_left_pt": 10,
@@ -182,7 +182,7 @@
         },
         "item": {
           "font_size_pt": 10.5,
-          "font_color": "#1D1C1A",
+          "font_color": "#3A2A22",
           "separator": "comma",
           "display": "inline"
         }
@@ -285,11 +285,11 @@
         "heading": {
           "font_size_pt": 11,
           "font_weight": "bold",
-          "font_color": "#1D1C1A",
+          "font_color": "#8A4F36",
           "text_transform": "uppercase",
-          "letter_spacing_pt": 1.4,
+          "letter_spacing_pt": 1.2,
           "border_bottom": {
-            "color": "#2D8A8A",
+            "color": "#D4865A",
             "width_pt": 1.0,
             "style": "solid"
           },
@@ -298,19 +298,19 @@
         "role_title": {
           "font_size_pt": 10.5,
           "font_weight": "bold",
-          "font_color": "#1D1C1A",
+          "font_color": "#3A2A22",
           "margin_top_pt": 6
         },
         "role_meta": {
           "font_size_pt": 9,
           "font_style": "normal",
-          "font_color": "#7D6A5A",
+          "font_color": "#8A6A57",
           "margin_bottom_pt": 6,
           "format": "{{ROLE_N_ORG}}   {{ROLE_N_DATES}}"
         },
         "bullet": {
           "font_size_pt": 10.5,
-          "font_color": "#1D1C1A",
+          "font_color": "#3A2A22",
           "glyph": "-",
           "indent_pt": 14,
           "line_spacing": 1.26,
@@ -331,11 +331,11 @@
         "heading": {
           "font_size_pt": 11,
           "font_weight": "bold",
-          "font_color": "#1D1C1A",
+          "font_color": "#8A4F36",
           "text_transform": "uppercase",
-          "letter_spacing_pt": 1.4,
+          "letter_spacing_pt": 1.2,
           "border_bottom": {
-            "color": "#2D8A8A",
+            "color": "#D4865A",
             "width_pt": 1.0,
             "style": "solid"
           },
@@ -343,7 +343,7 @@
         },
         "item": {
           "font_size_pt": 10.5,
-          "font_color": "#1D1C1A",
+          "font_color": "#3A2A22",
           "line_spacing": 1.26,
           "separator": "line_break"
         }
@@ -363,11 +363,11 @@
         "heading": {
           "font_size_pt": 11,
           "font_weight": "bold",
-          "font_color": "#1D1C1A",
+          "font_color": "#8A4F36",
           "text_transform": "uppercase",
-          "letter_spacing_pt": 1.4,
+          "letter_spacing_pt": 1.2,
           "border_bottom": {
-            "color": "#2D8A8A",
+            "color": "#D4865A",
             "width_pt": 1.0,
             "style": "solid"
           },
@@ -375,7 +375,7 @@
         },
         "item": {
           "font_size_pt": 10.5,
-          "font_color": "#1D1C1A",
+          "font_color": "#3A2A22",
           "line_spacing": 1.26,
           "separator": "line_break"
         }
