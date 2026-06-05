@@ -20,13 +20,13 @@
     "font_family": "Arial",
     "content_layer": "body_only",
     "forbidden_glyphs": [
-      "\u2022",
-      "\u2714",
-      "\u2605",
-      "\u2756",
-      "\u25cf",
-      "\u2705",
-      "\u274c",
+      "•",
+      "✔",
+      "★",
+      "❖",
+      "●",
+      "✅",
+      "❌",
       "|"
     ]
   },
@@ -40,13 +40,12 @@
     "white": "#FFFFFF"
   },
   "typography": {
-    "base_font": "Arial",
+    "base_font": "Libre Franklin",
     "base_size_pt": 10.5,
     "line_spacing": 1.26,
     "spacing_after_pt": 6,
     "section_heading_tracking_pt": 1.8,
-    "section_heading_size_pt": 12,
-    "section_heading_weight": 800
+    "section_heading_size_pt": 12
   },
   "page": {
     "margin_top_cm": 1.78,
@@ -380,5 +379,9 @@
         }
       }
     }
+  ],
+  "heading_font_family": [
+    "Archivo",
+    "Arial"
   ]
 }

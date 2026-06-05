@@ -21,13 +21,13 @@
     "font_family": "Georgia",
     "content_layer": "body_only",
     "forbidden_glyphs": [
-      "\u2022",
-      "\u2714",
-      "\u2605",
-      "\u2756",
-      "\u25cf",
-      "\u2705",
-      "\u274c",
+      "•",
+      "✔",
+      "★",
+      "❖",
+      "●",
+      "✅",
+      "❌",
       "|"
     ]
   },
@@ -41,13 +41,13 @@
     "white": "#FFFFFF"
   },
   "typography": {
-    "base_font": "Georgia",
+    "base_font": "Lora",
     "base_size_pt": 10.5,
     "line_spacing": 1.28,
     "spacing_after_pt": 8,
     "section_heading_tracking_pt": 1.0,
     "section_heading_size_pt": 13,
-    "section_heading_weight": 600
+    "section_heading_weight": 650
   },
   "page": {
     "margin_top_cm": 1.78,
@@ -381,5 +381,9 @@
         }
       }
     }
+  ],
+  "heading_font_family": [
+    "Fraunces",
+    "Georgia"
   ]
 }
