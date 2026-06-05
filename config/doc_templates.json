@@ -53,6 +53,66 @@
       "warm_impact": {
         "template_doc_id": "1B2Qqzs5ueLyaSRsvSNTpwZJPVyc07tBdUo-UlORu01M",
         "theme": "templates/resume_warm_impact_v1.json"
+      },
+      "copper_teal_circuit": {
+        "template_doc_id": "1w3wvTPtLPWvxmL8s0PxuAiL1I5BBIvIJBMYqiS-iohY",
+        "theme": "templates/resume_copper_teal_circuit_v1.json"
+      },
+      "nordic_neon": {
+        "template_doc_id": "1UCUMjj3kCM6vKwXUDsyNpyCkm4ncgVCBzDHS1S7NrEc",
+        "theme": "templates/resume_nordic_neon_v1.json"
+      },
+      "terminal_signal": {
+        "template_doc_id": "1HF50KjYlzxQXHw3LJFjr_C3AOQgDK3PVi-vQZkiJ9rY",
+        "theme": "templates/resume_terminal_signal_v1.json"
+      },
+      "horizon_edge": {
+        "template_doc_id": "1udAUv9VHAjHqb_IxbtX6zNQtvwn05Kqe1h7QxC5LqZI",
+        "theme": "templates/resume_horizon_edge_v1.json"
+      },
+      "broadside_press": {
+        "template_doc_id": "1-zwxOHfYfoTQITbiFrjKVhu8QO0xh3nY8C7cBgLqF8g",
+        "theme": "templates/resume_broadside_press_v1.json"
+      },
+      "clay_canvas": {
+        "template_doc_id": "1bV6pDZYk3ay-GXGgS8vRbXWNhFd0o4L-G05PNkEBePs",
+        "theme": "templates/resume_clay_canvas_v1.json"
+      },
+      "cyan_blueprint": {
+        "template_doc_id": "1jKQ-QqblghbvHg52yA5VT-xXT7mnkL3s7TELz54Q4P4",
+        "theme": "templates/resume_cyan_blueprint_v1.json"
+      },
+      "midnight_blueprint": {
+        "template_doc_id": "1BN8HoWeS_ESzFVtNu-RTr0cHqYy38TQDsWc5EP7CbTM",
+        "theme": "templates/resume_midnight_blueprint_v1.json"
+      },
+      "graphite_ledger": {
+        "template_doc_id": "12zPE88wcJ8QHbwbaqjzFXRZHXK33fubtUkDQB6uXnEU",
+        "theme": "templates/resume_graphite_ledger_v1.json"
+      },
+      "citrus_edge": {
+        "template_doc_id": "1LC-GqIY4tXWfXJ8G248t5b8iVC4M1dWIgpaEU38P4iU",
+        "theme": "templates/resume_citrus_edge_v1.json"
+      },
+      "emerald_transit": {
+        "template_doc_id": "1blKfICQCrJ4B1JW2Exlz2wPO8EsriahB7BnIfa11h0k",
+        "theme": "templates/resume_emerald_transit_v1.json"
+      },
+      "violet_signal": {
+        "template_doc_id": "1dgLQs0VVW04Tet2V7Ji6PE44lZJ5z9H4JJfsiYiqOCM",
+        "theme": "templates/resume_violet_signal_v1.json"
+      },
+      "solar_gradient": {
+        "template_doc_id": "11v0nhRhnLpU8sa00sTYkS-O8vFbIbu32FnQJhvlf3zg",
+        "theme": "templates/resume_solar_gradient_v1.json"
+      },
+      "terracotta_service": {
+        "template_doc_id": "10y_9mB55_9hhT_aSlFlG7Q-ZwE2wdSSvQ98sb7pG0DI",
+        "theme": "templates/resume_terracotta_service_v1.json"
+      },
+      "rainbow_minimal": {
+        "template_doc_id": "1tNx7tB2B6itrHTtTVkAieenFHVVeVPE6h_OmrBNOGPo",
+        "theme": "templates/resume_rainbow_minimal_v1.json"
       }
     }
   }

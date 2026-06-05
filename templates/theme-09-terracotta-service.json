@@ -173,13 +173,13 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#B77456",
+    "font_color": "#8A4F36",
     "text_transform": "uppercase",
     "decoration": "soft bar or underline aligned with section label",
     "accent_color": "#D4865A"
   },
   "body_text_color": "#3A2A22",
-  "muted_text_color": "#B08772",
+  "muted_text_color": "#8A6A57",
   "skills_background_tint": "#F3E0D3",
   "avoid_list": [
     "tonal-only palette",
