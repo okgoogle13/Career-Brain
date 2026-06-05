@@ -17,7 +17,7 @@
     "personality_axis": "calm, supportive, warm",
     "header_silhouette": "gentle",
     "section_emphasis_pattern": "section-led with soft labels",
-    "contrast_intensity": "low"
+    "contrast_intensity": "medium"
   },
   "ats_constraints": {
     "columns": 1,
@@ -26,9 +26,8 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Georgia",
-      "Calibri",
-      "Arial"
+      "Source Serif 4",
+      "Georgia"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -43,20 +42,20 @@
   "palette": {
     "base_colours": [
       "#3A2A22",
-      "#B77456",
+      "#9A5638",
       "#E8CBB3"
     ],
     "complementary_accent": "#D4865A",
-    "neutral_surface": "#FEFAF6",
+    "neutral_surface": "#FCF7F2",
     "neutral_text": "#3A2A22",
-    "neutral_background": "#FEFAF6",
+    "neutral_background": "#FCF7F2",
     "supporting_neutral": "#F3E0D3"
   },
   "typography": {
-    "base_font": "Georgia",
+    "base_font": "Source Serif 4",
     "base_size_pt": 10.5,
-    "line_spacing": 1.26,
-    "spacing_after_pt": 6,
+    "line_spacing": 1.32,
+    "spacing_after_pt": 7,
     "section_heading_tracking_pt": 1.2,
     "section_heading_size_pt": 11,
     "section_heading_weight": 700
@@ -173,14 +172,14 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#8A4F36",
+    "font_color": "#8A4A2E",
     "text_transform": "uppercase",
     "decoration": "soft bar or underline aligned with section label",
-    "accent_color": "#D4865A"
+    "accent_color": "#B5532A"
   },
   "body_text_color": "#3A2A22",
-  "muted_text_color": "#8A6A57",
-  "skills_background_tint": "#F3E0D3",
+  "muted_text_color": "#6E5346",
+  "skills_background_tint": "#F3E6DB",
   "avoid_list": [
     "tonal-only palette",
     "same top-of-page structure",
@@ -199,5 +198,36 @@
     "images",
     "headers and footers for essential content",
     "low-contrast body text"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Georgia",
+        "Calibri",
+        "Arial"
+      ],
+      "typography.base_font": "Georgia",
+      "typography.line_spacing": 1.26,
+      "typography.spacing_after_pt": 6,
+      "palette.base_colours": [
+        "#3A2A22",
+        "#B77456",
+        "#E8CBB3"
+      ],
+      "palette.neutral_surface": "#FEFAF6",
+      "palette.neutral_background": "#FEFAF6",
+      "palette.neutral_text": "#3A2A22",
+      "body_text_color": "#3A2A22",
+      "muted_text_color": "#8A6A57",
+      "section_heading_style.font_color": "#8A4F36",
+      "section_heading_style.accent_color": "#D4865A",
+      "skills_background_tint": "#F3E0D3",
+      "visual_identity.contrast_intensity": "low"
+    }
+  },
+  "complementary_accent": "#B5532A",
+  "heading_font_family": [
+    "Fraunces",
+    "Georgia"
   ]
 }

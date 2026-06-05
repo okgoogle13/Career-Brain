@@ -170,6 +170,7 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
         body_size = typo.get("base_size_pt", 11.0)
         body_color = theme_data.get("palette", {}).get("body_text", "#1A1A1A")
         font = typo.get("base_font", "Calibri")
+        heading_font = (theme_data.get("heading_font_family") or [font])[0]
 
         # 1. Collect all non-empty paragraphs from document
         doc_paras = []
@@ -314,18 +315,19 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
                     )
 
                 # Check font family (accept absent if default Arial)
+                expected_font = heading_font if role in ("name", "headline", "h1", "h2") else font
                 weighted_font = text_style.get("weightedFontFamily", {})
                 font_family = weighted_font.get("fontFamily")
                 if font_family is None:
-                    if font != "Arial":
+                    if expected_font != "Arial":
                         failures.append(
                             f"FAIL: Text run '{run_snippet}' (role '{role}') — weightedFontFamily not set "
-                            f"(expected '{font}')"
+                            f"(expected '{expected_font}')"
                         )
-                elif font_family != font:
+                elif font_family != expected_font:
                     failures.append(
                         f"FAIL: Text run '{run_snippet}' (role '{role}') — font is '{font_family}' "
-                        f"(expected '{font}')"
+                        f"(expected '{expected_font}')"
                     )
 
                 # Check font size (accept absent if default 11.0pt)

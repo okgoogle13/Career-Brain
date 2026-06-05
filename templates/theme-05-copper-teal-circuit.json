@@ -26,9 +26,8 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Arial",
-      "Calibri",
-      "Georgia"
+      "IBM Plex Sans",
+      "Arial"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -43,8 +42,8 @@
   "palette": {
     "base_colours": [
       "#1D1C1A",
-      "#9A5A3A",
-      "#7D6A5A"
+      "#A85A34",
+      "#6B5A4A"
     ],
     "complementary_accent": "#2D8A8A",
     "neutral_surface": "#FAF8F5",
@@ -53,9 +52,9 @@
     "supporting_neutral": "#E8D4C6"
   },
   "typography": {
-    "base_font": "Arial",
+    "base_font": "IBM Plex Sans",
     "base_size_pt": 10.5,
-    "line_spacing": 1.26,
+    "line_spacing": 1.28,
     "spacing_after_pt": 6,
     "section_heading_tracking_pt": 1.4,
     "section_heading_size_pt": 11,
@@ -178,13 +177,13 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#1D1C1A",
+    "font_color": "#8A4A2C",
     "text_transform": "uppercase",
     "decoration": "structured rule with copper emphasis",
-    "accent_color": "#2D8A8A"
+    "accent_color": "#1F7A7A"
   },
   "body_text_color": "#1D1C1A",
-  "muted_text_color": "#7D6A5A",
+  "muted_text_color": "#6B5A4A",
   "skills_background_tint": "#E8D4C6",
   "avoid_list": [
     "tonal-only palette",
@@ -204,5 +203,33 @@
     "images",
     "headers and footers for essential content",
     "low-contrast body text"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Arial",
+        "Calibri",
+        "Georgia"
+      ],
+      "typography.base_font": "Arial",
+      "typography.line_spacing": 1.26,
+      "typography.spacing_after_pt": 6,
+      "palette.base_colours": [
+        "#1D1C1A",
+        "#9A5A3A",
+        "#7D6A5A"
+      ],
+      "palette.neutral_text": "#1D1C1A",
+      "body_text_color": "#1D1C1A",
+      "muted_text_color": "#7D6A5A",
+      "section_heading_style.font_color": "#1D1C1A",
+      "section_heading_style.accent_color": "#2D8A8A",
+      "skills_background_tint": "#E8D4C6"
+    }
+  },
+  "complementary_accent": "#1F7A7A",
+  "heading_font_family": [
+    "Space Grotesk",
+    "Arial"
   ]
 }

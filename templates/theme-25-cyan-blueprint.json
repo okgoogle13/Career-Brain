@@ -29,9 +29,8 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Arial",
-      "Calibri",
-      "Georgia"
+      "IBM Plex Sans",
+      "Arial"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -45,21 +44,21 @@
   },
   "palette": {
     "base_colours": [
-      "#1C2833",
+      "#16212B",
       "#34495E",
       "#5D6D7E"
     ],
     "complementary_accent": "#0088A0",
     "neutral_surface": "#FFFFFF",
-    "neutral_text": "#1C2833",
+    "neutral_text": "#16212B",
     "neutral_background": "#F4F6F7",
     "supporting_neutral": "#E5E8E8"
   },
   "typography": {
-    "base_font": "Arial",
+    "base_font": "IBM Plex Sans",
     "base_size_pt": 10.5,
-    "line_spacing": 1.25,
-    "spacing_after_pt": 6,
+    "line_spacing": 1.22,
+    "spacing_after_pt": 5,
     "section_heading_tracking_pt": 1.4,
     "section_heading_size_pt": 11,
     "section_heading_weight": 600
@@ -162,14 +161,14 @@
     ]
   },
   "section_heading_style": {
-    "font_color": "#1C2833",
+    "font_color": "#16212B",
     "text_transform": "uppercase",
     "decoration": "alternating thin and medium rules suggesting a technical signal grid",
-    "accent_color": "#0088A0"
+    "accent_color": "#0A7387"
   },
-  "body_text_color": "#1C2833",
-  "muted_text_color": "#5D6D7E",
-  "skills_background_tint": "#E5E8E8",
+  "body_text_color": "#16212B",
+  "muted_text_color": "#4E5E6E",
+  "skills_background_tint": "#E4EBEF",
   "avoid_list": [
     "tonal-only palette",
     "same top-of-page structure",
@@ -192,5 +191,34 @@
     "centered text",
     "invisible structure",
     "warm/earthy colors"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Arial",
+        "Calibri",
+        "Georgia"
+      ],
+      "typography.base_font": "Arial",
+      "typography.line_spacing": 1.25,
+      "typography.spacing_after_pt": 6,
+      "palette.base_colours": [
+        "#1C2833",
+        "#34495E",
+        "#5D6D7E"
+      ],
+      "palette.neutral_text": "#1C2833",
+      "palette.neutral_background": "#F4F6F7",
+      "body_text_color": "#1C2833",
+      "muted_text_color": "#5D6D7E",
+      "section_heading_style.font_color": "#1C2833",
+      "section_heading_style.accent_color": "#0088A0",
+      "skills_background_tint": "#E5E8E8"
+    }
+  },
+  "complementary_accent": "#0A7387",
+  "heading_font_family": [
+    "IBM Plex Mono",
+    "Consolas"
   ]
 }

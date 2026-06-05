@@ -32,16 +32,22 @@ TEMPLATES = {
     "midnight_blueprint": "resume_midnight_blueprint_v1.json"
 }
 
-# Pre-built IDs to reuse and avoid rebuilding
+# Pre-built IDs to reuse and avoid rebuilding (re-using the ones generated in this session)
 PREBUILT_IDS = {
-    "copper_teal_circuit": "124DpzQrY6p56vYrHwKEong10VYRei6wU8dFQFdGBkGQ",
-    "nordic_neon": "1ZsDf4N-Og68K6UMRS09jUXYLCc6ulqceYqGQOtQ9vfA",
-    "terminal_signal": "1MeDZdqXi36_vXQmdCU8XdbPy2VC2rknXEQQJby28SM8",
-    "horizon_edge": "1A_tGkoYv5KYt5BdabbRmGtfk708LNlC9ROUitGKn9kQ",
-    "broadside_press": "19y2G0iG2ZAMj9sP1N4d0LxgICGcoivLi6Ta7Un3_Bbw",
-    "clay_canvas": "1oIxr8PmxTzQc_mk_GFAAUxUtSrOvuNWFwjd6HQkVU6M",
-    "cyan_blueprint": "1-nqOlBU6aG48_wVK5lwthGkJY5h3UtEfa8Uv_FpCuas",
-    "midnight_blueprint": "1cD-OSbY0-DSw0Dbav96DflrGCxnae9_vgyJp1JPSuhc"
+    "graphite_ledger": "1PrcR-skrJ4MMbNq_e4_HUOUEIXQJtcPVscKIhSw8Iw8",
+    "citrus_edge": "1ghqErG5kvqbr46quZmwckCie5OjeBlqrOW0sHCyNiTg",
+    "emerald_transit": "1jdocxyps9pFWcyO5n_5cGJuE--2H62ttOpNLI-7eB-g",
+    "copper_teal_circuit": "1wolOGho4pnnuiyFEAsg3DZhaDxxc8lOpFVU-F--LfZo",
+    "violet_signal": "1iC0KZBLo5kqwczVrjA8CK0G8e3SmPGFzW2kw-ZMxuhg",
+    "solar_gradient": "1-DFwY9Kr7ITjo0gfQwmhLuG3MPVpZ0iRASq1yX8h2GE",
+    "nordic_neon": "12bdpZuy-ZvBm-EsvylkWHTI0yPGEHaStRAmsqUK59Jc",
+    "terracotta_service": "1eBLapooNB74FLpdDpzNZRAQPcJsJ_vGfji-j7efooxw",
+    "rainbow_minimal": "1me2eRWnK8aVNjqtwri8hqBxcVG_hEgGuOFxbFe2NEfk",
+    "terminal_signal": "1ydqutLbL8F0X5T62-wkDDPkVMoGP8ZgEgEYXI9hNlXc",
+    "horizon_edge": "1qYQ9ReOWijrgJaZO6sWpKCiTLy2Pp6aGbkI5M0u-Uzo",
+    "broadside_press": "1lAV1b-tjvKXF2p_NP4BSAHbc-Le7k1lF1PrHb-P8czo",
+    "cyan_blueprint": "1XuOSYq1-zyezZkceYagQqh4MXDf0VP1IUKSDwQSe4eQ",
+    "midnight_blueprint": "1aORYQqDB2ESD8PwFwxwqDRRNSLQlO9TQKMCzwPdVVpY"
 }
 
 def run_command(args: list[str]) -> str:
