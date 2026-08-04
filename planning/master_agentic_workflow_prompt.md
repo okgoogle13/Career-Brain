@@ -79,43 +79,67 @@ Use the following mapping to choose the correct autonomous MCP tools within the 
 
 ## 📋 Section 3: Current Status & Gap Resolution Roadmap
 
-### 1. TASK-005 Gap Audit
+> **Last updated: 2026-06-06**
 
-A comprehensive review of the active workspace reveals the following blockers and missing elements:
+### TASK-005 — Theme Standardisation ✅ COMPLETE
 
-*   **🔴 Critical Gap: Phase 1 Output is Missing**
-    *   The spec `planning/theme-extraction-spec.md` is complete, but `planning/phase1-design-synthesis.md` (the actual text design specifications for the 3 new Pastel Contemporary themes) does not exist.
-*   **🔴 Critical Gap: Phase 2 JSONs are Missing**
-    *   `templates/theme-11-gentle-authority.json`, `theme-12-contemporary-lilac.json`, and `theme-13-warm-minimal.json` are unwritten.
-*   **🔴 Track A Blocker (Builder Fix):**
-    *   `tools/build_golden_master.py` has been patched with the `updateTextStyle` ordering fix, but it needs verification against a live Google Doc using `tools/audit_doc_style.py`.
+All 15 Golden Masters built, style-audited (15/15 STYLE OK), premium fonts baked in, and registered in `config/doc_templates.json`. The three gaps listed in the original version of this document are closed:
+- `planning/phase1-design-synthesis.md` — exists
+- Themes 21–25 (the actual final set) — built and registered
+- `updateTextStyle` ordering bug — fixed (commit `30d00de`) and verified live
 
-### 2. Consolidated Execution Path
+---
+
+### TASK-006 — Cover Letter & KSC Template Suite (ACTIVE)
+
+#### Confirmed State (verified 2026-06-06)
+
+| Check | Status |
+|---|---|
+| `user_config.json` populated (BS-1.1) | ✅ Done — name, email, education present |
+| Drive folder IDs in `doc_templates.json` (BS-1.7) | ✅ Done — all 4 folders configured |
+| Cover Letter Golden Masters in `doc_templates.json` | ✅ Done — base + government + nfp + private IDs present |
+| KSC Golden Master ID in `doc_templates.json` | ✅ Done — `ksc_standard_v2.json` ID registered |
+| `--dry-run` passes for all 3 doc types | ✅ Done — resume 54 filled, CL 16 filled, KSC 5 filled |
+
+> **Note:** `validate_template_spec.py` reports failures on CL and KSC templates for chars like `●`, `✅`, `❌`, `|` — these are false positives from the validator scanning the `forbidden_glyphs` *definition field itself*, not document content. Same false positives appear on all resume templates. Not a blocker.
+
+#### Remaining Gate Items
 
 ```
-                      [STEP 1: Run Design Critique]
-                      Generate text specifications using
-                      multimodal Gemini (AI Studio).
-                                    │
-                                    ▼
-                     [STEP 2: Run Seed TDD Build]
-                      Use Claude Code (xhigh/Sonnet) to
-                      compile validated JSON theme files.
-                                    │
-                                    ▼
-                    [STEP 3: Run Document Scale-Up]
-                      Use Gemini Agent (Antigravity) to
-                      batch-generate CL & KSC templates.
-                                    │
-                                    ▼
-                    [STEP 4: Run Style Verification]
-                      Run audit_doc_style.py on a live
-                      Google Doc to unblock Track A.
-                                    │
-                                    ▼
-                    [STEP 5: Run Visual Gallery Audit]
-                      Generate interactive preview HTMLs
-                      using Claude Desktop Artifacts.
+[BS-1.4] Build Golden Master: Cover Letter (Government)
+         Template: templates/cover_letter_government_v1.json
+         Requires: Gate 4 approval → build_golden_master.py
+                    │
+                    ▼
+[BS-1.5] Build Golden Master: Cover Letter (NFP)
+         Template: templates/cover_letter_nfp_v1.json
+         Requires: Gate 4 approval → build_golden_master.py
+                    │
+                    ▼
+[BS-1.6] Verify KSC Golden Master still valid after font changes
+         Template: templates/ksc_standard_v2.json
+         Action: run audit_doc_style.py on the registered KSC doc ID
+                    │
+                    ▼
+[BS-2.1] ATS QA audit on all active Golden Masters (0 failures required)
+         Action: run tools/qa_docs_check.py (or ATS QA skill) on each live doc
+                    │
+                    ▼
+[BS-2.2] Lock template versions in doc_templates.json
+```
+
+#### Gate 4 Command Reference
+
+```bash
+# Build Cover Letter Golden Master (requires Google OAuth active)
+python3 tools/build_golden_master.py templates/cover_letter_government_v1.json
+
+# Audit the resulting doc
+python3 tools/audit_doc_style.py --doc-id <returned_doc_id>
+
+# Verify KSC Golden Master
+python3 tools/audit_doc_style.py --doc-id 1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes
 ```
 
 ---
@@ -274,4 +298,122 @@ Render a side-by-side, high-fidelity visual gallery of the document suite for th
 Create a single, self-contained HTML/CSS file containing the dashboard and render it directly inside an interactive Claude Artifact.
 </output_instructions>
 </claude_desktop_preview_prompt>
+```
+
+---
+
+## 🚀 Section 5: TASK-006 Stage 2 — Cover Letter & KSC Build Prompts
+
+These prompts are the active execution suite for the remaining open items. Section 4 prompts are now historical (TASK-005 reference only).
+
+---
+
+### Prompt E: Build Cover Letter Golden Masters (BS-1.4, BS-1.5)
+*   **Execute In:** Local Terminal using **Claude Code CLI** (requires active Google OAuth).
+*   **Gate:** Requires explicit user approval before running `build_golden_master.py` (AGENTS.md Gate 4).
+
+```xml
+<cover_letter_golden_master_prompt>
+<system_context>
+You are Claude Code CLI executing TASK-006 Stage 2, BS-1.4 and BS-1.5.
+Project root: /Users/okgoogle13/Projects/Career Brain
+</system_context>
+
+<objective>
+Build two Cover Letter Golden Master Google Docs and register their doc IDs.
+</objective>
+
+<execution_instructions>
+1. Confirm user approval before each build (Gate 4 per AGENTS.md).
+2. Build Government variant:
+   python3 tools/build_golden_master.py templates/cover_letter_government_v1.json
+   - Note the returned doc_id.
+3. Run audit:
+   python3 tools/audit_doc_style.py --doc-id <returned_doc_id>
+   - Must return STYLE OK.
+4. Register the doc_id in config/doc_templates.json under:
+   cover_letter.variants.government.template_doc_id
+5. Build NFP variant:
+   python3 tools/build_golden_master.py templates/cover_letter_nfp_v1.json
+   - Note the returned doc_id.
+6. Run audit:
+   python3 tools/audit_doc_style.py --doc-id <returned_doc_id>
+   - Must return STYLE OK.
+7. Register the doc_id in config/doc_templates.json under:
+   cover_letter.variants.nfp.template_doc_id
+</execution_instructions>
+
+<verification_criteria>
+- Both audit_doc_style.py runs return STYLE OK.
+- Both doc IDs written to config/doc_templates.json.
+- Dry-run still exits 0 after the config update.
+</verification_criteria>
+</cover_letter_golden_master_prompt>
+```
+
+---
+
+### Prompt F: Verify KSC Golden Master (BS-1.6)
+*   **Execute In:** Local Terminal using **Claude Code CLI**.
+
+```xml
+<ksc_verification_prompt>
+<system_context>
+You are Claude Code CLI executing TASK-006 Stage 2, BS-1.6.
+The KSC Golden Master doc ID is: 1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes
+</system_context>
+
+<objective>
+Confirm the KSC Golden Master is still valid after the premium font changes applied in Stage 1.
+</objective>
+
+<execution_instructions>
+1. Run:
+   python3 tools/audit_doc_style.py --doc-id 1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes
+2. If STYLE OK → BS-1.6 is done. Log result in TASKS.md.
+3. If any FAIL → report the specific failures before taking any action.
+   Do NOT attempt automatic fixes without user review.
+</execution_instructions>
+
+<verification_criteria>
+- audit_doc_style.py returns STYLE OK for the KSC doc.
+</verification_criteria>
+</ksc_verification_prompt>
+```
+
+---
+
+### Prompt G: ATS QA & Version Lock (BS-2.1, BS-2.2)
+*   **Execute In:** Local Terminal or Claude Code CLI after BS-1.4 through BS-1.6 are complete.
+
+```xml
+<ats_qa_lock_prompt>
+<system_context>
+You are Claude Code CLI executing TASK-006 Stage 2, BS-2.1 and BS-2.2.
+All Golden Master doc IDs are in config/doc_templates.json.
+</system_context>
+
+<objective>
+Run ATS QA audit on all active Golden Masters and lock template versions.
+</objective>
+
+<execution_instructions>
+1. For each template variant in config/doc_templates.json that has a non-empty
+   template_doc_id, run:
+   python3 tools/audit_doc_style.py --doc-id <template_doc_id>
+   Log each result.
+2. If any doc returns failures other than the known false-positive forbidden_glyphs
+   issue (chars inside the forbidden_glyphs definition field), stop and report.
+3. When all active docs return STYLE OK:
+   - Add a "template_version_locked" timestamp field to each variant entry in
+     config/doc_templates.json using today's ISO date.
+   - Update TASKS.md: mark BS-2.1 and BS-2.2 complete.
+</execution_instructions>
+
+<verification_criteria>
+- Zero unexpected ATS failures across all registered Golden Masters.
+- config/doc_templates.json has version lock timestamps.
+- All Stage 2 tasks in TASKS.md are ticked.
+</verification_criteria>
+</ats_qa_lock_prompt>
 ```

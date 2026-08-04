@@ -34,6 +34,9 @@ python3 tools/generate_document.py --target "Role Name" --template resume  # Pha
 python3 pipeline/query_brain.py --help   # Verify interactive CLI
 ```
 
+python3 tools/compile_theme.py <theme-XX-name.json>  # Compile v2.3 theme spec → v2.0 production template
+python3 tools/build_golden_master.py <template_v1.json>  # Build/rebuild a Golden Master Google Doc
+
 ### Quality & Validation Tools
 ```bash
 python3 tools/validate_template_spec.py  # Validate JSON themes against spec schema
@@ -57,6 +60,8 @@ The pipeline compiles source documents into three JSON engines under `database/`
 
 Phase 5 (`tools/`) reads all three engines to generate tailored Google Docs.
 See `Career Brain Manifesto.md` for full schema specs.
+
+- `config/` — Runtime config: `user_config.json` (contact/education data for Phase 5), `doc_templates.json` (Golden Master Drive IDs), `ats_rules.json`
 
 > ⚠️ **MANDATORY Gatekeeper Protocol:** Stop and wait for user approval before executing each pipeline phase. See `AGENTS.md` for the full gate table. Never execute all phases autonomously.
 

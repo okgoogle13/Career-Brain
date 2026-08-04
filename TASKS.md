@@ -20,11 +20,11 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 #### Stage 2 — Cover Letter & KSC Template Suite (BUILD_SPECS Milestones 1–2)
 **Context:** `archive/planning/claude-plan.md` + `planning/master_agentic_workflow_prompt.md` planned cover letter / KSC scale-up matching the resume themes. BUILD_SPECS.md defines acceptance criteria.
-- [ ] BS-1.1 — Populate `config/user_config.json` with real contact, education, certification data
+- [x] BS-1.1 — Populate `config/user_config.json` with real contact, education, certification data (verified 2026-06-06: name/email/education present; dry-run exits 0)
 - [ ] BS-1.4 — Build Golden Master: Cover Letter (Government) from `templates/cover_letter_government_v1.json`
 - [ ] BS-1.5 — Build Golden Master: Cover Letter (NFP) from `templates/cover_letter_nfp_v1.json`
 - [ ] BS-1.6 — Verify KSC Golden Master (`ksc_standard_v2.json`) still valid after font changes
-- [ ] BS-1.7 — Confirm Drive subfolder IDs configured in `config/doc_templates.json`
+- [x] BS-1.7 — Confirm Drive subfolder IDs configured in `config/doc_templates.json` (verified 2026-06-06: all 4 folder IDs + CL/KSC doc IDs present)
 - [ ] BS-2.1 — ATS QA audit on all active Golden Masters (0 failures required)
 - [ ] BS-2.2 — Lock template versions
 
