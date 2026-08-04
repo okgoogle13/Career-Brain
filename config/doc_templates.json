@@ -4,11 +4,11 @@
     "theme": "templates/cover_letter_base_v1.json",
     "variants": {
       "government": {
-        "template_doc_id": "1D_dG4Ath-sWEqVI060A3oeMVkwpFy16ZORVd1MIPNG8",
+        "template_doc_id": "15D7SMLki7IMJ2YJTctSGslDCh95rrOUj-8NizQyJZao",
         "theme": "templates/cover_letter_government_v1.json"
       },
       "nfp": {
-        "template_doc_id": "1WPUDS9CDwbL75pLnEkro0WeCGjVlXIPdSJIzbAT0Dco",
+        "template_doc_id": "1k-4MgKg8qMPmWToWUJZmUq_DdW9rlDX7XShEy6T-RwU",
         "theme": "templates/cover_letter_nfp_v1.json"
       },
       "private": {

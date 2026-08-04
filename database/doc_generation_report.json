@@ -1,28 +1,18 @@
 {
-  "generated_doc_id": "1yXUubTrE9U0mQceDBkrz0oSeTcSO9Fnjk9qBI4AZoZ4",
-  "generated_doc_link": "https://docs.google.com/document/d/1yXUubTrE9U0mQceDBkrz0oSeTcSO9Fnjk9qBI4AZoZ4/edit?usp=drivesdk",
+  "generated_doc_id": null,
+  "generated_doc_link": null,
   "placeholder_stats": {
-    "blank": 12,
-    "filled": 30,
+    "blank": 37,
+    "filled": 5,
     "total": 42
   },
-  "run_timestamp": "2026-05-30T13:17:51.844080+00:00",
+  "run_timestamp": "2026-06-06T00:08:24.877962+00:00",
   "template": "ksc",
   "template_doc_id": "1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes",
   "template_variant": null,
-  "unresolved_tokens": [
-    "{{CONTACT_EMAIL}}",
-    "{{CONTACT_LOCATION}}",
-    "{{CONTACT_NAME}}",
-    "{{CONTACT_PHONE}}"
-  ],
+  "unresolved_tokens": [],
   "warnings": [
-    "criterion_1_ksc_total_too_short: 178 words (min 200)",
-    "criterion_2_ksc_total_too_short: 150 words (min 200)",
-    "criterion_3_ksc_total_too_short: 171 words (min 200)",
-    "criterion_4_ksc_total_too_short: 148 words (min 200)",
-    "criterion_5_ksc_total_too_short: 163 words (min 200)",
-    "criterion_6_ksc_total_too_short: 176 words (min 200)",
-    "unresolved_placeholders_after_replacement"
+    "no_criteria_provided_or_parsed",
+    "dry_run_no_google_document_created"
   ]
 }
