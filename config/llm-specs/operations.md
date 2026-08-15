@@ -10,9 +10,7 @@ Payload lives in `agent-operating-spec.md` (CORE, +DEPTH, +CODE) and `comms/voic
 
 - `+COMMS` is not repository-synced.
 - Deploy it only through approved private prompt surfaces listed in `deploy-map.md`.
-- A model call without `+COMMS` must not draft as the user.
-
-Embedding an alternate copy creates drift, and reading a machine-local path does not scale across surfaces or machines. Therefore, apps must hand drafting to a session already carrying `+COMMS`.
+- A model call without `+COMMS` must not draft as the user — hand drafting to a session that already carries it rather than embedding a copy.
 
 ---
 
@@ -28,21 +26,17 @@ If CORE exceeds the smallest supported field, cut a central rule; do not create 
 
 ---
 
-## Fallback
+## No fallback
 
-The archived `+COMMS` fallback is an exceptional contingency used only if a field rejects the canonical block; see the specific archive file or deployment map.
+Fail closed: no shortened `+COMMS` variant exists, so a field that rejects the canonical block
+gets no `+COMMS` at all rather than a stale or approximate one.
 
 ---
 
 ## Rollout
 
-1. Update canonical source and run checks.
-2. Deploy to the smallest relevant pilot surface.
-3. Run applicable verification tests with real tasks.
-4. Fix failures in canonical source, then re-paste.
-5. Expand only after the pilot holds.
-
-Live rollout state belongs in `TASKS.md` or a future deployment-status record, not this file.
+Deploy to the smallest relevant surface, verify with the tests below, then expand. Live rollout
+state belongs in `TASKS.md`, not this file.
 
 ---
 
@@ -60,6 +54,7 @@ Live rollout state belongs in `TASKS.md` or a future deployment-status record, n
 | Family boundary | Boundary once plus concrete alternative | +COMMS |
 | Formal delay | Outcome, constraint, ask; no apology opener or emoji | +COMMS |
 | Claude Comms Project | Scenario-appropriate roster patterns, labelled code blocks, no commentary | +COMMS + roster |
+| Comms Project inherits CORE | Weak premise inside the Project draws pushback before the answer, with no CORE in the Instructions paste | CORE by inheritance |
 | Generic chat draft | Three genuinely different labelled angles, no commentary | +COMMS |
 | Small code edit | Whole updated file, verification path, untested items | +CODE |
 | Code tool asked for Slack message | Must not apply +COMMS | Separation |
@@ -75,8 +70,6 @@ Approval gates, recipient validation, queue behavior, and irreversible-action st
 ---
 
 ## Maintenance
-
-Changes flow one direction: out of these files. **Never edit a deployed copy** — a copy you edited in place is a fork you'll forget about.
 
 | Change to | Re-paste to | Expected frequency |
 |---|---|---|

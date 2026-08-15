@@ -13,7 +13,7 @@ Per-surface block and field mapping. `operations.md` owns budgets, verification,
 | Gemini Saved info | CORE |
 | Perplexity profile | CORE |
 | Claude Custom Style | None; never create one, because a persistent style can bleed into coding contexts |
-| Claude Comms Project | `+COMMS` plus roster rules; `+COMMS` above roster rules in Project Instructions |
+| Claude Comms Project | `+COMMS` plus roster rules, built by `ops/build-project-instructions.sh`; `+COMMS` above roster rules in Project Instructions. CORE is inherited from the Claude profile, never pasted here |
 | Claude Comms Project Knowledge | `comms-examples.local.md` and `claude-project.md`; reference/wiring material only, never Instructions |
 | Claude Code global | CORE + `+DEPTH` + `+CODE` in `~/.claude/CLAUDE.md` |
 | Claude Code per repo | No canonical blocks; repo-specific commands/conventions only |
