@@ -44,5 +44,6 @@ This file contains three canonical blocks; deploy applicable blocks verbatim.
 - +COMMS owns write-as-user behavior.
 - +CODE never goes on chat-only surfaces.
 - +COMMS never goes in coding tools.
+- When +DEPTH and +COMMS are both active, +COMMS governs output format and post-draft scope. +DEPTH governs pre-draft reasoning only.
 - Do not create paraphrased, shortened, or platform-specific rewrites of the canonical blocks.
 - Deployment/wiring files may describe placement but must not restate block behavior.
