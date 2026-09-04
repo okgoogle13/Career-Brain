@@ -773,6 +773,85 @@ class CareerCopilotLeverageTests(unittest.TestCase):
         if rules:
             self.assertIn("terminology", rules)
             self.assertIn("vocabulary", rules)
+            self.assertIn("banned_phrases", rules["vocabulary"])
+            self.assertIn("review_phrases", rules["vocabulary"])
+            self.assertIn("overclaim_terms", rules["vocabulary"])
+            self.assertIn("australian_spelling", rules["terminology"])
+
+    def test_program_never_mapped_to_programme(self):
+        """'program' is correct Australian usage in community services."""
+        from generate_document import load_ats_rules
+        spelling = load_ats_rules()["terminology"]["australian_spelling"]
+        self.assertNotIn("program", spelling)
+        self.assertNotIn("programme", spelling.values())
+
+    def test_australian_spelling_substitution(self):
+        config = GenerationConfig(
+            doc_type=DocumentType.RESUME,
+            target_role="Analyst utilizing centralized organization data",
+        )
+        values, stats, warnings = build_placeholder_values_v2(
+            config=config,
+            history=SAMPLE_HISTORY,
+            narratives=SAMPLE_NARRATIVES,
+            taxonomy=SAMPLE_TAXONOMY,
+            user_config=SAMPLE_USER_CONFIG,
+        )
+        self.assertEqual(
+            values["{{TARGET_ROLE}}"],
+            "Analyst utilising centralised organisation data",
+        )
+
+    def test_banned_phrase_warns_and_does_not_rewrite(self):
+        from generate_document import scan_voice_phrases
+        text = "A dedicated professional with a proven track record."
+        warnings = scan_voice_phrases(text)
+        self.assertIn("banned_phrase_detected: 'proven track record'", warnings)
+        self.assertIn("banned_phrase_detected: 'dedicated professional'", warnings)
+        # Warn-only: the scanner must never mutate the text it inspects.
+        self.assertEqual(text, "A dedicated professional with a proven track record.")
+
+    def test_review_phrase_uses_separate_warning_class(self):
+        from generate_document import scan_voice_phrases
+        warnings = scan_voice_phrases("Demonstrated ability to support clients.")
+        self.assertIn("review_phrase_flagged: 'demonstrated ability'", warnings)
+        self.assertFalse([w for w in warnings if w.startswith("banned_phrase_detected")])
+
+    def test_overclaim_term_warns(self):
+        from generate_document import scan_voice_phrases
+        warnings = scan_voice_phrases("Worked as a psychologist delivering therapy.")
+        self.assertIn("overclaim_term_flagged: 'psychologist'", warnings)
+
+    def test_voice_scan_is_whole_word_not_substring(self):
+        """'group dynamics' must not trip the 'dynamic' review phrase."""
+        from generate_document import scan_voice_phrases
+        warnings = scan_voice_phrases("Facilitated groups, managing group dynamics.")
+        self.assertEqual(warnings, [])
+
+    def test_clean_copy_produces_no_voice_warnings(self):
+        from generate_document import scan_voice_phrases
+        text = ("Conducted over 400 client interviews at Diamond Valley Community "
+                "Support, connecting clients with food aid, material aid and advocacy.")
+        self.assertEqual(scan_voice_phrases(text), [])
+
+    def test_voice_review_marker_suppresses_warning(self):
+        """An author-approved keep stops warning, but the override stays visible."""
+        from generate_document import scan_voice_phrases
+        warnings = scan_voice_phrases(
+            "[[VOICE_REVIEW: the position description asks for a proven track record]]"
+        )
+        self.assertFalse([w for w in warnings if w.startswith("banned_phrase_detected")])
+        self.assertIn("voice_review_override_honoured: 1", warnings)
+
+    def test_voice_review_marker_is_scoped_not_global(self):
+        """Marking one phrase must not exempt the rest of the document."""
+        from generate_document import scan_voice_phrases
+        warnings = scan_voice_phrases(
+            "[[VOICE_REVIEW: quoting the PD's 'proven track record']] "
+            "I am a dedicated professional."
+        )
+        self.assertIn("banned_phrase_detected: 'dedicated professional'", warnings)
+        self.assertFalse([w for w in warnings if "proven track record" in w])
 
     def test_australian_terminology_substitution(self):
         config = GenerationConfig(

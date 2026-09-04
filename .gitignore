@@ -54,3 +54,8 @@ database/*.log
 # Database stale intermediate outputs
 database/ksc_curated_tier1.json
 database/doc_generation_report_*_test.json
+
+# Voice exemplars carry verbatim personal disclosure (health, sexuality, disability),
+# contact details and referee information. Same boundary as comms-hub-v2's comms/*.local.md:
+# never a git remote. The rules-only profile (docs/voice/voice-authenticity-profile.md) IS tracked.
+*.local.md

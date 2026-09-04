@@ -87,6 +87,13 @@ This pipeline operates under a **strict four-gate approval model**. Do NOT write
 
 If the user says "run the pipeline", default to Gate 1 first — never execute all phases autonomously.
 
+**Gate 4 wording authority:** all generated application copy is governed by
+`docs/voice/voice-authenticity-profile.md`, enforced via `config/ats_rules.json`
+(`vocabulary.banned_phrases`, `review_phrases`, `overclaim_terms`,
+`terminology.australian_spelling`). Review every `banned_phrase_detected`,
+`review_phrase_flagged` and `overclaim_term_flagged` warning in the run report before
+submitting. Only spelling is auto-corrected; phrases are never silently rewritten.
+
 ---
 
 ## Build, Test & Development Commands

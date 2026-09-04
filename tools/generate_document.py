@@ -491,16 +491,23 @@ def build_placeholder_values_v2(
             keyword_scores, rosetta_stone,
         )
 
-    # ── Post-processing: Australian Terminology (BS-6.1) ──
+    # ── Post-processing: Australian Terminology (BS-6.1) + Australian spelling ──
+    # Both are explicit word maps applied case-preservingly. Spelling is the ONLY
+    # voice rule that auto-rewrites; banned/review/overclaim phrases are warn-only
+    # (see validate_document_structure). See docs/voice/voice-authenticity-profile.md.
     ats_rules = load_ats_rules()
-    au_mappings = ats_rules.get("terminology", {}).get("australian_mappings", {})
+    terminology = ats_rules.get("terminology", {})
+    au_mappings = {
+        **terminology.get("australian_mappings", {}),
+        **terminology.get("australian_spelling", {}),
+    }
     if au_mappings:
         for ph, text in values.items():
             if not text:
                 continue
             # Perform whole-word, case-insensitive substitution
             for eng_term, au_term in au_mappings.items():
-                def preserve_case_replace(match):
+                def preserve_case_replace(match, au_term=au_term):
                     original = match.group(0)
                     if original.isupper():
                         return au_term.upper()
@@ -782,7 +789,51 @@ def validate_document_structure(document: dict[str, Any]) -> list[str]:
         if char in text:
             warnings.append(f"forbidden_character_detected_ats_risk: '{char}'")
 
+    warnings.extend(scan_voice_phrases(text, ats_rules))
+
     return warnings
+
+
+# Warn-only voice classes. Each maps a config key to a warning prefix. Nothing here
+# ever rewrites text: banned phrases need an author's replacement, and overclaim terms
+# legitimately appear when quoting a position description, so a human resolves every hit.
+VOICE_PHRASE_CLASSES = (
+    ("banned_phrases", "banned_phrase_detected"),
+    ("review_phrases", "review_phrase_flagged"),
+    ("overclaim_terms", "overclaim_term_flagged"),
+)
+
+
+# Deliberate keeps are marked [[VOICE_REVIEW: ...]], mirroring the existing
+# [[NEEDS_REVIEW: ...]] convention. Marked spans are removed before matching, so an
+# author-approved phrase stops warning. The honoured count is reported so an override
+# stays visible in the run report rather than silently suppressing a check.
+VOICE_REVIEW_MARKER = re.compile(r'\[\[VOICE_REVIEW:.*?\]\]', re.IGNORECASE | re.DOTALL)
+
+
+def scan_voice_phrases(text: str, ats_rules: dict[str, Any] | None = None) -> list[str]:
+    """Flag corporate slop, context-dependent filler, and over-claimed credentials.
+
+    Warn-only by design; see docs/voice/voice-authenticity-profile.md. Matching is
+    whole-word and case-insensitive, so "dynamic" does not fire on "group dynamics".
+    Wrapping text in [[VOICE_REVIEW: ...]] exempts it from every voice class.
+    """
+    if ats_rules is None:
+        ats_rules = load_ats_rules()
+    vocab_rules = ats_rules.get("vocabulary", {})
+
+    scanned, overrides = VOICE_REVIEW_MARKER.subn(" ", text)
+
+    warnings: list[str] = []
+    for config_key, prefix in VOICE_PHRASE_CLASSES:
+        for phrase in vocab_rules.get(config_key, []):
+            pattern = re.compile(r'\b' + re.escape(phrase) + r'\b', re.IGNORECASE)
+            if pattern.search(scanned):
+                warnings.append(f"{prefix}: '{phrase}'")
+    if overrides:
+        warnings.append(f"voice_review_override_honoured: {overrides}")
+    return warnings
+
 
 
 
