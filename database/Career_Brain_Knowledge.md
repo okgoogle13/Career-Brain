@@ -119,3 +119,42 @@ To ensure a hook that creates immediate "emotional resonance," the LLM must adop
     *   *Introduction (Accomplishment)*: "Throughout my [X] years of experience in [Service Coordination / Quality Assurance], I have prided myself on translating complex regulatory constraints into client-centered support structures. I am eager to apply this hybrid expertise to [Organisation's] upcoming goals."
     *   *Body (The Bridge)*: "My previous success in [Rosetta Stone Corporate Area, e.g., Financial Risk Modelling] has proven my capability in [Rosetta Stone Community Equivalent, e.g., MARAM Risk Assessment & Safety Planning]. I can contribute directly to your team's effectiveness by..."
     *   *Closing (Call to Action)*: "I welcome the opportunity to discuss my qualifications and my deep alignment with [Organisation's] commitment to [Trauma-Informed Care / Social Justice] in a personal interview. Thank you for your time and consideration."
+
+---
+
+## PART 5: Metric Attribution Conventions
+
+Standing conventions that resolve conflicting figures in the source corpus. Apply these
+verbatim; do not re-derive or average them.
+
+### A. Thorne Harbour Health — COVID-19 Food Delivery Volunteer
+
+Two figures circulate for this role because one counts Nishant's individual deliveries and
+the other the whole volunteer team's. They are not interchangeable, and the larger figure
+must never appear without team attribution.
+
+| Voice | Canonical wording |
+|---|---|
+| First person / resume bullet | `Delivered over 1000 food packages` |
+| Team achievement | `Our team delivered over 2000 food packages` |
+
+*   **Rule**: an unattributed bullet is first-person by default, so it takes the 1000 figure.
+    Only add the 2000 figure where "our team" (or equivalent) is explicit in the same clause.
+*   Applied across `ksc_and_narratives.json`, `ksc_curated.json`, `career_history.json` and
+    `career_history_enriched.json` on 2026-09-05.
+*   `[[NEEDS_REVIEW: the role's date range is inconsistent in the corpus — "03/2020 - 09/2020"
+    in the master resume versus "Jun 2020 - Dec 2021" in the combined resumes. Confirm which
+    is correct before either appears in a submitted document.]]`
+
+### B. Role Titles — Accuracy Over Seniority
+
+*   Diamond Valley Community Support: **Community Support Worker**. Never "Client Social
+    Worker" — "social worker" is a protected title Nishant does not hold.
+*   Thorne Harbour Health peer roles: **facilitated a peer support program**. Never
+    "facilitated a therapeutic program" — describing the program Nishant *delivered* as
+    therapeutic implies a clinical credential.
+*   Re-Wired may still be described as a therapeutic program where the sentence describes
+    **the program itself** or Nishant's participation *as a client*. That is THH's own
+    designation and is accurate; the over-claim is only in the facilitation framing.
+*   Credential: **SMART Recovery Facilitator** (accredited). This is a peer facilitation
+    training, not a clinical qualification, and may be named as such.
