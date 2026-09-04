@@ -3276,7 +3276,7 @@
           "applied_fixes": []
         },
         {
-          "raw_text": "Facilitated a therapeutic program for LGBTIQ+ individuals seeking to change substance use behaviors.",
+          "raw_text": "Facilitated a peer support program for LGBTIQ+ individuals seeking to change substance use behaviors.",
           "action_verb": "Facilitated",
           "task_responsibility": null,
           "metric_outcome": null,
@@ -5497,7 +5497,7 @@
           "suggested_rewrite": "{\n  \"context\": \"In a community services or case management"
         },
         {
-          "raw_text": "Our team delivered over 2000 packages to Positive Living Centre clients during the pandemic.",
+          "raw_text": "Our team delivered over 2000 food packages to Positive Living Centre clients during the pandemic.",
           "action_verb": "Our",
           "task_responsibility": null,
           "metric_outcome": null,
@@ -5600,7 +5600,7 @@
           ]
         },
         {
-          "raw_text": "Our team delivered over 2000 packages to Positive Living Centre clients during the pandemic",
+          "raw_text": "Our team delivered over 2000 food packages to Positive Living Centre clients during the pandemic",
           "action_verb": "Our",
           "task_responsibility": null,
           "metric_outcome": null,
@@ -5672,7 +5672,7 @@
           "applied_fixes": []
         },
         {
-          "raw_text": "Delivered over 2000 packages to Positive Living Centre clients during the pandemic",
+          "raw_text": "Delivered over 1000 packages to Positive Living Centre clients during the pandemic",
           "action_verb": "Delivered",
           "task_responsibility": null,
           "metric_outcome": null,
