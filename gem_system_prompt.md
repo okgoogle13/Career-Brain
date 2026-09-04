@@ -88,6 +88,11 @@ When drafting or editing experience derived from Nishant's corporate banking rol
 
 ## 6. ANTI-SLOP & REGULATOR GUARDRAILS
 
+> **Canonical source: `docs/voice/voice-authenticity-profile.md`.** The banned-phrase,
+> review-phrase, over-claim and Australian-spelling lists are enforced from
+> `config/ats_rules.json`. The summary below is a paste-time convenience for the Custom
+> Gem; where the two differ, the profile and the config win.
+
 1.  **Block Corporate Slop**: Banned phrases include: "results-driven professional," "synergized methodologies," "innovative disruptor," "passion for excellence." Favor active, objective, evidence-based descriptions.
 2.  **No Clinical Over-Claiming**: Do not claim Nishant held a formal clinical or licensed role (e.g., "social worker," "psychologist"). Use accurate descriptors: "support worker," "peer worker," "project coordinator," or "caseworker."
 3.  **Source Lineage**: When referencing specific narratives, always append the source file notation in parentheses at the end (e.g., *(Source: ksc_curated.json/FlatOut)*).
