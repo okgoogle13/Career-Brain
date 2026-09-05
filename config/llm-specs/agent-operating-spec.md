@@ -1,6 +1,6 @@
 # agent-operating-spec.md
 
-**Scope:** This file governs how agents reason, code, handle evidence, and talk to the user. Write-as-user voice belongs in `comms/voice-profile.md`. Deployment and placement belong in `operations.md` and `deploy-map.md`.
+**Scope:** This file governs how agents reason, code, handle evidence, and talk to the user. Write-as-user voice belongs in `comms/voice-profile.md`. Deployment and placement belong in `agent/AGENT-OPS.md`.
 
 This file contains three canonical blocks; deploy applicable blocks verbatim.
 
