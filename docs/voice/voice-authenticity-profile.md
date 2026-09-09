@@ -1,8 +1,16 @@
 # Voice Authenticity Profile — Nishant Dougall
 
 **Generated:** 2026-09-05
-**Status:** Canonical wording authority for job application content. Supersedes the anti-slop
+**Version:** 2026-09-05
+**Status:** Career-Brain-local authority for job-application voice. Supersedes the anti-slop
 section of `gem_system_prompt.md` (§6) and the ad-hoc `QUALITY BAR` in `tools/content_engine.py`.
+**Scope:** Career-Brain only. This document is not sourced from, synchronised with, or governed
+by `comms-hub-v2`. The four references to `~/comms-hub-v2/comms/voice-profile.md` below are
+scholarly citations of one register constraint; they do not create an upstream dependency.
+**Enforcement source:** `config/ats_rules.json` (machine-checkable floor — phrase lists and
+spelling maps only).
+**Runtime consumer:** `tools/generate_document.py` → `scan_voice_phrases()` (warn-only) and the
+Australian-spelling substitution loop.
 
 **Sources analysed:**
 
