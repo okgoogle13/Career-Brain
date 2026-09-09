@@ -2,17 +2,16 @@
   "generated_doc_id": null,
   "generated_doc_link": null,
   "placeholder_stats": {
-    "blank": 37,
-    "filled": 5,
-    "total": 42
+    "blank": 12,
+    "filled": 54,
+    "total": 66
   },
-  "run_timestamp": "2026-06-06T00:08:24.877962+00:00",
-  "template": "ksc",
-  "template_doc_id": "1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes",
+  "run_timestamp": "2026-09-09T18:53:27.685627+00:00",
+  "template": "resume",
+  "template_doc_id": "1Bc8BMBgmT3YYpdjfdxSfTidUVvrpUGukRlbWIJN-Rb8",
   "template_variant": null,
   "unresolved_tokens": [],
   "warnings": [
-    "no_criteria_provided_or_parsed",
     "dry_run_no_google_document_created"
   ]
 }
