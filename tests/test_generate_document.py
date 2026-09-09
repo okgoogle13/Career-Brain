@@ -927,6 +927,72 @@ class CareerCopilotLeverageTests(unittest.TestCase):
         self.assertTrue(any("forbidden_character_detected" in w for w in warnings))
 
 
+
+
+class TestAtsRulesProvenance(unittest.TestCase):
+    """Cross-check that ats_rules.json metadata is consistent with the profile it claims to track.
+
+    Deliberately narrow: reads two real files, no mocking, no network.
+    Fails fast if provenance fields are absent or mismatched.
+    """
+
+    EXPECTED_SOURCE = "docs/voice/voice-authenticity-profile.md"
+
+    def _load_rules(self):
+        import json, pathlib
+        rules_path = pathlib.Path(__file__).parent.parent / "config" / "ats_rules.json"
+        with rules_path.open(encoding="utf-8") as f:
+            return json.load(f)
+
+    def _load_profile_text(self):
+        import pathlib
+        profile_path = pathlib.Path(__file__).parent.parent / self.EXPECTED_SOURCE
+        return profile_path.read_text(encoding="utf-8")
+
+    def test_source_points_to_expected_profile(self):
+        rules = self._load_rules()
+        self.assertIn("_source", rules, "_source key missing from ats_rules.json")
+        self.assertEqual(
+            rules["_source"],
+            self.EXPECTED_SOURCE,
+            f"_source should be '{self.EXPECTED_SOURCE}', got '{rules.get('_source')}'",
+        )
+
+    def test_version_is_present(self):
+        rules = self._load_rules()
+        self.assertIn("_version", rules, "_version key missing from ats_rules.json")
+        self.assertRegex(
+            rules["_version"],
+            r"^\d{4}-\d{2}-\d{2}$",
+            "_version should be a YYYY-MM-DD date string",
+        )
+
+    def test_profile_contains_matching_version(self):
+        rules = self._load_rules()
+        version = rules.get("_version", "")
+        self.assertTrue(version, "_version must be non-empty to compare against profile")
+        profile_text = self._load_profile_text()
+        self.assertIn(
+            version,
+            profile_text,
+            f"Profile file does not contain the version date '{version}' from ats_rules.json — "
+            "likely a mismatch after a profile update",
+        )
+
+    def test_profile_is_marked_career_brain_local(self):
+        profile_text = self._load_profile_text()
+        self.assertIn(
+            "Career-Brain",
+            profile_text,
+            "Profile header must include 'Career-Brain' to confirm local scope",
+        )
+        self.assertIn(
+            "not sourced from",
+            profile_text,
+            "Profile header must explicitly state it is not sourced from comms-hub-v2",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
 
