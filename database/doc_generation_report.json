@@ -2,13 +2,13 @@
   "generated_doc_id": null,
   "generated_doc_link": null,
   "placeholder_stats": {
-    "blank": 12,
-    "filled": 54,
-    "total": 66
+    "blank": 2,
+    "filled": 17,
+    "total": 19
   },
-  "run_timestamp": "2026-09-09T18:53:27.685627+00:00",
-  "template": "resume",
-  "template_doc_id": "1Bc8BMBgmT3YYpdjfdxSfTidUVvrpUGukRlbWIJN-Rb8",
+  "run_timestamp": "2026-09-16T13:25:44.093922+00:00",
+  "template": "cover_letter",
+  "template_doc_id": "1T8Bf3IoFqj6wHH2Tok67HwgVVTmIhaLresIqmj1_IwQ",
   "template_variant": null,
   "unresolved_tokens": [],
   "warnings": [

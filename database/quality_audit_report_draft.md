@@ -1,5 +1,5 @@
 # Career Brain — Quality Audit Report
-_Generated: 2026-05-30 19:27 | Mode: DRY-RUN SAMPLE (12 entries)_
+_Generated: 2026-09-17 01:54 | Mode: DRY-RUN SAMPLE (12 entries)_
 
 ## Summary
 | Metric | Value |
@@ -28,7 +28,7 @@ _Generated: 2026-05-30 19:27 | Mode: DRY-RUN SAMPLE (12 entries)_
 
 **LLM suggested rewrite:** Experienced Peer Worker specializing in community services with a strong background in
 
-**Fixes applied:** `flagged_lived_experience`, `llm_rewrite`, `flagged_bad_action_verb`
+**Fixes applied:** `llm_rewrite`, `flagged_lived_experience`, `flagged_bad_action_verb`
 **CAR score:** 2/5 | **Lived experience:** True
 
 ### [lived_experience] achievement
@@ -36,9 +36,9 @@ _Generated: 2026-05-30 19:27 | Mode: DRY-RUN SAMPLE (12 entries)_
 
 **After deterministic fixes:** Deep understanding of community needs and lived experience: I have a unique perspective on the challenges
 
-**LLM suggested rewrite:** My lived experience provides a deep understanding of community needs and
+**LLM suggested rewrite:** My lived experience provides me with a unique and empathetic perspective
 
-**Fixes applied:** `flagged_lived_experience`, `llm_rewrite`, `flagged_bad_action_verb`
+**Fixes applied:** `llm_rewrite`, `flagged_lived_experience`, `flagged_bad_action_verb`
 **CAR score:** 2/5 | **Lived experience:** True
 
 ### [bad_action_verb] achievement
@@ -47,7 +47,7 @@ _Generated: 2026-05-30 19:27 | Mode: DRY-RUN SAMPLE (12 entries)_
 **After deterministic fixes:** Proven record of successful case management and strong people skills: In my previous role at Diamond Valley
 
 **LLM suggested rewrite:** {
-  "context": "In my previous role at [[NEEDS
+  "context": "In my previous role at [[NEEDS_
 
 **Fixes applied:** `llm_rewrite`, `flagged_bad_action_verb`
 **CAR score:** 2/5 | **Lived experience:** False
@@ -58,7 +58,7 @@ _Generated: 2026-05-30 19:27 | Mode: DRY-RUN SAMPLE (12 entries)_
 **After deterministic fixes:** Commitment to strengths-based practice and client-centred care: my approach to support is grounded in cultural
 
 **LLM suggested rewrite:** {
-  "context": "[[NEEDS_REVIEW: In a community
+  "context": "In my professional capacity, I maintained a
 
 **Fixes applied:** `llm_rewrite`, `flagged_bad_action_verb`
 **CAR score:** 2/5 | **Lived experience:** False
@@ -118,10 +118,10 @@ _Generated: 2026-05-30 19:27 | Mode: DRY-RUN SAMPLE (12 entries)_
 **After deterministic fixes:** * Collaborated with 20 international students to conduct focus groups and gather qualitative data on client needs.
  * Coded participant responses and conducted a thematic analysis, contributing to a 50-page research findings report to inform culturally sensitive program design.
 
-**LLM suggested rewrite:** * Collaborated with 20 international students to conduct focus groups and gather qualitative data on client needs.
- * Coded participant responses and conducted a thematic analysis, contributing to a 50-page research findings report to inform culturally sensitive program design. [[NEEDS_REVIEW: The comprehensive findings from this report were subsequently adopted by the organisation, directly informing the development of new, culturally sensitive support programmes that better met the identified needs of international students.]]
+**LLM suggested rewrite:** {
+  "context": "To inform the design of culturally sensitive
 
-**Fixes applied:** `missing_result`, `llm_rewrite`, `removed_markdown_glyphs`
+**Fixes applied:** `removed_markdown_glyphs`, `missing_result`, `llm_rewrite`
 **CAR score:** 3/5 | **Lived experience:** False
 
 ### [missing_result] narrative
@@ -131,10 +131,9 @@ Fill in each section with your specific experiences, using concrete details and 
 **After deterministic fixes:** ### Instructions for Completion
 Fill in each section with your specific experiences, using concrete details and quantifiable outcomes wherever possible. Organize examples by competency areas to enable easy reference during application development.
 
-**LLM suggested rewrite:** ### Instructions for Completion
-Fill in each section with your specific experiences, using concrete details and quantifiable outcomes wherever possible. Organize examples by competency areas to enable easy reference during application development. [[NEEDS_REVIEW: This structured approach ensures that all key selection criteria are addressed comprehensively, significantly enhancing the
+**LLM suggested rewrite:** Fill in each section with your specific experiences, using concrete details and quantifiable outcomes wherever possible. Organize examples by competency areas to enable easy reference during application development. [[NEEDS_REVIEW: This systematic approach resulted in a comprehensive and well-structured set of KSC responses, significantly streamlining the
 
-**Fixes applied:** `llm_rewrite`, `missing_result`
+**Fixes applied:** `missing_result`, `llm_rewrite`
 **CAR score:** 3/5 | **Lived experience:** False
 
 ---
