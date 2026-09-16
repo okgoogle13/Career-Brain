@@ -187,7 +187,7 @@ No text, explanation, or markdown outside the JSON object.
 GROUNDING: Use only information present in the source text and any supporting evidence provided.
 HALLUCINATION GUARD: Never fabricate org names, dates, titles, team sizes, or figures.
 INFERENCE MARKING: Wrap any inferred content in [[NEEDS_REVIEW: <your addition>]].
-AUSTRALIAN ENGLISH: "organisation", "programme", "behaviour".
+AUSTRALIAN ENGLISH: "organisation", "program", "behaviour".
 </constraints>
 """
 
@@ -217,7 +217,7 @@ CONSTRAINTS:
 - Do NOT rewrite or alter the existing Situation/Task/Action content.
 - HALLUCINATION GUARD: Only state results clearly implied by the actions described.
 - Wrap any inferred result in [[NEEDS_REVIEW: <your addition>]].
-- AUSTRALIAN ENGLISH: "organisation", "programme", "behaviour".
+- AUSTRALIAN ENGLISH: "organisation", "program", "behaviour".
 """
 
 
