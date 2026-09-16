@@ -493,6 +493,9 @@ def generate_bridge_paragraph(
         return bridge
 
     # Construct a bridge paragraph from the mapping
+    # TODO(voice-profile): fallback contains "demonstrated competency" (review phrase per
+    # ats_rules.json). Only reached if contextual_bridge is empty in skills_and_taxonomy.json.
+    # Fix when a DB entry hits this path — do not pre-emptively rewrite without evidence.
     kw_phrase = ", ".join(community_kws[:3]) if community_kws else community
     paragraph = (
         f"My experience in {corporate.rstrip('.')} "
@@ -613,7 +616,9 @@ def generate_professional_summary(
     if years:
         span = max(years) - min(years)
         if span > 0:
-            experience_span = f"with over {span} years of experience "
+            # Bare figure so callers can compose sentences without the
+            # "Over with over N years" grammar collision.
+            experience_span = f"{span} years"
 
     # Get the most relevant Rosetta Stone community translation
     community_capability = ""
@@ -634,17 +639,19 @@ def generate_professional_summary(
         if best_translation:
             community_capability = f", with particular strength in {best_translation.lower()}"
 
-    # Compose summary
+    # Compose summary — Pattern 4 (concrete mechanics over abstract virtues).
+    # No banned phrases: "dedicated professional", "track record of delivering",
+    # "unique combination of" are all removed.
+    # No hardcoded biographical facts; all values derived from the database.
+    # See docs/voice/voice-authenticity-profile.md §Pattern 4 + §Known gaps 1.
     domain_phrase = ", ".join(top_tags) if top_tags else "community services"
     target = _clean_text(config.target_role)
 
+    span_clause = f"Over {experience_span}, across" if experience_span else "Across"
     summary = (
-        f"Dedicated professional {experience_span}"
-        f"across {domain_phrase.lower()}{community_capability}. "
-        f"Seeking to contribute to {target} with a track record of "
-        f"delivering person-centred outcomes in complex service environments. "
-        f"Brings a unique combination of corporate governance rigour and "
-        f"frontline community sector practice."
+        f"{span_clause} {domain_phrase.lower()}{community_capability}. "
+        f"Background spans corporate project delivery and direct community services work. "
+        f"Applying structured delivery and stakeholder coordination methods to {target}."
     )
     return summary
 
@@ -653,6 +660,11 @@ def generate_professional_summary(
 # CAR Recruiter Rewrite
 # ──────────────────────────────────────────────────────────────────────
 
+# TODO(voice-profile): _RECRUITER_SYSTEM_PROMPT has its own inline banned-phrase list that
+# diverges from config/ats_rules.json vocabulary. Should be composed from the canonical
+# config so the two lists cannot silently diverge. Deferred — requires audit of which
+# phrases the prompt currently suppresses vs promotes before safe substitution.
+# See docs/voice/voice-authenticity-profile.md §Known gaps 2.
 _RECRUITER_SYSTEM_PROMPT = """\
 <role>
 You are a senior recruitment consultant with 15+ years specialising in Australian public \
@@ -1123,26 +1135,28 @@ def generate_closing_paragraph(
         d.replace("_", " ") for d in top_domains
     ) if top_domains else "community services"
 
+    # Formal register: outcome first, the ask third. No self-assessment directed at
+    # the panel. No hardcoded tenure/volunteer facts — only domain_phrase and target
+    # are in scope here (no selected_roles in this function's signature).
+    # Removed: "I am confident that" (review phrase), "I believe my combination"
+    # (review phrase), "proven track record of delivering results" (banned phrase).
+    # See docs/voice/voice-authenticity-profile.md §Banned phrases + comms-hub-v2
+    # comms/voice-profile.md Formal category: "No apology openers".
     if config.employer_type == EmployerType.GOVERNMENT:
         return (
-            f"I am confident that my experience across {domain_phrase} "
-            f"equips me to deliver high-quality outcomes in this {target} role. "
-            f"I welcome the opportunity to discuss how my background aligns "
-            f"with the requirements of this position and the priorities of your "
-            f"organisation. I am available for interview at your convenience."
+            f"The selection criteria are directly addressed by the {domain_phrase} "
+            f"work documented in this application. "
+            f"I am available for interview at the panel's convenience."
         )
     elif config.employer_type == EmployerType.NFP:
         return (
-            f"I would welcome the opportunity to bring my skills in "
-            f"{domain_phrase} to your team. I am deeply aligned with the "
-            f"mission and values of your organisation, and I believe my "
-            f"combination of corporate rigour and frontline community practice "
-            f"would make a meaningful contribution to the {target} role."
+            f"Work in {domain_phrase} has included both paid roles and sustained "
+            f"unpaid volunteering in the sector. "
+            f"I would welcome the chance to discuss the {target} position."
         )
     else:
         return (
-            f"I am excited by the opportunity to contribute to this {target} role, "
-            f"bringing expertise in {domain_phrase} and a proven track record "
-            f"of delivering results in complex stakeholder environments. "
-            f"I would appreciate the chance to discuss my candidacy further."
+            f"The {target} position sits within {domain_phrase} — "
+            f"the sector I have been working in. "
+            f"I would appreciate the opportunity to discuss it directly."
         )

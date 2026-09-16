@@ -551,7 +551,11 @@ class ClosingParagraphTests(unittest.TestCase):
             employer_type=EmployerType.NFP,
         )
         closing = generate_closing_paragraph(config, {})
-        self.assertIn("mission and values", closing.lower())
+        # "mission and values" was part of the removed review-phrase template
+        # ("I believe my combination … I am deeply aligned with the mission and values").
+        # The new output uses a factual statement; assert on stable text present in the replacement.
+        self.assertIn("unpaid volunteering", closing.lower())
+        self.assertIn("project worker", closing.lower())
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -991,6 +995,91 @@ class TestAtsRulesProvenance(unittest.TestCase):
             profile_text,
             "Profile header must explicitly state it is not sourced from comms-hub-v2",
         )
+
+
+class GeneratorNoBannedPhraseTests(unittest.TestCase):
+    """Regression guard for voice-authenticity-profile.md §Known gaps 1.
+
+    Verifies that generate_professional_summary and generate_closing_paragraph
+    do not emit banned or review phrases from ats_rules.json.
+
+    Previously the fallback templates contained three banned phrases:
+      - "dedicated professional"
+      - "track record of delivering"
+      - "unique combination of"
+    and two review phrases:
+      - "I am confident that" (closing, government)
+      - "proven track record" (closing, general)
+
+    These tests pin the fixed behaviour as a regression gate.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        from pathlib import Path
+        rules_path = Path(__file__).parent.parent / "config" / "ats_rules.json"
+        rules = json.loads(rules_path.read_text())
+        vocab = rules.get("vocabulary", {})
+        cls.banned = vocab.get("banned_phrases", [])
+        cls.review = vocab.get("review_phrases", [])
+
+    def _assert_no_banned_or_review(self, text: str, label: str) -> None:
+        """Fail if text contains any banned or review phrase (whole-word, case-insensitive)."""
+        import re
+        for phrase in self.banned:
+            pattern = re.compile(r'\b' + re.escape(phrase) + r'\b', re.IGNORECASE)
+            self.assertIsNone(
+                pattern.search(text),
+                f"{label}: banned phrase '{phrase}' found in: {text!r}",
+            )
+        for phrase in self.review:
+            pattern = re.compile(r'\b' + re.escape(phrase) + r'\b', re.IGNORECASE)
+            self.assertIsNone(
+                pattern.search(text),
+                f"{label}: review phrase '{phrase}' found in: {text!r}",
+            )
+
+    def test_summary_no_banned_phrases_empty_roles(self):
+        """Summary fallback with no role data must not emit banned/review phrases.
+
+        Exercises the 'Across {domain}' branch (experience_span == '').
+        """
+        cfg = GenerationConfig(doc_type=DocumentType.RESUME, target_role="Support Worker")
+        summary = generate_professional_summary(cfg, [], {}, {})
+        self._assert_no_banned_or_review(summary, "summary (empty roles)")
+
+    def test_summary_no_banned_phrases_with_dated_roles(self):
+        """Summary with dated roles must not emit banned/review phrases.
+
+        Exercises the 'Over N years, across' branch (experience_span non-empty).
+        This is the path that previously produced 'Over with over N years of experience, across'.
+        """
+        dated_roles = [
+            {
+                "start_date": "2015-01",
+                "end_date": "2024-12",
+                "achievements": [
+                    {"domain_tags": ["case_coordination"], "needs_review": False}
+                ],
+            }
+        ]
+        cfg = GenerationConfig(doc_type=DocumentType.RESUME, target_role="Case Manager at cohealth")
+        summary = generate_professional_summary(cfg, dated_roles, {}, {})
+        # The span_clause must not produce malformed English
+        self.assertNotIn("Over with over", summary, "span_clause grammar collision detected")
+        self._assert_no_banned_or_review(summary, "summary (dated roles)")
+
+    def test_closing_no_banned_phrases_all_employer_types(self):
+        """All three closing paragraph variants must not emit banned/review phrases."""
+        for employer_type in EmployerType:
+            cfg = GenerationConfig(
+                doc_type=DocumentType.COVER_LETTER,
+                target_role="Intake Worker",
+                employer_type=employer_type,
+            )
+            closing = generate_closing_paragraph(cfg, {})
+            self._assert_no_banned_or_review(closing, f"closing ({employer_type.value})")
 
 
 if __name__ == "__main__":
