@@ -13,7 +13,7 @@ The pipeline clones the Golden Master Google Doc, performs batch `replaceAllText
 
 ## Output rule
 
-Produce output that **exactly matches** `skills/gold_template_builder_v2/ksc_template_spec_form.md`. No additional sections. No decorative elements. No emoji. No box-drawing characters. No ritual footers. No preamble. No phase headers.
+Produce output that **exactly matches** `ksc_template_spec_form.md`. No additional sections. No decorative elements. No emoji. No box-drawing characters. No ritual footers. No preamble. No phase headers.
 
 The spec file is the deliverable. Nothing else.
 
@@ -55,7 +55,7 @@ For each audit key, write `PASS` or `FAIL` only if you have checked it against t
 After writing the spec, run:
 
 ```bash
-python3 validate_template_spec.py <spec_file.md>
+python3 tools/validate_template_spec.py <spec_file.md>
 ```
 
 If it returns `FAIL`, fix the named issue and re-run. Do not declare done until it returns `SPEC OK`.

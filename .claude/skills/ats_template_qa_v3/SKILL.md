@@ -16,7 +16,7 @@ Two-stage QA process:
 ## Stage 1 — Run the validator
 
 ```bash
-python3 validate_template_spec.py <spec_file.md>
+python3 tools/validate_template_spec.py <spec_file.md>
 ```
 
 Report the exact output verbatim. Do not interpret or paraphrase it. If exit code is 1, list each FAIL line to the user and stop — do not proceed to Stage 2 until the spec is fixed and the validator returns `SPEC OK`.
