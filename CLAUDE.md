@@ -205,6 +205,23 @@ Inputs contain sensitive personal information (PII, lived experience disclosures
 - Prefer sharing diffs, redacted samples, and script-level changes.
 - The `archive/` directory contains legacy files — do not re-ingest without explicit instruction.
 
+### Secret Management — 1Password CLI
+
+All secrets (API keys, OAuth tokens) are managed via **1Password CLI (`op`)**. Never write secret values into `.env` files.
+
+```bash
+# Run any pipeline script with secrets injected at runtime:
+op run --env-file=".env" -- python pipeline/compile_brain.py
+
+# Inspect or update a secret:
+op item get "google ai studio career brain" --reveal
+op item edit "google ai studio career brain" GEMINI_API_KEY="new_value_here"
+```
+
+- `.env` holds `op://` references (e.g. `GEMINI_API_KEY=op://Personal/google ai studio career brain/GEMINI_API_KEY`) — **not raw values**
+- All `.env*` variants are gitignored (`.gitignore` line 33: `.env*`)
+- Never commit any file containing a raw secret — if you accidentally do, treat the key as compromised immediately and rotate via `op item edit` before touching git
+
 ---
 
 ## See Also
