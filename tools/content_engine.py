@@ -493,16 +493,12 @@ def generate_bridge_paragraph(
         return bridge
 
     # Construct a bridge paragraph from the mapping
-    # TODO(voice-profile): fallback contains "demonstrated competency" (review phrase per
-    # ats_rules.json). Only reached if contextual_bridge is empty in skills_and_taxonomy.json.
-    # Fix when a DB entry hits this path — do not pre-emptively rewrite without evidence.
     kw_phrase = ", ".join(community_kws[:3]) if community_kws else community
     paragraph = (
         f"My experience in {corporate.rstrip('.')} "
         f"translates directly into {community.lower()} capabilities. "
-        f"I bring demonstrated competency in {kw_phrase}, "
-        f"applying a structured, evidence-based approach developed through "
-        f"years of cross-functional delivery in complex organisational environments."
+        f"I apply {kw_phrase} using a structured, evidence-based approach "
+        f"developed through years of cross-functional delivery in complex organisational environments."
     )
     return paragraph
 
@@ -660,12 +656,20 @@ def generate_professional_summary(
 # CAR Recruiter Rewrite
 # ──────────────────────────────────────────────────────────────────────
 
-# TODO(voice-profile): _RECRUITER_SYSTEM_PROMPT has its own inline banned-phrase list that
-# diverges from config/ats_rules.json vocabulary. Should be composed from the canonical
-# config so the two lists cannot silently diverge. Deferred — requires audit of which
-# phrases the prompt currently suppresses vs promotes before safe substitution.
-# See docs/voice/voice-authenticity-profile.md §Known gaps 2.
-_RECRUITER_SYSTEM_PROMPT = """\
+def get_recruiter_system_prompt() -> str:
+    """Build the recruiter system prompt dynamically using ATS rules."""
+    banned_phrases = []
+    review_phrases = []
+    if _ats_data and "vocabulary" in _ats_data:
+        banned_phrases = _ats_data["vocabulary"].get("banned_phrases", [])
+        review_phrases = _ats_data["vocabulary"].get("review_phrases", [])
+    
+    banned_str = ", ".join(f'"{p}"' for p in banned_phrases) if banned_phrases else "generic filler phrases"
+    review_str = ", ".join(f'"{p}"' for p in review_phrases) if review_phrases else ""
+    
+    review_clause = f" Avoid context-dependent review phrases where possible: {review_str}." if review_str else ""
+
+    return f"""\
 <role>
 You are a senior recruitment consultant with 15+ years specialising in Australian public \
 sector, NFP, and community services applications. You write with precision, authenticity, \
@@ -700,7 +704,7 @@ demonstrated behaviours woven into the CAR narrative:
 
 <output_schema>
 Return ONLY valid JSON with exactly these three keys:
-{
+{{
   "context": "<40-100 words. The organisational setting, role mandate, and challenge or \
 problem being addressed. Third-person framing of the situation.>",
   "action":  "<80-200 words. What the candidate personally did — concrete steps, methods, \
@@ -708,7 +712,7 @@ tools, and competencies deployed. First person, active voice, strong action verb
 Never begin with 'I am' or 'I have'.>",
   "result":  "<40-120 words. Measurable or observable outcomes. Quantify with real figures \
 where the source provides them. Name stakeholder impact where relevant.>"
-}
+}}
 No text, explanation, or markdown outside the JSON object.
 </output_schema>
 
@@ -728,8 +732,8 @@ AUSTRALIAN ENGLISH: Use Australian spelling and terminology throughout \
 "behaviour" not "behavior").
 
 QUALITY BAR: A strong CAR response reads as a confident first-person account. \
-Avoid passive voice, hedging language, and generic filler phrases \
-("demonstrated ability to", "strong communication skills", "team player").
+Avoid passive voice and hedging language. DO NOT use any of these banned phrases: \
+{banned_str}.{review_clause}
 </constraints>
 
 <few_shot_examples>
@@ -737,7 +741,7 @@ Study these gold-standard examples carefully. Match their tone, specificity, \
 sector language, and structural balance exactly.
 
 EXAMPLE 1 — KSC: Experience in providing direct support to vulnerable individuals
-{
+{{
   "context": "Working in a homelessness outreach service, I was assigned a client who had \
 been rough sleeping for over two years and had a deep distrust of support services due to \
 past negative experiences. Rebuilding that trust was the prerequisite for any practical \
@@ -752,10 +756,10 @@ continuity of care rather than a cold referral.",
 disengagement. The client entered supportive accommodation and began actively \
 participating in their mental health recovery plan — an outcome that had not been \
 achievable through previous service contacts."
-}
+}}
 
 EXAMPLE 2 — KSC: Ability to use lived experience of recovery
-{
+{{
   "context": "A new client in our AOD recovery programme was expressing significant \
 hopelessness, stating they did not believe long-term recovery was possible. The clinical \
 team identified an opportunity for peer-led engagement to complement the therapeutic model.",
@@ -769,10 +773,10 @@ making the session about myself.",
 conversation as a turning point. They remained engaged in the programme and later \
 volunteered as a peer mentor for newer members — demonstrating the multiplier effect \
 of peer-led support."
-}
+}}
 
 EXAMPLE 3 — KSC: Demonstrated organisational skills
-{
+{{
   "context": "Our annual community wellness event — serving over 300 residents — was at \
 risk after a key service provider withdrew with 48 hours' notice. The Programme \
 Coordinator needed immediate support to manage replacement sourcing, stakeholder \
@@ -787,7 +791,7 @@ sequential bottlenecks.",
 communications were distributed with a full day to spare. The event proceeded without \
 disruption to the 300+ attendees, and the Coordinator noted the parallel-workstream \
 approach as a model for future contingency planning."
-}
+}}
 </few_shot_examples>
 """
 
@@ -856,7 +860,7 @@ def _rewrite_car_with_llm(
             model="gemini-2.5-flash",
             contents=user_content,
             config=types.GenerateContentConfig(
-                system_instruction=_RECRUITER_SYSTEM_PROMPT,
+                system_instruction=get_recruiter_system_prompt(),
                 max_output_tokens=2048,
                 temperature=0.3,
                 responseMimeType="application/json",

@@ -18,23 +18,29 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [x] **HTML preview gallery**: `Career_Brain___15-Theme_A4_Preview_Gallery_PREMIUM.html` — full A4 gallery with Google Fonts and `--headingfont` CSS variable per theme. Committed 2026-06-06.
 - [x] **Rebuild Golden Masters** (Gate 4 — user approval required): Built, style-audited (15/15 STYLE OK), and registered all 15 visual themes with premium fonts baked in. Doc IDs updated in `config/doc_templates.json`.
 
-#### Stage 2 — Cover Letter & KSC Template Suite (BUILD_SPECS Milestones 1–2)
-**Context:** `archive/planning/claude-plan.md` + `planning/master_agentic_workflow_prompt.md` planned cover letter / KSC scale-up matching the resume themes. BUILD_SPECS.md defines acceptance criteria.
-- [x] BS-1.1 — Populate `config/user_config.json` with real contact, education, certification data (verified 2026-06-06: name/email/education present; dry-run exits 0)
-- [ ] BS-1.4 — Build Golden Master: Cover Letter (Government) from `templates/cover_letter_government_v1.json`
-- [ ] BS-1.5 — Build Golden Master: Cover Letter (NFP) from `templates/cover_letter_nfp_v1.json`
-- [ ] BS-1.6 — Verify KSC Golden Master (`ksc_standard_v2.json`) still valid after font changes
-- [x] BS-1.7 — Confirm Drive subfolder IDs configured in `config/doc_templates.json` (verified 2026-06-06: all 4 folder IDs + CL/KSC doc IDs present)
-- [ ] BS-2.1 — ATS QA audit on all active Golden Masters (0 failures required)
-- [ ] BS-2.2 — Lock template versions
+#### Stage 2 — Cover Letter & KSC Template Suite (Milestones 1–2)
+**Context:** `archive/planning/claude-plan.md` + `planning/master_agentic_workflow_prompt.md` planned cover letter / KSC scale-up matching the resume themes.
+- [x] BS-1.1 — Populate `config/user_config.json` with real contact, education, certification data (verified 2026-06-06: name/email/education present; dry-run exits 0).
+- [x] BS-1.2 & BS-1.3 — Create Golden Master: Resume Chronological & Hybrid (Completed under Stage 1).
+- [ ] BS-1.4 — Build Golden Master: Cover Letter (Government) from `templates/cover_letter_government_v1.json`. (Salutation: "Selection Panel"; formal tone).
+- [ ] BS-1.5 — Build Golden Master: Cover Letter (NFP) from `templates/cover_letter_nfp_v1.json`. (Salutation: "Hiring Manager"; warm NFP tone).
+- [ ] BS-1.6 — Verify KSC Golden Master (`ksc_standard_v2.json`) still valid after font changes. Ensure Context/Action/Result/Support format is strictly maintained.
+- [x] BS-1.7 — Confirm Drive subfolder IDs configured in `config/doc_templates.json` (verified 2026-06-06: all 4 folder IDs + CL/KSC doc IDs present).
+- [ ] BS-2.1 — ATS QA audit on all active Golden Masters (0 failures required). Audit: all placeholders present, no unknown placeholders, no inline objects, no layout tables, no text boxes, contact in body, header/fonts adhere to standards.
+- [ ] BS-2.2 — Lock template versions by setting `"template_revision"` inside `doc_templates.json`.
 
-#### Stage 3 — Report & Constraint Enhancements (BUILD_SPECS Milestones 3–6, deferred)
-- [ ] BS-3.1–3.5 — Report enrichment (derived_summary_used, exclusions count, word count warnings, exit codes, source_files_used)
-- [ ] BS-4.1 — `--job-ad` file flag for content tailoring
-- [ ] BS-5.1 — Batch template validator
-- [ ] BS-6.1 — Australian terminology post-processing
-- [ ] BS-6.2 — Rosetta Stone on resume bullets
-- [ ] BS-6.3 — Integration tests: all 3 document types (dry-run)
+#### Stage 3 — Report & Constraint Enhancements (Milestones 3–6, deferred)
+- [ ] BS-3.1 — Add `derived_summary_used` (boolean) to `doc_generation_report.json` based on fallback usage.
+- [ ] BS-3.2 — Add `needs_review_exclusions_count` (int) to report to flag skipped `needs_review=True` achievements.
+- [ ] BS-3.3 — Surface KSC word count warnings in report JSON (`ksc_word_count_warnings` list).
+- [ ] BS-3.4 — Define Exit Code Semantics: `0` (success), `1` (DocumentGenerationError), `2` (Prerequisite config failure).
+- [ ] BS-3.5 — Add `source_files_used` (list of unique source line filenames) to report.
+- [ ] BS-4.1 — `--job-ad` file flag for content tailoring. Resolve local text files or raw strings to `extract_job_ad_keywords()`.
+- [ ] BS-4.2 — Verify `--criteria` file flag supports file paths (not just inline text) for KSC parsing.
+- [ ] BS-5.1 — Batch template validator (`--validate-templates`). Asserts placeholders, ATS hygiene, and revision parity across all configured template IDs.
+- [ ] BS-6.1 — Australian terminology post-processing (`AU_TERMINOLOGY_MAP`). Replace US/corporate terms ("industry", "company") globally prior to text injection.
+- [ ] BS-6.2 — Rosetta Stone on resume bullets. Append parenthetical community sector translations to corporate keywords if `--rosetta` is enabled.
+- [ ] BS-6.3 — Integration tests: all 3 document types (dry-run). Asserts exit 0, zero unresolved tokens, and report JSON schema compliance.
 
 **Stage 1 gate:** User approves Golden Master rebuild → execute sequentially per AGENTS.md Gate 4.
 **Stage 2 gate:** BS-1.x cover letter/KSC builds each need Gate 4 approval per AGENTS.md.
