@@ -55,4 +55,4 @@ ksc_word_limit_fit: PASS — CAR structure provides context 40–100w, action 60
 ```
 
 ## DRY_RUN_CMD
-python3 generate_document.py --type ksc --target "<Test Role at Test Org>" --criteria <criteria_file.txt> --dry-run
+python3 tools/generate_document.py --type ksc --target "<Test Role at Test Org>" --criteria <criteria_file.txt> --dry-run

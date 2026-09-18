@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Generate an HTML preview of the new minimal theme",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Render the theme gallery for the 15 themes",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Update the python script for visual rendering",
+      "should_trigger": false
+    }
+  ]
+}

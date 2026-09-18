@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "QA check this new KSC template spec",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Run the ats template qa on this live google doc",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Review my python code for style issues",
+      "should_trigger": false
+    }
+  ]
+}

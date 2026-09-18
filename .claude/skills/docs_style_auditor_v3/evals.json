@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Audit the style of the generated doc against the contemporary theme",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Check if this document adheres to the visual style guidelines in the template",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Generate a new KSC document for the government role",
+      "should_trigger": false
+    }
+  ]
+}

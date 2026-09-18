@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Please peer review my changes to compile_brain.py before I write to the database",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Run a peer review on the JSON mutation logic I just added",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Review this google doc template for ATS compliance",
+      "should_trigger": false
+    }
+  ]
+}

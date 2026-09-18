@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Integrate the new career brain skill into the agent",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Help me build a new theme variant integration",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Write a cover letter using the skill",
+      "should_trigger": false
+    }
+  ]
+}

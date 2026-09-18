@@ -38,15 +38,8 @@ These checks require reading the actual Google Doc. Run them only after the user
 
 ### Typography checks — use theme spec if available
 
-| Check | KSC / unthemed | contemporary_professional | professional_classic | modern_minimalist |
-|---|---|---|---|---|
-| Font | Calibri | Calibri | Times New Roman | Arial |
-| Body size | 11pt | 10.5pt | 11pt | 10.5pt |
-| H1 size | 14pt | 13pt | 14pt | 13pt |
-| Title size | 14pt | 17pt | 16pt | 18pt |
-| Line spacing | 1.15 | 1.2 | 1.15 | 1.2 |
-| Space after para | 6pt | per theme JSON | per theme JSON | per theme JSON |
-| Margins | 2cm | 1.9cm | 1.9cm | 2.3cm |
+Read expected values from the theme JSON in `templates/` (e.g., `templates/resume_contemporary_professional_v1.json`). Do not rely on hard-coded values here to avoid drift.
+Run `tools/verify_golden_master.py <DOC_ID>` and `tools/audit_doc_style.py <DOC_ID> --theme templates/<theme_name>.json` to perform automated verification of the built document's style against the JSON template spec.
 
 Report each check as `PASS` or `FAIL — <evidence>`. Do not claim PASS without reading the doc.
 

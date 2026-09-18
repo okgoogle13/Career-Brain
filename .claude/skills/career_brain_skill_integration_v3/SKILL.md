@@ -25,7 +25,7 @@ This skill knows when to invoke each one, in what order, and how to interpret th
 - **Golden Master QA:** You've built a Golden Master doc and need it audited before registration
 - **Debugging templates:** A template isn't working — need to trace through the pipeline to find the issue
 - **ATS compliance check:** Need to confirm a template is ATS-safe before a live pipeline run
-- **Theme integration:** Building and verifying any of the 15+ themed resume variants
+- **Theme integration:** Building and verifying any of the available themed resume variants in the `templates/` directory
 
 ## The Career Brain Pipeline
 
@@ -127,12 +127,9 @@ Two-stage process:
 Output: SPEC OK + STYLE PASS or detailed failure list
 ```
 
-## Themed Variants (15+ Available)
+## Themed Variants
 
-The pipeline currently supports 15+ rich JSON theme definitions, split into conceptual families:
-- `theme-01` to `theme-10`: Core design templates (Graphite, Citrus, Neon, etc.)
-- `theme-21` to `theme-25`: Phase 3 advanced templates (Terminal, Broadside, etc.)
-- Legacy/Standard variants: `contemporary_professional`, `professional_classic`, `modern_minimalist`, `chronological`, `hybrid`, `warm_impact`, `copper_teal_circuit`.
+The pipeline supports a dynamic set of rich JSON theme definitions. To see the current list of available themes, read the contents of the `templates/` directory. You will find theme files named such as `resume_<name>_v1.json`. Do not assume a hard-coded list of themes.
 
 Theme files live in `templates/` as `resume_<name>_v1.json`. When running `docs-style-auditor-v3` against a themed document, ALWAYS pass the `--theme templates/resume_<name>_v1.json` flag (via `python3 tools/audit_doc_style.py <DOC_ID> --theme ...`) so the auditor validates against the correct specific font/spacing values defined in the theme's `visualConfig`, rather than rejecting them for not being Calibri.
 

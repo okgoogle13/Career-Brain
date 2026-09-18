@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Build a golden master for the chronological resume template",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Run the build_golden_master.py script for theme 5",
+      "should_trigger": true
+    },
+    {
+      "prompt": "What is the status of the golden master build?",
+      "should_trigger": false
+    }
+  ]
+}

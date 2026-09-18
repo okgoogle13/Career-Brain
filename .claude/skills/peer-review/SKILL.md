@@ -1,6 +1,6 @@
 ---
 name: peer-review
-description: Use when verifying recent agent modifications to Career Brain pipeline scripts before a --write run or commit. Invoke when changes touch JSON mutation, merge logic, schema fields, or audit/repair rules in pipeline/.
+description: Use when verifying recent agent modifications to Career Brain pipeline scripts before a --write run or commit. Invoke when changes touch JSON mutation, merge logic, schema fields, or audit/repair rules in pipeline/ or tools/.
 ---
 
 # Career Brain — Peer Review
@@ -12,6 +12,7 @@ Four-phase staged audit for pipeline code changes. Phases 1–2 are always manda
 ## When to Use
 
 - Before running `--write` on `audit_and_repair_database.py` or `compile_brain.py`
+- Before modifying or committing changes to `tools/*.py` (e.g., `generate_document.py`, `audit_doc_style.py`)
 - Before committing changes that touch JSON mutation, merge logic, or schema fields
 - When a specific concern exists about field preservation, edge cases, or logic safety
 
