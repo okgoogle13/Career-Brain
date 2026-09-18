@@ -3,13 +3,32 @@
 Five paste-ready prompts. Run them **in order, each in its own fresh session**, reviewing
 between them. Do not paste more than one at a time — the gating is the point.
 
-| # | Hand-off | Risk | Gate |
-|---|---|---|---|
-| 1 | Pre-flight | none (read-only) | — |
-| 2 | Main cleanup | code/pipeline | 3 stop points |
-| 3 | Skill audit | docs only | after Hand-off 2 |
-| 4 | PII-safe file map | none (export) | after Hand-off 2 |
-| 5 | Root-level file placement | doc/file moves only | after Hand-off 2 |
+| # | Hand-off | Risk | Gate | Model | Mode | `advisor()` |
+|---|---|---|---|---|---|---|
+| 1 | Pre-flight | none (read-only) | — | Opus 5 | normal · think hard | no |
+| 2 | Main cleanup | code/pipeline | 3 stop points | Opus 5 | plan mode (Ph.1) → normal (Ph.2–3) · ultrathink | yes, at the documented escalation only |
+| 3 | Skill audit | docs only | after Hand-off 2 | Sonnet 5 | auto-accept edits · think | no |
+| 4 | PII-safe file map | none (export) | after Hand-off 2 | Opus 5 | normal · think hard | **no — see below** |
+| 5 | Root-level file placement | doc/file moves only | after Hand-off 2 | Sonnet 5 | normal · think | no |
+
+### How to read the Model / Mode / `advisor()` columns
+
+These are **defaults to override, not repo convention.** This repo has no existing
+model/effort/mode guidance; the recommendations below are reasoned from each hand-off's
+blast radius, not from a standard. Vocabulary is Claude Code's own: models are Opus 5
+(`claude-opus-5`), Sonnet 5 (`claude-sonnet-5`), Haiku 4.5 (`claude-haiku-4-5-20251001`);
+thinking escalates `think` → `think hard` → `ultrathink`; `/code-review` takes its own
+`low`/`medium`/`high`/`max`/`ultra` effort levels. Plan mode is Shift+Tab and is read-only
+until the plan is approved.
+
+**On `advisor()`:** it forwards the *entire conversation transcript* to a stronger reviewer
+model. Hand-offs 2, 4 and 5 accumulate PII-adjacent context — `source_docs/` filenames,
+`database/` metadata, employer-revealing paths — and CLAUDE.md's Security & Data Handling
+section governs what leaves this machine. So `advisor()` is **not** a free second opinion
+here: call it only where this file says to, and only from a session that has not read file
+*contents* under `source_docs/`, `database/`, or `processed/`. Hand-off 4 is the sharp case —
+its whole job is deciding what is safe to export, so forwarding its transcript to decide that
+is circular. Do that hand-off's adversarial re-read locally instead.
 
 ## Repo state a fresh session needs to know
 
@@ -32,6 +51,12 @@ between them. Do not paste more than one at a time — the gating is the point.
 
 ```
 Goal: Pin scope, catch stale skill cross-references, stress-test the plan.
+
+Run with: Opus 5 · think hard · normal mode (ask-each-edit)
+  — plan mode is redundant for a hand-off that writes nothing; Opus earns
+  its keep on /critique-plan, which is the only judgement call here.
+advisor(): not needed — /critique-plan IS this hand-off's adversarial pass,
+  and re-running the same stress-test through a second reviewer buys nothing.
 
 Context you need: git history was reset to a single "Initial commit" to
 purge PII backup blobs. There is no git log/blame to consult, and the
@@ -66,6 +91,18 @@ Verify: none — output is a scope decision plus two findings lists.
 Goal: Gated, local-only cleanup pass over Career-Brain pipeline code,
 producing a reviewed diff — stopping for approval between phases per this
 repo's Gatekeeper Protocol.
+
+Run with: Opus 5 · ultrathink (/code-review at `high`) · plan mode for
+  Phase 1, then normal ask-each-edit for Phases 2-3.
+  — Do NOT use auto-accept edits in this hand-off. Phase 3 archives files
+  irreversibly, and auto-accept is in direct tension with the three STOP
+  gates and with the Gatekeeper Protocol: a gate you do not see is not a
+  gate. Plan mode fits Phase 1 (orientation is read-only by design) but
+  would fight Phases 2-3, which must actually edit between gates.
+advisor(): yes — but only at the escalation clause already written at the
+  bottom of this hand-off (a Phase 3 archive decision still ambiguous after
+  doubt-driven-development). Not as a routine check, and never from a
+  session that has opened a file under database/ or source_docs/.
 
 Phase 1 — Orientation (no Repomix, no external transfer, no committed artifact):
   Do NOT run repomix pack_codebase unscoped. Measured: this repo is 27.8 MB
@@ -146,6 +183,13 @@ Commit: Phase 1 produces no commit (no artifact). Phase 3 commits as:
 Goal: Grade and polish the custom skills, log remaining gaps. Run only after
 Hand-off 2's diff is reviewed, so the audit grades the final state.
 
+Run with: Sonnet 5 · think · auto-accept edits
+  — docs-only and mechanical (grade, fix three known-stale references,
+  append to TASKS.md); the diff is fully reviewable afterward and nothing
+  here is irreversible, so auto-accept is safe and saves the round trips.
+advisor(): not needed — every change lands in a markdown diff you read
+  before commit, which is a cheaper review than a transcript forward.
+
 Step 1 — skill-creator:skill-creator: Grade ats_template_qa_v3,
 docs_style_auditor_v3, gold_template_builder_v3, theme_visual_preview_v3,
 career_brain_skill_integration_v3, peer-review, and all skills in custom_skills/
@@ -185,6 +229,17 @@ Goal: Produce PROJECT_MAP.md — a file map describing what each tracked file
 is FOR, with zero file contents — safe to paste to an external reviewer
 (Perplexity or similar) for the objective outside assessment the original
 cleanup prompt wanted but could not safely get.
+
+Run with: Opus 5 · think hard · normal mode (ask-each-edit)
+  — one file is written, but the expensive part is the adversarial PII
+  re-read, which is a judgement task, not a volume task. Not auto-accept:
+  this file is written expressly to leave the machine, so every line should
+  pass under your eye before it exists.
+advisor(): NO — do not call it in this hand-off. This session holds the full
+  tracked-file inventory including source_docs/ filenames, and advisor()
+  forwards the whole transcript. Using an external reviewer to decide what
+  is safe to send externally is circular. Perform the adversarial
+  re-read step below locally, in this session, instead.
 
 Run this AFTER Hand-off 2, so the map describes the post-cleanup state
 rather than one that is about to change.
@@ -239,6 +294,15 @@ Commit: chore: ignore generated PROJECT_MAP export
 Goal: Relocate the loose, tracked files sitting at repo root into a proper
 home, producing a reviewed git mv mapping — stopping for approval before
 any move, per this repo's Gatekeeper Protocol.
+
+Run with: Sonnet 5 · think · normal mode (ask-each-edit)
+  — do NOT stack plan mode on top of this hand-off. Step 3's STOP gate
+  already does exactly what plan mode does (propose, wait for approval,
+  then execute); running both means approving the same mapping twice and
+  invites rubber-stamping the second one. Keep the explicit STOP, skip
+  plan mode.
+advisor(): not needed — reachability is settled by ripgrep, and the
+  mapping is approved by you at the STOP gate before any `git mv` runs.
 
 Context you need: this repo's pipeline/, tools/, config/, templates/,
 database/, source_docs/ are load-bearing architecture, not "documents" —
