@@ -1,0 +1,226 @@
+{
+  "schema_version": "2.3",
+  "template_id": "theme_emerald_transit",
+  "tier": 1,
+  "tier_label": "ATS Standard",
+  "doc_type": "resume",
+  "target_sector": [],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDERSCHEMAV2",
+  "description": "Transit-inspired theme with emerald bands and clear station-like section stops.",
+  "visual_identity": {
+    "theme_name": "Emerald Transit",
+    "mood": "forward-moving, clear, structured",
+    "motif_name": "transit line stops",
+    "density_target": "medium",
+    "silhouette": "band-led",
+    "personality_axis": "organized, directional, calm",
+    "header_silhouette": "banded header",
+    "section_emphasis_pattern": "band-led section stops",
+    "contrast_intensity": "medium"
+  },
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": [
+      "Public Sans",
+      "Arial"
+    ],
+    "content_layer": "all essential content must remain plain text in normal reading order and selectable",
+    "forbidden_glyphs": [
+      "icons",
+      "emoji",
+      "ornamental bullets",
+      "nonstandard ligatures",
+      "special symbols used as decoration",
+      "layout-only unicode art"
+    ]
+  },
+  "palette": {
+    "base_colours": [
+      "#0B3D2E",
+      "#1A7A52",
+      "#BFE3CF"
+    ],
+    "complementary_accent": "#22C55E",
+    "neutral_surface": "#FFFFFF",
+    "neutral_text": "#0B3D2E",
+    "neutral_background": "#FFFFFF",
+    "supporting_neutral": "#ECFDF5"
+  },
+  "typography": {
+    "base_font": "Public Sans",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.3,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 1.4,
+    "section_heading_size_pt": 11,
+    "section_heading_weight": 700
+  },
+  "page": {
+    "margins_in": {
+      "top": 0.65,
+      "right": 0.7,
+      "bottom": 0.65,
+      "left": 0.7
+    },
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "single_column": true,
+    "reading_order": "top_to_bottom_left_to_right",
+    "export_safe": "Google Docs and PDF export compatible"
+  },
+  "bands": {
+    "strategy": "header band plus section stop bands",
+    "placement": [
+      "header band",
+      "section header band"
+    ],
+    "intensity": "moderate",
+    "height_rule": {
+      "min_pt": 3,
+      "max_pt": 7,
+      "default_pt": 5
+    },
+    "band_targets": [
+      "top header band",
+      "section headers"
+    ],
+    "highlight_band_targets": [
+      "section headers"
+    ],
+    "band_placement_profile": "band_led",
+    "accent_placement_profile": "bands_and_labels"
+  },
+  "dividers": {
+    "grammar": "thin connecting rules between banded stops",
+    "frequency": "low to moderate",
+    "weight": "thin",
+    "divider_targets": [
+      "between sections",
+      "between grouped metadata blocks"
+    ],
+    "divider_rhythm": "stop-based"
+  },
+  "accent_logic": {
+    "primary_use": [
+      "section bands",
+      "labels on bands",
+      "small markers"
+    ],
+    "complementary_accent_role": "reinforces the transit line motif while keeping text clean",
+    "allowed_scope": [
+      "section headers",
+      "band edges",
+      "small markers"
+    ],
+    "forbidden_scope": [
+      "full paragraphs",
+      "large blocks",
+      "background fills behind essential text",
+      "text-over-image effects",
+      "decorative emphasis that weakens readability"
+    ],
+    "accent_balance": "bands provide structure without becoming decorative",
+    "contrast_intensity": "medium"
+  },
+  "theme_specific_rules": {
+    "must_include": [
+      "single-column text-first structure",
+      "dark body text",
+      "explicit motif",
+      "explicit density target",
+      "explicit band strategy",
+      "explicit divider grammar",
+      "explicit accent placement",
+      "clear header hierarchy"
+    ],
+    "forbidden_repeats": [
+      "same top-of-page structure across themes",
+      "same section label treatment across themes",
+      "same divider grammar as previous theme",
+      "same chip treatment as previous theme",
+      "same band placement as previous theme",
+      "tonal-only palette dependency"
+    ],
+    "visual_differentiators": [
+      "emerald transit bands",
+      "stop-based section feel",
+      "connecting rules instead of full grids"
+    ],
+    "anti_generic_rules": [
+      "do not remove the banded stop structure",
+      "do not desaturate emerald to generic grey",
+      "do not convert to heavy technical grid"
+    ],
+    "non_reuse_constraints": [
+      "no repeated top-of-page pattern",
+      "no repeated divider grammar from previous theme",
+      "no repeated band placement from previous theme"
+    ],
+    "adjacent_theme_difference_rules": [
+      "must differ from previous theme in band placement",
+      "must differ from previous theme in divider rhythm",
+      "must differ from previous theme in accent placement"
+    ]
+  },
+  "section_heading_style": {
+    "font_color": "#0B3D2E",
+    "text_transform": "uppercase",
+    "decoration": "banded section header",
+    "accent_color": "#1A7A52"
+  },
+  "body_text_color": "#0B3D2E",
+  "muted_text_color": "#2F6F57",
+  "skills_background_tint": "#E7F4EC",
+  "avoid_list": [
+    "tonal-only palette",
+    "same top-of-page structure",
+    "same divider grammar as previous theme",
+    "same chip treatment as previous theme",
+    "generic safe fallback",
+    "over-softened hierarchy",
+    "repeated band placement",
+    "multi-column layout",
+    "sidebar layout",
+    "text boxes",
+    "layout tables",
+    "floating objects",
+    "decorative graphics",
+    "icons",
+    "images",
+    "headers and footers for essential content",
+    "low-contrast body text"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Calibri",
+        "Arial",
+        "Georgia"
+      ],
+      "typography.base_font": "Calibri",
+      "typography.line_spacing": 1.24,
+      "typography.spacing_after_pt": 6,
+      "palette.base_colours": [
+        "#064E3B",
+        "#10B981",
+        "#D1FAE5"
+      ],
+      "palette.neutral_text": "#064E3B",
+      "body_text_color": "#064E3B",
+      "muted_text_color": "#047857",
+      "section_heading_style.font_color": "#064E3B",
+      "section_heading_style.accent_color": "#10B981",
+      "skills_background_tint": "#ECFDF5"
+    }
+  },
+  "complementary_accent": "#1A7A52",
+  "heading_font_family": [
+    "Fraunces",
+    "Georgia"
+  ]
+}

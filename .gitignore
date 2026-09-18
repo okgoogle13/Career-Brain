@@ -1,0 +1,64 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+.venv_sys/
+
+# Pipeline intermediate outputs (regeneratable from source_docs via normalize_vault.py)
+processed/
+
+# Credentials & secrets
+credentials.json
+token.json*
+user_config.json
+
+
+# Generated repomix outputs (regenerable)
+repomix-output.xml
+repomix_perplexity_context.xml
+
+# Large snapshot archives
+CareerBrain_Clean/
+CareerBrain_Clean.zip
+
+# Scratch audit outputs
+scratch/*.json
+.env
+
+# Source documents (backed up on Google Drive — not needed in repo)
+source_docs/
+
+# Legacy archive (do not re-ingest without instruction)
+archive/
+
+# Node / npm
+node_modules/
+package-lock.json
+
+# Context XML dumps (regenerable via repomix)
+context/*.xml
+*.xml
+
+# Database preview artefacts (regenerable)
+database/preview_*.html
+database/preview_*.png
+database/*.log
+
+# Database stale intermediate outputs
+database/ksc_curated_tier1.json
+database/doc_generation_report_*_test.json
+
+# Voice exemplars carry verbatim personal disclosure (health, sexuality, disability),
+# contact details and referee information. Same boundary as comms-hub-v2's comms/*.local.md:
+# never a git remote. The rules-only profile (docs/voice/voice-authenticity-profile.md) IS tracked.
+*.local.md
+
+# Database backups (keep locally for script safety, ignore from git to prevent bloat)
+database/backups/

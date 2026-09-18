@@ -1,0 +1,362 @@
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#3f4145;font-family:system-ui,Arial,sans-serif;padding:26px 0}
+.gallery{display:flex;flex-direction:column;align-items:center;gap:36px}
+.sheet{display:flex;flex-direction:column;align-items:center;gap:8px}
+.label{font:600 12px/1.3 system-ui,Arial,sans-serif;color:#e9e9ec;letter-spacing:.3px;background:#26282b;padding:6px 13px;border-radius:7px}
+.label b{color:#fff}
+.page{width:210mm;min-height:297mm;background:var(--surface);color:var(--body);font-family:var(--font);font-size:var(--bodypt);line-height:var(--lh);box-shadow:0 7px 24px rgba(0,0,0,.5);overflow:hidden}
+.hdr{margin-bottom:10px}
+.name{font-size:19pt;font-weight:700;color:var(--heading);line-height:1.05}
+.contact{font-size:9pt;color:var(--muted);margin-top:3px}
+.headline{font-size:11.5pt;font-weight:600;color:var(--headline);margin-top:5px;letter-spacing:.3pt}
+.sec{margin-top:11px}
+.sec + .sec{border-top:1px solid var(--rule);padding-top:9px}
+.sechead{font-size:var(--hpt);font-weight:var(--hweight);color:var(--heading);letter-spacing:var(--htrack);text-transform:var(--htransform);margin:0 0 5px;padding-bottom:2px;border-bottom:1px solid var(--rule)}
+.para{margin:0}
+.skills{background:var(--tint);padding:6px 9px;border-radius:2px}
+.role{margin-bottom:8px}
+.role:last-child{margin-bottom:0}
+.rtitle{font-weight:700;color:var(--body)}
+.rmeta{font-size:9pt;color:var(--muted);margin:1px 0 3px}
+.bullet{display:flex;gap:7px;margin:2px 0}
+.dash{color:var(--muted);flex:0 0 auto}
+
+/* t01 Graphite Ledger — solid ledger rules + header bar */
+.t01 .hdr{border-bottom:2pt solid var(--heading);padding-bottom:6px}
+.t01 .sechead{border-bottom-width:2pt;border-color:var(--heading)}
+.t01 .sechead::before{content:"";display:inline-block;width:14px;height:7px;background:var(--haccent);margin-right:7px;vertical-align:middle}
+
+/* t02 Midnight Blueprint — dark, grid dividers */
+.t02 .contact{border-bottom:1px solid #1E293B;padding-bottom:4px}
+.t02 .sechead{border-bottom:0.75pt solid var(--accent)}
+.t02 .role{border-left:1px solid #1E293B;padding-left:8px}
+
+/* t03 Citrus Edge — left citrus edge */
+.t03 .hdr{border-left:5pt solid var(--haccent);padding-left:8px}
+.t03 .sechead{border-bottom:1pt solid var(--body);border-left:4pt solid var(--haccent);padding-left:7px}
+
+/* t04 Emerald Transit — band-led section stops */
+.t04 .hdr{background:var(--tint);padding:8px 9px;border-left:6pt solid var(--haccent)}
+.t04 .sechead{background:var(--tint);border:none;border-left:5pt solid var(--haccent);padding:4px 9px}
+
+/* t05 Copper Teal Circuit — dashed rules, header edge band */
+.t05 .hdr{border-top:4pt solid var(--haccent);padding-top:6px}
+.t05 .contact{border-bottom:1px solid var(--rule);padding-bottom:4px}
+.t05 .sechead{border-bottom:1.5pt dashed var(--haccent)}
+.t05 .sec + .sec{border-top:1.5px dashed var(--rule)}
+.t05 .dash{color:var(--accent)}
+
+/* t06 Violet Signal — editorial double rule, frequent dividers */
+.t06 .sechead{border-bottom:2.5pt solid var(--heading);box-shadow:0 3px 0 var(--haccent)}
+.t06 .role{border-top:1px solid var(--rule);padding-top:4px}
+.t06 .role:first-of-type{border-top:none;padding-top:0}
+
+/* t07 Solar Gradient — soft dashed, warm header edge */
+.t07 .hdr{border-top:4pt solid var(--haccent);padding-top:6px}
+.t07 .sechead{border-bottom:1.5pt dashed var(--haccent)}
+.t07 .sec + .sec{border-top:1px dashed var(--rule)}
+.t07 .dash{color:var(--accent)}
+
+/* t08 Nordic Neon — micro-offset markers */
+.t08 .contact{border-bottom:2pt solid var(--accent);padding-bottom:4px;display:inline-block}
+.t08 .sechead{border-bottom:1pt solid var(--muted)}
+.t08 .sechead::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:7px;transform:translateY(1px)}
+.t08 .dash{color:var(--accent)}
+
+/* t09 Terracotta Service — dotted, section-led */
+.t09 .sechead{display:inline-block;border-bottom:1.5pt dotted var(--haccent)}
+.t09 .sec + .sec{border-top:1.5px dotted var(--rule)}
+
+/* t10 Rainbow Minimal — tiny spectrum markers */
+.t10 .sechead{border-bottom:0.75pt solid var(--rule)}
+.t10 .sechead::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;transform:translateY(0)}
+.t10 .sec:nth-of-type(1) .sechead::before{background:#F97316}
+.t10 .sec:nth-of-type(2) .sechead::before{background:#FACC15}
+.t10 .sec:nth-of-type(3) .sechead::before{background:#22C55E}
+.t10 .sec:nth-of-type(4) .sechead::before{background:#0EA5E9}
+.t10 .sec:nth-of-type(5) .sechead::before{background:#6366F1}
+.t10 .sec + .sec{border-top:0.75px solid var(--rule)}
+
+/* t21 Terminal Signal — neon underscore, dotted charcoal dividers */
+.t21 .name{display:inline-block;border-bottom:3pt solid var(--accent);padding-bottom:2px}
+.t21 .sechead{border-bottom:2pt solid var(--accent)}
+.t21 .sec + .sec{border-top:1.5px dotted var(--muted)}
+.t21 .dash{color:var(--accent)}
+
+/* t22 Horizon Edge — stepped header + coral framing */
+.t22 .hmain{display:flex;justify-content:space-between;align-items:baseline}
+.t22 .contact{margin-top:0}
+.t22 .hdr{border-top:5pt solid var(--accent);border-bottom:5pt solid var(--accent);padding:9px 0;margin-bottom:14px}
+.t22 .sechead{border:none;border-top:4pt solid var(--accent);border-bottom:4pt solid var(--accent);padding:4px 0;display:block}
+.t22 .sec{margin-top:16px}
+.t22 .sec + .sec{border-top:none;padding-top:0}
+
+/* t23 Broadside Press — massive serif, crimson dates, offset rule */
+.t23 .name{font-size:30pt;line-height:.98;letter-spacing:-.3pt}
+.t23 .hdr{border-bottom:2pt solid var(--body);padding-bottom:6px}
+.t23 .sechead::after{content:"";display:block;width:60px;height:2pt;background:var(--accent);margin-top:2px}
+.t23 .role{border-top:1px solid var(--rule);padding-top:4px}
+.t23 .role:first-of-type{border-top:none;padding-top:0}
+.t23 .rdate{color:var(--accent);font-weight:700}
+
+/* t24 Clay Canvas — flush-right lowercase, terracotta chips */
+.t24 .hdr{text-align:right;margin-bottom:16mm}
+.t24 .name{text-transform:lowercase;font-weight:400;font-size:22pt}
+.t24 .headline{text-transform:lowercase}
+.t24 .sechead{display:inline-block;border:1pt solid var(--haccent);border-radius:4px;padding:2px 9px}
+.t24 .sec{margin-top:14px}
+.t24 .sec + .sec{border-top:1px dashed var(--rule)}
+
+/* t25 Cyan Blueprint — edge-to-edge top band, alternating rules */
+.t25{border-top:8pt solid var(--accent)}
+.t25 .sechead::before{content:"";display:inline-block;width:10px;height:10px;background:var(--accent);margin-right:7px;transform:translateY(1px)}
+.t25 .sec:nth-of-type(even) + .sec{border-top:2px solid var(--rule)}
+
+@page{size:A4;margin:0}
+@media print{body{background:#fff;padding:0}.label{display:none}.gallery{gap:0}.page{box-shadow:none;page-break-after:always}}
+</style>
+
+<div class="gallery">
+
+<div class="sheet">
+<div class="label">theme-01 · <b>Graphite Ledger</b> — Georgia · ordered, precise, calm</div>
+<article class="page t01" style="--surface:#FFFFFF;--body:#111827;--heading:#111827;--haccent:#4B5563;--accent:#6B7280;--muted:#6B7280;--tint:#E5E7EB;--rule:#E5E7EB;--font:'Georgia',serif;--bodypt:10.5pt;--lh:1.26;--hpt:11pt;--hweight:700;--htrack:1.3pt;--htransform:uppercase;--headline:#4B5563;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-02 · <b>Midnight Blueprint</b> — Arial · technical, focused, cool · ⚠ dark background</div>
+<article class="page t02" style="--surface:#020617;--body:#E5E7EB;--heading:#E5E7EB;--haccent:#38BDF8;--accent:#38BDF8;--muted:#9CA3AF;--tint:#1E293B;--rule:#1E293B;--font:'Arial',sans-serif;--bodypt:10.5pt;--lh:1.22;--hpt:11pt;--hweight:700;--htrack:1.5pt;--htransform:uppercase;--headline:#38BDF8;padding:0.6in 0.7in 0.6in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-03 · <b>Citrus Edge</b> — Calibri · fresh, energetic, clear</div>
+<article class="page t03" style="--surface:#FFFFFF;--body:#111827;--heading:#111827;--haccent:#F97316;--accent:#F97316;--muted:#6B7280;--tint:#FEF3C7;--rule:#FEF3C7;--font:'Calibri','Segoe UI',sans-serif;--bodypt:10.5pt;--lh:1.24;--hpt:11pt;--hweight:700;--htrack:1.4pt;--htransform:uppercase;--headline:#F97316;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-04 · <b>Emerald Transit</b> — Calibri · forward-moving, clear, structured</div>
+<article class="page t04" style="--surface:#FFFFFF;--body:#064E3B;--heading:#064E3B;--haccent:#10B981;--accent:#22C55E;--muted:#047857;--tint:#ECFDF5;--rule:#D1FAE5;--font:'Calibri','Segoe UI',sans-serif;--bodypt:10.5pt;--lh:1.24;--hpt:11pt;--hweight:700;--htrack:1.4pt;--htransform:uppercase;--headline:#064E3B;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-05 · <b>Copper Teal Circuit</b> — Arial · premium, engineered, futuristic</div>
+<article class="page t05" style="--surface:#FAF8F5;--body:#1D1C1A;--heading:#1D1C1A;--haccent:#2D8A8A;--accent:#2D8A8A;--muted:#7D6A5A;--tint:#E8D4C6;--rule:#E8D4C6;--font:'Arial',sans-serif;--bodypt:10.5pt;--lh:1.26;--hpt:11pt;--hweight:700;--htrack:1.4pt;--htransform:uppercase;--headline:#2D8A8A;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-06 · <b>Violet Signal</b> — Georgia · expressive, editorial, confident</div>
+<article class="page t06" style="--surface:#FFFFFF;--body:#111827;--heading:#4C1D95;--haccent:#7C3AED;--accent:#7C3AED;--muted:#6B7280;--tint:#F3E8FF;--rule:#F3E8FF;--font:'Georgia',serif;--bodypt:10.5pt;--lh:1.26;--hpt:11pt;--hweight:700;--htrack:1.5pt;--htransform:uppercase;--headline:#7C3AED;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-07 · <b>Solar Gradient</b> — Georgia · warm, atmospheric, layered</div>
+<article class="page t07" style="--surface:#FFF9F4;--body:#34261E;--heading:#7A5238;--haccent:#C9825C;--accent:#C9825C;--muted:#9A6A4B;--tint:#F4E5D6;--rule:#F4E5D6;--font:'Georgia',serif;--bodypt:10.5pt;--lh:1.28;--hpt:11pt;--hweight:700;--htrack:1.3pt;--htransform:uppercase;--headline:#7A5238;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-08 · <b>Nordic Neon</b> — Arial · crisp, cool, electric</div>
+<article class="page t08" style="--surface:#F8FCFD;--body:#121824;--heading:#4F89B9;--haccent:#0E7490;--accent:#0E7490;--muted:#63738A;--tint:#E6F7FA;--rule:#E6F7FA;--font:'Arial',sans-serif;--bodypt:10.5pt;--lh:1.24;--hpt:11pt;--hweight:700;--htrack:1.6pt;--htransform:uppercase;--headline:#4F89B9;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-09 · <b>Terracotta Service</b> — Georgia · compassionate, earthy, approachable</div>
+<article class="page t09" style="--surface:#FEFAF6;--body:#3A2A22;--heading:#8A4F36;--haccent:#D4865A;--accent:#D4865A;--muted:#8A6A57;--tint:#F3E0D3;--rule:#F3E0D3;--font:'Georgia',serif;--bodypt:10.5pt;--lh:1.26;--hpt:11pt;--hweight:700;--htrack:1.2pt;--htransform:uppercase;--headline:#8A4F36;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-10 · <b>Rainbow Minimal</b> — Calibri · bright, optimistic, disciplined</div>
+<article class="page t10" style="--surface:#FFFFFF;--body:#111827;--heading:#111827;--haccent:#F472B6;--accent:#F472B6;--muted:#6B7280;--tint:#F3F4F6;--rule:#F3F4F6;--font:'Calibri','Segoe UI',sans-serif;--bodypt:10.5pt;--lh:1.24;--hpt:11pt;--hweight:700;--htrack:1.1pt;--htransform:uppercase;--headline:#6366F1;padding:0.65in 0.7in 0.65in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-21 · <b>Terminal Signal</b> — Arial · cyber, technical, utilitarian</div>
+<article class="page t21" style="--surface:#FFFFFF;--body:#111111;--heading:#111111;--haccent:#008800;--accent:#008800;--muted:#555555;--tint:#EAEAEA;--rule:#555555;--font:'Arial',sans-serif;--bodypt:10.5pt;--lh:1.22;--hpt:11pt;--hweight:700;--htrack:2.0pt;--htransform:uppercase;--headline:#008800;padding:0.65in 0.65in 0.65in 0.65in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-22 · <b>Horizon Edge</b> — Arial · expansive, cinematic, warm</div>
+<article class="page t22" style="--surface:#FFFFFF;--body:#0B192C;--heading:#0B192C;--haccent:#FF5722;--accent:#FF5722;--muted:#476685;--tint:#E0E0E0;--rule:#476685;--font:'Arial',sans-serif;--bodypt:10.5pt;--lh:1.26;--hpt:12pt;--hweight:800;--htrack:1.8pt;--htransform:uppercase;--headline:#FF5722;padding:0.7in 0.6in 0.7in 0.6in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-23 · <b>Broadside Press</b> — Georgia · journalistic, urgent, factual</div>
+<article class="page t23" style="--surface:#FFFFFF;--body:#000000;--heading:#000000;--haccent:#8B0000;--accent:#8B0000;--muted:#444444;--tint:#F5F5F5;--rule:#222222;--font:'Georgia',serif;--bodypt:10.5pt;--lh:1.24;--hpt:13pt;--hweight:700;--htrack:0pt;--htransform:uppercase;--headline:#8B0000;padding:0.6in 0.7in 0.6in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-24 · <b>Clay Canvas</b> — Georgia · tactile, grounded, artisanal</div>
+<article class="page t24" style="--surface:#FFFFFF;--body:#3E2723;--heading:#3E2723;--haccent:#D84315;--accent:#D84315;--muted:#8D6E63;--tint:#EFEBE9;--rule:#8D6E63;--font:'Georgia',serif;--bodypt:10.5pt;--lh:1.28;--hpt:13pt;--hweight:600;--htrack:1.0pt;--htransform:lowercase;--headline:#D84315;padding:0.7in 0.7in 0.7in 0.7in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+<div class="sheet">
+<div class="label">theme-25 · <b>Cyan Blueprint</b> — Arial · structural, analytical, precise</div>
+<article class="page t25" style="--surface:#FFFFFF;--body:#1C2833;--heading:#1C2833;--haccent:#0088A0;--accent:#0088A0;--muted:#5D6D7E;--tint:#E5E8E8;--rule:#5D6D7E;--font:'Arial',sans-serif;--bodypt:10.5pt;--lh:1.25;--hpt:11pt;--hweight:600;--htrack:1.4pt;--htransform:uppercase;--headline:#0088A0;padding:0.6in 0.65in 0.6in 0.65in">
+<header class="hdr"><div class="hmain"><div class="name">Jordan A. Rivera</div><div class="contact">0400 000 000 · jordan.rivera@example.com · Melbourne VIC</div></div><div class="headline">Program Coordinator — Community Services</div></header>
+<section class="sec"><h2 class="sechead">Summary</h2><p class="para">Community-services professional with 8+ years coordinating frontline programs across health, housing, and youth services. Track record of lifting service reach while holding to compliance and trauma-informed practice. Known for turning fragmented referral pathways into measurable outcomes for clients and funders alike.</p></section>
+<section class="sec"><h2 class="sechead">Skills</h2><p class="para skills">Program Coordination, Stakeholder Engagement, Case Management, Grant Reporting, Data &amp; Outcomes Measurement, Risk &amp; Compliance, Volunteer Management, Trauma-Informed Practice</p></section>
+<section class="sec"><h2 class="sechead">Experience</h2>
+<div class="role"><div class="rtitle">Program Coordinator</div><div class="rmeta"><span class="rorg">Hope Community Network</span> · <span class="rdate">Jan 2021 – Present</span></div><div class="bullet"><span class="dash">-</span><span>Coordinated 6 concurrent programs serving 1,200+ clients annually, lifting referral conversion by 28%.</span></div><div class="bullet"><span class="dash">-</span><span>Rebuilt the intake pathway with three partner agencies, cutting average wait time from 14 to 5 days.</span></div><div class="bullet"><span class="dash">-</span><span>Authored quarterly outcomes reports that secured $480K in continued funding across two grant cycles.</span></div></div>
+<div class="role"><div class="rtitle">Case Manager</div><div class="rmeta"><span class="rorg">Southside Housing Services</span> · <span class="rdate">Mar 2017 – Dec 2020</span></div><div class="bullet"><span class="dash">-</span><span>Managed a caseload of 45 clients, sustaining a 92% housing-retention rate over three years.</span></div><div class="bullet"><span class="dash">-</span><span>Introduced a shared case-note standard adopted team-wide, reducing handover errors by 40%.</span></div><div class="bullet"><span class="dash">-</span><span>Facilitated weekly multi-agency reviews coordinating health, legal, and financial supports.</span></div></div>
+<div class="role"><div class="rtitle">Support Worker</div><div class="rmeta"><span class="rorg">Youth Connect Victoria</span> · <span class="rdate">Feb 2015 – Feb 2017</span></div><div class="bullet"><span class="dash">-</span><span>Delivered one-to-one support to at-risk youth, with 85% re-engaging in education or training.</span></div><div class="bullet"><span class="dash">-</span><span>Co-designed a peer-mentoring pilot later scaled to four additional sites.</span></div><div class="bullet"><span class="dash">-</span><span>Maintained incident and safeguarding records to full compliance across 24 monthly audits.</span></div></div>
+</section>
+<section class="sec"><h2 class="sechead">Education</h2><div class="bullet"><span class="dash">-</span><span>Bachelor of Social Work — RMIT University, 2014</span></div><div class="bullet"><span class="dash">-</span><span>Diploma of Community Services — Holmesglen Institute, 2011</span></div></section>
+<section class="sec"><h2 class="sechead">Certifications</h2><div class="bullet"><span class="dash">-</span><span>Mental Health First Aid (Accredited), 2023</span></div><div class="bullet"><span class="dash">-</span><span>Working with Children Check (VIC), current</span></div><div class="bullet"><span class="dash">-</span><span>Cert IV Training &amp; Assessment, 2019</span></div></section>
+</article>
+</div>
+
+</div>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Career Brain — Theme Playground</title>
+<style>
+  body {
+    font-family: 'Calibri', Arial, sans-serif;
+    background: #E5E7EB;
+    margin: 0;
+    padding: 32px;
+    color: #1A1A1A;
+  }
+  h1.page-title {
+    font-family: 'Calibri', Arial, sans-serif;
+    font-size: 22px;
+    margin: 0 0 8px;
+  }
+  p.page-sub {
+    margin: 0 0 24px;
+    color: #4A5568;
+    font-size: 14px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: #FFFFFF;
+    border-radius: 6px;
+    padding: 28px 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-family: 'Calibri', Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.4;
+    color: #1A1A1A;
+  }
+  .meta {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6B7280;
+    margin-bottom: 12px;
+  }
+  .name {
+    font-size: 18pt;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+  .contact {
+    text-align: center;
+    font-size: 10pt;
+    color: #4A5568;
+    margin-bottom: 16px;
+  }
+  .target {
+    text-align: center;
+    font-style: italic;
+    font-size: 10pt;
+    color: #4A5568;
+    margin-bottom: 20px;
+  }
+  /* Heading variants */
+  .heading-bb {
+    font-size: 13pt;
+    font-weight: 700;
+    text-transform: none;
+    padding-bottom: 3px;
+    margin: 14px 0 8px;
+  }
+  .heading-bl {
+    font-size: 13pt;
+    font-weight: 700;
+    padding: 2px 0 2px 10px;
+    margin: 14px 0 8px;
+  }
+  .heading-bl-thin {
+    font-size: 13pt;
+    font-weight: 700;
+    padding-bottom: 2px;
+    margin: 14px 0 8px;
+  }
+  .skills-row {
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 10.5pt;
+  }
+  .role-title { font-weight: 700; font-size: 11pt; margin-top: 8px; }
+  .role-org   { font-style: italic; font-size: 10pt; color: #4A5568; margin-bottom: 4px; }
+
+  /* ============ THEME 1 — Progressive Plum ============ */
+  .t1 .heading { color: #6B2D5C; border-left: 4px solid #6B2D5C; font-size:13pt; font-weight:700; padding: 2px 0 2px 10px; margin: 14px 0 8px;}
+  .t1 .skills { background: #FAF5F8; padding: 8px 12px; border-radius: 3px; }
+  .t1 .accent { color: #C4922A; }
+
+  /* ============ THEME 2 — Warm Mauve ============ */
+  .t2 .heading { color: #8B3A62; border-left: 4px solid #8B3A62; font-size:13pt; font-weight:700; padding: 2px 0 2px 10px; margin: 14px 0 8px;}
+  .t2 .skills { background: #FBF5F7; padding: 8px 12px; border-radius: 3px; }
+  .t2 .accent { color: #D4915C; }
+
+  /* ============ THEME 3 — Advocacy Violet ============ */
+  .t3 .heading { color: #4C2A6B; border-bottom: 2px solid #4C2A6B; font-size:13pt; font-weight:700; padding-bottom: 3px; margin: 14px 0 8px;}
+  .t3 .skills { background: #F7F5FA; padding: 8px 12px; border-radius: 3px; }
+  .t3 .accent { color: #C4922A; }
+
+  /* ============ THEME 4 — Contemporary Rose ============ */
+  .t4 .heading { color: #9B2C5E; border-left: 4px solid #9B2C5E; font-size:13pt; font-weight:700; padding: 2px 0 2px 10px; margin: 14px 0 8px;}
+  .t4 .skills { background: #FDF5F8; padding: 8px 12px; border-radius: 3px; }
+
+  /* ============ THEME 5 — Grounded Olive ============ */
+  .t5 .heading { color: #3E4F2C; border-bottom: 2px solid #3E4F2C; font-size:13pt; font-weight:700; padding-bottom: 3px; margin: 14px 0 8px;}
+  .t5 .skills { background: #F8F7F0; padding: 8px 12px; border-radius: 3px; }
+  .t5 .accent { color: #A89154; }
+
+  /* ============ THEME 6 — Editorial Slate ============ */
+  .t6 .heading { color: #2D3748; border-left: 4px solid #0E7C7B; font-size:13pt; font-weight:700; padding: 2px 0 2px 10px; margin: 14px 0 8px;}
+  .t6 .skills { background: #F5F7F7; padding: 8px 12px; border-radius: 3px; }
+  .t6 .accent { color: #0E7C7B; }
+
+  /* ============ THEME 7 — Modern Noir ============ */
+  .t7 .heading { color: #1A202C; border-bottom: 1px solid #1A202C; font-size:13pt; font-weight:700; padding-bottom: 2px; margin: 14px 0 8px; text-transform: uppercase; letter-spacing: 0.04em;}
+  .t7 .skills { background: #FAFAFA; padding: 8px 12px; border-radius: 3px; }
+  .t7 .accent { color: #0E7C7B; }
+
+  /* ============ Forest Green v2 ============ */
+  .tfg .heading { color: #1A6B4A; border-left: 4px solid #1A6B4A; font-size:13pt; font-weight:700; padding: 2px 0 2px 10px; margin: 14px 0 8px;}
+  .tfg .skills { background: #F0FFF4; padding: 8px 12px; border-radius: 3px; }
+  .tfg .accent { color: #68D391; }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">Career Brain — Theme Playground</h1>
+<p class="page-sub">Mock resume preview for each candidate theme. All ATS-safe: single column, Calibri, allowed_headings whitelist, ≥7:1 heading contrast, no glyphs.</p>
+
+<div class="grid">
+
+<!-- 1 Progressive Plum -->
+<div class="card t1">
+  <div class="meta">1 — Progressive Plum &nbsp;·&nbsp; #6B2D5C + #C4922A &nbsp;·&nbsp; border_left</div>
+  <div class="name">Jonas Dougall</div>
+  <div class="contact">0400 000 000 &nbsp;·&nbsp; ashmdoug@gmail.com &nbsp;·&nbsp; Melbourne VIC</div>
+  <div class="target"><em>Community Engagement Coordinator — Launch Housing</em></div>
+  <div class="heading">Summary</div>
+  <div>Mission-driven engagement lead with 8 years across housing, advocacy and lived-experience design.</div>
+  <div class="heading">Skills</div>
+  <div class="skills">Stakeholder engagement — Service co-design — Policy analysis — Grant writing — Facilitation — Trauma-informed practice</div>
+  <div class="heading">Experience</div>
+  <div class="role-title">Senior Engagement Officer</div>
+  <div class="role-org">Thorne Harbour Health — 2023–Present</div>
+  <div class="role-title">Program Lead, Outreach</div>
+  <div class="role-org">Launch Housing — 2020–2023</div>
+  <div class="heading">Education</div>
+  <div>BA (Social Policy), University of Melbourne</div>
+</div>
+
+<!-- 2 Warm Mauve -->
+<div class="card t2">
+  <div class="meta">2 — Warm Mauve &nbsp;·&nbsp; #8B3A62 + #D4915C &nbsp;·&nbsp; border_left</div>
+  <div class="name">Jonas Dougall</div>
+  <div class="contact">0400 000 000 &nbsp;·&nbsp; ashmdoug@gmail.com &nbsp;·&nbsp; Melbourne VIC</div>
+  <div class="target"><em>Community Engagement Coordinator — Launch Housing</em></div>
+  <div class="heading">Summary</div>
+  <div>Mission-driven engagement lead with 8 years across housing, advocacy and lived-experience design.</div>
+  <div class="heading">Skills</div>
+  <div class="skills">Stakeholder engagement — Service co-design — Policy analysis — Grant writing — Facilitation — Trauma-informed practice</div>
+  <div class="heading">Experience</div>
+  <div class="role-title">Senior Engagement Officer</div>
+  <div class="role-org">Thorne Harbour Health — 2023–Present</div>
+  <div class="role-title">Program Lead, Outreach</div>
+  <div class="role-org">Launch Housing — 2020–2023</div>
+  <div class="heading">Education</div>
+  <div>BA (Social Policy), University of Melbourne</div>
+</div>
+
+<!-- 3 Advocacy Violet -->
+<div class="card t3">
+  <div class="meta">3 — Advocacy Violet &nbsp;·&nbsp; #4C2A6B + #C4922A &nbsp;·&nbsp; border_bottom</div>
+  <div class="name">Jonas Dougall</div>
+  <div class="contact">0400 000 000 &nbsp;·&nbsp; ashmdoug@gmail.com &nbsp;·&nbsp; Melbourne VIC</div>
+  <div class="target"><em>Community Engagement Coordinator — Launch Housing</em></div>
+  <div class="heading">Summary</div>
+  <div>Mission-driven engagement lead with 8 years across housing, advocacy and lived-experience design.</div>
+  <div class="heading">Skills</div>
+  <div class="skills">Stakeholder engagement — Service co-design — Policy analysis — Grant writing — Facilitation — Trauma-informed practice</div>
+  <div class="heading">Experience</div>
+  <div class="role-title">Senior Engagement Officer</div>
+  <div class="role-org">Thorne Harbour Health — 2023–Present</div>
+  <div class="role-title">Program Lead, Outreach</div>
+  <div class="role-org">Launch Housing — 2020–2023</div>
+  <div class="heading">Education</div>
+  <div>BA (Social Policy), University of Melbourne</div>
+</div>
+
+<!-- 4 Contemporary Rose -->
+<div class="card t4">
+  <div class="meta">4 — Contemporary Rose &nbsp;·&nbsp; #9B2C5E &nbsp;·&nbsp; border_left</div>
+  <div class="name">Jonas Dougall</div>
+  <div class="contact">0400 000 000 &nbsp;·&nbsp; ashmdoug@gmail.com &nbsp;·&nbsp; Melbourne VIC</div>
+  <div class="target"><em>Community Engagement Coordinator — Launch Housing</em></div>
+  <div class="heading">Summary</div>
+  <div>Mission-driven engagement lead with 8 years across housing, advocacy and lived-experience design.</div>
+  <div class="heading">Skills</div>
+  <div class="skills">Stakeholder engagement — Service co-design — Policy analysis — Grant writing — Facilitation — Trauma-informed practice</div>
+  <div class="heading">Experience</div>
+  <div class="role-title">Senior Engagement Officer</div>
+  <div class="role-org">Thorne Harbour Health — 2023–Present</div>
+  <div class="role-title">Program Lead, Outreach</div>
+  <div class="role-org">Launch Housing — 2020–2023</div>
+  <div class="heading">Education</div>
+  <div>BA (Social Policy), University of Melbourne</div>
+</div>
+
+<!-- 5 Grounded Olive -->
+<div class="card t5">
+  <div class="meta">5 — Grounded Olive &nbsp;·&nbsp; #3E4F2C + #A89154 &nbsp;·&nbsp; border_bottom</div>
+  <div class="name">Jonas Dougall</div>
+  <div class="contact">0400 000 000 &nbsp;·&nbsp; ashmdoug@gmail.com &nbsp;·&nbsp; Melbourne VIC</div>
+  <div class="target"><em>Community Engagement Coordinator — Launch Housing</em></div>
+  <div class="heading">Summary</div>
+  <div>Mission-driven engagement lead with 8 years across housing, advocacy and lived-experience design.</div>
+  <div class="heading">Skills</div>
+  <div class="skills">Stakeholder engagement — Service co-design — Policy analysis — Grant writing — Facilitation — Trauma-informed practice</div>
+  <div class="heading">Experience</div>
+  <div class="role-title">Senior Engagement Officer</div>
+  <div class="role-org">Thorne Harbour Health — 2023–Present</div>
+  <div class="role-title">Program Lead, Outreach</div>
+  <div class="role-org">Launch Housing — 2020–2023</div>
+  <div class="heading">Education</div>
+  <div>BA (Social Policy), University of Melbourne</div>
+</div>
+
+<!-- 6 Editorial Slate -->
+<div class="card t6">
+  <div class="meta">6 — Editorial Slate &nbsp;·&nbsp; #2D3748 + #0E7C7B &nbsp;·&nbsp; border_left (teal)</div>
+  <div class="name">Jonas Dougall</div>
+  <div class="contact">0400 000 000 &nbsp;·&nbsp; ashmdoug@gmail.com &nbsp;·&nbsp; Melbourne VIC</div>
+  <div class="target"><em>Community Engagement Coordinator — Launch Housing</em></div>
+  <div class="heading">Summary</div>
+  <div>Mission-driven engagement lead with 8 years across housing, advocacy and lived-experience design.</div>
+  <div class="heading">Skills</div>
+  <div class="skills">Stakeholder engagement — Service co-design — Policy analysis — Grant writing — Facilitation — Trauma-informed practice</div>
+  <div class="heading">Experience</div>
+  <div class="role-title">Senior Engagement Officer</div>
+  <div class="role-org">Thorne Harbour Health — 2023–Present</div>
+  <div class="role-title">Program Lead, Outreach</div>
+  <div class="role-org">Launch Housing — 2020–2023</div>
+  <div class="heading">Education</div>
+  <div>BA (Social Policy), University of Melbourne</div>
+</div>
+
+<!-- 7 Modern Noir -->
+<div class="card t7">
+  <div class="meta">7 — Modern Noir &nbsp;·&nbsp; #1A202C + #0E7C7B &nbsp;·&nbsp; border_bottom (thin)</div>
+  <div class="name">Jonas Dougall</div>
+  <div class="contact">0400 000 000 &nbsp;·&nbsp; ashmdoug@gmail.com &nbsp;·&nbsp; Melbourne VIC</div>
+  <div class="target"><em>Community Engagement Coordinator — Launch Housing</em></div>
+  <div class="heading">SUMMARY</div>
+  <div>Mission-driven engagement lead with 8 years across housing, advocacy and lived-experience design.</div>
+  <div class="heading">SKILLS</div>
+  <div class="skills">Stakeholder engagement — Service co-design — Policy analysis — Grant writing — Facilitation — Trauma-informed practice</div>
+  <div class="heading">EXPERIENCE</div>
+  <div class="role-title">Senior Engagement Officer</div>
+  <div class="role-org">Thorne Harbour Health — 2023–Present</div>
+  <div class="role-title">Program Lead, Outreach</div>
+  <div class="role-org">Launch Housing — 2020–2023</div>
+  <div class="heading">EDUCATION</div>
+  <div>BA (Social Policy), University of Melbourne</div>
+</div>
+
+<!-- FG v2 -->
+<div class="card tfg">
+  <div class="meta">FG-v2 — Forest Green (deepened) &nbsp;·&nbsp; #1A6B4A &nbsp;·&nbsp; border_left</div>
+  <div class="name">Jonas Dougall</div>
+  <div class="contact">0400 000 000 &nbsp;·&nbsp; ashmdoug@gmail.com &nbsp;·&nbsp; Melbourne VIC</div>
+  <div class="target"><em>Community Engagement Coordinator — Launch Housing</em></div>
+  <div class="heading">Summary</div>
+  <div>Mission-driven engagement lead with 8 years across housing, advocacy and lived-experience design.</div>
+  <div class="heading">Skills</div>
+  <div class="skills">Stakeholder engagement — Service co-design — Policy analysis — Grant writing — Facilitation — Trauma-informed practice</div>
+  <div class="heading">Experience</div>
+  <div class="role-title">Senior Engagement Officer</div>
+  <div class="role-org">Thorne Harbour Health — 2023–Present</div>
+  <div class="role-title">Program Lead, Outreach</div>
+  <div class="role-org">Launch Housing — 2020–2023</div>
+  <div class="heading">Education</div>
+  <div>BA (Social Policy), University of Melbourne</div>
+</div>
+
+</div>
+</body>
+</html>

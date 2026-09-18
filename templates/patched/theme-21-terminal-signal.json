@@ -1,0 +1,224 @@
+{
+  "schema_version": "2.3",
+  "template_id": "theme_terminal_signal",
+  "tier": 1,
+  "tier_label": "ATS Standard",
+  "doc_type": "resume",
+  "target_sector": [
+    "tech",
+    "engineering"
+  ],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDERSCHEMAV2",
+  "description": "Cyber-utilitarian terminal theme: stark flush-left charcoal typography, dotted dividers, and pinpoint neon-green micro-accents on a white canvas.",
+  "visual_identity": {
+    "theme_name": "Terminal Signal",
+    "mood": "cyber, technical, utilitarian, stark",
+    "motif_name": "glowing terminal underscores",
+    "density_target": "high",
+    "silhouette": "flush-left, rigid, data-driven",
+    "personality_axis": "precise, unapologetic, developer-minded",
+    "header_silhouette": "stark flush-left minimalist block with a heavy neon underscore",
+    "section_emphasis_pattern": "accent-led",
+    "contrast_intensity": "high"
+  },
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": [
+      "IBM Plex Sans",
+      "Arial"
+    ],
+    "content_layer": "all essential content must remain plain text in normal reading order and selectable",
+    "forbidden_glyphs": [
+      "icons",
+      "emoji",
+      "ornamental bullets",
+      "nonstandard ligatures",
+      "special symbols used as decoration",
+      "layout-only unicode art"
+    ]
+  },
+  "palette": {
+    "base_colours": [
+      "#0A0A0A",
+      "#3A3A3A",
+      "#6A6A6A"
+    ],
+    "complementary_accent": "#008800",
+    "neutral_surface": "#FFFFFF",
+    "neutral_text": "#0A0A0A",
+    "neutral_background": "#FAFAFA",
+    "supporting_neutral": "#EAEAEA"
+  },
+  "typography": {
+    "base_font": "IBM Plex Sans",
+    "base_size_pt": 10.5,
+    "line_spacing": 1.2,
+    "spacing_after_pt": 4,
+    "section_heading_tracking_pt": 2.0,
+    "section_heading_size_pt": 11,
+    "section_heading_weight": 700
+  },
+  "page": {
+    "margins_in": {
+      "top": 0.65,
+      "right": 0.65,
+      "bottom": 0.65,
+      "left": 0.65
+    },
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "single_column": true,
+    "reading_order": "top_to_bottom_left_to_right",
+    "export_safe": "Google Docs and PDF export compatible"
+  },
+  "bands": {
+    "strategy": "minimal bottom-edge neon accents mimicking a command-line cursor",
+    "placement": [
+      "header edge"
+    ],
+    "intensity": "moderate",
+    "height_rule": {
+      "min_pt": 2,
+      "max_pt": 4,
+      "default_pt": 3
+    },
+    "band_targets": [
+      "top header edge"
+    ],
+    "highlight_band_targets": [
+      "header edge"
+    ],
+    "band_placement_profile": "minimal_signature",
+    "accent_placement_profile": "mixed_micro_use"
+  },
+  "dividers": {
+    "grammar": "dotted",
+    "frequency": "moderate",
+    "weight": "thin",
+    "divider_targets": [
+      "between sections",
+      "between role and achievement clusters"
+    ],
+    "divider_rhythm": "moderate"
+  },
+  "accent_logic": {
+    "primary_use": [
+      "header underscore",
+      "tiny bullet points",
+      "date markers"
+    ],
+    "complementary_accent_role": "neon green provides pinpoint signal contrast against rigid charcoal text without entering the reading flow",
+    "allowed_scope": [
+      "micro markers",
+      "header edge"
+    ],
+    "forbidden_scope": [
+      "body text",
+      "background fills",
+      "horizontal rules between sections"
+    ],
+    "accent_balance": "neon green must be used exclusively as a pinpoint \"signal\" in a sea of rigid charcoal text, mimicking a terminal prompt",
+    "contrast_intensity": "high"
+  },
+  "theme_specific_rules": {
+    "must_include": [
+      "stark flush-left alignment",
+      "dotted section dividers",
+      "neon green micro-accents",
+      "heavy tracking on headers"
+    ],
+    "forbidden_repeats": [
+      "same top-of-page structure across themes",
+      "same section label treatment across themes",
+      "same divider grammar as previous theme",
+      "same chip treatment as previous theme",
+      "same band placement as previous theme",
+      "tonal-only palette dependency"
+    ],
+    "visual_differentiators": [
+      "command-line aesthetic",
+      "neon vs charcoal contrast",
+      "strict rigid left-edge anchoring"
+    ],
+    "anti_generic_rules": [
+      "no centered text whatsoever",
+      "no solid section dividers",
+      "no soft/rounded fonts"
+    ],
+    "non_reuse_constraints": [
+      "no repeated top-of-page pattern",
+      "no repeated divider grammar from previous theme",
+      "no repeated band placement from previous theme"
+    ],
+    "adjacent_theme_difference_rules": [
+      "must differ from previous theme in band placement",
+      "must differ from previous theme in divider rhythm",
+      "must differ from previous theme in accent placement"
+    ]
+  },
+  "section_heading_style": {
+    "font_color": "#0A0A0A",
+    "text_transform": "uppercase",
+    "decoration": "stark flush-left block with neon underscore",
+    "accent_color": "#0A6E2E"
+  },
+  "body_text_color": "#0A0A0A",
+  "muted_text_color": "#4A4A4A",
+  "skills_background_tint": "#EAEAEA",
+  "avoid_list": [
+    "tonal-only palette",
+    "same top-of-page structure",
+    "same divider grammar as previous theme",
+    "same chip treatment as previous theme",
+    "generic safe fallback",
+    "over-softened hierarchy",
+    "repeated band placement",
+    "multi-column layout",
+    "sidebar layout",
+    "text boxes",
+    "layout tables",
+    "floating objects",
+    "decorative graphics",
+    "icons",
+    "images",
+    "headers and footers for essential content",
+    "low-contrast body text",
+    "centered text",
+    "solid grey dividers",
+    "soft palettes",
+    "serif fonts"
+  ],
+  "legacy_fields": {
+    "pre_premium_patch": {
+      "ats_constraints.font_family": [
+        "Arial",
+        "Calibri",
+        "Georgia"
+      ],
+      "typography.base_font": "Arial",
+      "typography.line_spacing": 1.22,
+      "typography.spacing_after_pt": 4,
+      "palette.base_colours": [
+        "#111111",
+        "#333333",
+        "#555555"
+      ],
+      "palette.neutral_text": "#111111",
+      "body_text_color": "#111111",
+      "muted_text_color": "#555555",
+      "section_heading_style.font_color": "#111111",
+      "section_heading_style.accent_color": "#008800",
+      "skills_background_tint": "#EAEAEA"
+    }
+  },
+  "complementary_accent": "#00B341",
+  "heading_font_family": [
+    "JetBrains Mono",
+    "Consolas"
+  ]
+}

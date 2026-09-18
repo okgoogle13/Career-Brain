@@ -1,0 +1,233 @@
+{
+  "schema_version": "2.0",
+  "template_id": "ksc_standard_v2",
+  "tier": 1,
+  "tier_label": "ATS Clean",
+  "doc_type": "ksc",
+  "target_sector": ["government", "community_services", "non_profit"],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDER_SCHEMA_V2",
+  "description": "Key Selection Criteria response template for AU government, community-services, and non-profit applications supporting up to 6 criteria — Calibri throughout with Forest Green and Sage accents, ATS-safe single-column layout.",
+
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": "Calibri",
+    "content_layer": "body_only",
+    "forbidden_glyphs": ["•", "✔", "★", "❖", "●", "✅", "❌", "|"]
+  },
+
+  "palette": {
+    "forest_green": "#2F855A",
+    "dark_grey": "#2D3748",
+    "sage_green": "#68D391",
+    "sage_light": "#F0FFF4",
+    "body_text": "#1A1A1A",
+    "muted_text": "#4A5568",
+    "rule_sage": "#C6F6D5",
+    "white": "#FFFFFF"
+  },
+
+  "typography": {
+    "base_font": "Calibri",
+    "base_size_pt": 11,
+    "line_spacing": 1.15,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 0,
+    "section_heading_size_pt": 13
+  },
+
+  "page": {
+    "margin_top_cm": 1.9,
+    "margin_bottom_cm": 1.9,
+    "margin_left_cm": 1.9,
+    "margin_right_cm": 1.9,
+    "background_color": "#FFFFFF"
+  },
+
+  "blocks": [
+    {
+      "block_id": "name_header",
+      "type": "name_block",
+      "order": 1,
+      "tokens": ["{{CONTACT_NAME}}"],
+      "content": "{{CONTACT_NAME}}",
+      "visualConfig": {
+        "font_size_pt": 17,
+        "font_weight": "bold",
+        "font_color": "#2F855A",
+        "text_align": "left",
+        "padding_top_pt": 0,
+        "padding_bottom_pt": 2,
+        "letter_spacing": "normal"
+      }
+    },
+
+    {
+      "block_id": "contact_info",
+      "type": "contact_block",
+      "order": 2,
+      "tokens": [
+        "{{CONTACT_PHONE}}",
+        "{{CONTACT_EMAIL}}",
+        "{{CONTACT_LOCATION}}"
+      ],
+      "content": "{{CONTACT_PHONE}}    {{CONTACT_EMAIL}}    {{CONTACT_LOCATION}}",
+      "visualConfig": {
+        "font_size_pt": 10,
+        "font_color": "#4A5568",
+        "text_align": "left",
+        "padding_top_pt": 3,
+        "padding_bottom_pt": 12,
+        "line_spacing": 1.15,
+        "separator": "inline_spaced"
+      }
+    },
+
+    {
+      "block_id": "application_meta",
+      "type": "application_meta_block",
+      "order": 3,
+      "tokens": [
+        "{{TARGET_ROLE}}",
+        "{{EMPLOYER_ORG}}"
+      ],
+      "content": "{{TARGET_ROLE}}\n{{EMPLOYER_ORG}}",
+      "visualConfig": {
+        "role": {
+          "font_size_pt": 11.5,
+          "font_weight": "bold",
+          "font_color": "#2D3748",
+          "text_align": "left",
+          "padding_top_pt": 2,
+          "padding_bottom_pt": 2
+        },
+        "employer": {
+          "font_size_pt": 11,
+          "font_color": "#4A5568",
+          "text_align": "left",
+          "padding_bottom_pt": 14
+        }
+      }
+    },
+
+    {
+      "block_id": "criteria_responses",
+      "type": "criteria_block",
+      "order": 4,
+      "max_criteria": 6,
+      "criteria": [
+        {
+          "criterion_index": 1,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_1_TEXT}}",
+            "context": "{{KSC_1_CONTEXT}}",
+            "action": "{{KSC_1_ACTION}}",
+            "result": "{{KSC_1_RESULT}}",
+            "support_bullets": [
+              "{{KSC_1_SUPPORT_BULLET_1}}",
+              "{{KSC_1_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 2,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_2_TEXT}}",
+            "context": "{{KSC_2_CONTEXT}}",
+            "action": "{{KSC_2_ACTION}}",
+            "result": "{{KSC_2_RESULT}}",
+            "support_bullets": [
+              "{{KSC_2_SUPPORT_BULLET_1}}",
+              "{{KSC_2_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 3,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_3_TEXT}}",
+            "context": "{{KSC_3_CONTEXT}}",
+            "action": "{{KSC_3_ACTION}}",
+            "result": "{{KSC_3_RESULT}}",
+            "support_bullets": [
+              "{{KSC_3_SUPPORT_BULLET_1}}",
+              "{{KSC_3_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 4,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_4_TEXT}}",
+            "context": "{{KSC_4_CONTEXT}}",
+            "action": "{{KSC_4_ACTION}}",
+            "result": "{{KSC_4_RESULT}}",
+            "support_bullets": [
+              "{{KSC_4_SUPPORT_BULLET_1}}",
+              "{{KSC_4_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 5,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_5_TEXT}}",
+            "context": "{{KSC_5_CONTEXT}}",
+            "action": "{{KSC_5_ACTION}}",
+            "result": "{{KSC_5_RESULT}}",
+            "support_bullets": [
+              "{{KSC_5_SUPPORT_BULLET_1}}",
+              "{{KSC_5_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 6,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_6_TEXT}}",
+            "context": "{{KSC_6_CONTEXT}}",
+            "action": "{{KSC_6_ACTION}}",
+            "result": "{{KSC_6_RESULT}}",
+            "support_bullets": [
+              "{{KSC_6_SUPPORT_BULLET_1}}",
+              "{{KSC_6_SUPPORT_BULLET_2}}"
+            ]
+          }
+        }
+      ],
+      "visualConfig": {
+        "criterion_text": {
+          "font_size_pt": 12,
+          "font_weight": "bold",
+          "font_color": "#2F855A",
+          "text_transform": "none",
+          "border_bottom": {
+            "color": "#C6F6D5",
+            "width_pt": 1.0,
+            "style": "solid"
+          },
+          "margin_top_pt": 14,
+          "margin_bottom_pt": 8
+        },
+        "body": {
+          "font_size_pt": 11,
+          "font_color": "#1A1A1A",
+          "line_spacing": 1.25,
+          "paragraph_spacing_after_pt": 6
+        },
+        "bullet": {
+          "font_size_pt": 10.5,
+          "font_color": "#1A1A1A",
+          "glyph": "-",
+          "indent_pt": 14,
+          "line_spacing": 1.2,
+          "margin_bottom_pt": 2
+        }
+      }
+    }
+  ]
+}

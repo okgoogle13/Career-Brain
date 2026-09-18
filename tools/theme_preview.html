@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Career Brain — Resume Theme Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .app-header {
+    padding: 10px 16px;
+    background: #16213e;
+    border-bottom: 1px solid #0f3460;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .app-header h1 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8892b0;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .theme-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 3px;
+    background: #0f3460;
+    color: #64ffda;
+  }
+
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── sidebar ─────────────────────────────── */
+
+  .sidebar {
+    width: 214px;
+    flex-shrink: 0;
+    background: #16213e;
+    border-right: 1px solid #0f3460;
+    overflow-y: auto;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .ctrl-group > .ctrl-label-head {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8892b0;
+    margin-bottom: 8px;
+  }
+
+  .preset-btn {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    background: #0f3460;
+    border: 1px solid #1a4080;
+    border-radius: 4px;
+    color: #a8b2d8;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+
+  .preset-btn:hover { background: #1a4080; color: #ccd6f6; }
+
+  .preset-btn.active {
+    background: rgba(100,255,218,0.08);
+    border-color: #64ffda;
+    color: #64ffda;
+  }
+
+  .preset-btn small {
+    display: block;
+    font-size: 10px;
+    color: #8892b0;
+    margin-top: 2px;
+    font-family: monospace;
+  }
+
+  .preset-btn.active small { color: rgba(100,255,218,0.6); }
+
+  .ctrl-row { margin-bottom: 10px; }
+
+  .ctrl-row .ctrl-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #8892b0;
+    margin-bottom: 4px;
+  }
+
+  .ctrl-row .ctrl-label span {
+    color: #ccd6f6;
+    font-family: monospace;
+    font-size: 11px;
+  }
+
+  input[type=range] {
+    width: 100%;
+    accent-color: #64ffda;
+  }
+
+  .divider { height: 1px; background: #0f3460; }
+
+  .swatch-row { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+
+  .swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: default;
+    flex-shrink: 0;
+  }
+
+  .type-info {
+    font-size: 11px;
+    color: #8892b0;
+    line-height: 1.8;
+    font-family: monospace;
+  }
+
+  /* ── preview area ─────────────────────────── */
+
+  .preview-area {
+    flex: 1;
+    overflow-y: auto;
+    background: #23233a;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 24px;
+  }
+
+  .doc-wrap {
+    transform-origin: top center;
+    transition: transform 0.15s ease;
+  }
+
+  .doc-frame {
+    background: white;
+    width: 680px;
+    min-height: 920px;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.6);
+    transition: background 0.2s;
+  }
+
+  /* ── prompt bar ───────────────────────────── */
+
+  .prompt-bar {
+    flex-shrink: 0;
+    background: #16213e;
+    border-top: 1px solid #0f3460;
+    padding: 10px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-height: 90px;
+    overflow: hidden;
+  }
+
+  .prompt-text {
+    flex: 1;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #a8b2d8;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    background: #0f3460;
+    border: 1px solid #1a4080;
+    border-radius: 4px;
+    color: #64ffda;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .copy-btn:hover { background: #1a4080; }
+  .copy-btn.copied { background: rgba(100,255,218,0.1); border-color: #64ffda; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>Career Brain — Resume Theme Preview</h1>
+  <span class="theme-badge" id="theme-badge">Contemporary Professional</span>
+</div>
+
+<div class="main">
+
+  <!-- ── sidebar ───────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+
+    <div class="ctrl-group">
+      <span class="ctrl-label-head">Theme Preset</span>
+      <button class="preset-btn active" onclick="selectTheme('contemporary',this)">
+        Contemporary Professional
+        <small>Calibri · Forest Green</small>
+      </button>
+      <button class="preset-btn" onclick="selectTheme('classic',this)">
+        Professional Classic
+        <small>Times New Roman · Deep Navy</small>
+      </button>
+      <button class="preset-btn" onclick="selectTheme('minimalist',this)">
+        Modern Minimalist
+        <small>Arial · Teal</small>
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="ctrl-group">
+      <span class="ctrl-label-head">Zoom</span>
+      <div class="ctrl-row">
+        <div class="ctrl-label">Scale <span id="zoom-val">82%</span></div>
+        <input type="range" id="zoom-slider" min="45" max="105" value="82"
+               oninput="setZoom(this.value)">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="ctrl-group">
+      <span class="ctrl-label-head">Palette</span>
+      <div class="swatch-row" id="swatches"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="ctrl-group">
+      <span class="ctrl-label-head">Typography</span>
+      <div class="type-info" id="type-info"></div>
+    </div>
+
+  </aside>
+
+  <!-- ── preview ───────────────────────────────────────────────────── -->
+  <div class="preview-area">
+    <div class="doc-wrap" id="doc-wrap">
+      <div class="doc-frame" id="doc-frame">
+        <div id="resume-root"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── prompt bar ────────────────────────────────────────────────── -->
+<div class="prompt-bar">
+  <div class="prompt-text" id="prompt-text"></div>
+  <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">Copy</button>
+</div>
+
+<script>
+// ─── theme definitions ───────────────────────────────────────────────────────
+
+const T = {
+
+  contemporary: {
+    name: 'Contemporary Professional',
+    jsonFile: 'resume_contemporary_professional_v1.json',
+    font: '"Calibri","Trebuchet MS",sans-serif',
+    fontLabel: 'Calibri',
+    pageBg: '#FFFFFF',
+    marginPx: 54,
+    palette: {
+      'forest-green #2F855A': '#2F855A',
+      'dark-grey #2D3748':    '#2D3748',
+      'sage-green #68D391':   '#68D391',
+      'sage-light #F0FFF4':   '#F0FFF4',
+      'body-text #1A1A1A':    '#1A1A1A',
+      'muted #4A5568':        '#4A5568',
+      'rule-sage #C6F6D5':    '#C6F6D5',
+    },
+    title:       { size:'17pt', color:'#2F855A', border:false },
+    contact:     { size:'10pt', color:'#4A5568', italic:false },
+    headline:    { size:'11.5pt', color:'#2D3748', bold:true },
+    h1:          { size:'13pt', color:'#2F855A', borderType:'bottom', borderColor:'#C6F6D5', borderWidth:'1pt' },
+    h2:          { size:'11pt', color:'#2D3748' },
+    roleMeta:    { size:'10pt', color:'#4A5568', italic:true },
+    body:        { size:'11pt', color:'#1A1A1A' },
+    bullet:      { size:'10.5pt', color:'#1A1A1A' },
+    skills:      { size:'10.5pt', color:'#1A1A1A', bg:'#F0FFF4' },
+    lineSpacing: 1.2,
+    spaceAfter:  '6pt',
+    margins:     '1.9cm',
+  },
+
+  classic: {
+    name: 'Professional Classic',
+    jsonFile: 'resume_professional_classic_v1.json',
+    font: '"Times New Roman","Georgia",serif',
+    fontLabel: 'Times New Roman',
+    pageBg: '#FFFFFF',
+    marginPx: 54,
+    palette: {
+      'deep-navy #1A365D':  '#1A365D',
+      'charcoal #2D3748':   '#2D3748',
+      'subtle #718096':     '#718096',
+      'rule-grey #CBD5E0':  '#CBD5E0',
+      'body-text #1A1A1A':  '#1A1A1A',
+    },
+    title:       { size:'16pt', color:'#1A365D', border:true, borderColor:'#1A365D' },
+    contact:     { size:'10pt', color:'#2D3748', italic:false },
+    headline:    { size:'12pt', color:'#2D3748', bold:true },
+    h1:          { size:'14pt', color:'#1A365D', borderType:'bottom', borderColor:'#CBD5E0', borderWidth:'0.5pt' },
+    h2:          { size:'12pt', color:'#2D3748' },
+    roleMeta:    { size:'10pt', color:'#718096', italic:true },
+    body:        { size:'11pt', color:'#1A1A1A' },
+    bullet:      { size:'11pt', color:'#1A1A1A' },
+    skills:      { size:'11pt', color:'#2D3748', bg:null },
+    lineSpacing: 1.15,
+    spaceAfter:  '6pt',
+    margins:     '1.9cm',
+  },
+
+  minimalist: {
+    name: 'Modern Minimalist',
+    jsonFile: 'resume_modern_minimalist_v1.json',
+    font: '"Arial","Helvetica Neue",sans-serif',
+    fontLabel: 'Arial',
+    pageBg: '#FAFAFA',
+    marginPx: 65,
+    palette: {
+      'slate-blue #4A5568': '#4A5568',
+      'dark-grey #2D3748':  '#2D3748',
+      'teal #38B2AC':       '#38B2AC',
+      'teal-light #E6FFFA': '#E6FFFA',
+      'muted #718096':      '#718096',
+      'off-white #FAFAFA':  '#FAFAFA',
+    },
+    title:       { size:'18pt', color:'#4A5568', border:false },
+    contact:     { size:'9pt', color:'#718096', italic:false },
+    headline:    { size:'11pt', color:'#38B2AC', bold:true },
+    h1:          { size:'13pt', color:'#4A5568', borderType:'left', borderColor:'#38B2AC', borderWidth:'2px', borderPad:'8px' },
+    h2:          { size:'11pt', color:'#2D3748' },
+    roleMeta:    { size:'9pt', color:'#718096', italic:false },
+    body:        { size:'10.5pt', color:'#2D3748' },
+    bullet:      { size:'10.5pt', color:'#2D3748' },
+    skills:      { size:'10.5pt', color:'#2D3748', bg:'#E6FFFA' },
+    lineSpacing: 1.2,
+    spaceAfter:  '8pt',
+    margins:     '2.3cm',
+  },
+
+};
+
+// ─── mock content ────────────────────────────────────────────────────────────
+
+const C = {
+  name:       'Jordan Mitchell',
+  phone:      '0412 345 678',
+  email:      'jordan.mitchell@email.com.au',
+  location:   'Melbourne VIC 3000',
+  role:       'Senior Programme Manager — Community Services',
+  summary:    'Experienced programme manager with 12 years across government and non-profit sectors, delivering complex social service initiatives. Demonstrated success in stakeholder engagement, policy implementation and cross-functional team leadership. Committed to outcomes-driven practice and continuous quality improvement.',
+  skills:     ['Strategic Planning','Stakeholder Engagement','Budget Management','Risk Assessment','Team Leadership','Policy Development'],
+  roles: [
+    {
+      title: 'Senior Programme Manager',
+      org:   'Department of Health and Human Services',
+      dates: 'Jan 2020 – Present',
+      bullets: [
+        'Led delivery of $4.2M community health programme across 6 metropolitan regions',
+        'Managed cross-agency steering committee of 14 stakeholders and three directorates',
+        'Reduced programme overhead by 18% through process re-design and resource optimisation',
+        'Authored quarterly ministerial briefings and executive performance reports',
+      ],
+    },
+    {
+      title: 'Programme Lead',
+      org:   'City of Melbourne Council',
+      dates: 'Mar 2017 – Dec 2019',
+      bullets: [
+        'Coordinated $1.8M community infrastructure grant across 11 local organisations',
+        'Established risk management framework subsequently adopted by three directorates',
+        'Delivered 94% of project milestones on time and within approved budget',
+        'Supervised team of 6 project officers and 2 contractors across concurrent workstreams',
+      ],
+    },
+  ],
+  education:  ['Master of Public Policy, University of Melbourne (2016)','Bachelor of Social Work (Hons), RMIT University (2012)'],
+  certs:      ['PRINCE2 Practitioner — Axelos (2019)','Certificate IV in Government — TAFE Victoria (2015)','Mental Health First Aid — Mental Health First Aid Australia (2022)'],
+};
+
+// ─── state ────────────────────────────────────────────────────────────────────
+
+const state = { theme: 'contemporary', zoom: 82 };
+
+// ─── helpers ─────────────────────────────────────────────────────────────────
+
+function s(tag, style, inner) {
+  return `<${tag} style="${style}">${inner}</${tag}>`;
+}
+
+function div(style, inner) { return s('div', style, inner); }
+
+function h1css(t) {
+  const base = `font-family:${t.font};font-size:${t.h1.size};font-weight:bold;color:${t.h1.color};margin:20px 0 4px;line-height:1.25;`;
+  if (t.h1.borderType === 'bottom')
+    return base + `border-bottom:${t.h1.borderWidth} solid ${t.h1.borderColor};padding-bottom:3px;`;
+  if (t.h1.borderType === 'left')
+    return base + `border-left:${t.h1.borderWidth} solid ${t.h1.borderColor};padding-left:${t.h1.borderPad};`;
+  return base;
+}
+
+// ─── render ──────────────────────────────────────────────────────────────────
+
+function renderPreview() {
+  const t = T[state.theme];
+  const px = t.marginPx + 'px';
+  const frame = document.getElementById('doc-frame');
+  frame.style.backgroundColor = t.pageBg;
+  frame.style.padding = px;
+
+  let html = '';
+
+  // Title
+  const titleBorder = t.title.border
+    ? `border-bottom:0.5pt solid ${t.title.borderColor};padding-bottom:4px;`
+    : '';
+  html += div(
+    `font-family:${t.font};font-size:${t.title.size};font-weight:bold;color:${t.title.color};margin-bottom:5px;${titleBorder}`,
+    C.name
+  );
+
+  // Contact lines
+  [C.phone, C.email, C.location].forEach((line, i) => {
+    const mb = i === 2 ? 'margin-bottom:12px;' : 'margin-bottom:2px;';
+    html += div(
+      `font-family:${t.font};font-size:${t.contact.size};color:${t.contact.color};${mb}`,
+      line
+    );
+  });
+
+  // Target role headline
+  html += div(
+    `font-family:${t.font};font-size:${t.headline.size};font-weight:${t.headline.bold?'bold':'normal'};color:${t.headline.color};margin-bottom:16px;`,
+    C.role
+  );
+
+  // Summary
+  html += div(h1css(t), 'PROFESSIONAL SUMMARY');
+  html += div(
+    `font-family:${t.font};font-size:${t.body.size};color:${t.body.color};line-height:${t.lineSpacing};margin-bottom:${t.spaceAfter};`,
+    C.summary
+  );
+
+  // Skills
+  html += div(h1css(t), 'KEY SKILLS');
+  const skillsBg = t.skills.bg ? `background:${t.skills.bg};padding:6px 10px;` : '';
+  html += div(
+    `font-family:${t.font};font-size:${t.skills.size};color:${t.skills.color};${skillsBg}margin-bottom:${t.spaceAfter};`,
+    C.skills.join(', ')
+  );
+
+  // Experience
+  html += div(h1css(t), 'WORK EXPERIENCE');
+  for (const r of C.roles) {
+    html += div(
+      `font-family:${t.font};font-size:${t.h2.size};font-weight:bold;color:${t.h2.color};margin-top:12px;margin-bottom:2px;`,
+      r.title
+    );
+    html += div(
+      `font-family:${t.font};font-size:${t.roleMeta.size};font-style:${t.roleMeta.italic?'italic':'normal'};color:${t.roleMeta.color};margin-bottom:5px;`,
+      `${r.org} &nbsp;&nbsp; ${r.dates}`
+    );
+    for (const b of r.bullets) {
+      html += div(
+        `font-family:${t.font};font-size:${t.bullet.size};color:${t.bullet.color};line-height:${t.lineSpacing};padding-left:14px;margin-bottom:2px;`,
+        `- ${b}`
+      );
+    }
+  }
+
+  // Education
+  html += div(h1css(t), 'EDUCATION');
+  for (const e of C.education) {
+    html += div(
+      `font-family:${t.font};font-size:${t.body.size};color:${t.body.color};line-height:${t.lineSpacing};margin-bottom:3px;`,
+      e
+    );
+  }
+
+  // Certifications
+  html += div(h1css(t), 'CERTIFICATIONS');
+  for (const cert of C.certs) {
+    html += div(
+      `font-family:${t.font};font-size:${t.body.size};color:${t.body.color};line-height:${t.lineSpacing};margin-bottom:3px;`,
+      cert
+    );
+  }
+
+  document.getElementById('resume-root').innerHTML = html;
+
+  // sidebar info
+  document.getElementById('theme-badge').textContent = t.name;
+
+  const sr = document.getElementById('swatches');
+  sr.innerHTML = '';
+  for (const [label, hex] of Object.entries(t.palette)) {
+    const el = document.createElement('div');
+    el.className = 'swatch';
+    el.style.background = hex;
+    el.title = label;
+    sr.appendChild(el);
+  }
+
+  document.getElementById('type-info').innerHTML =
+    `Font: ${t.fontLabel}<br>` +
+    `Body: ${t.body.size} / ${t.lineSpacing} lh<br>` +
+    `H1: ${t.h1.size} bold<br>` +
+    `H2: ${t.h2.size} bold<br>` +
+    `Margins: ${t.margins}<br>` +
+    `Page bg: ${t.pageBg}`;
+
+  setZoom(state.zoom, false);
+}
+
+function setZoom(val, updateInput = true) {
+  state.zoom = parseInt(val);
+  document.getElementById('zoom-val').textContent = val + '%';
+  if (updateInput) document.getElementById('zoom-slider').value = val;
+  document.getElementById('doc-wrap').style.transform = `scale(${val / 100})`;
+}
+
+function selectTheme(key, btn) {
+  state.theme = key;
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPreview();
+  updatePrompt();
+}
+
+// ─── prompt output ────────────────────────────────────────────────────────────
+
+function updatePrompt() {
+  const t = T[state.theme];
+
+  const borderDesc = {
+    bottom: `${t.h1.borderWidth} horizontal rule in ${t.h1.borderColor} below each section heading`,
+    left:   `${t.h1.borderWidth} left-border accent in ${t.h1.borderColor} with ${t.h1.borderPad} left padding on each section heading`,
+  }[t.h1.borderType] || 'no border decoration on section headings';
+
+  const skillsDesc = t.skills.bg
+    ? `Skills row has ${t.skills.bg} background fill`
+    : 'Skills row has no background fill';
+
+  const titleDesc = t.title.border
+    ? `Name styled as Title — ${t.title.size} bold ${t.title.color} with ${t.title.borderColor} underline rule`
+    : `Name styled as Title — ${t.title.size} bold ${t.title.color}, no border`;
+
+  document.getElementById('prompt-text').textContent =
+    `Build the "${t.name}" Golden Master doc. ` +
+    `Font: ${t.fontLabel}. Page: ${t.pageBg} bg, ${t.margins} margins. ` +
+    `${titleDesc}. Contact: ${t.contact.size} ${t.contact.color}. ` +
+    `Target role headline: ${t.headline.size} bold ${t.headline.color}. ` +
+    `Heading 1: ${t.h1.size} bold ${t.h1.color} — ${borderDesc}. ` +
+    `Heading 2: ${t.h2.size} bold ${t.h2.color}. ` +
+    `Role meta: ${t.roleMeta.size}${t.roleMeta.italic?' italic':''} ${t.roleMeta.color}. ` +
+    `Body: ${t.body.size} ${t.body.color} / lh ${t.lineSpacing}. ` +
+    `Bullets: ${t.bullet.size}, glyph "–", 14pt indent. ${skillsDesc}. ` +
+    `Source spec: doc_templates/${t.jsonFile}`;
+}
+
+function copyPrompt() {
+  const text = document.getElementById('prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
+  });
+}
+
+// ─── init ─────────────────────────────────────────────────────────────────────
+renderPreview();
+updatePrompt();
+</script>
+</body>
+</html>
