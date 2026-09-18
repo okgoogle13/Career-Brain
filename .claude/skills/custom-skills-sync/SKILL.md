@@ -92,19 +92,19 @@ A `SYNC_MANIFEST.md` is created listing:
 # Custom Claude Skills — Synced to Cowork
 
 **Sync Date:** May 28, 2026  
-**Source:** `/Users/okgoogle13/Projects/Career Brain/.claude/skills/`  
+**Source:** `/Users/okgoogle13/Projects/Career-Brain/.claude/skills/`  
 **Status:** ✓ All skills backed up and verified
 
 ## Skills Synced (3 total)
 
-### 1. ats-template-qa-v2
+### 1. ats-template-qa-v3
 Status: ✓ VERIFIED & CORRECTED
 Issue found: Encoding corruption on line 7 (backtick) — FIXED
 
-### 2. docs-style-auditor  
+### 2. docs-style-auditor-v3  
 Status: ✓ IDENTICAL — NO ISSUES FOUND
 
-### 3. gold-template-builder-v2
+### 3. gold-template-builder-v3
 Status: ✓ IDENTICAL — ALL FILES VERIFIED
 ```
 

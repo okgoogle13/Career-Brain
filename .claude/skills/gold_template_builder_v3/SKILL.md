@@ -13,7 +13,7 @@ The pipeline clones the Golden Master Google Doc, performs batch `replaceAllText
 
 ## Output rule
 
-Produce output that **exactly matches** `ksc_template_spec_form.md`. No additional sections. No decorative elements. No emoji. No box-drawing characters. No ritual footers. No preamble. No phase headers.
+Produce output that **exactly matches** `.claude/skills/gold_template_builder_v3/ksc_template_spec_form.md` (sibling of this file). No additional sections. No decorative elements. No emoji. No box-drawing characters. No ritual footers. No preamble. No phase headers.
 
 The spec file is the deliverable. Nothing else.
 
@@ -21,10 +21,11 @@ The spec file is the deliverable. Nothing else.
 
 **Every `{{TOKEN}}` you write must be cited in TOKENS_USED with its source line in `generate_document.py`.**
 
-KSC tokens are defined at `generate_document.py:118–133`. Read those lines before writing the spec. The canonical token list is:
+KSC tokens are defined in `PLACEHOLDER_SCHEMA_V2["ksc"]` in `tools/generate_document.py` (the `"ksc": (` block, currently lines 127–144). Read that block for exact line numbers before writing the spec — they drift. The canonical token list is:
 
 ```
-{{CONTACT_NAME}}  {{TARGET_ROLE}}  {{EMPLOYER_ORG}}
+{{CONTACT_NAME}}  {{CONTACT_PHONE}}  {{CONTACT_EMAIL}}  {{CONTACT_LOCATION}}
+{{TARGET_ROLE}}  {{EMPLOYER_ORG}}
 
 Per criterion c (1 to 6):
   {{KSC_CRITERION_c_TEXT}}
@@ -62,12 +63,13 @@ If it returns `FAIL`, fix the named issue and re-run. Do not declare done until 
 
 ## Registration fragment shape
 
-Match the existing shape in `doc_templates.json`. The current KSC entry is flat:
+Match the existing shape in `config/doc_templates.json`. The KSC entry has a doc ID plus a `theme` path (the spec form's fragment shows only `template_doc_id`, which is what the validator checks):
 
 ```json
 {
   "ksc": {
-    "template_doc_id": "REPLACE_WITH_KSC_GOLDEN_MASTER_DOC_ID"
+    "template_doc_id": "REPLACE_WITH_KSC_GOLDEN_MASTER_DOC_ID",
+    "theme": "templates/ksc_standard_v2.json"
   }
 }
 ```
@@ -76,4 +78,4 @@ Replace `REPLACE_WITH_KSC_GOLDEN_MASTER_DOC_ID` with the actual Google Doc ID af
 
 ## Out of scope
 
-This skill does not cover resume or cover_letter templates (handled by v1 until v2 is extended). It does not produce JSON layout schemas, Python models, or `.docx` files.
+This skill covers KSC templates only. Resume and cover_letter Golden Masters are built from theme JSON via `tools/build_golden_master.py`, not from a spec. It does not produce JSON layout schemas, Python models, or `.docx` files.

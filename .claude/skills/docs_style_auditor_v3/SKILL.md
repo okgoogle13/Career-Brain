@@ -48,15 +48,15 @@ When a theme JSON is provided, the font family, font sizes, line spacing, and co
 
 For a KSC or unthemed template:
 ```bash
-python3 audit_doc_style.py <DOC_ID>
+python3 tools/audit_doc_style.py <DOC_ID>
 ```
 
 For a themed resume Golden Master (preferred — avoids false font FAILs):
 ```bash
-python3 audit_doc_style.py <DOC_ID> --theme doc_templates/resume_<theme_name>_v1.json
+python3 tools/audit_doc_style.py <DOC_ID> --theme templates/resume_<theme_name>_v1.json
 ```
 
-The `--theme` flag tells the auditor to read expected font, sizes, and spacing from the theme JSON's `visualConfig` block instead of Calibri hardcoded defaults. If `audit_doc_style.py` does not yet support `--theme`, note this as a known gap and proceed with manual verification of font/size against the theme spec table above.
+The `--theme` flag (supported by `tools/audit_doc_style.py`) tells the auditor to read expected font, sizes, and spacing from the theme JSON instead of Calibri hardcoded defaults.
 
 **Step 2 — Interpret output:**
 

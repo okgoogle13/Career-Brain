@@ -45,26 +45,33 @@ Career Brain/
 │   ├── curate_narratives.py
 │   ├── inject_metrics.py
 │   ├── clean_knowledge_vault.py
+│   ├── audit_and_repair_database.py   Deterministic + Gemini audit/repair of the JSON engines (--dry-run / --write; backs up first; reviewed by the peer-review skill)
 │   └── query_brain.py
 ├── tools/              Phase 5 Google Docs generation
 │   ├── generate_document.py
 │   ├── content_engine.py
 │   ├── build_golden_master.py
-│   ├── create_golden_master.py
+│   ├── compile_theme.py
+│   ├── verify_golden_master.py
 │   ├── audit_doc_style.py
-│   ├── qa_docs_check.py
-│   └── validate_template_spec.py
+│   ├── validate_template_spec.py
+│   └── theme_preview.html
 ├── templates/          Google Docs theme JSON configs
 ├── config/             Runtime config: ats_rules.json, doc_templates.json, user_config.json
 ├── context/            AI session context: repomix XMLs, prompts, handover docs
 │   └── specs/          Template format specs (resume, cover letter, KSC)
-├── .claude/skills/       Versioned AI agent skill definitions
+├── .claude/skills/       Versioned AI agent skill definitions (canonical skill source)
 │   ├── _archived_v1/
 │   ├── ats_template_qa_v3/
 │   ├── docs_style_auditor_v3/
-│   └── gold_template_builder_v3/
+│   ├── gold_template_builder_v3/
+│   ├── theme_visual_preview_v3/
+│   ├── career_brain_skill_integration_v3/
+│   ├── peer-review/
+│   ├── custom-skills-sync/
+│   └── skills-verification-qa/
 ├── archive/            Legacy files — do not re-ingest without instruction
-├── tests/
+├── tests/              test_build_golden_master.py, test_generate_document.py
 ├── CLAUDE.md                   This file
 ├── Career Brain Manifesto.md   Full system design + schema specs
 ├── BUILD_SPECS.md              Phase 5 Google Workspace build specs
@@ -125,8 +132,8 @@ python3 tools/build_golden_master.py <template_v1.json>  # Build/rebuild a Golde
 ### Quality & Validation Tools
 ```bash
 python3 tools/validate_template_spec.py  # Validate JSON themes against spec schema
-python3 tools/qa_docs_check.py           # QA check generated docs
-python3 tools/audit_doc_style.py         # Style auditing for built templates
+python3 tools/verify_golden_master.py <DOC_ID>  # Verify a built Golden Master
+python3 tools/audit_doc_style.py <DOC_ID> [--theme templates/<theme>.json]  # Style auditing for built templates
 ```
 
 ### Running Tests
@@ -134,7 +141,7 @@ python3 tools/audit_doc_style.py         # Style auditing for built templates
 pytest                                   # Run all automated tests
 ```
 
-No formal `tests/` suite yet beyond this. Minimum validation run after any pipeline change:
+Tests live in `tests/` (`test_build_golden_master.py`, `test_generate_document.py`); coverage of `pipeline/` is still thin. Minimum validation run after any pipeline change:
 `pipeline/normalize_vault.py` → `pipeline/compile_brain.py` → `pipeline/query_brain.py --help`.
 If adding automated tests, use `pytest` with `tests/test_<module>.py` naming.
 

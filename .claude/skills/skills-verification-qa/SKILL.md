@@ -71,7 +71,7 @@ All 3 skills verified successfully. No issues found.
 - ✓ SKILL.md (2632 bytes) — MATCH
 
 **Frontmatter:** ✓ Valid
-- name: ats-template-qa-v2
+- name: ats-template-qa-v3
 - description: [present]
 
 **Encoding:** ✓ Clean
@@ -206,7 +206,7 @@ Compare a synced skill against a previous version:
 
 ```
 Verification: gold-template-builder-v3
-Source: ~/Projects/Career Brain/.claude/skills/gold-template-builder-v3
+Source: ~/Projects/Career-Brain/.claude/skills/gold_template_builder_v3
 Previous: ~/outputs/synced_skills/gold-template-builder-v3 (from last sync)
 
 Changes detected:

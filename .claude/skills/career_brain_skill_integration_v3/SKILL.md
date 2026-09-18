@@ -66,7 +66,7 @@ Input: Description of template layout and structure
 ↓
 Output: template_spec.md (machine-parseable spec)
 ↓
-Validated by: validate_template_spec.py (must return SPEC OK)
+Validated by: tools/validate_template_spec.py (must return SPEC OK)
 ```
 
 **Tokens Used:**
@@ -82,7 +82,7 @@ Read generate_document.py token constants for the definitive list.
 - Bullet style: plain hyphen `-` only
 - AU terminology: `organisation`, `sector`, `position description`, `key selection criteria`
 
-### Stage 2: Golden Master Creation
+### Stage 2b: Golden Master Creation
 
 You create a Google Doc based on your spec (using template spec as a template) or via the JSON builder.
 
@@ -119,7 +119,7 @@ Final comprehensive QA before live registration:
 Input: spec file OR registered Golden Master Doc ID
 ↓
 Two-stage process:
-1. Mechanical validation (validate_template_spec.py)
+1. Mechanical validation (tools/validate_template_spec.py)
    - Token validity, forbidden glyphs, AU terminology
 2. Docs-API checks (after Golden Master built)
    - Structural and typographic verification via docs-style-auditor-v3
@@ -134,7 +134,7 @@ The pipeline currently supports 15+ rich JSON theme definitions, split into conc
 - `theme-21` to `theme-25`: Phase 3 advanced templates (Terminal, Broadside, etc.)
 - Legacy/Standard variants: `contemporary_professional`, `professional_classic`, `modern_minimalist`, `chronological`, `hybrid`, `warm_impact`, `copper_teal_circuit`.
 
-When running `docs-style-auditor-v3` against a themed document, ALWAYS pass the `--theme path/to/theme.json` flag so the auditor validates against the correct specific font/spacing values defined in the theme's `visualConfig`, rather than rejecting them for not being Calibri.
+Theme files live in `templates/` as `resume_<name>_v1.json`. When running `docs-style-auditor-v3` against a themed document, ALWAYS pass the `--theme templates/resume_<name>_v1.json` flag (via `python3 tools/audit_doc_style.py <DOC_ID> --theme ...`) so the auditor validates against the correct specific font/spacing values defined in the theme's `visualConfig`, rather than rejecting them for not being Calibri.
 
 ## Trigger Guidance
 
@@ -153,7 +153,7 @@ Use this skill when the user mentions:
 
 ### Template Design (Gold Template Builder v3)
 ✓ Spec file produced  
-✓ validate_template_spec.py returns `SPEC OK`  
+✓ tools/validate_template_spec.py returns `SPEC OK`  
 
 ### Document Formatting (Docs Style Auditor v3)
 ✓ Heading styles: Native HEADING_1/HEADING_2  
