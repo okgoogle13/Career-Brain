@@ -1,6 +1,6 @@
-# Comprehensive Cleanup — Four Hand-offs
+# Comprehensive Cleanup — Five Hand-offs
 
-Four paste-ready prompts. Run them **in order, each in its own fresh session**, reviewing
+Five paste-ready prompts. Run them **in order, each in its own fresh session**, reviewing
 between them. Do not paste more than one at a time — the gating is the point.
 
 | # | Hand-off | Risk | Gate |
@@ -9,6 +9,7 @@ between them. Do not paste more than one at a time — the gating is the point.
 | 2 | Main cleanup | code/pipeline | 3 stop points |
 | 3 | Skill audit | docs only | after Hand-off 2 |
 | 4 | PII-safe file map | none (export) | after Hand-off 2 |
+| 5 | Root-level file placement | doc/file moves only | after Hand-off 2 |
 
 ## Repo state a fresh session needs to know
 
@@ -230,6 +231,60 @@ Commit: chore: ignore generated PROJECT_MAP export
 
 ---
 
+## Hand-off 5 — Root-level file placement (after Hand-off 2)
+
+```
+Goal: Relocate the loose, tracked files sitting at repo root into a proper
+home, producing a reviewed git mv mapping — stopping for approval before
+any move, per this repo's Gatekeeper Protocol.
+
+Context you need: this repo's pipeline/, tools/, config/, templates/,
+database/, source_docs/ are load-bearing architecture, not "documents" —
+scripts resolve paths via Path(__file__).parent.parent and
+config/doc_templates.json. Do not propose moving anything under those
+directories. This hand-off only concerns files with no defined home:
+currently README.md, "Career Brain Manifesto.md",
+SKILLS_CREATION_SUMMARY.md, SKILLS_SYNC_VERIFICATION.md,
+SYNCED_SKILLS_MANIFEST.md, apply_theme_patches.py, theme-preview-gallery.html,
+and Career_Brain___15-Theme_A4_Preview_Gallery_PREMIUM.html — plus anything
+else loose at root matching the same pattern (stray top-level .md/.html/.py
+with no other tracked home).
+
+Scope — read/move only:
+  repo root (top-level files only, not subdirectories), planning/, docs/,
+  context/.
+Do not touch: pipeline/, tools/, config/, templates/, database/,
+source_docs/, archive/ (existing contents), .venv/, .git/, credentials.json,
+token.json, .env*, or any *.xml file (all gitignored/regeneratable already).
+
+Step 1 — Inventory: List the loose root-level tracked files (git ls-files
+at top level). For each, decide target: docs/ (if it's reference
+documentation still in use) or archive/ (existing convention — do not
+create legacy/) if superseded or unused.
+
+Step 2 — Reachability check: For apply_theme_patches.py specifically
+(and any other loose .py file found), ripgrep pipeline/ and tools/ for
+imports or call sites before proposing archival — same
+doubt-driven-development gate Hand-off 2 Phase 3 uses. Do not archive
+solely because it looks unused; confirm no inbound references first.
+
+Step 3 — Propose mapping: Present a table of current_path → proposed
+new_path → rationale. Use git mv semantics (preserves history).
+
+  --- STOP. Present the proposed mapping. Wait for approval. ---
+
+Step 4 — Execute (only after approval): git mv each approved file.
+
+Verify:
+  git status --short   (shows only the approved moves)
+  .venv/bin/python -m pytest tests/
+  .venv/bin/python tools/generate_document.py --help
+
+Commit: chore: relocate root-level docs into docs/ and archive/
+```
+
+---
+
 ## Why this differs from the original draft
 
 - **Repomix dropped.** `compress=true` strips function bodies from *code*, but 99% of this
@@ -251,3 +306,11 @@ Commit: chore: ignore generated PROJECT_MAP export
 - **Skill audit moved last**, because five of the six custom skills are Google-Docs/template
   skills the cleanup never invokes. `peer-review` was pulled forward into Phase 3 instead —
   it's the one whose documented trigger is `pipeline/*.py` changes before commit.
+- **Hand-off 5 replaces, not adopts, `planning/cleanupcodexprompt.md`.** That prompt targets
+  the wrong path (`Career Brain` vs. the actual `Career-Brain`), traverses the whole repo
+  with no exclusion list (would walk `database/`, `source_docs/`, `credentials.json`,
+  `token.json`), and maps everything — including `pipeline/`, `tools/`, `config/` — onto a
+  generic `docs/prompts/content/agents/` layout that conflicts with this repo's load-bearing
+  ETL structure. Hand-off 5 keeps the same underlying goal (a home for loose root files) but
+  scopes it to root-level files only, inherits Hand-off 4's do-not-open list, and reuses the
+  existing Gatekeeper stop-gate instead of `cleanupcodexprompt.md`'s own step-6 STOP.
