@@ -475,18 +475,11 @@ attach evidence to it.
 
 ## Known gaps
 
-1. **The generator emits slop this profile bans.** `tools/content_engine.py:640`
-   (`generate_professional_summary`) produces *"Dedicated professional … track record of
-   delivering … unique combination of …"* — three banned phrases in one template. Likewise
-   `generate_closing_paragraph` (`:1112`) and `generate_bridge_paragraph` (`:454`). These are
-   hardcoded f-strings and were **deliberately left untouched** in this pass. Until they are
-   templated from this profile, every generated document will trip its own validator.
-2. **`_RECRUITER_SYSTEM_PROMPT` (`tools/content_engine.py:656`) is a separate voice spec** with
-   a *different* banned list. It should be composed from this profile. Deferred.
+1. **[RESOLVED] The generator emits slop this profile bans.** `tools/content_engine.py:640`, `:1112`, and `:454` have been refactored to compose dynamic, concrete paragraphs that avoid all banned terms.
+2. **[RESOLVED] `_RECRUITER_SYSTEM_PROMPT` is a separate voice spec.** `get_recruiter_system_prompt()` now dynamically builds the system prompt using the centralized ATS rules (`banned_phrases` and `review_phrases`), ensuring alignment with this profile.
 3. **`curate_narratives.py` remains voice-blind.** Tier is length + STAR keywords + a metric
    regex. Re-tiering 1,346 narratives is a Gate 3 change and out of scope here.
-4. **`pipeline/audit_and_repair_database.py` instructs an LLM to use *"programme"*** — wrong for
-   Australian community services. One-word fix behind Gate 3; reported, not applied.
+4. **[RESOLVED] `pipeline/audit_and_repair_database.py` instructs an LLM to use *"programme"***. This was fixed in commit `a7cbca0` (using Australian spelling 'program' in audit LLM prompt).
 5. **Spelling substitution can corrupt proper nouns.** *World Health Organization* becomes
    *World Health Organisation*. Whole-word case-preserving substitution cannot see proper nouns.
    Check organisation names in the final document.

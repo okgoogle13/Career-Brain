@@ -6,6 +6,24 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 ## Active
 
+### TASK-007 — Voice Authenticity Profile Gap Remediation
+**Status:** 🔵 Planned
+**Priority:** Medium
+**Branch:** `main`
+
+#### Stage 1 — Narrative Voice Evaluation (Addresses Gap 3)
+- [ ] BS-7.1 — Enhance `pipeline/curate_narratives.py` to replace length/regex-based `quality_tier` with an LLM-based voice authenticity score using `voice-authenticity-profile.md` criteria.
+- [ ] BS-7.2 — Re-run curation pipeline to re-tier all 1,346 narratives with the new voice-aware criteria (Gate 3 change).
+
+#### Stage 2 — Proper Noun Preservation (Addresses Gap 5)
+- [ ] BS-7.3 — Add an `exceptions` list to `terminology.australian_spelling` in `config/ats_rules.json` (e.g., "World Health Organization").
+- [ ] BS-7.4 — Update substitution logic in `tools/generate_document.py` to bypass terms in the exceptions list, preserving proper noun casing and spelling.
+
+#### Stage 3 — Semantic Slop Detection (Addresses Gap 6)
+- [ ] BS-7.5 — Develop a post-generation semantic review tool or LLM judge to detect paraphrased slop that bypasses fixed-string checks.
+
+---
+
 ### TASK-006 — Premium Font Upgrade & Cover Letter / KSC Template Suite
 **Status:** 🔵 In Progress
 **Priority:** High
