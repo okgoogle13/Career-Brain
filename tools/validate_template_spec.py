@@ -29,7 +29,7 @@ CITATION_RE = re.compile(r"generate_document\.py:(\d+)(?:-(\d+))?$")
 BOX_DRAWING_RE = re.compile(r"[┌┐└┘├┤┬┴┼─│╔╗╚╝╠╣╦╩╬═║]")
 EMOJI_RE = re.compile(r"[\U0001F300-\U0001FAFF☀-➿✂-➰]")
 
-# KSC token set — mirrors PLACEHOLDER_SCHEMA_V2["ksc"] in generate_document.py:118-133
+# KSC token set — mirrors PLACEHOLDER_SCHEMA_V2["ksc"] in generate_document.py:127-144
 # Constants sourced from content_engine.py:65-66
 _MAX_CRITERIA = 6
 _MAX_BULLETS = 2
@@ -140,7 +140,7 @@ def r2_token_validity(sections: dict) -> list[Failure]:
 
     for token, citation in citations.items():
         if token not in KSC_V2_TOKENS:
-            failures.append(("rule2", f"Unknown token {{{{{token}}}}} — not in KSC PLACEHOLDER_SCHEMA_V2 (generate_document.py:118-133)", 0))
+            failures.append(("rule2", f"Unknown token {{{{{token}}}}} — not in KSC PLACEHOLDER_SCHEMA_V2 (generate_document.py:127-144)", 0))
             continue
         cm = CITATION_RE.search(citation)
         if not cm:
