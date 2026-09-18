@@ -63,7 +63,6 @@ Career Brain/
 │   ├── ats_template_qa_v3/
 │   ├── docs_style_auditor_v3/
 │   └── gold_template_builder_v3/
-├── scratch/            One-off investigation scripts (not pipeline)
 ├── archive/            Legacy files — do not re-ingest without instruction
 ├── tests/
 ├── CLAUDE.md                   This file
