@@ -30,7 +30,7 @@ CareerBrain_Clean.zip
 
 # Scratch audit outputs
 scratch/*.json
-.env
+.env*
 
 # Source documents (backed up on Google Drive — not needed in repo)
 source_docs/

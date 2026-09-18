@@ -20,7 +20,7 @@ between them. Do not paste more than one at a time — the gating is the point.
   on purpose** (script safety). They are not stray files. Never open anything under
   `database/` — it holds the lived-experience disclosures CLAUDE.md's Security section
   protects. Metadata only.
-- 193 tracked files; 33 `.py` (7,453 LOC across `pipeline/` + `tools/`); `.venv/bin/python`
+- 214 tracked files; 33 `.py` (7,453 LOC across `pipeline/` + `tools/`); `.venv/bin/python`
   exists; bootstrap is `pip install -r requirements.txt` (there is no `pyproject.toml`, so
   `uv sync` will fail here).
 - `tests/` has 2 real test files, so `.venv/bin/pytest tests/` is a genuine gate — despite
@@ -74,7 +74,7 @@ Phase 1 — Orientation (no Repomix, no external transfer, no committed artifact
   into the pack. Do NOT send any output to an external service; source_docs/,
   database/*.json and Career_Brain_Knowledge.md contain PII and CLAUDE.md's
   Security & Data Handling section forbids publishing them externally.
-  Do NOT write index.md. A 193-file hand-written index is a point-in-time
+  Do NOT write index.md. A 214-file hand-written index is a point-in-time
   snapshot that goes stale on the next commit, and Phases 2-3 would then make
   decisions from it instead of from the code.
   Instead: read the 33 tracked .py files directly and map the import/call
@@ -149,9 +149,11 @@ Hand-off 2's diff is reviewed, so the audit grades the final state.
 Step 1 — skill-creator:skill-creator: Grade ats_template_qa_v3,
 docs_style_auditor_v3, gold_template_builder_v3, theme_visual_preview_v3,
 career_brain_skill_integration_v3, peer-review, and all skills in custom_skills/
-for clarity, usefulness, architecture alignment, triggering accuracy. Fix 
-gold_template_builder_v3's reference to the nonexistent
-skills/gold_template_builder_v2/ksc_template_spec_form.md, fix the stale 
+for clarity, usefulness, architecture alignment, triggering accuracy. Note:
+`custom_skills/` still exists (6 tracked files) alongside 15 files under
+`.claude/skills/`. The audit must resolve this duplicate-source problem (which
+directory is canonical). Fix gold_template_builder_v3's reference to the
+nonexistent skills/gold_template_builder_v2/ksc_template_spec_form.md, fix the stale 
 reference in custom_skills/skills-verification-qa/SKILL.md, and fix the bare
 validate_template_spec.py invocations (it lives in tools/). Verdict per skill.
 
@@ -200,7 +202,7 @@ Hard constraint — this file is written to leave the machine:
   - templates/ and config/: describe what each file configures, not the
     values it contains.
 
-Method: `git ls-files` for the inventory (193 tracked files), targeted
+Method: `git ls-files` for the inventory (214 tracked files), targeted
 reads of the 33 .py files for their purpose, and ripgrep over imports for
 the dependency relationships. Group by directory. For each file: one line
 on what it does and what it depends on.
@@ -215,14 +217,14 @@ to .gitignore under the existing "regeneratable output" rule that already
 covers processed/, e.g.:
   # Generated export — regeneratable from the codebase, never committed
   PROJECT_MAP.md
-Rationale: it is a point-in-time snapshot of 193 files that goes stale on
+Rationale: it is a point-in-time snapshot of 214 files that goes stale on
 the next commit, and its entire purpose is to leave the machine — keeping
 it untracked means it can never be pushed by accident. Regenerate it
 whenever an outside read is needed rather than maintaining it.
 
 Do not touch: any other file. This produces one gitignored markdown file
 plus a one-line .gitignore addition.
-Verify: `git ls-files | wc -l` (193, unchanged) vs. entries in
+Verify: `git ls-files | wc -l` (214, unchanged) vs. entries in
 PROJECT_MAP.md; `git status --short` shows only the .gitignore change, not
 PROJECT_MAP.md itself; and a manual read-through confirming no data values
 or personal details appear.
@@ -260,13 +262,17 @@ token.json, .env*, or any *.xml file (all gitignored/regeneratable already).
 Step 1 — Inventory: List the loose root-level tracked files (git ls-files
 at top level). For each, decide target: docs/ (if it's reference
 documentation still in use) or archive/ (existing convention — do not
-create legacy/) if superseded or unused.
+create legacy/) if superseded or unused. Also include `prompt-skills-library`
+(a broken submodule: run `git rm --cached prompt-skills-library`) and `.env.save`
+(tracked but is a placeholder: run `git rm --cached .env.save` and apply a one-line
+fix to `.gitignore` changing `^\.env$` to `.env*`).
 
 Step 2 — Reachability check: For apply_theme_patches.py specifically
 (and any other loose .py file found), ripgrep pipeline/ and tools/ for
-imports or call sites before proposing archival — same
-doubt-driven-development gate Hand-off 2 Phase 3 uses. Do not archive
-solely because it looks unused; confirm no inbound references first.
+imports or call sites before proposing archival. Note: while apply_theme_patches.py
+has zero inbound code references, TASK-005's open schema/ontology items are the
+plausible future caller, and TASK-006 records it as the producer of templates/patched/.
+Archive it with that dependency noted, not silently.
 
 Step 3 — Propose mapping: Present a table of current_path → proposed
 new_path → rationale. Use git mv semantics (preserves history).
@@ -295,7 +301,7 @@ Commit: chore: relocate root-level docs into docs/ and archive/
   section. Rescheduled as Hand-off 4 in the only shape that can safely leave the machine.
   That cut is what surfaced the 21.1 MB of tracked PII backups, since resolved.
 - **`index.md` dropped** — its only stated consumer was the handoff that was cut, and a
-  193-file snapshot goes stale immediately while looking canonical.
+  214-file snapshot goes stale immediately while looking canonical.
 - **"Continuous execution" replaced with gates**, per the Gatekeeper Protocol and the
   Karpathy principles at the top of CLAUDE.md.
 - **`legacy/` → `archive/`**, the existing convention.
