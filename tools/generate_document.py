@@ -502,8 +502,16 @@ def build_placeholder_values_v2(
         **terminology.get("australian_spelling", {}),
     }
     if au_mappings:
+        # Keys whose values are proper nouns — must never be auto-rewritten
+        _PROPER_NOUN_SUFFIXES = (
+            "_ORG}}", "_TITLE}}", "_DATES}}", "_NAME}}",
+            "_CONTACT_NAME}}", "_ADDRESS}}",
+        )
         for ph, text in values.items():
             if not text:
+                continue
+            # Skip proper-noun fields — employer names, titles, dates must not be rewritten
+            if any(ph.endswith(sfx) for sfx in _PROPER_NOUN_SUFFIXES):
                 continue
             # Perform whole-word, case-insensitive substitution
             for eng_term, au_term in au_mappings.items():
@@ -517,6 +525,7 @@ def build_placeholder_values_v2(
                 pattern = re.compile(r'\b' + re.escape(eng_term) + r'\b', re.IGNORECASE)
                 text = pattern.sub(preserve_case_replace, text)
             values[ph] = text
+
 
     return values, _count_stats(values), warnings
 

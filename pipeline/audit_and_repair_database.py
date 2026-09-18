@@ -551,7 +551,11 @@ def main() -> None:
     log.info(f"Started: {datetime.now().isoformat()}")
     log.info("=" * 60)
 
+    # Truncate error log at phase start — ensures a clean run produces an empty file
+    ERROR_LOG.write_text("", encoding="utf-8")
+
     enriched = _load_json(ENRICHED)
+
     curated = _load_json(CURATED)
 
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")

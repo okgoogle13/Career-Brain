@@ -191,8 +191,8 @@ EXTRACTORS = {
 }
 
 SKIP_EXTENSIONS = {".zip", ".xlsx", ".png", ".jpg", ".jpeg", ".mp4",
-                   ".dotx", ".dotm", ".json", ".html", ".psl", ".textClipping",
-                   ".DOCX"}  # uppercase handled by .lower() below
+                   ".dotx", ".dotm", ".json", ".html", ".psl", ".textClipping"}
+# Note: ext is already .lower() before this check; no uppercase variants needed
 
 
 def file_md5(path: Path) -> str:
@@ -232,7 +232,7 @@ def process_directory(src_dir: Path, category: str, seen_hashes: dict) -> dict:
         ext = f.suffix.lower()
 
         # Skip unsupported extensions
-        if ext in SKIP_EXTENSIONS or ext.upper() in SKIP_EXTENSIONS or ext not in EXTRACTORS:
+        if ext in SKIP_EXTENSIONS or ext not in EXTRACTORS:
             log.debug(f"  SKIP (ext {ext}): {f.name}")
             stats["skipped_ext"] += 1
             continue
@@ -301,6 +301,9 @@ def main():
     seen_hashes = {}  # Cross-directory duplicate detection
     all_stats = {}
 
+    # Truncate error log at phase start — ensures a clean run produces an empty file
+    ERROR_LOG.write_text("", encoding="utf-8")
+
     CATEGORIES = [
         ("resumes",       RAW_DOCS / "resumes"),
         ("cover_letters", RAW_DOCS / "cover_letters"),
@@ -313,10 +316,12 @@ def main():
         stats = process_directory(src_dir, category, seen_hashes)
         all_stats[category] = stats
 
-    # Write error log
+    # Write error log (file was truncated at startup; append phase errors)
     if error_entries:
-        ERROR_LOG.write_text("\n".join(error_entries) + "\n", encoding="utf-8")
+        with ERROR_LOG.open("a", encoding="utf-8") as fh:
+            fh.write("\n".join(error_entries) + "\n")
         log.warning(f"\nParsing errors logged to: {ERROR_LOG}")
+
 
     # ─── HEALTH LEDGER ───────────────────────────────────────────────────────
     log.info("\n" + "="*60)

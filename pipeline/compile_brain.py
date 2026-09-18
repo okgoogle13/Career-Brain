@@ -781,6 +781,10 @@ def main():
         sys.exit(1)
     log.info(f"Vault: {len(vault_files)} files to process")
 
+    # Truncate error log at phase start — ensures a clean run produces an empty file
+    ERROR_LOG.write_text("", encoding="utf-8")
+
+
     # ── PILLAR 1 ────────────────────────────────────────────────────────────
     career_db = compile_career_history(vault_files)
     bullet_audit = _load_bullet_audit_map(OUTPUT / "career_history_enriched.json")
@@ -818,10 +822,11 @@ def main():
     )
     log.info(f"  Saved: {taxonomy_path}")
 
-    # ── WRITE ERROR LOG ─────────────────────────────────────────────────────
+    # Write error log (file was truncated at startup; append phase errors)
     if error_entries:
-        existing = ERROR_LOG.read_text(encoding="utf-8") if ERROR_LOG.exists() else ""
-        ERROR_LOG.write_text(existing + "\n".join(error_entries) + "\n", encoding="utf-8")
+        with ERROR_LOG.open("a", encoding="utf-8") as fh:
+            fh.write("\n".join(error_entries) + "\n")
+
 
     # ── FINAL AUDIT REPORT ──────────────────────────────────────────────────
     needs_review_count = sum(
