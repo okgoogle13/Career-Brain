@@ -48,7 +48,7 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [x] **`build_golden_master.py` patched** (2026-06-06): `heading_font_family` + `section_heading_weight` support added; heading roles (name, headline, h1, h2) now use their own typeface and optional weight, separate from the body font.
 - [x] **`apply_theme_patches.py`** run: 15/15 v2.3 spec files patched with WCAG-corrected palettes + Google Fonts design identities. Output: `templates/patched/`.
 - [x] **15 v2.0 compiled templates updated**: `heading_font_family` injected + `typography.base_font` upgraded to premium Google Font per theme; theme-24 gets `section_heading_weight=650`. Dry-run 15/15 pass (53 paragraphs, 107 style requests, 0 errors).
-- [x] **HTML preview gallery**: `Career_Brain___15-Theme_A4_Preview_Gallery_PREMIUM.html` — full A4 gallery with Google Fonts and `--headingfont` CSS variable per theme. Committed 2026-06-06.
+- [x] **HTML preview gallery**: `docs/theme-preview/Career_Brain___15-Theme_A4_Preview_Gallery_PREMIUM.html` — full A4 gallery with Google Fonts and `--headingfont` CSS variable per theme. Committed 2026-06-06.
 - [x] **Rebuild Golden Masters** (Gate 4 — user approval required): Built, style-audited (15/15 STYLE OK), and registered all 15 visual themes with premium fonts baked in. Doc IDs updated in `config/doc_templates.json`.
 
 #### Stage 2 — Cover Letter & KSC Template Suite (Milestones 1–2)
