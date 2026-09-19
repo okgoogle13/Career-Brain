@@ -14,6 +14,9 @@ __pycache__/
 # Pipeline intermediate outputs (regeneratable from source_docs via normalize_vault.py)
 processed/
 
+# Generated export — regeneratable from the codebase, never committed
+PROJECT_MAP.md
+
 # Credentials & secrets
 credentials.json
 token.json*
