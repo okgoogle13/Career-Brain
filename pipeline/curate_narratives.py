@@ -2,13 +2,20 @@
 """
 curate_narratives.py — Career Brain Pipeline: Narrative Curation Pass
 ======================================================================
-Scores all narratives in ksc_and_narratives.json on 4 axes:
+Scores all narratives in ksc_and_narratives.json on 5 axes:
   1. Length (word count)
   2. STAR completeness (keyword coverage)
   3. Metric presence (quantified outcomes)
   4. Near-duplicate detection (Jaccard similarity ≥85%)
+  5. Voice authenticity (LLM-based, optional — requires GEMINI_API_KEY)
 
-Adds quality_tier (1/2/3), quality_flags, and vetted fields to each narrative.
+Adds quality_tier (1/2/3), quality_flags, quality_score, voice_score,
+and vetted fields to each narrative.
+
+Flags:
+  --full-voice-score    Run LLM voice scoring on every narrative (slow/costly).
+                        Default: score only narratives near the Tier 1/2 boundary
+                        (quality_score 5–8) to maximise signal per API call.
 
 Outputs:
   database/ksc_curated.json          — All narratives with quality scores
@@ -19,10 +26,12 @@ Outputs:
 import re
 import json
 import logging
+import os
 import sys
 from pathlib import Path
 from datetime import datetime
 from collections import Counter
+from typing import Optional
 
 BASE    = Path(__file__).parent.parent  # project root
 OUTPUT  = BASE / "database"
@@ -58,6 +67,94 @@ METRIC_PATTERN = re.compile(
     re.IGNORECASE
 )
 
+# Voice authenticity LLM scoring (BS-7.1)
+# Boundary-case range: narratives with quality_score in this range get voice-scored
+# in the default (non-full) mode to catch promotable Tier-2 narratives.
+_VOICE_SCORE_BOUNDARY_RANGE = (5, 8)  # inclusive
+
+_VOICE_SCORE_SYSTEM = """\
+You are a voice-authenticity judge for a career-services knowledge base.
+Your ONLY job is to score one narrative on five authentic voice patterns.
+Return ONLY a JSON object with this exact schema (no markdown, no explanation):
+{
+  "score": <integer 0-5>,
+  "patterns_hit": [<list of pattern IDs from below that were clearly present>],
+  "reason": "<one sentence>"
+}
+
+Pattern IDs and criteria:
+P1 named_service_chain
+   The narrative names a specific service, team, hospital, or organisation it
+   escalated/referred to AND states what happened next (not generic "appropriate
+   supports").
+P2 lived_experience_as_method
+   Lived experience is used as a deliberate clinical/practice decision and
+   leads to a service design or outcome — not merely asserted as a credential.
+P3 honest_self_assessment
+   The narrative admits a limitation, mistake, or area of growth AND closes
+   the loop on what changed in practice afterwards.
+P4 corporate_mechanics_transfer
+   A named artefact, mechanism, or named stakeholder from a corporate context
+   is shown to transfer concretely — not described as abstract "skills".
+P5 pivot_with_thesis
+   The career change is stated once with an actual position or thesis the reader
+   can agree or disagree with — not a cliche or repeated in every paragraph.
+
+Score = number of patterns clearly present (0–5).
+"""
+
+# ─── LLM helper ───────────────────────────────────────────────────────────────
+
+def _call_gemini_voice(text: str) -> Optional[dict]:
+    """Call Gemini Flash to score voice authenticity. Returns parsed JSON dict or None."""
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        return None
+    try:
+        from google import genai  # noqa: PLC0415
+        from google.genai import types  # noqa: PLC0415
+    except ImportError:
+        log.warning("google-genai not installed — skipping voice scoring")
+        return None
+    try:
+        client = genai.Client(api_key=api_key)
+        resp = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=f"Score this narrative:\n\n{text[:1500]}",
+            config=types.GenerateContentConfig(
+                system_instruction=_VOICE_SCORE_SYSTEM,
+                max_output_tokens=200,
+                temperature=0.1,
+                thinking_config=types.ThinkingConfig(thinking_budget=0),
+                response_mime_type="application/json",
+            ),
+        )
+        return json.loads(resp.text.strip())
+    except Exception as exc:
+        log.debug("Voice LLM call failed: %s", exc)
+        return None
+
+
+# ─── Voice authenticity scorer ─────────────────────────────────────────────────
+
+def score_voice_authenticity(narrative: dict) -> tuple[int, list[str], Optional[str]]:
+    """
+    Score a narrative on voice authenticity via Gemini LLM.
+    Returns (voice_score 0-5, patterns_hit[], reason).
+    Returns (0, [], None) when GEMINI_API_KEY is unset or call fails.
+    """
+    text = narrative.get("full_text", "")
+    if not text.strip():
+        return 0, [], None
+    result = _call_gemini_voice(text)
+    if result is None:
+        return 0, [], None
+    score = int(result.get("score", 0))
+    patterns = result.get("patterns_hit", [])
+    reason = result.get("reason", "")
+    return score, patterns, reason
+
+
 # ─── Jaccard Similarity ───────────────────────────────────────────────────────
 
 def jaccard(text_a: str, text_b: str, n: int = 4) -> float:
@@ -72,10 +169,11 @@ def jaccard(text_a: str, text_b: str, n: int = 4) -> float:
 
 # ─── Scoring ──────────────────────────────────────────────────────────────────
 
-def score_narrative(narrative: dict) -> tuple[int, list[str]]:
+def score_narrative(narrative: dict) -> tuple[int, list[str], int]:
     """
-    Score a narrative on 4 axes. Returns (tier, quality_flags).
+    Score a narrative on axes 1-3. Returns (tier, quality_flags, score).
     Tier 1 = strongest, Tier 3 = weakest.
+    Voice scoring (axis 5) is applied separately in main() via score_voice_authenticity().
     """
     text       = narrative.get("full_text", "")
     word_count = len(text.split())
@@ -124,6 +222,17 @@ def score_narrative(narrative: dict) -> tuple[int, list[str]]:
 # ─── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Career Brain Narrative Curation Pass (5-axis scoring)",
+    )
+    parser.add_argument(
+        "--full-voice-score",
+        action="store_true",
+        help="Run LLM voice scoring on ALL narratives (slow/costly). Default: boundary cases only.",
+    )
+    args = parser.parse_args()
+
     log.info("=" * 60)
     log.info("CAREER BRAIN — NARRATIVE CURATION PASS")
     log.info(f"Started: {datetime.now().isoformat()}")
@@ -185,6 +294,38 @@ def main():
 
     log.info(f"  Near-duplicates detected: {dup_count}")
 
+    # ── Pass 3: Voice authenticity scoring (Axis 5, LLM, optional) ──────────────
+    has_gemini = bool(os.environ.get("GEMINI_API_KEY"))
+    voice_scored_count = 0
+    voice_score_mode = "none"
+
+    if has_gemini:
+        lo, hi = _VOICE_SCORE_BOUNDARY_RANGE
+        to_voice_score = [
+            n for n in scored
+            if args.full_voice_score or (lo <= n["quality_score"] <= hi)
+        ]
+        voice_score_mode = "full" if args.full_voice_score else f"boundary ({lo}–{hi})"
+        log.info(f"  Running voice scoring on {len(to_voice_score)} narratives (mode: {voice_score_mode})...")
+
+        for n in to_voice_score:
+            v_score, v_patterns, v_reason = score_voice_authenticity(n)
+            n["voice_score"] = v_score
+            n["voice_patterns"] = v_patterns
+            if v_reason:
+                n["voice_reason"] = v_reason
+            voice_scored_count += 1
+            # Re-tier upward if voice score is strong (≥3 patterns) and narrative
+            # is on the T1/T2 boundary
+            if v_score >= 3 and n["quality_tier"] == 2:
+                n["quality_tier"] = 1
+                n["quality_flags"].append("voice_promoted")
+                tier_counts[2] -= 1
+                tier_counts[1] += 1
+        log.info(f"  Voice-scored: {voice_scored_count}")
+    else:
+        log.info("  GEMINI_API_KEY not set — voice scoring skipped (run with op run or set key)")
+
     # ── Summary ───────────────────────────────────────────────────────────────
     log.info(f"\n{'─'*60}")
     log.info("CURATION SUMMARY")
@@ -205,6 +346,8 @@ def main():
         "tier_2": tier_counts[2],
         "tier_3": tier_counts[3],
         "near_duplicates_flagged": dup_count,
+        "voice_score_mode": voice_score_mode,
+        "voice_scored_count": voice_scored_count,
     }
     with open(CURATED, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)

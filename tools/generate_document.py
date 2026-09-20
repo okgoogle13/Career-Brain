@@ -1000,7 +1000,23 @@ def build_report(
     placeholder_stats: dict[str, int],
     unresolved_tokens: list[str],
     warnings: list[str],
+    # BS-3.1: was --summary override used, or was the summary generated?
+    derived_summary_used: bool = True,
+    # BS-3.2: how many needs_review bullets were skipped
+    needs_review_exclusions_count: int = 0,
+    # BS-3.3: KSC word count warnings (list of strings, e.g. "criterion_1_context_too_short")
+    ksc_word_count_warnings: list[str] | None = None,
+    # BS-3.5: unique source files used in content selection
+    source_files_used: list[str] | None = None,
 ) -> dict[str, Any]:
+    """
+    Build the document generation report JSON.
+
+    Exit code semantics (BS-3.4):
+      0 — success, no warnings
+      1 — DocumentGenerationError (content/config failure)
+      2 — Prerequisite failure (credentials, missing source data)
+    """
     return {
         "run_timestamp": datetime.now(timezone.utc).isoformat(),
         "template": template,
@@ -1011,6 +1027,10 @@ def build_report(
         "placeholder_stats": placeholder_stats,
         "unresolved_tokens": unresolved_tokens,
         "warnings": warnings,
+        "derived_summary_used": derived_summary_used,
+        "needs_review_exclusions_count": needs_review_exclusions_count,
+        "ksc_word_count_warnings": ksc_word_count_warnings or [],
+        "source_files_used": sorted(source_files_used or []),
     }
 
 
@@ -1214,6 +1234,32 @@ def main(argv: list[str] | None = None) -> int:
             if unresolved_tokens:
                 all_warnings.append("unresolved_placeholders_after_replacement")
 
+        # Collect BS-3.2: needs_review exclusion count
+        needs_review_excl = sum(
+            1
+            for role in history.get("roles", [])
+            for ach in role.get("achievements", [])
+            if ach.get("needs_review")
+        )
+
+        # Collect BS-3.3: KSC word count warnings (already in all_warnings via criterion_N_*)
+        ksc_wc_warnings = [
+            w for w in all_warnings
+            if "_too_short" in w or "_too_long" in w
+        ]
+
+        # Collect BS-3.5: source files used (source_lineage across selected content)
+        source_files: set[str] = set()
+        for role in history.get("roles", []):
+            for ach in role.get("achievements", []):
+                lineage = ach.get("source_lineage", "")
+                if lineage:
+                    source_files.add(lineage)
+        for narrative in narratives.get("narratives", []):
+            lineage = narrative.get("source_lineage", "")
+            if lineage:
+                source_files.add(lineage)
+
         # Write report
         report = build_report(
             template=args.doc_type,
@@ -1224,6 +1270,10 @@ def main(argv: list[str] | None = None) -> int:
             placeholder_stats=placeholder_stats,
             unresolved_tokens=unresolved_tokens,
             warnings=all_warnings,
+            derived_summary_used=args.summary is None,
+            needs_review_exclusions_count=needs_review_excl,
+            ksc_word_count_warnings=ksc_wc_warnings,
+            source_files_used=list(source_files),
         )
         write_report(args.out_report, report)
 

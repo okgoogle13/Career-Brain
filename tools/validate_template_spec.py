@@ -307,21 +307,89 @@ def validate(spec_path: Path) -> list[Failure]:
 
 
 def main() -> int:
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <spec_file.md>", file=sys.stderr)
+    """
+    Validate one or more template spec files.
+
+    Usage:
+      validate_template_spec.py <spec_file.md>           # single file
+      validate_template_spec.py <spec1.md> <spec2.md>   # multiple files
+      validate_template_spec.py <dir/>                   # all *.md in dir
+      validate_template_spec.py --batch                  # all specs in context/specs/
+
+    Exit codes:
+      0 — all specs pass
+      1 — one or more specs failed validation
+      2 — usage error or missing input
+    """
+    # BS-5.1: batch mode
+    batch_mode = "--batch" in sys.argv
+    if batch_mode:
+        spec_paths = sorted(
+            (Path(__file__).parent.parent / "context" / "specs").glob("*.md")
+        )
+        if not spec_paths:
+            print("No spec files found in context/specs/", file=sys.stderr)
+            return 2
+    elif len(sys.argv) < 2:
+        print(f"Usage: {sys.argv[0]} <spec_file.md> [<spec2.md> …] | <dir/> | --batch",
+              file=sys.stderr)
         return 2
-    spec_path = Path(sys.argv[1])
-    if not spec_path.exists():
-        print(f"ERROR: not found: {spec_path}", file=sys.stderr)
+    else:
+        raw_args = [a for a in sys.argv[1:] if a != "--batch"]
+        spec_paths_raw = [Path(a) for a in raw_args]
+
+        # If a directory is passed, glob all *.md inside
+        spec_paths = []
+        for p in spec_paths_raw:
+            if p.is_dir():
+                spec_paths.extend(sorted(p.glob("*.md")))
+            else:
+                spec_paths.append(p)
+
+    any_failure = False
+    any_missing = False
+    results: list[tuple[Path, list]] = []
+
+    for spec_path in spec_paths:
+        if not spec_path.exists():
+            print(f"ERROR: not found: {spec_path}", file=sys.stderr)
+            any_missing = True
+            continue
+        failures = validate(spec_path)
+        results.append((spec_path, failures))
+        if failures:
+            any_failure = True
+
+    # Report
+    if len(results) == 1:
+        spec_path, failures = results[0]
+        if not failures:
+            print(f"SPEC OK: {spec_path}")
+            return 0
+        for rule_id, desc, line_no in failures:
+            loc = f"{spec_path}:{line_no}" if line_no else str(spec_path)
+            print(f"FAIL {rule_id} {loc}: {desc}")
+        return 1
+
+    # Multi-file summary
+    passed = [p for p, f in results if not f]
+    failed = [(p, f) for p, f in results if f]
+
+    print(f"\n{'─' * 60}")
+    print(f"BATCH VALIDATION: {len(results)} specs — {len(passed)} passed, {len(failed)} failed")
+    print(f"{'─' * 60}")
+    for spec_path in passed:
+        print(f"  ✅ PASS  {spec_path.name}")
+    for spec_path, failures in failed:
+        print(f"  ❌ FAIL  {spec_path.name}")
+        for rule_id, desc, line_no in failures:
+            loc = f"{spec_path}:{line_no}" if line_no else str(spec_path)
+            print(f"       FAIL {rule_id} {loc}: {desc}")
+    print(f"{'─' * 60}\n")
+
+    if any_missing:
         return 2
-    failures = validate(spec_path)
-    if not failures:
-        print(f"SPEC OK: {spec_path}")
-        return 0
-    for rule_id, desc, line_no in failures:
-        loc = f"{spec_path}:{line_no}" if line_no else str(spec_path)
-        print(f"FAIL {rule_id} {loc}: {desc}")
-    return 1
+    return 1 if any_failure else 0
 
 
 if __name__ == "__main__":

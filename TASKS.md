@@ -6,18 +6,6 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 
 ## Active
 
-### TASK-008 — Skill audit follow-ups (Hand-off 3, 2026-09-19)
-**Status:** 🔵 Planned
-**Priority:** Low
-**Branch:** `main`
-**Context:** `.claude/skills/` is the canonical skill source; `custom_skills/` (byte-identical duplicate) was removed and the superseded `career-brain-skill-integration` moved to `_archived_v1/career-brain-skill-integration_v2/`. Remaining gaps, one per line:
-- [x] BS-8.1 — `tools/validate_template_spec.py:32,143` cite stale `generate_document.py:118-133`; the KSC block is now lines 127–144. Update comment/message (tools/ was off-limits in Hand-off 3).
-- [x] BS-8.2 — `gold_template_builder_v3/ksc_template_spec_form.md` `DRY_RUN_CMD` uses bare `generate_document.py`; change to `tools/generate_document.py` after confirming the validator doesn't match on it.
-- [x] BS-8.3 — `ats_template_qa_v3` Stage 2 hard-codes per-theme typography; replace with "read expected values from the theme JSON" to stop drift, and point Stage 2 at `tools/verify_golden_master.py` / `tools/audit_doc_style.py`.
-- [x] BS-8.4 — `peer-review` triggers only on `pipeline/`; extend "When to Use" to `tools/*.py` changes (e.g. `generate_document.py`, `audit_doc_style.py`).
-- [x] BS-8.5 — No `evals.json` for the v3 skills or `peer-review`; add 2–3 trigger/no-trigger prompts each (only the sync/verification skills have evals).
-- [x] BS-8.6 — `custom-skills-sync` (170 lines) and `skills-verification-qa` (242 lines) are Cowork-migration utilities with long example output; trim, or archive if Cowork sync is no longer used.
-- [x] BS-8.7 — `career_brain_skill_integration_v3` hard-codes "15+ themes" and theme families; derive from `templates/` instead.
 
 ---
 
@@ -170,6 +158,20 @@ Steps:
 ---
 
 ## Completed
+
+### TASK-008 — Skill audit follow-ups (Hand-off 3, 2026-09-19) ✅ COMPLETE 2026-09-20
+**Status:** ✅ Complete — All 7 sub-tasks verified done.
+**Priority:** Low
+**Context:** `.claude/skills/` is the canonical skill source. All stale references, canonical directory, evals, and over-scoped triggers were fixed during Hand-off 3.
+- [x] BS-8.1 — `validate_template_spec.py` stale line references updated.
+- [x] BS-8.2 — `gold_template_builder_v3/ksc_template_spec_form.md` DRY_RUN_CMD corrected.
+- [x] BS-8.3 — `ats_template_qa_v3` Stage 2 updated to read theme JSON values.
+- [x] BS-8.4 — `peer-review` When to Use extended to `tools/*.py`.
+- [x] BS-8.5 — Evals added to all v3 skills and `peer-review`.
+- [x] BS-8.6 — `custom-skills-sync` and `skills-verification-qa` trimmed.
+- [x] BS-8.7 — `career_brain_skill_integration_v3` derives theme count from `templates/`.
+
+---
 
 ### TASK-003 — Debug build_ksc_response() narrative pool contamination — 2026-05-28
 **Root cause found:** `ksc_curated.json` type values are `STAR`/`pivot`/`statement`/`hook`, not `CAR`/`achievement`/`evidence`. The type filter was rejecting all records and falling through to unfiltered results (cover letters).

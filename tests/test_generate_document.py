@@ -1082,6 +1082,202 @@ class GeneratorNoBannedPhraseTests(unittest.TestCase):
             self._assert_no_banned_or_review(closing, f"closing ({employer_type.value})")
 
 
+# ══════════════════════════════════════════════════════════════════════
+# BS-6.3: Integration tests — all three document types
+# ══════════════════════════════════════════════════════════════════════
+
+class IntegrationAllDocTypesTests(unittest.TestCase):
+    """
+    Smoke-level integration tests for build_placeholder_values_v2 across
+    all three document types. These do not call Google APIs (dry-run only).
+    """
+
+    def setUp(self):
+        self.history = SAMPLE_HISTORY
+        self.narratives = SAMPLE_NARRATIVES
+        self.taxonomy = SAMPLE_TAXONOMY
+        self.user_config = SAMPLE_USER_CONFIG
+
+    def _run_v2(self, doc_type: str, extra_kwargs=None):
+        kwargs = {
+            "config": GenerationConfig(
+                doc_type=DocumentType(doc_type),
+                target_role="Project Worker at Launch Housing",
+                employer_type=EmployerType.NFP,
+                dry_run=True,
+                **(extra_kwargs or {}),
+            ),
+            "history": self.history,
+            "narratives": self.narratives,
+            "taxonomy": self.taxonomy,
+            "user_config": self.user_config,
+        }
+        return build_placeholder_values_v2(**kwargs)
+
+    def test_resume_v2_integration_produces_values(self):
+        """Resume: v2 engine returns a populated values dict with no critical errors."""
+        values, stats, warnings = self._run_v2("resume")
+        self.assertIn("{{PROFESSIONAL_SUMMARY}}", values)
+        self.assertTrue(values["{{PROFESSIONAL_SUMMARY}}"], "Summary must be non-empty")
+        self.assertIn("{{CONTACT_NAME}}", values)
+        self.assertEqual(values["{{CONTACT_NAME}}"], "Test User")
+        self.assertNotIn("no_roles_selected", warnings)
+        self.assertGreater(stats["filled"], 0, "At least some placeholders must be filled")
+
+    def test_cover_letter_v2_integration_produces_values(self):
+        """Cover letter: v2 engine populates hook, bridge, and closing."""
+        values, stats, warnings = self._run_v2("cover_letter")
+        self.assertIn("{{CONTACT_NAME}}", values)
+        self.assertEqual(values["{{CONTACT_NAME}}"], "Test User")
+        # EMPLOYER_ORG should not be filled without an org in config
+        # but TARGET_ROLE must always be set
+        self.assertIn("{{TARGET_ROLE}}", values)
+        self.assertEqual(values["{{TARGET_ROLE}}"], "Project Worker at Launch Housing")
+        # Hook/bridge are populated
+        hook = values.get("{{CAO_HOOK}}", "")
+        self.assertIsInstance(hook, str)
+
+    def test_ksc_v2_integration_produces_criterion_values(self):
+        """KSC: v2 engine populates at least criterion 1 CAR blocks when criteria are passed."""
+        values, stats, warnings = self._run_v2(
+            "ksc",
+            extra_kwargs={
+                "criteria_text": [
+                    "1. Demonstrated ability to coordinate complex support needs.",
+                    "2. Experience facilitating group programs.",
+                ],
+            },
+        )
+        # KSC must set criterion text and at least one context block
+        self.assertIn("{{KSC_CRITERION_1_TEXT}}", values)
+        self.assertTrue(
+            values["{{KSC_CRITERION_1_TEXT}}"],
+            "Criterion 1 text should be populated",
+        )
+        # v2 warns on empty criteria — confirm no spurious warning
+        self.assertNotIn("no_criteria_provided", warnings)
+
+    def test_resume_v2_needs_review_bullets_excluded(self):
+        """Needs-review bullets are never selected into resume output."""
+        history_with_flagged = {
+            "roles": [
+                {
+                    "fingerprint": "fp_test",
+                    "company": "Test Org",
+                    "role": "Test Worker",
+                    "start_date": "Jan 2022",
+                    "end_date": "Present",
+                    "domain_archetypes": ["service_coordination"],
+                    "achievements": [
+                        {
+                            "raw_text": "Needs review bullet — should never appear",
+                            "domain_tags": ["service_coordination"],
+                            "needs_review": True,
+                        },
+                        {
+                            "raw_text": "Good bullet — coordinated services for 20 clients",
+                            "domain_tags": ["service_coordination"],
+                            "needs_review": False,
+                        },
+                    ],
+                }
+            ]
+        }
+        config = GenerationConfig(
+            doc_type=DocumentType.RESUME,
+            target_role="Project Worker",
+            dry_run=True,
+        )
+        values, _, warnings = build_placeholder_values_v2(
+            config=config,
+            history=history_with_flagged,
+            narratives=self.narratives,
+            taxonomy=self.taxonomy,
+            user_config=self.user_config,
+        )
+        all_values_text = " ".join(str(v) for v in values.values())
+        self.assertNotIn(
+            "Needs review bullet",
+            all_values_text,
+            "Needs-review bullets must be excluded from generated output",
+        )
+
+    def test_three_doc_types_no_fatal_warnings(self):
+        """All three doc types should complete without fatal content warnings."""
+        fatal_warnings = {"no_roles_selected", "no_bullets_available"}
+        for doc_type in ("resume", "cover_letter", "ksc"):
+            with self.subTest(doc_type=doc_type):
+                extra = {}
+                if doc_type == "ksc":
+                    extra["criteria_text"] = ["1. Service coordination experience."]
+                _, _, warnings = self._run_v2(doc_type, extra_kwargs=extra)
+                for w in warnings:
+                    self.assertNotIn(
+                        w,
+                        fatal_warnings,
+                        f"Fatal warning '{w}' found for doc_type={doc_type}",
+                    )
+
+
+# ══════════════════════════════════════════════════════════════════════
+# BS-3.x: Report field tests
+# ══════════════════════════════════════════════════════════════════════
+
+class ReportFieldTests(unittest.TestCase):
+    """
+    Verify that build_report returns the new BS-3.1–3.5 fields.
+    """
+
+    def _build(self, **overrides):
+        from generate_document import build_report
+        defaults = {
+            "template": "resume",
+            "template_variant": None,
+            "template_doc_id": "TMPL123",
+            "generated_doc_id": "DOC456",
+            "generated_doc_link": "https://docs.google.com/document/d/DOC456/edit",
+            "placeholder_stats": {"total": 10, "filled": 9, "blank": 1},
+            "unresolved_tokens": [],
+            "warnings": [],
+        }
+        defaults.update(overrides)
+        return build_report(**defaults)
+
+    def test_report_includes_derived_summary_used(self):
+        report = self._build(derived_summary_used=True)
+        self.assertIn("derived_summary_used", report)
+        self.assertTrue(report["derived_summary_used"])
+
+    def test_report_derived_summary_false_when_override(self):
+        report = self._build(derived_summary_used=False)
+        self.assertFalse(report["derived_summary_used"])
+
+    def test_report_includes_needs_review_exclusions_count(self):
+        report = self._build(needs_review_exclusions_count=3)
+        self.assertEqual(report["needs_review_exclusions_count"], 3)
+
+    def test_report_includes_ksc_word_count_warnings(self):
+        report = self._build(ksc_word_count_warnings=["criterion_1_context_too_short"])
+        self.assertEqual(report["ksc_word_count_warnings"], ["criterion_1_context_too_short"])
+
+    def test_report_ksc_word_count_warnings_defaults_to_empty_list(self):
+        report = self._build()
+        self.assertEqual(report["ksc_word_count_warnings"], [])
+
+    def test_report_includes_source_files_used(self):
+        report = self._build(source_files_used=["file_b.pdf", "file_a.pdf"])
+        # Should be sorted
+        self.assertEqual(report["source_files_used"], ["file_a.pdf", "file_b.pdf"])
+
+    def test_report_source_files_defaults_to_empty_list(self):
+        report = self._build()
+        self.assertEqual(report["source_files_used"], [])
+
+    def test_report_has_run_timestamp(self):
+        report = self._build()
+        self.assertIn("run_timestamp", report)
+        self.assertTrue(report["run_timestamp"])
+
+
 if __name__ == "__main__":
     unittest.main()
-
