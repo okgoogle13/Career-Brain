@@ -1,4 +1,5 @@
 # Comprehensive Cleanup — Five Hand-offs
+Status: closed 2026-09-20; see HANDOFF_1–5_COMPLETE
 
 Five paste-ready prompts. Run them **in order, each in its own fresh session**, reviewing
 between them. Do not paste more than one at a time — the gating is the point.
@@ -39,7 +40,7 @@ is circular. Do that hand-off's adversarial re-read locally instead.
   on purpose** (script safety). They are not stray files. Never open anything under
   `database/` — it holds the lived-experience disclosures CLAUDE.md's Security section
   protects. Metadata only.
-- 214 tracked files; 33 `.py` (7,453 LOC across `pipeline/` + `tools/`); `.venv/bin/python`
+- 185 tracked files; 28 `.py` (7,453 LOC across `pipeline/` + `tools/`); `.venv/bin/python`
   exists; bootstrap is `pip install -r requirements.txt` (there is no `pyproject.toml`, so
   `uv sync` will fail here).
 - `tests/` has 2 real test files, so `.venv/bin/pytest tests/` is a genuine gate — despite
@@ -257,7 +258,7 @@ Hard constraint — this file is written to leave the machine:
   - templates/ and config/: describe what each file configures, not the
     values it contains.
 
-Method: `git ls-files` for the inventory (214 tracked files), targeted
+Method: `git ls-files` for the inventory (210 tracked files), targeted
 reads of the 33 .py files for their purpose, and ripgrep over imports for
 the dependency relationships. Group by directory. For each file: one line
 on what it does and what it depends on.
@@ -272,14 +273,14 @@ to .gitignore under the existing "regeneratable output" rule that already
 covers processed/, e.g.:
   # Generated export — regeneratable from the codebase, never committed
   PROJECT_MAP.md
-Rationale: it is a point-in-time snapshot of 214 files that goes stale on
+Rationale: it is a point-in-time snapshot of 210 files that goes stale on
 the next commit, and its entire purpose is to leave the machine — keeping
 it untracked means it can never be pushed by accident. Regenerate it
 whenever an outside read is needed rather than maintaining it.
 
 Do not touch: any other file. This produces one gitignored markdown file
 plus a one-line .gitignore addition.
-Verify: `git ls-files | wc -l` (214, unchanged) vs. entries in
+Verify: `git ls-files | wc -l` (210, unchanged) vs. entries in
 PROJECT_MAP.md; `git status --short` shows only the .gitignore change, not
 PROJECT_MAP.md itself; and a manual read-through confirming no data values
 or personal details appear.
@@ -354,3 +355,84 @@ Commit: chore: relocate root-level docs into docs/ and archive/
 ```
 
 ---
+## Hand-off 6 — Close-out (after Hand-offs 1–5)
+
+```
+Goal: Verify the five hand-offs landed, reconcile the plan doc with the final
+repo state, commit the loose planning files, and mark the cleanup closed.
+Docs only — no pipeline/, tools/, config/ or template edits.
+
+Run with: Sonnet 5 · think · normal mode (ask-each-edit)
+advisor(): NO. Nothing here needs a second opinion, and the transcript should
+  stay free of anything under source_docs/, database/ or processed/.
+
+State (verify, don't trust — my numbers may be stale):
+  - Hand-offs 1–4 have HANDOFF_n_COMPLETE_2026-09-19.md files in planning/.
+    Hand-off 5 has none. It was reported done; confirm from git, don't assume.
+  - Uncommitted, not from this session: planning/comprehensive_cleanup_prompt.md
+    (modified — 214→210 count fixes plus this section) and
+    planning/HANDOFF_4_PROMPT.md (untracked).
+  - Tracked count was last seen as 185 (28 .py) after generated database
+    outputs were untracked, so the plan doc's "214/210 files, 33 .py" figures
+    are stale.
+
+Step 0 — Baseline. Run and record:
+    git status --short
+    git ls-files | wc -l ; git ls-files '*.py' | wc -l
+    git log --oneline | head -20
+    ls planning/HANDOFF_*_COMPLETE_*.md
+    git check-ignore -v PROJECT_MAP.md
+    ls custom_skills 2>&1
+    ls -d database/backups/*/ 2>/dev/null | wc -l     (count only; no names)
+  Never open a file under source_docs/, database/, processed/.
+
+Step 1 — Verify each hand-off from evidence (report a table: hand-off → done /
+  partial / not done → evidence):
+    1 read-only; 2 archive moves + refactor commits in git log;
+    3 custom_skills/ gone, skills only under .claude/skills/, CLAUDE.md lists
+      audit_and_repair_database.py and no longer says "No formal tests/ suite";
+    4 PROJECT_MAP.md ignored and untracked;
+    5 root-level loose files relocated; prompt-skills-library and .env.save no
+      longer tracked; .gitignore pattern covers .env*.
+  Then run the gates:
+    .venv/bin/python -m pytest tests/
+    .venv/bin/python pipeline/query_brain.py --help
+    .venv/bin/python tools/generate_document.py --help
+    .venv/bin/python tools/validate_template_spec.py
+  Any failure or "partial": STOP and report. Do not fix inside this hand-off.
+
+  --- STOP. Present the table and gate results. Wait. ---
+
+Step 2 — Write planning/HANDOFF_5_COMPLETE_2026-09-19.md if missing (5–10
+  lines, match HANDOFF_3_COMPLETE_2026-09-19.md's format), using only Step 1
+  evidence. Anything you could not verify goes under "Not verified".
+
+Step 3 — Reconcile planning/comprehensive_cleanup_prompt.md: update the stale
+  file/.py counts in "Repo state" to your Step 0 numbers, add a one-line
+  "Status: closed <date>; see HANDOFF_1–5_COMPLETE" under the title. Edit
+  nothing else — the hand-off bodies stay as the historical record.
+
+Step 4 — Open items. Read TASKS.md; list tasks still open (id + title only).
+  Do not start them. Flag any that a hand-off claimed to close but TASKS.md
+  still shows open.
+
+  --- STOP. Present the diff and the open-items list. Wait. ---
+
+Step 5 — After approval, commit in two separate commits, staging by explicit
+  path (never `git add -A`):
+    git add planning/HANDOFF_5_COMPLETE_2026-09-19.md planning/HANDOFF_4_PROMPT.md
+    git commit -m "docs: add hand-off 5 completion doc and hand-off 4 prompt"
+    git add planning/comprehensive_cleanup_prompt.md
+    git commit -m "docs: close out comprehensive cleanup plan"
+  End each commit message with the attribution line from the session reminder.
+
+Do not touch: pipeline/, tools/, config/, templates/, source_docs/, database/,
+processed/, archive/, .gitignore.
+
+Verify:
+  git status --short        (clean)
+  git ls-files | wc -l      (equals Step 0 + the 2 new tracked planning files)
+  .venv/bin/python -m pytest tests/   (same result as Step 1)
+
+Finish: end with a "Next steps" section of runnable commands.
+```
