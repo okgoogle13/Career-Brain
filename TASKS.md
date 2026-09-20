@@ -15,7 +15,8 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 **Branch:** `main`
 
 #### Stage 1 — Narrative Voice Evaluation (Addresses Gap 3)
-- [ ] BS-7.1 — Enhance `pipeline/curate_narratives.py` to replace length/regex-based `quality_tier` with an LLM-based voice authenticity score using `voice-authenticity-profile.md` criteria.
+- [x] BS-7.1 — LLM voice authenticity scorer (axis 5) added to `pipeline/curate_narratives.py` (commit `8730672`). Gemini Flash judge on the 5 authentic-voice patterns; boundary mode by default, `--full-voice-score` for the full corpus; graceful fallback when `GEMINI_API_KEY` is unset.
+  - ⚠️ **Implemented but not yet exercised against the corpus.** BS-7.2 is the run.
 - [ ] BS-7.2 — Re-run curation pipeline to re-tier all 1,346 narratives with the new voice-aware criteria (Gate 3 change).
 
 #### Stage 2 — Proper Noun Preservation (Addresses Gap 5)
@@ -23,7 +24,7 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [ ] BS-7.4 — Update substitution logic in `tools/generate_document.py` to bypass terms in the exceptions list, preserving proper noun casing and spelling.
 
 #### Stage 3 — Semantic Slop Detection (Addresses Gap 6)
-- [ ] BS-7.5 — Develop a post-generation semantic review tool or LLM judge to detect paraphrased slop that bypasses fixed-string checks.
+- [x] BS-7.5 — `tools/check_voice_slop.py` built (commit `8730672`). Paragraph-level LLM judge → CLEAN / REVIEW / SLOP, Markdown + `--json` output, exit 2 on SLOP for CI. ⚠️ Not yet run against a generated document.
 
 ---
 
@@ -51,17 +52,17 @@ Persistent task tracker. Update status as work progresses. Completed tasks stay 
 - [ ] BS-2.2 — Lock template versions by setting `"template_revision"` inside `doc_templates.json`.
 
 #### Stage 3 — Report & Constraint Enhancements (Milestones 3–6, deferred)
-- [ ] BS-3.1 — Add `derived_summary_used` (boolean) to `doc_generation_report.json` based on fallback usage.
-- [ ] BS-3.2 — Add `needs_review_exclusions_count` (int) to report to flag skipped `needs_review=True` achievements.
-- [ ] BS-3.3 — Surface KSC word count warnings in report JSON (`ksc_word_count_warnings` list).
-- [ ] BS-3.4 — Define Exit Code Semantics: `0` (success), `1` (DocumentGenerationError), `2` (Prerequisite config failure).
-- [ ] BS-3.5 — Add `source_files_used` (list of unique source line filenames) to report.
-- [ ] BS-4.1 — `--job-ad` file flag for content tailoring. Resolve local text files or raw strings to `extract_job_ad_keywords()`.
-- [ ] BS-4.2 — Verify `--criteria` file flag supports file paths (not just inline text) for KSC parsing.
-- [ ] BS-5.1 — Batch template validator (`--validate-templates`). Asserts placeholders, ATS hygiene, and revision parity across all configured template IDs.
-- [ ] BS-6.1 — Australian terminology post-processing (`AU_TERMINOLOGY_MAP`). Replace US/corporate terms ("industry", "company") globally prior to text injection.
-- [ ] BS-6.2 — Rosetta Stone on resume bullets. Append parenthetical community sector translations to corporate keywords if `--rosetta` is enabled.
-- [ ] BS-6.3 — Integration tests: all 3 document types (dry-run). Asserts exit 0, zero unresolved tokens, and report JSON schema compliance.
+- [x] BS-3.1 (`8730672`) — Add `derived_summary_used` (boolean) to `doc_generation_report.json` based on fallback usage.
+- [x] BS-3.2 (`8730672`) — Add `needs_review_exclusions_count` (int) to report to flag skipped `needs_review=True` achievements.
+- [x] BS-3.3 (`8730672`) — Surface KSC word count warnings in report JSON (`ksc_word_count_warnings` list).
+- [x] BS-3.4 (`8730672`) — Define Exit Code Semantics: `0` (success), `1` (DocumentGenerationError), `2` (Prerequisite config failure).
+- [x] BS-3.5 (`8730672`) — Add `source_files_used` (list of unique source line filenames) to report.
+- [x] BS-4.1 (`8730672`, verified already implemented at `generate_document.py:1044`) — `--job-ad` file flag for content tailoring. Resolve local text files or raw strings to `extract_job_ad_keywords()`.
+- [x] BS-4.2 (`8730672`, verified already implemented at `generate_document.py:1148`) — Verify `--criteria` file flag supports file paths (not just inline text) for KSC parsing.
+- [x] BS-5.1 (`8730672`, `--batch` flag on `validate_template_spec.py`; directory + multi-file support) — Batch template validator (`--validate-templates`). Asserts placeholders, ATS hygiene, and revision parity across all configured template IDs.
+- [x] BS-6.1 (`8730672`, verified live at `generate_document.py:500–527`) — Australian terminology post-processing (`AU_TERMINOLOGY_MAP`). Replace US/corporate terms ("industry", "company") globally prior to text injection.
+- [x] BS-6.2 (`8730672`, verified live at `generate_document.py:568–576`) — Rosetta Stone on resume bullets. Append parenthetical community sector translations to corporate keywords if `--rosetta` is enabled.
+- [x] BS-6.3 (`8730672`, 91 tests + 3 subtests pass) — Integration tests: all 3 document types (dry-run). Asserts exit 0, zero unresolved tokens, and report JSON schema compliance.
 
 **Stage 1 gate:** User approves Golden Master rebuild → execute sequentially per AGENTS.md Gate 4.
 **Stage 2 gate:** BS-1.x cover letter/KSC builds each need Gate 4 approval per AGENTS.md.

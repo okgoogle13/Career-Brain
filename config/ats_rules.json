@@ -112,6 +112,12 @@
       "competency questions": "key selection criteria"
     },
 
+    "_proper_noun_exceptions_note": "Phrases masked before BOTH australian_mappings and australian_spelling run, so a proper noun containing a mapped word survives intact. Static seed only - organisation names for the run (the employer org, from --target) are added at runtime by _collect_proper_nouns() in tools/generate_document.py. Matched whole-word, case-insensitively, longest phrase first.",
+    "proper_noun_exceptions": [
+      "Australian Labor Party",
+      "World Health Organization"
+    ],
+
     "_australian_spelling_note": "Explicit word map only - NEVER an -ize/-ise regex, which would corrupt proper nouns and unrelated words. 'program' is correct Australian usage in community services and is deliberately absent: it must never become 'programme'. Applied as a case-preserving whole-word substitution.",
     "australian_spelling": {
       "organization": "organisation",

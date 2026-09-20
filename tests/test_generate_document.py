@@ -857,6 +857,50 @@ class CareerCopilotLeverageTests(unittest.TestCase):
         self.assertIn("banned_phrase_detected: 'dedicated professional'", warnings)
         self.assertFalse([w for w in warnings if "proven track record" in w])
 
+    def test_proper_noun_survives_substitution_but_generic_word_converts(self):
+        """BS-7.3/7.4: an employer name containing a mapped word is masked inline.
+
+        'Industry Skills Organization' is the employer org for this run, so both
+        'industry'->'sector' and 'organization'->'organisation' must leave it
+        alone — while the standalone 'organization' later in the same string
+        still converts.
+        """
+        config = GenerationConfig(
+            doc_type=DocumentType.COVER_LETTER,
+            target_role=(
+                "Case Manager utilizing organization data "
+                "at Industry Skills Organization"
+            ),
+        )
+        values, _, _ = build_placeholder_values_v2(
+            config=config,
+            history=SAMPLE_HISTORY,
+            narratives=SAMPLE_NARRATIVES,
+            taxonomy=SAMPLE_TAXONOMY,
+            user_config=SAMPLE_USER_CONFIG,
+        )
+        self.assertEqual(
+            values["{{TARGET_ROLE}}"],
+            "Case Manager utilising organisation data "
+            "at Industry Skills Organization",
+        )
+
+    def test_static_proper_noun_exception_is_masked(self):
+        """The ats_rules.json seed protects phrases with no runtime source."""
+        from generate_document import _collect_proper_nouns, _mask_proper_nouns, load_ats_rules
+        terminology = load_ats_rules()["terminology"]
+        phrases = _collect_proper_nouns({}, terminology)
+        masked, restore = _mask_proper_nouns(
+            "Briefed the australian labor party on labor market data.", phrases,
+        )
+        self.assertNotIn("labor party", masked.lower())
+        self.assertIn("labor market", masked)  # unmasked, still substitutable
+        for sentinel, original in restore.items():
+            masked = masked.replace(sentinel, original)
+        self.assertEqual(
+            masked, "Briefed the australian labor party on labor market data.",
+        )
+
     def test_australian_terminology_substitution(self):
         config = GenerationConfig(
             doc_type=DocumentType.RESUME,

@@ -432,6 +432,54 @@ def build_placeholder_values(
 # v2 Placeholder Builder
 # ──────────────────────────────────────────────────────────────────────
 
+# Sentinel carries no alphabetic characters, so the \b-anchored substitution
+# patterns below cannot reach inside a masked span.
+_MASK_TEMPLATE = "\x00{}\x00"
+
+
+def _collect_proper_nouns(
+    values: dict[str, str],
+    terminology: dict[str, Any],
+) -> list[str]:
+    """Proper-noun phrases that must survive Australian terminology substitution.
+
+    Two sources: the static seed in ``ats_rules.json`` and the organisation
+    names for this run (``*_ORG`` placeholders). The employer org arrives at
+    runtime via ``--target``, so a static config list alone cannot cover it.
+
+    Deliberately narrow. Role titles are NOT protected: a title containing a
+    mapped word should still be Australianised inside prose. Anything else that
+    must be preserved goes in ``terminology.proper_noun_exceptions``.
+    """
+    phrases: set[str] = set(terminology.get("proper_noun_exceptions", []))
+
+    for ph, text in values.items():
+        if text and ph.endswith("_ORG}}"):
+            phrases.add(text.strip())
+
+    # Longest first, so "Australian Labor Party" masks before "Labor".
+    return sorted((p for p in phrases if p), key=len, reverse=True)
+
+
+def _mask_proper_nouns(
+    text: str, phrases: list[str],
+) -> tuple[str, dict[str, str]]:
+    """Replace each proper-noun phrase with a sentinel. Returns (masked, restore_map)."""
+    restore: dict[str, str] = {}
+    for idx, phrase in enumerate(phrases):
+        # Case-insensitive: the substitution loop is IGNORECASE, so a lowercase
+        # occurrence of a masked phrase would otherwise still be rewritten.
+        pattern = re.compile(r'\b' + re.escape(phrase) + r'\b', re.IGNORECASE)
+
+        def _sub(match, idx=idx):
+            sentinel = _MASK_TEMPLATE.format(f"{idx}_{len(restore)}")
+            restore[sentinel] = match.group(0)
+            return sentinel
+
+        text = pattern.sub(_sub, text)
+    return text, restore
+
+
 def build_placeholder_values_v2(
     *,
     config: GenerationConfig,
@@ -507,12 +555,17 @@ def build_placeholder_values_v2(
             "_ORG}}", "_TITLE}}", "_DATES}}", "_NAME}}",
             "_CONTACT_NAME}}", "_ADDRESS}}",
         )
+        # BS-7.3/7.4: those same proper nouns also appear INLINE in generated prose
+        # ({{HOOK_PARAGRAPH}}, {{EVIDENCE_PARAGRAPH_n}}, KSC _CONTEXT/_ACTION/_RESULT),
+        # where the suffix skip above cannot see them. Mask them before substituting.
+        protected = _collect_proper_nouns(values, terminology)
         for ph, text in values.items():
             if not text:
                 continue
             # Skip proper-noun fields — employer names, titles, dates must not be rewritten
             if any(ph.endswith(sfx) for sfx in _PROPER_NOUN_SUFFIXES):
                 continue
+            text, restore = _mask_proper_nouns(text, protected)
             # Perform whole-word, case-insensitive substitution
             for eng_term, au_term in au_mappings.items():
                 def preserve_case_replace(match, au_term=au_term):
@@ -524,6 +577,8 @@ def build_placeholder_values_v2(
                     return au_term
                 pattern = re.compile(r'\b' + re.escape(eng_term) + r'\b', re.IGNORECASE)
                 text = pattern.sub(preserve_case_replace, text)
+            for sentinel, original in restore.items():
+                text = text.replace(sentinel, original)
             values[ph] = text
 
 
