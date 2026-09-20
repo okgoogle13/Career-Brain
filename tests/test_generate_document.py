@@ -980,6 +980,10 @@ class CareerCopilotLeverageTests(unittest.TestCase):
 class TestAtsRulesProvenance(unittest.TestCase):
     """Cross-check that ats_rules.json metadata is consistent with the profile it claims to track.
 
+    Also pins the profile's inheritance edge: block-level identity comes from
+    config/llm-specs/agent-operating-spec.md section +JOB (the synced copy inside
+    this repo), while the profile owns the machine-checkable mechanics.
+
     Deliberately narrow: reads two real files, no mocking, no network.
     Fails fast if provenance fields are absent or mismatched.
     """
@@ -1027,7 +1031,7 @@ class TestAtsRulesProvenance(unittest.TestCase):
             "likely a mismatch after a profile update",
         )
 
-    def test_profile_is_marked_career_brain_local(self):
+    def test_profile_declares_job_block_inheritance(self):
         profile_text = self._load_profile_text()
         self.assertIn(
             "Career-Brain",
@@ -1035,9 +1039,14 @@ class TestAtsRulesProvenance(unittest.TestCase):
             "Profile header must include 'Career-Brain' to confirm local scope",
         )
         self.assertIn(
-            "not sourced from",
+            "config/llm-specs/agent-operating-spec.md",
             profile_text,
-            "Profile header must explicitly state it is not sourced from comms-hub-v2",
+            "Profile header must name the synced spec copy it inherits its block identity from",
+        )
+        self.assertIn(
+            "+JOB",
+            profile_text,
+            "Profile header must name the +JOB block it inherits",
         )
 
 

@@ -2,11 +2,14 @@
 
 **Generated:** 2026-09-05
 **Version:** 2026-09-05
-**Status:** Career-Brain-local authority for job-application voice. Supersedes the anti-slop
+**Status:** Career-Brain-local authority for job-application voice mechanics. Supersedes the anti-slop
 section of `gem_system_prompt.md` (§6) and the ad-hoc `QUALITY BAR` in `tools/content_engine.py`.
-**Scope:** Career-Brain only. This document is not sourced from, synchronised with, or governed
-by `comms-hub-v2`. The four references to `~/comms-hub-v2/comms/voice-profile.md` below are
-scholarly citations of one register constraint; they do not create an upstream dependency.
+**Scope:** Career-Brain local enforcement spec for job-application voice. Block-level identity and
+register are inherited from `config/llm-specs/agent-operating-spec.md` §`+JOB` (synced from
+comms-hub-v2, which is canonical for the operating-spec blocks — not for voice profiles). This
+document never restates or paraphrases that block; it carries what the block cannot: the
+machine-checkable phrase lists, the corpus evidence behind each pattern, the Australian
+community-services register, and the style anchors.
 **Enforcement source:** `config/ats_rules.json` (machine-checkable floor — phrase lists and
 spelling maps only).
 **Runtime consumer:** `tools/generate_document.py` → `scan_voice_phrases()` (warn-only) and the

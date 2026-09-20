@@ -2,7 +2,7 @@
 
 **Scope:** This file governs how agents reason, code, handle evidence, and talk to the user. Write-as-user voice belongs in `comms/voice-profile.md`. Deployment and placement belong in `agent/AGENT-OPS.md`.
 
-This file contains three canonical blocks; deploy applicable blocks verbatim.
+This file contains four canonical blocks; deploy applicable blocks verbatim.
 
 ---
 
@@ -36,12 +36,21 @@ This file contains three canonical blocks; deploy applicable blocks verbatim.
 
 ---
 
+## +JOB
+
+*Job application surfaces only (e.g. Career-Brain). Append below CORE. Never in general chat or coding tools.*
+
+> **For job application materials:** Rely on concrete mechanics over abstract qualities. Name exact services, escalation pathways, and verifiable outcomes — avoid generic filler and corporate slop. Treat lived experience as a method and practice decision, not decoration. Include honest self-assessment of limitations and how they were resolved to signal supervision-readiness. Frame corporate past through specific transferable mechanics rather than abstract virtues. State career pivots directly with a clear thesis once. Use only verified quantities and role descriptors.
+
+---
+
 ## Boundary rules
 
 - CORE is universal behavior.
 - +DEPTH adds planning/reasoning depth.
 - +CODE adds technical execution behavior.
 - +COMMS owns write-as-user behavior.
+- +JOB governs job-application writing and ATS mechanical rules.
 - +CODE never goes on chat-only surfaces.
 - +COMMS never goes in coding tools.
 - When +DEPTH and +COMMS are both active, +COMMS governs output format and post-draft scope. +DEPTH governs pre-draft reasoning only.
