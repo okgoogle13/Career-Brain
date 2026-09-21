@@ -46,17 +46,17 @@ Last status sweep: 2026-09-21 (verified against working tree at commit `835c034`
 - [x] BS-1.1 — Populate `config/user_config.json` with real contact, education, certification data (verified 2026-06-06: name/email/education present; dry-run exits 0).
 - [x] BS-1.2 & BS-1.3 — Create Golden Master: Resume Chronological & Hybrid (Completed under Stage 1).
 - [ ] BS-1.4 — Build Golden Master: Cover Letter (Government) from `templates/cover_letter_government_v1.json`. (Salutation: "Selection Panel"; formal tone).
-  - ⚠️ **[inferred] Possibly done, unverified.** `config/doc_templates.json` gained a new `template_doc_id` `1ZZI4zb2aB6SPnFWzfrsQvto86eOk7BG9Mx_kjVNRObI` on 2026-09-20 (commit `835c034`, whose message does not mention a build). `build_golden_master.py` does **not** write IDs back to config, so a changed ID is manual registration and proves nothing about the document's state.
+  - ❌ **FAILED (2026-09-22):** `verify_golden_master.py` PASSED, but `audit_doc_style.py` FAILED with multiple style violations (font sizes, spacings). Rebuild required.
   - Settling command: `python3 tools/verify_golden_master.py 1ZZI4zb2aB6SPnFWzfrsQvto86eOk7BG9Mx_kjVNRObI`
 - [ ] BS-1.5 — Build Golden Master: Cover Letter (NFP) from `templates/cover_letter_nfp_v1.json`. (Salutation: "Hiring Manager"; warm NFP tone).
-  - ⚠️ **[inferred] Same as BS-1.4:** new ID `1a-JfEX2p5AZFFK6rZSj9qiLU23i5u4a_NG1WudQ9D54` registered 2026-09-20, live build unverified.
+  - ❌ **FAILED (2026-09-22):** `verify_golden_master.py` PASSED, but `audit_doc_style.py` FAILED with multiple style violations. Rebuild required.
   - Settling command: `python3 tools/verify_golden_master.py 1a-JfEX2p5AZFFK6rZSj9qiLU23i5u4a_NG1WudQ9D54`
 - [ ] BS-1.6 — Verify KSC Golden Master (`ksc_standard_v2.json`) still valid after font changes. Ensure Context/Action/Result/Support format is strictly maintained.
-  - ⚠️ **[inferred] Rebuilt, unverified:** `ksc.template_doc_id` was replaced on 2026-09-20 (`1vtekKqdoK…` → `1pGTQ65rrsYpqi1TC7zI-DjO5v9LVurO6JZOLJONW_C4`), so the old KSC master is superseded. No audit artifact on disk.
+  - ❌ **FAILED (2026-09-22):** `verify_golden_master.py` FAILED (color-on-all: False). `audit_doc_style.py` FAILED with multiple style/heading violations. Rebuild required.
   - Settling command: `python3 tools/verify_golden_master.py 1pGTQ65rrsYpqi1TC7zI-DjO5v9LVurO6JZOLJONW_C4`
 - [x] BS-1.7 — Confirm Drive subfolder IDs configured in `config/doc_templates.json` (verified 2026-06-06: all 4 folder IDs + CL/KSC doc IDs present).
 - [ ] BS-2.1 — ATS QA audit on all active Golden Masters (0 failures required). Audit: all placeholders present, no unknown placeholders, no inline objects, no layout tables, no text boxes, contact in body, header/fonts adhere to standards.
-  - **Verified open (2026-09-21):** no ATS QA report artifact exists on disk for the 2026-09-20 CL/KSC rebuilds.
+  - ❌ **FAILED (2026-09-22):** `audit_doc_style.py` was run live and failed on all 3 active Golden Masters (BS-1.4, 1.5, 1.6). Fix templates and rebuild.
 - [x] BS-2.2 (`8730672`) — Lock template versions by setting `"template_revision"` inside `doc_templates.json`. All resume variants, both cover letter variants, and KSC now carry `"template_revision": "2026-09-20"`.
 
 #### Stage 3 — Report & Constraint Enhancements (Milestones 3–6) — ✅ Complete
