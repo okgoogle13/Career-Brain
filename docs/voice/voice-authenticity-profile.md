@@ -483,11 +483,16 @@ attach evidence to it.
 3. **`curate_narratives.py` remains voice-blind.** Tier is length + STAR keywords + a metric
    regex. Re-tiering 1,346 narratives is a Gate 3 change and out of scope here.
 4. **[RESOLVED] `pipeline/audit_and_repair_database.py` instructs an LLM to use *"programme"***. This was fixed in commit `a7cbca0` (using Australian spelling 'program' in audit LLM prompt).
-5. **Spelling substitution can corrupt proper nouns.** *World Health Organization* becomes
-   *World Health Organisation*. Whole-word case-preserving substitution cannot see proper nouns.
-   Check organisation names in the final document.
-6. **Slop by paraphrase is not detectable.** The config catches fixed strings only. A fresh
-   generic sentence passes every automated check. That is what the patterns above are for.
+5. **[RESOLVED] Spelling substitution could corrupt proper nouns.** *World Health Organization*
+   becoming *World Health Organisation* is fixed: `terminology.proper_noun_exceptions`
+   (`config/ats_rules.json:115–116`) plus `_collect_proper_nouns()` / `_mask_proper_nouns()`
+   in `tools/generate_document.py` (`:440`, `:464`) mask protected phrases before the
+   Australian-mappings and spelling substitution passes, then restore them (commit `835c034`).
+6. **[RESOLVED] Slop by paraphrase was not detectable.** The config still catches fixed strings
+   only, but `tools/check_voice_slop.py` (commit `8730672`) adds a paragraph-level LLM judge
+   (CLEAN/REVIEW/SLOP, `--json`, exit 2 on SLOP for CI) that catches a fresh generic sentence
+   the fixed-string check would miss. Not yet run against a generated document — see TASKS.md
+   TASK-007 Stage 3.
 7. **The raw source vault is gone.** `source_docs/` is git-ignored and the original ETL source
    tree no longer exists on disk. All evidence here comes from extracted `full_text` in
    `ksc_curated.json`, which carries PDF line-wrap damage. Some excerpts are lightly

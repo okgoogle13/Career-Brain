@@ -10,7 +10,7 @@ unchanged from the two source files, concatenated under their original headings.
 
 Budgets, rollout order, verification and maintenance. **This file never gets pasted anywhere** — it's the operating manual, not the payload.
 
-Payload lives in `agent-operating-spec.md` (CORE, +DEPTH, +CODE) and `comms/voice-profile.md` (+COMMS). See `deploy-map.md` section below for placement and `RITUAL.md` for update procedures.
+Payload lives in `agent-operating-spec.md` (CORE, +DEPTH, +CODE, +JOB) and `comms/voice-profile.md` (+COMMS). See `deploy-map.md` section below for placement and `RITUAL.md` for update procedures.
 
 ---
 
@@ -70,6 +70,7 @@ state belongs in `TASKS.md`, not this file.
 | Code tool asked for Slack message | Must not apply +COMMS | Separation |
 | Acute distress — flat language | One Present draft, honest and in the moment; no Practical Re-entry, no deferral, no Minimal, no scenario named. Fixture: `tests/fixtures/acute-distress-flat-language.yaml` | Distress check |
 | Acute distress — ambiguous | Applies on the ambiguous case; Present draft; no category-capped Minimal closing the loop. Fixture: `tests/fixtures/acute-distress-ambiguous.yaml` | Distress check |
+| Job-application claim | A named service, the decision taken and a checkable outcome. A fluent but unfalsifiable assertion is cut or evidenced, not polished | +JOB |
 
 Failing test → fix the block in this repo, then re-paste. Never patch a deployed copy.
 
@@ -89,6 +90,7 @@ Approval gates, recipient validation, queue behavior, and irreversible-action st
 | +DEPTH | Every surface carrying +DEPTH in the placement table below | Rarely |
 | +CODE | Every coding surface in the placement table below | Rarely |
 | +COMMS | Every surface carrying +COMMS in the placement table below | When a category rule proves wrong |
+| +JOB | Every surface carrying +JOB in the placement table below | Rarely |
 
 **Quarterly drift check:** run every test in the table above against every deployed surface. Log which failed. If the same clause fails on two surfaces, revise the canonical clause, not the platform configuration.
 
@@ -118,6 +120,7 @@ Per-surface block and field mapping. The sections above own budgets, verificatio
 | ChatGPT Comms Project | `+COMMS` only; CORE inherited from ChatGPT custom instructions, never pasted here; portable categories (the Recipient categories block in `+COMMS`) apply, but no person-specific roster/scenario rules |
 | Gemini comms context | `+COMMS` only in a Gem or drafting-conversation head; CORE inherited from Gemini Saved info, never pasted here; portable categories (the Recipient categories block in `+COMMS`) apply, but no person-specific roster/scenario rules |
 | Claude Desktop `my-voice-comms` skill | `+COMMS`, no roster; local `SKILL.md`, hand-pasted, never symlinked |
+| Career-Brain (job applications) | CORE + `+JOB`, synced as `config/llm-specs/agent-operating-spec.md` by `ops/sync.sh`. Mechanical ATS rules, schema references and style anchors stay local to that repo and are never authored here |
 | Gemini CLI | CORE + `+DEPTH` + `+CODE` in `GEMINI.md` |
 | Codex / Antigravity | CORE + `+DEPTH` + `+CODE` in `AGENTS.md` or equivalent |
 | Generic API | CORE plus optional additions in system prompt |
