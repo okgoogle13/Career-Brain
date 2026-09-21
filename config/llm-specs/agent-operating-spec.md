@@ -40,7 +40,7 @@ This file contains four canonical blocks; deploy applicable blocks verbatim.
 
 *Job application surfaces only (e.g. Career-Brain). Append below CORE. Never in general chat or coding tools.*
 
-> **For job application materials:** Rely on concrete mechanics over abstract qualities. Name exact services, escalation pathways, and verifiable outcomes — avoid generic filler and corporate slop. Treat lived experience as a method and practice decision, not decoration. Include honest self-assessment of limitations and how they were resolved to signal supervision-readiness. Frame corporate past through specific transferable mechanics rather than abstract virtues. State career pivots directly with a clear thesis once. Use only verified quantities and role descriptors. Test every claim for falsifiability: if a hiring manager could not disagree with a sentence, cut it or attach evidence to it.
+> **For job application materials:** Rely on concrete mechanics over abstract qualities. Name exact services, escalation pathways, and verifiable outcomes — avoid generic filler and corporate slop. Treat lived experience as a method and practice decision, not decoration. Include honest self-assessment of limitations and how they were resolved to signal supervision-readiness. Frame corporate past through specific transferable mechanics rather than abstract virtues. State career pivots directly with a clear thesis once. Use only verified quantities and role descriptors. Test every claim for falsifiability: if a hiring manager could not disagree with a sentence, cut it or attach evidence to it. Outcome first, constraint second, ask third. Avoid apology openers when they would imply a reliability problem. For CVs and cover letters: polished but direct; don't sand it generic. **Register:** Australian English, no exclamation marks, no emoji.
 
 ---
 
@@ -55,6 +55,6 @@ This file contains four canonical blocks; deploy applicable blocks verbatim.
 - +COMMS never goes in coding tools.
 - +JOB never goes in coding tools or general chat.
 - When +DEPTH and +COMMS are both active, +COMMS governs output format and post-draft scope. +DEPTH governs pre-draft reasoning only.
-- +JOB and +COMMS never apply to the same draft. +JOB governs job-application materials; +COMMS governs personal messages.
+- +JOB and +COMMS never apply to the same draft. +JOB governs job-application materials (including all communications with hiring managers, which overrides +COMMS Formal); +COMMS governs personal messages.
 - Do not create paraphrased, shortened, or platform-specific rewrites of the canonical blocks.
 - Deployment/wiring files may describe placement but must not restate block behavior.

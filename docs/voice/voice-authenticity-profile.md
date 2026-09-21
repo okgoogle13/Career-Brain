@@ -22,7 +22,7 @@ Australian-spelling substitution loop.
 | `database/ksc_curated.json` — 550 own-authored narratives across 54 source documents | All verbatim evidence, all credibility markers, all frequency counts |
 | `database/career_history_enriched.json` — 105 role clusters / 1,017 bullets | Fact cross-checking for dates and titles |
 | `database/Career_Brain_Knowledge.md` | DFFH/TGV inclusive-language glossary, action-verb bank |
-| `~/comms-hub-v2/comms/voice-profile.md` | The `Formal` register constraint: outcome first, no apology openers, *"polished but keep my directness; don't sand it generic"* |
+| `~/comms-hub-v2/agent/agent-operating-spec.md` | The `+JOB` register constraints: outcome first, avoid apology openers, polished but direct (see `+JOB` for full constraints) |
 | `~/comms-hub-v2/comms/comms-examples.local.md` | Confirmed cover-letter voice was an **unfilled gap** — no prior worked example existed |
 | `gem_system_prompt.md` §5 | Output format contracts (CAR/SAO word bands, bullet shape, CAO hook) — reused, not redefined |
 
@@ -195,8 +195,8 @@ self-care. It is a strength there and a liability against a criterion about comp
 Always close the loop: what changed in practice afterwards. The excerpt above does not close it
 — that is its weakness, and the rewrite in `ksc-exemplars.local.md` fixes it.
 
-**Register note:** drop the exclamation mark. `~/comms-hub-v2/comms/voice-profile.md` puts CVs
-and cover letters in the **Formal** category — *"polished but keep my directness"*. Directness
+**Register note:** drop the exclamation mark. `~/comms-hub-v2/agent/agent-operating-spec.md` (`+JOB`)
+forbids exclamation marks in job application materials. Directness
 survives; the exclamation mark does not.
 
 ***
@@ -230,8 +230,7 @@ mechanism (who / what / when), named consequence (resource gaps identified, appr
 The second asserts three abstractions and apologises for the background in the first clause.
 
 **Apply this by:** never open a pivot sentence with *"While my background in finance may seem
-unrelated"* — `~/comms-hub-v2/comms/voice-profile.md` is explicit that apology openers *"read as
-a reliability flag."* State the transferable mechanic and let the reader draw the inference.
+unrelated"* — `~/comms-hub-v2/agent/agent-operating-spec.md` (`+JOB`) is explicit to *"Avoid apology openers when they would imply a reliability problem."* State the transferable mechanic and let the reader draw the inference.
 
 ***
 
@@ -430,7 +429,7 @@ Before any job application content is submitted:
 9. [ ] First person correct: **resume — no "I"**; cover letter and KSC — first person expected.
 10. [ ] Tense correct: active past for history, present for current roles.
 11. [ ] Identity disclosure is a deliberate decision for *this* application, not a default.
-12. [ ] No apology opener; no *"I am confident that I am the ideal candidate"* closer.
+12. [ ] Avoid apology openers (see `~/comms-hub-v2/agent/agent-operating-spec.md` `+JOB`); no *"I am confident that I am the ideal candidate"* closer.
 13. [ ] Any inferred detail is wrapped in `[[NEEDS_REVIEW: …]]`.
 14. [ ] At most one honest-limitation passage, and it closes the loop.
 

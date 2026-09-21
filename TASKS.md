@@ -77,11 +77,11 @@ Last status sweep: 2026-09-21 (verified against working tree at commit `835c034`
 ---
 
 ### TASK-005-B — Schema / ontology consolidation (carried out of TASK-005)
-**Status:** 🟡 Open — Scoped down to schema enforcement.
+**Status:** ✅ Complete
 **Priority:** Low
 - [x] Design unified canonical JSON schema (v2.3 → single format) — *Superseded: schema_v2_0.json exists and is adopted.*
 - [x] Produce critique rubric (Markdown) for evaluating theme differentiation, ATS safety, accessibility, and Career Brain sector alignment — *Superseded by ats_template_qa_v3 and docs_style_auditor_v3 skills.*
-- [ ] Implement narrow schema-enforcement check (`validate_templates_v2.py`) to gate pipeline runs before Gate 4. (No jsonschema dependency, just required keys and `schema_version` const).
+- [x] Implement narrow schema-enforcement check (`validate_templates_v2.py`) to gate pipeline runs before Gate 4. (No jsonschema dependency, just required keys and `schema_version` const).
 
 ---
 
