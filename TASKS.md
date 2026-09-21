@@ -16,9 +16,9 @@ Last status sweep: 2026-09-21 (verified against working tree at commit `835c034`
 #### Stage 1 — Narrative Voice Evaluation (Addresses Gap 3)
 - [x] BS-7.1 — LLM voice authenticity scorer (axis 5) added to `pipeline/curate_narratives.py` (commit `8730672`). Gemini Flash judge on the 5 authentic-voice patterns; boundary mode by default, `--full-voice-score` for the full corpus; graceful fallback when `GEMINI_API_KEY` is unset.
   - ⚠️ **Implemented but not yet exercised against the corpus.** BS-7.2 is the run.
-- [ ] BS-7.2 — Re-run curation pipeline to re-tier all 1,346 narratives with the new voice-aware criteria (Gate 3 change).
-  - **Verified open (2026-09-21):** `database/ksc_curated.json` holds 1,346 narratives, last written 2026-09-17, and carries **no** voice fields (`quality_tier` only; no `voice_score` / `voice_promoted`). The scorer has never touched this file.
-  - Settling command: `op run --env-file=".env" -- python3 pipeline/curate_narratives.py` (add `--full-voice-score` for the whole corpus).
+- [x] BS-7.2 — Re-run curation pipeline to re-tier all 1,347 narratives with the new voice-aware criteria (Gate 3 change).
+  - **Completed (2026-09-21):** `database/ksc_curated.json` holds 1,347 narratives, last written `2026-09-21T18:08:52` (curation_meta.run_at). All 1,347 carry `voice_score`. 
+  - Settling command was run with `--full-voice-score` for the whole corpus.
 
 #### Stage 2 — Proper Noun Preservation (Addresses Gap 5)
 - [x] BS-7.3 — Proper-noun exception list shipped (commit `835c034`) as **`terminology.proper_noun_exceptions`** in `config/ats_rules.json:115–116` — a top-level terminology key, **not** an `exceptions` list nested inside `australian_spelling` as originally planned. Static seed only; the employer org name from `--target` is added at runtime.
@@ -77,13 +77,11 @@ Last status sweep: 2026-09-21 (verified against working tree at commit `835c034`
 ---
 
 ### TASK-005-B — Schema / ontology consolidation (carried out of TASK-005)
-**Status:** 🟡 Open — but likely superseded; confirm before starting.
+**Status:** 🟡 Open — Scoped down to schema enforcement.
 **Priority:** Low
-- [ ] Design unified canonical JSON schema (v2.3 → single format) — merge legacy 300–400 line templates with newer ~200 line v2.3 themes
-- [ ] Produce critique rubric (Markdown) for evaluating theme differentiation, ATS safety, accessibility, and Career Brain sector alignment
-- [ ] Normalise all 15 v2.3 themes against unified schema; surface incompatible fields under `legacy_fields` rather than silently dropping
-
-⚠️ **Supersession note (2026-09-21):** `templates/schema_v2_0.json` exists, all 15 compiled v2.0 templates validate against it, and every theme has been compiled, built, audited and registered. The unified-schema work these items describe may no longer have a problem to solve. Close or re-scope before investing.
+- [x] Design unified canonical JSON schema (v2.3 → single format) — *Superseded: schema_v2_0.json exists and is adopted.*
+- [x] Produce critique rubric (Markdown) for evaluating theme differentiation, ATS safety, accessibility, and Career Brain sector alignment — *Superseded by ats_template_qa_v3 and docs_style_auditor_v3 skills.*
+- [ ] Implement narrow schema-enforcement check (`validate_templates_v2.py`) to gate pipeline runs before Gate 4. (No jsonschema dependency, just required keys and `schema_version` const).
 
 ---
 
