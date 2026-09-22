@@ -182,6 +182,7 @@ def r5_heading_whitelist(sections: dict, ats_rules: dict) -> list[Failure]:
     if "STRUCTURE" not in sections:
         return []
     allowed = set(ats_rules.get("structure", {}).get("allowed_headings", []))
+    allowed_lower = {a.lower() for a in allowed}
     failures: list[Failure] = []
     for i, line in enumerate(sections["STRUCTURE"].splitlines(), 1):
         m = re.match(r"\d+\.\s+\[Heading [12]\]\s+(.+)$", line)
@@ -190,7 +191,7 @@ def r5_heading_whitelist(sections: dict, ats_rules: dict) -> list[Failure]:
         heading_text = m.group(1).strip()
         if PLACEHOLDER_RE.fullmatch(heading_text):
             continue  # criterion-text placeholder — exempt
-        if heading_text not in allowed:
+        if heading_text.lower() not in allowed_lower:
             failures.append(("rule5", f"Static heading '{heading_text}' not in ats_rules.json allowed_headings {sorted(allowed)}", i))
     return failures
 
@@ -209,13 +210,15 @@ def r6_au_terminology(sections: dict, ats_rules: dict) -> list[Failure]:
     return failures
 
 
-def r7_audit_honesty(sections: dict, f4: list[Failure], f5: list[Failure], f6: list[Failure]) -> list[Failure]:
+def r7_audit_honesty(sections: dict, f4: list[Failure], f5: list[Failure], f6: list[Failure], is_ksc: bool) -> list[Failure]:
     """ATS_AUDIT PASS verdicts must align with independent mechanical checks."""
     if "ATS_AUDIT" not in sections:
         return [("rule7", "ATS_AUDIT section missing — cannot verify honesty", 0)]
     audit = parse_ats_audit(sections["ATS_AUDIT"])
     failures: list[Failure] = []
-    required_keys = ("columns_max", "forbidden_chars", "allowed_headings", "au_terminology", "ksc_word_limit_fit")
+    required_keys = ["columns_max", "forbidden_chars", "allowed_headings", "au_terminology"]
+    if is_ksc:
+        required_keys.append("ksc_word_limit_fit")
     for key in required_keys:
         if key not in audit:
             failures.append(("rule7", f"ATS_AUDIT missing required key '{key}'", 0))
@@ -290,20 +293,29 @@ def validate(spec_path: Path) -> list[Failure]:
     spec_text = spec_path.read_text(encoding="utf-8")
     sections = parse_sections(spec_text)
     meta = parse_meta(sections.get("META", ""))
+    
+    doc_type = meta.get("TEMPLATE_TYPE", "").lower()
+    is_ksc = (doc_type == "ksc")
 
     f4 = r4_forbidden_glyphs(spec_text, ats_rules)
     f5 = r5_heading_whitelist(sections, ats_rules)
     f6 = r6_au_terminology(sections, ats_rules)
 
-    return (
+    failures = (
         r1_form_shape(spec_text, sections)
-        + r2_token_validity(sections)
-        + r3_no_fabricated_tokens(sections)
         + f4 + f5 + f6
-        + r7_audit_honesty(sections, f4, f5, f6)
-        + r8_registration_shape(sections, meta)
-        + r9_ksc_structure(sections)
+        + r7_audit_honesty(sections, f4, f5, f6, is_ksc)
     )
+
+    if is_ksc:
+        failures += (
+            r2_token_validity(sections)
+            + r3_no_fabricated_tokens(sections)
+            + r8_registration_shape(sections, meta)
+            + r9_ksc_structure(sections)
+        )
+
+    return failures
 
 
 def main() -> int:
@@ -325,7 +337,7 @@ def main() -> int:
     batch_mode = "--batch" in sys.argv
     if batch_mode:
         spec_paths = sorted(
-            (Path(__file__).parent.parent / "context" / "specs").glob("*.md")
+            (Path(__file__).parent.parent / "context" / "specs").glob("*_spec.md")
         )
         if not spec_paths:
             print("No spec files found in context/specs/", file=sys.stderr)

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-validate_templates_v2.py — Lightweight schema conformance check for v2 templates.
+validate_templates_v2.py — Schema conformance check for v2 templates.
 
 Validates that JSON templates:
 1. Are valid JSON
-2. Contain all required top-level keys for schema v2.0
-3. Have schema_version == "2.0"
+2. Conform to the JSON Schema in templates/schema_v2_0.json
 
 Usage:
     python3 validate_templates_v2.py <template.json>
@@ -15,27 +14,12 @@ Usage:
 import json
 import sys
 from pathlib import Path
+import jsonschema
 
-REQUIRED_KEYS = {
-    "schema_version",
-    "template_id",
-    "tier",
-    "tier_label",
-    "doc_type",
-    "target_sector",
-    "region",
-    "placeholder_schema",
-    "description",
-    "ats_constraints",
-    "palette",
-    "typography",
-    "page",
-    "blocks"
-}
+SCHEMA_PATH = Path(__file__).parent.parent / "templates" / "schema_v2_0.json"
 
-def validate_template(filepath: Path) -> list[str]:
+def validate_template(filepath: Path, schema: dict) -> list[str]:
     failures = []
-    
     try:
         content = json.loads(filepath.read_text(encoding="utf-8"))
     except json.JSONDecodeError as e:
@@ -43,21 +27,19 @@ def validate_template(filepath: Path) -> list[str]:
     except Exception as e:
         return [f"File read error: {e}"]
 
-    # 1. Check required keys
-    missing = REQUIRED_KEYS - set(content.keys())
-    if missing:
-        failures.append(f"Missing required keys: {', '.join(sorted(missing))}")
-
-    # 2. Check schema_version const
-    version = content.get("schema_version")
-    if version != "2.0":
-        failures.append(f"schema_version must be '2.0', found '{version}'")
+    try:
+        jsonschema.validate(instance=content, schema=schema)
+    except jsonschema.exceptions.ValidationError as e:
+        path = ".".join([str(p) for p in e.path]) if e.path else "root"
+        failures.append(f"Schema violation at {path}: {e.message}")
+    except jsonschema.exceptions.SchemaError as e:
+        failures.append(f"Invalid schema: {e.message}")
 
     return failures
 
 def main() -> int:
     if "--all" in sys.argv:
-        templates_dir = Path(__file__).parent.parent / "templates"
+        templates_dir = SCHEMA_PATH.parent
         files = []
         for prefix in ("resume_", "cover_letter_", "ksc_"):
             files.extend(templates_dir.glob(f"{prefix}*.json"))
@@ -67,11 +49,21 @@ def main() -> int:
         print("Usage: validate_templates_v2.py <file.json> ... or --all")
         return 2
 
+    if not SCHEMA_PATH.exists():
+        print(f"Error: Schema not found at {SCHEMA_PATH}")
+        return 2
+
+    try:
+        schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"Error loading schema: {e}")
+        return 2
+
     all_passed = True
     print(f"Validating {len(files)} template(s)...")
     
     for f in sorted(files):
-        failures = validate_template(f)
+        failures = validate_template(f, schema)
         if failures:
             all_passed = False
             print(f"❌ FAIL: {f.name}")

@@ -70,6 +70,11 @@ state belongs in `TASKS.md`, not this file.
 | Code tool asked for Slack message | Must not apply +COMMS | Separation |
 | Acute distress — flat language | One Present draft, honest and in the moment; no Practical Re-entry, no deferral, no Minimal, no scenario named. Fixture: `tests/fixtures/acute-distress-flat-language.yaml` | Distress check |
 | Acute distress — ambiguous | Applies on the ambiguous case; Present draft; no category-capped Minimal closing the loop. Fixture: `tests/fixtures/acute-distress-ambiguous.yaml` | Distress check |
+| High-load scenario 1 | Minimal absent; merged response mode (Hold/Unresolved/Boundary) present; no scenario named. | Load overlay check |
+| High-load scenario 3 | Merged response mode present; Honest last. | Load overlay check |
+| High-load contested | Contested-content fires, load overlay does not add warmth or length. | Load overlay check |
+| Logistics message — load overlay absent | Load overlay does not fire on flat logistics message; ordinary scenario patterns apply. | Load overlay check |
+| Own-responsibility under load | Ordinary repair survives: apology, reason, concrete next step; load overlay does not suppress apology. | Load overlay check |
 | Job-application claim | A named service, the decision taken and a checkable outcome. A fluent but unfalsifiable assertion is cut or evidenced, not polished | +JOB |
 
 Failing test → fix the block in this repo, then re-paste. Never patch a deployed copy.

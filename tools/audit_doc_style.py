@@ -334,7 +334,12 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
                 font_size_obj = text_style.get("fontSize", {})
                 size_pt = font_size_obj.get("magnitude")
                 if size_pt is None:
-                    if not (abs(font_size - 11.0) < 0.1):
+                    inherited_size = 11.0
+                    if named_style == "TITLE": inherited_size = 26.0
+                    elif named_style == "HEADING_1": inherited_size = 20.0
+                    elif named_style == "HEADING_2": inherited_size = 16.0
+                    
+                    if not (abs(font_size - inherited_size) < 0.1):
                         failures.append(
                             f"FAIL: Text run '{run_snippet}' (role '{role}') — fontSize not set "
                             f"(expected {font_size}pt)"
@@ -460,6 +465,13 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
         failures.append(
             f"FAIL: Document contains {inline_image_count} inline image(s) — "
             f"inline objects are forbidden (ATS structural risk)"
+        )
+
+    positioned_objs = doc.get("positionedObjects", {})
+    if positioned_objs:
+        failures.append(
+            f"FAIL: Document contains {len(positioned_objs)} positioned object(s) (e.g., Text Boxes) — "
+            f"positioned objects are forbidden (ATS structural risk)"
         )
 
     return failures

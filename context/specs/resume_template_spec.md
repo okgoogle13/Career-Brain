@@ -78,7 +78,7 @@ CERT_3 → generate_document.py:98
 7. [Normal] {{PROFESSIONAL_SUMMARY}}
 8. [Heading 1] SKILLS
 9. [Normal] {{SKILL_1}} - {{SKILL_2}} - {{SKILL_3}} - {{SKILL_4}} - {{SKILL_5}} - {{SKILL_6}}
-10. [Heading 1] PROFESSIONAL EXPERIENCE
+10. [Heading 1] EXPERIENCE
 11. [Heading 2] {{ROLE_1_TITLE}}
 12. [Normal italic] {{ROLE_1_ORG}} — {{ROLE_1_DATES}}
 13. [Bullet -] {{ROLE_1_BULLET_1}}
@@ -118,7 +118,7 @@ CERT_3 → generate_document.py:98
 47. [Heading 1] EDUCATION
 48. [Normal] {{EDUCATION_1}}
 49. [Normal] {{EDUCATION_2}}
-50. [Heading 1] CERTIFICATIONS AND LICENSING
+50. [Heading 1] CERTIFICATIONS
 51. [Normal] {{CERT_1}}
 52. [Normal] {{CERT_2}}
 53. [Normal] {{CERT_3}}

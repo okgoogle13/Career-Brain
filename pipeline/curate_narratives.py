@@ -107,7 +107,7 @@ Score = number of patterns clearly present (0–5).
 
 def _call_gemini_voice(text: str) -> Optional[dict]:
     """Call Gemini Flash to score voice authenticity. Returns parsed JSON dict or None."""
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
         return None
     try:

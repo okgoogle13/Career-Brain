@@ -1,5 +1,5 @@
 {
-  "_version": "2026-09-20",
+  "_version": "2026-09-22",
   "_note": "template_revision fields lock the Golden Master version at last verified build. Bump on any rebuild.",
   "cover_letter": {
     "template_doc_id": "1T8Bf3IoFqj6wHH2Tok67HwgVVTmIhaLresIqmj1_IwQ",
@@ -7,13 +7,13 @@
     "theme": "templates/cover_letter_base_v1.json",
     "variants": {
       "government": {
-        "template_doc_id": "1ZZI4zb2aB6SPnFWzfrsQvto86eOk7BG9Mx_kjVNRObI",
-        "template_revision": "2026-09-20",
+        "template_doc_id": "1qqMXJCt-yzVdDnId_SzpH_ur5ioD1J09FGMIb_TvUYg",
+        "template_revision": "2026-09-22",
         "theme": "templates/cover_letter_government_v1.json"
       },
       "nfp": {
-        "template_doc_id": "1a-JfEX2p5AZFFK6rZSj9qiLU23i5u4a_NG1WudQ9D54",
-        "template_revision": "2026-09-20",
+        "template_doc_id": "1nqsEoHa-nH_SSePgjknbWb5S5ubuHCEk2GIp_ItYhvQ",
+        "template_revision": "2026-09-22",
         "theme": "templates/cover_letter_nfp_v1.json"
       },
       "private": {
@@ -30,8 +30,8 @@
     "root": "1U0qpznqgKRbJtCQMRA9_VXL90U9Bk5wl"
   },
   "ksc": {
-    "template_doc_id": "1pGTQ65rrsYpqi1TC7zI-DjO5v9LVurO6JZOLJONW_C4",
-    "template_revision": "2026-09-20",
+    "template_doc_id": "1VmkQ2Oror0o25A5NHouvE-sB9ufdW-iOoSObZlmjK7M",
+    "template_revision": "2026-09-22",
     "theme": "templates/ksc_standard_v2.json"
   },
   "resume": {

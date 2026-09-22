@@ -96,10 +96,11 @@ is SLOP.
 
 def _call_gemini_judge(text: str) -> dict | None:
     """Run the slop judge LLM. Returns parsed JSON or None."""
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
         log.error("GEMINI_API_KEY not set. Run with: op run --env-file='.env' -- ...")
         return None
+    
     try:
         from google import genai  # noqa: PLC0415
         from google.genai import types  # noqa: PLC0415

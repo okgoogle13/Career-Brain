@@ -205,11 +205,6 @@
           "font_weight": "bold",
           "font_color": "#2F855A",
           "text_transform": "none",
-          "border_bottom": {
-            "color": "#C6F6D5",
-            "width_pt": 1.0,
-            "style": "solid"
-          },
           "margin_top_pt": 14,
           "margin_bottom_pt": 8
         },

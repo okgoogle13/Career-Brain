@@ -121,7 +121,7 @@ def build_paragraphs(theme: dict) -> list[tuple[str, str, bool, bool, str | None
         )
         max_criteria = criteria_block.get("max_criteria", 3)
         for c in range(1, max_criteria + 1):
-            add(f"{{{{KSC_CRITERION_{c}_TEXT}}}}", "HEADING_1", bold=True, role="h1")
+            add(f"{{{{KSC_CRITERION_{c}_TEXT}}}}", "HEADING_1", bold=True, role="h2")
             add(f"{{{{KSC_{c}_CONTEXT}}}}", "NORMAL_TEXT", role="body")
             add(f"{{{{KSC_{c}_ACTION}}}}", "NORMAL_TEXT", role="body")
             add(f"{{{{KSC_{c}_RESULT}}}}", "NORMAL_TEXT", role="body")
@@ -345,17 +345,33 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
 
 
 def main():
-    # positional theme path + optional --dry-run flag
-    KNOWN_FLAGS = {"--dry-run"}
-    positional = [a for a in sys.argv[1:] if not a.startswith("-")]
-    dry_run = "--dry-run" in sys.argv[1:]
-    unknown_flags = [a for a in sys.argv[1:] if a.startswith("-") and a not in KNOWN_FLAGS]
-    if unknown_flags:
-        print(f"Error: unrecognised flag(s): {' '.join(unknown_flags)}", file=sys.stderr)
-        print("Usage: python3 build_golden_master.py <theme_json_path> [--dry-run]", file=sys.stderr)
-        sys.exit(1)
+    positional = []
+    dry_run = False
+    update_doc_id = None
+    
+    args = sys.argv[1:]
+    i = 0
+    while i < len(args):
+        arg = args[i]
+        if arg == "--dry-run":
+            dry_run = True
+        elif arg == "--update":
+            if i + 1 < len(args):
+                update_doc_id = args[i+1]
+                i += 1
+            else:
+                print("Error: --update requires a doc_id", file=sys.stderr)
+                sys.exit(1)
+        elif arg.startswith("-"):
+            print(f"Error: unrecognised flag: {arg}", file=sys.stderr)
+            print("Usage: python3 build_golden_master.py <theme_json_path> [--dry-run] [--update <doc_id>]", file=sys.stderr)
+            sys.exit(1)
+        else:
+            positional.append(arg)
+        i += 1
+
     if len(positional) != 1:
-        print("Usage: python3 build_golden_master.py <theme_json_path> [--dry-run]", file=sys.stderr)
+        print("Usage: python3 build_golden_master.py <theme_json_path> [--dry-run] [--update <doc_id>]", file=sys.stderr)
         sys.exit(1)
 
     theme_path = Path(positional[0])
@@ -387,16 +403,30 @@ def main():
     from generate_document import build_google_services
     docs_service, drive_service = build_google_services()
 
-    print(f"Creating Google Doc: {template_name} ...", file=sys.stderr)
-    file_meta = drive_service.files().create(
-        body={
-            "name": f"[GOLDEN MASTER] {template_name}",
-            "mimeType": "application/vnd.google-apps.document",
-        },
-        fields="id",
-    ).execute()
-    doc_id = file_meta["id"]
-    print(f"  Created doc ID: {doc_id}", file=sys.stderr)
+    if update_doc_id:
+        doc_id = update_doc_id
+        print(f"Updating Google Doc ID: {doc_id} ...", file=sys.stderr)
+        doc = docs_service.documents().get(documentId=doc_id).execute()
+        content = doc.get("body", {}).get("content", [])
+        if content:
+            end_index = content[-1].get("endIndex", 2)
+            if end_index > 2:
+                print("  Clearing existing content ...", file=sys.stderr)
+                docs_service.documents().batchUpdate(
+                    documentId=doc_id,
+                    body={"requests": [{"deleteContentRange": {"range": {"startIndex": 1, "endIndex": end_index - 1}}}]},
+                ).execute()
+    else:
+        print(f"Creating Google Doc: {template_name} ...", file=sys.stderr)
+        file_meta = drive_service.files().create(
+            body={
+                "name": f"[GOLDEN MASTER] {template_name}",
+                "mimeType": "application/vnd.google-apps.document",
+            },
+            fields="id",
+        ).execute()
+        doc_id = file_meta["id"]
+        print(f"  Created doc ID: {doc_id}", file=sys.stderr)
 
     print("  Inserting content ...", file=sys.stderr)
     docs_service.documents().batchUpdate(

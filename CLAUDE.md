@@ -1,7 +1,64 @@
-# Career Brain
-ETL: docs → JSON + Docs. Verify against repo, not memory.
-- Approval: no write/exec/commit/push without approval; phases 0-1/2-4/5 need separate sign-off, audit first.
-- PII: never expose source_docs/; do not hand-edit. Secrets via 1Password `op run`, never raw values.
-- Outputs: processed/, database/ don't hand-edit; archive/ never re-ingested unprompted.
-- Invariants: source_lineage required; needs_review pipeline-managed; parsing_errors.log empty post-run.
-- Details: Career Brain Manifesto.md; code in pipeline/, tools/, config/.
+# AGENTS.md — Career Brain
+
+## Role and operating rules
+
+- Career Brain is a local Python ETL pipeline that transforms sensitive career documents into JSON knowledge engines and tailored Google Docs.
+- Work from an explicit task, target path, diff, failing command, or named invariant.
+- Verify against repository files and command output; never infer status from filenames, prior chat, or memory.
+- Make the smallest change that solves the verified problem. Do not add abstractions, config, wrappers, dependencies, or broad refactors without a concrete need and approval.
+- Mark unverified conclusions as `[inferred]`.
+
+## Approval gates
+
+- Do not write, execute, modify, generate, commit, push, deploy, or call external services without explicit approval for the relevant step.
+- Before script changes: audit affected paths and proposed changes, then stop for approval.
+- Pipeline stages require separate approval:
+  1. Phase 0–1: `organise_raw_docs.py`, `normalize_vault.py`
+  2. Phase 2–4: `compile_brain.py`, `curate_narratives.py`, `inject_metrics.py`
+  3. Phase 5: `tools/generate_document.py`
+- “Run the pipeline” means audit first, never all phases autonomously.
+- Before generating or submitting application copy, review every banned-phrase, review-phrase, and overclaim warning; only spelling may be auto-corrected.
+
+## Context and output
+
+- Use the smallest sufficient context: named files, bounded ranges, `git diff`, or narrow `rg -n`.
+- Do not perform broad discovery, recursively ingest source documents, or print whole files, large unchanged excerpts, raw logs, raw JSON engines, or `Career_Brain_Knowledge.md`.
+- Prefer diffs, redacted samples, structural summaries, and script-level findings.
+- Report: findings, changed paths, commands actually run, results, and blockers—no unsupported claims.
+
+## Data and secrets
+
+- `source_docs/` contains sensitive personal information; never edit raw inputs manually or expose their content beyond what is necessary for approved debugging.
+- `processed/` and `database/` are generated outputs; do not edit them manually unless explicitly instructed.
+- `archive/` is legacy material; never re-ingest it without explicit instruction.
+- Never publish raw source documents, complete database engines, or full knowledge exports.
+- Secrets are managed with 1Password CLI (`op`). Never write raw secret values to `.env`, logs, source, commits, or output.
+- Use `op run --env-file=".env" -- <command>` when approved runtime secrets are needed; `.env` must contain only `op://` references.
+
+## Architecture and invariants
+
+- Pipeline code: `pipeline/`; Phase 5 document tooling: `tools/`; runtime configuration: `config/`; Google Docs themes: `templates/`; agent skills: `.claude/skills/`.
+- Full architecture, schemas, and phase design: `Career Brain Manifesto.md`.
+- Three generated engines: `database/career_history_enriched.json`, `database/ksc_curated.json`, `database/skills_and_taxonomy.json`.
+- `source_lineage` is mandatory on every database node.
+- `needs_review` is pipeline-managed; never remove it manually.
+- `database/parsing_errors.log` must be empty after an approved pipeline run.
+- The corporate-to-community translation map is defined in `pipeline/compile_brain.py`.
+
+## Validation
+
+- After an approved pipeline-code change, run only the relevant checks; minimum pipeline validation is:
+  ```bash
+  python3 pipeline/normalize_vault.py
+  python3 pipeline/compile_brain.py
+  python3 pipeline/query_brain.py --help
+  ```
+- Run `pytest` when relevant to changed code.
+- For theme work, use the relevant validation or audit tool in `tools/`.
+- Never claim validation passed unless the command was run successfully and relevant output was checked.
+
+## Change hygiene
+
+- Python: PEP 8, 4 spaces, `pathlib`, structured `logging`, type annotations for core models, and repository-root resolution via `Path(__file__).parent.parent`. Use `google-genai` (not legacy SDK).
+- Theme JSON must conform to `MASTER_SCHEMA_V2_3.json` (no duplicate band strategy/header silhouette).
+- If authorized to commit, use focused Conventional Commits: `feat:`, `fix:`, `chore:`, or `docs:`.
