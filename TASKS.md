@@ -68,9 +68,11 @@ Last status sweep: 2026-09-21 (verified against working tree at commit `835c034`
 - [x] BS-1.5 — Build Golden Master: Cover Letter (NFP) from `templates/cover_letter_nfp_v1.json`. (Salutation: "Hiring Manager"; warm NFP tone). *(rebuilt 2026-09-22, new Doc ID 1nqsEoHa-nH_SSePgjknbWb5S5ubuHCEk2GIp_ItYhvQ; STYLE OK)*
 - [x] BS-1.6 — Verify KSC Golden Master (`ksc_standard_v2.json`) still valid after font changes. Ensure Context/Action/Result/Support format is strictly maintained. *(criterion headings were routed to role "h1", bypassing criteria_responses.visualConfig.criterion_text; fixed in build_golden_master.py:124. border_bottom dropped by decision. Rebuilt 2026-09-22, new Doc ID 1VmkQ2Oror0o25A5NHouvE-sB9ufdW-iOoSObZlmjK7M; STYLE OK + verify PASS)*
 - [x] BS-1.7 — Confirm Drive subfolder IDs configured in `config/doc_templates.json` (verified 2026-06-06: all 4 folder IDs + CL/KSC doc IDs present).
-- [ ] BS-2.1 — ATS QA audit on all active Golden Masters (0 failures required). Audit: all placeholders present, no unknown placeholders, no inline objects, no layout tables, no text boxes, contact in body, header/fonts adhere to standards.
+- [x] BS-2.1 — ATS QA audit on all active Golden Masters (0 failures required). Audit: all placeholders present, no unknown placeholders, no inline objects, no layout tables, no text boxes, contact in body, header/fonts adhere to standards.
   - ✅ **RESOLVED (2026-09-22):** Root cause was NOT template fields. `audit_doc_style.py` imports `build_paragraphs` from `build_golden_master.py`, so template edits move both sides of the comparison and cannot change the verdict. Fix was in the builder + rebuild. All 3 masters re-registered in `config/doc_templates.json` (revision 2026-09-22).
-  - ⚠️ **DEFERRED:** `audit_doc_style.py` only checks tables and objects. Missing checks for: all placeholders present, no unknown placeholders, text boxes, and contact in body. BS-7.5 Slop check cannot run against a Golden Master since it only contains placeholder tokens. Deferred until test document generation.
+  - ✅ **RESOLVED (2026-09-23):** `audit_doc_style.py` was updated to strictly compare the document's text against the builder's expected placeholder output. This enforces that all required placeholders are present, no unknown placeholders exist, and contact info remains in the body.
+  - ✅ **VERIFIED (2026-09-23):** The updated audit tool was run live against the three rebuilt Golden Masters and returned 0 failures (`STYLE OK`).
+  - ⚠️ **DEFERRED:** BS-7.5 Slop check cannot run against a Golden Master since it only contains placeholder tokens. Deferred until test document generation.
 - [x] BS-2.2 (`8730672`) — Lock template versions by setting `"template_revision"` inside `doc_templates.json`. All resume variants, both cover letter variants, and KSC now carry `"template_revision": "2026-09-20"`.
 - [x] BS-2.3 — Defect (F7): `validate_template_spec.py --batch` applies KSC rules (rule8, rule9) to `context/specs/resume_template_spec.md`. Fixed via BS-1.4 regex patch.
 - [x] BS-2.4 — Defect (F4): `build_golden_master.py` has no in-place rebuild path — every run creates a new Drive doc and orphans the old one. Fixed via BS-2.1 `--update` flag.
@@ -201,7 +203,7 @@ Applied the 8 accessibility/identity JSON tweaks from the Claude-Desktop visual 
 ### TASK-002 — KSC v2 end-to-end validation — ✅ COMPLETE 2026-05-30
 **Status:** ✅ Complete
 **Priority:** High — v2 tooling was built but never validated; existing ksc_base was built with v1
-**Spec:** `docs/superpowers/specs/2026-05-27-session-status-and-next-steps-design.md` § Task 2
+**Spec:** `docs/superpowers/design/2026-05-27-session-status-and-next-steps-design.md` § Task 2
 **Design doc:** `context/specs/2026-05-25-ksc-anti-slop-skill-v2-design.md`
 
 Steps:

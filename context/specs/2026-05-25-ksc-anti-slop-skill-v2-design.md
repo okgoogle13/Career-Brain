@@ -8,7 +8,7 @@
 
 ## 1. Problem
 
-The current `gold_template_builder` and `ats_template_qa` skills produce poor outputs that fall into two distinct failure modes, observed in real runs (see `recap.md` Batch 1 and the Batch 3 KSC output pasted in the brainstorming session).
+The current `gold_template_builder` and `ats_template_qa` skills produce poor outputs that fall into two distinct failure modes, observed in real runs (see `archive/context/recap.md` Batch 1 and the Batch 3 KSC output pasted in the brainstorming session).
 
 **Cosmetic slop** — the agent's spec output is itself unprofessional:
 - Decorative emoji headers (`📄 🔍 🧩 🧪 ⚠️`)
@@ -178,7 +178,7 @@ On FAIL: prints each violation as a single line: `FAIL <rule_number> <spec_file>
 
 Three enforcement points:
 - The v2 SKILL.md instructs the LLM to run the validator and re-iterate on failure before declaring done.
-- A pre-commit hook (added to `.pre-commit-config.yaml` or as a standalone git hook) runs the validator on any spec file in `docs/superpowers/specs/ksc/` and blocks the commit on failure.
+- A pre-commit hook (added to `.pre-commit-config.yaml` or as a standalone git hook) runs the validator on any spec file in `docs/superpowers/design/ksc/` and blocks the commit on failure.
 - The user is instructed not to register a Doc ID in `doc_templates.json` until the validator returns 0 for the corresponding spec.
 
 ## 7. QA v2 wrapper (`ats_template_qa_v2`)

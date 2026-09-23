@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3 (existing `tools/` scripts), Google Docs/Drive API (via existing builders), Markdown specs, JSON theme files following `templates/THEME_SPEC_GUIDE.md`.
 
-**Spec reference:** `docs/superpowers/specs/2026-05-27-session-status-and-next-steps-design.md`
+**Spec reference:** `docs/superpowers/design/2026-05-27-session-status-and-next-steps-design.md`
 
 **Note on TDD:** This project has no formal test suite for templates/specs. Verification is via grep, the validator script, dry-run mode, and visual inspection of generated Google Docs. Each task includes explicit verification steps in place of pytest runs.
 
@@ -167,7 +167,7 @@ ATS_AUDIT allowed_headings line.
 Live Google Doc 16FlPfFjHCYibECNtGORE-KEZtr1ogP_dRayo29L0y_I must be manually updated
 to match (user action) — atomic with this commit.
 
-Spec: docs/superpowers/specs/2026-05-27-session-status-and-next-steps-design.md § Task 1
+Spec: docs/superpowers/design/2026-05-27-session-status-and-next-steps-design.md § Task 1
 EOF
 )"
 ```
