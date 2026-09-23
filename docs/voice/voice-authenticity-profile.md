@@ -84,7 +84,7 @@ Counts are occurrences in Nishant's own 550 narratives.
 | `self-starter` | 2 | Master resume | *"Worked on-site alone for six months, escalating risks to my manager weekly."* |
 | `synergy` | 2 | PLC THH KSC | *"…balancing autonomous work with the team's reporting rhythm."* |
 | `team player` | 1 | Master resume | Delete, or give the team fact. |
-| `results-driven`, `dedicated professional`, `track record of delivering`, `wealth of experience`, `hit the ground running`, `passion for excellence`, `innovative disruptor`, `perfect fit` | 0 | — | Preventive. **`dedicated professional` and `track record of delivering` are currently emitted by `tools/content_engine.py:640`** — the generator produces slop this profile bans. See *Known gaps*. |
+| `results-driven`, `dedicated professional`, `track record of delivering`, `wealth of experience`, `hit the ground running`, `passion for excellence`, `innovative disruptor`, `perfect fit` | 0 | — | Preventive. **The Python generators have been refactored to ban these phrases.** |
 
 ### Review phrases (context-dependent)
 
