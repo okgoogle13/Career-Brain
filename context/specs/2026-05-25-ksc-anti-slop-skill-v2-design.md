@@ -8,7 +8,7 @@
 
 ## 1. Problem
 
-The current `gold_template_builder` and `ats_template_qa` skills produce poor outputs that fall into two distinct failure modes, observed in real runs (see `archive/context/recap.md` Batch 1 and the Batch 3 KSC output pasted in the brainstorming session).
+The current `gold_template_builder` and `ats_template_qa` skills produce poor outputs that fall into two distinct failure modes, observed in real runs (see `archive/prompts/recap.md` Batch 1 and the Batch 3 KSC output pasted in the brainstorming session).
 
 **Cosmetic slop** — the agent's spec output is itself unprofessional:
 - Decorative emoji headers (`📄 🔍 🧩 🧪 ⚠️`)

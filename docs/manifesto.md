@@ -172,7 +172,7 @@ Only bullets that survive all 3 passes go to the manual hit list in `database/me
 3. Output a `database/doc_generation_report.json` tracking filled placeholders, unresolved tokens, and generated Google Doc links.
 4. Do not permanently store PII or OAuth tokens in the repository.
 
-See `BUILD_SPECS.md` for the full Phase 5 milestone breakdown and definition of done.
+See `archive/planning/BUILD_SPECS_2026-05-27.md` for the full Phase 5 milestone breakdown and definition of done.
 
 ---
 

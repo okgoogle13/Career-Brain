@@ -38,7 +38,7 @@
 ## Architecture and invariants
 
 - Pipeline code: `pipeline/`; Phase 5 document tooling: `tools/`; runtime configuration: `config/`; Google Docs themes: `templates/`; agent skills: `.claude/skills/`.
-- Full architecture, schemas, and phase design: `Career Brain Manifesto.md`.
+- Full architecture, schemas, and phase design: `docs/manifesto.md`.
 - Three generated engines: `database/career_history_enriched.json`, `database/ksc_curated.json`, `database/skills_and_taxonomy.json`.
 - `source_lineage` is mandatory on every database node.
 - `needs_review` is pipeline-managed; never remove it manually.
@@ -60,5 +60,5 @@
 ## Change hygiene
 
 - Python: PEP 8, 4 spaces, `pathlib`, structured `logging`, type annotations for core models, and repository-root resolution via `Path(__file__).parent.parent`. Use `google-genai` (not legacy SDK).
-- Theme JSON must conform to `MASTER_SCHEMA_V2_3.json` (no duplicate band strategy/header silhouette).
+- Theme sources (`theme-*.json`) conform to `MASTER_SCHEMA_V2_3.json`; compiled templates validate against `schema_v2_0.json`.
 - If authorized to commit, use focused Conventional Commits: `feat:`, `fix:`, `chore:`, or `docs:`.

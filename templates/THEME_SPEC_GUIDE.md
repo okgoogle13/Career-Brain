@@ -34,7 +34,7 @@
 | `cover_letter_government_v1.json` | cover_letter | Cover Letter Government | Calibri | Forest Green | 1 — ATS Clean | Government, public service | ✅ Registered |
 | `cover_letter_nfp_v1.json` | cover_letter | Cover Letter NFP | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | NFP, community services | ✅ Registered |
 | `cover_letter_private_v1.json` | cover_letter | Cover Letter Private | Arial | Slate Blue / Teal | 2 — ATS Modern | Private sector, tech, design | ✅ Registered |
-| `ksc_base_v1.json` | ksc | KSC Base | Calibri | Forest Green | 1 — ATS Clean | AU public service | ✅ Registered |
+| `ksc_base_v1.json` | ksc | KSC Base | Calibri | Forest Green | 1 — ATS Clean | AU public service | 📦 Archived (Use `ksc_standard_v2.json`) |
 
 **Excluded (not migrated):**
 - `theme3` (Bold Executive) — two-column layout, ATS-unsafe
