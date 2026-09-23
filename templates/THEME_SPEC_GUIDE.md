@@ -34,13 +34,13 @@
 | `cover_letter_government_v1.json` | cover_letter | Cover Letter Government | Calibri | Forest Green | 1 — ATS Clean | Government, public service | ✅ Registered |
 | `cover_letter_nfp_v1.json` | cover_letter | Cover Letter NFP | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | NFP, community services | ✅ Registered |
 | `cover_letter_private_v1.json` | cover_letter | Cover Letter Private | Arial | Slate Blue / Teal | 2 — ATS Modern | Private sector, tech, design | ✅ Registered |
-| `ksc_base_v1.json` | ksc | KSC Base | Calibri | Forest Green | 1 — ATS Clean | AU public service | 📦 Archived (Use `ksc_standard_v2.json`) |
 
 **Excluded (not migrated):**
 - `theme3` (Bold Executive) — two-column layout, ATS-unsafe
 - `theme5` (Vibrant Creative) — two-column layout, ATS-unsafe
+- `ksc_base_v1.json` — Archived (Use `ksc_standard_v2.json`)
 
-These exist in `archive/` as design references. They may be built as human-submission-only variants in future if a `--no-ats` flag is added to `tools/generate_document.py`.
+These exist in `archive/` (local archive, not in repo) as design references. They may be built as human-submission-only variants in future if a `--no-ats` flag is added to `tools/generate_document.py`.
 
 ---
 

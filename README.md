@@ -63,6 +63,7 @@ Career Brain/
 │
 ├── templates/          Google Docs theme configs (JSON + THEME_SPEC_GUIDE.md)
 ├── config/             Runtime config: ats_rules.json, doc_templates.json, user_config.json
+│   └── gem_system_prompt.md     Paste into Google AI Studio Custom Gem
 ├── context/            AI session files: repomix XMLs, prompts, handover docs
 │   └── specs/          Document format specs (resume, cover letter, KSC)
 ├── .claude/skills/       AI agent skill definitions (versioned)
@@ -73,6 +74,8 @@ Career Brain/
 ├── tests/
 │
 ├── docs/
+│   ├── design/
+│   │   └── BUILD_SPECS.md       Phase 5 Google Workspace build specs
 │   └── manifesto.md             Full system design and schema specs
 ├── AGENTS.md                    Agent operating instructions (read before acting)
 └── requirements.txt
