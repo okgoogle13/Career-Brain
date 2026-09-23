@@ -208,6 +208,15 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
                     f"'{named_style}' (expected '{exp_named_style}')"
                 )
 
+            doc_text = _para_text(doc_para).strip()
+            exp_text_stripped = exp_text.strip()
+            if doc_text != exp_text_stripped:
+                failures.append(
+                    f"FAIL: Paragraph '{para_snippet}' (role '{role}') — text content mismatch. "
+                    f"Found '{doc_text}', expected '{exp_text_stripped}'. "
+                    f"(Check for missing/unknown placeholders or content outside body)"
+                )
+
             # Map the expected block configs
             if role == "name":
                 font_size = nv.get("font_size_pt", 24)
