@@ -126,7 +126,6 @@ Per-surface block and field mapping. The sections above own budgets, verificatio
 | Gemini comms context | `+COMMS` only in a Gem or drafting-conversation head; CORE inherited from Gemini Saved info, never pasted here; portable categories (the Recipient categories block in `+COMMS`) apply, but no person-specific roster/scenario rules |
 | Claude Desktop `comms-hub` skill | `+COMMS`, no roster; local `SKILL.md`, hand-pasted, never symlinked |
 | Career-Brain (job applications) | CORE + `+JOB`, synced as `config/llm-specs/agent-operating-spec.md` by `ops/sync.sh`. Mechanical ATS rules, schema references and style anchors stay local to that repo and are never authored here |
-| Gemini CLI | CORE + `+DEPTH` + `+CODE` in `GEMINI.md` |
 | Codex / Antigravity | CORE + `+DEPTH` + `+CODE` in `CLAUDE.md` |
 | Generic API | CORE plus optional additions in system prompt |
 
