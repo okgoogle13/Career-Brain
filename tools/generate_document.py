@@ -1345,7 +1345,15 @@ def main(argv: list[str] | None = None) -> int:
         if generated_doc_link:
             log.info("Generated document link: %s", generated_doc_link)
 
-        return 1 if all_warnings else 0
+        # Determine exit code per BS-3.4: 0 on success.
+        # "dry_run_no_google_document_created" is expected behavior during --dry-run.
+        # Word-count warnings (BS-3.3) are advisory content metrics recorded in the report.
+        fatal_or_blocking_warnings = [
+            w for w in all_warnings
+            if w != "dry_run_no_google_document_created"
+            and not ("_too_short" in w or "_too_long" in w)
+        ]
+        return 1 if (fatal_or_blocking_warnings or unresolved_tokens) else 0
 
     except DocumentGenerationError as exc:
         log.error(str(exc))

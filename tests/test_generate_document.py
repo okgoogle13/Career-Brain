@@ -1332,5 +1332,42 @@ class ReportFieldTests(unittest.TestCase):
         self.assertTrue(report["run_timestamp"])
 
 
+# ══════════════════════════════════════════════════════════════════════
+# BS-3.4: Main entrypoint exit code semantics
+# ══════════════════════════════════════════════════════════════════════
+
+class MainEntrypointTests(unittest.TestCase):
+    """
+    Verify exit code semantics in main() per BS-3.4.
+    """
+
+    def test_dry_run_exits_zero_for_all_doc_types(self):
+        import os
+        from generate_document import main
+
+        env_backup = os.environ.get("GEMINI_API_KEY")
+        try:
+            os.environ["GEMINI_API_KEY"] = ""
+            for doc_type in ("resume", "cover_letter", "ksc"):
+                with self.subTest(doc_type=doc_type):
+                    argv = [
+                        "--type", doc_type,
+                        "--target", "Test Role at Test Org",
+                        "--dry-run",
+                        "--out-report", f"/tmp/test_report_{doc_type}.json",
+                    ]
+                    if doc_type == "cover_letter":
+                        argv.extend(["--employer-type", "nfp"])
+                    elif doc_type == "ksc":
+                        argv.extend(["--criteria", "1. Demonstrated experience in case management."])
+                    exit_code = main(argv)
+                    self.assertEqual(exit_code, 0, f"Expected exit 0 for doc_type={doc_type}, got {exit_code}")
+        finally:
+            if env_backup is not None:
+                os.environ["GEMINI_API_KEY"] = env_backup
+            else:
+                os.environ.pop("GEMINI_API_KEY", None)
+
+
 if __name__ == "__main__":
     unittest.main()
