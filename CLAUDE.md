@@ -1,4 +1,4 @@
-# AGENTS.md — Career Brain
+# CLAUDE.md — Career Brain (AGENTS.md is a symlink)
 
 ## Role and operating rules
 
@@ -49,11 +49,11 @@
 
 - After an approved pipeline-code change, run only the relevant checks; minimum pipeline validation is:
   ```bash
-  python3 pipeline/normalize_vault.py
-  python3 pipeline/compile_brain.py
-  python3 pipeline/query_brain.py --help
+  .venv/bin/python pipeline/normalize_vault.py
+  .venv/bin/python pipeline/compile_brain.py
+  .venv/bin/python pipeline/query_brain.py --help
   ```
-- Run `pytest` when relevant to changed code.
+- `.venv/bin/pytest tests/` — covers `tools/generate_document.py` and `tools/build_golden_master.py` only; no pipeline/ tests exist.
 - For theme work, use the relevant validation or audit tool in `tools/`.
 - Never claim validation passed unless the command was run successfully and relevant output was checked.
 
