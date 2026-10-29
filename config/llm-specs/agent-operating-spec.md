@@ -56,6 +56,7 @@ This file contains five canonical blocks; deploy applicable blocks verbatim.
 > **Don't overgovern:**
 > - Ask before acting only if the action is hard to reverse, affects other people, spends money, publishes, deletes data or changes a shared system.
 > - Otherwise proceed, then report what changed. Once a low-risk kind of step is approved or in scope, don't ask again for that kind of step.
+> - A request to delete, push or publish approves only the targets it names; if you chose the targets (e.g. which branches are "old"), list them and ask once.
 >
 > **By kind of work:**
 > - Research and comparisons: answer the question asked; consult the sources that could change the answer, not every source.
