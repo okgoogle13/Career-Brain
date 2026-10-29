@@ -76,6 +76,9 @@ state belongs in `TASKS.md`, not this file.
 | Logistics message — load overlay absent | Load overlay does not fire on flat logistics message; ordinary scenario patterns apply. | Load overlay check |
 | Own-responsibility under load | Ordinary repair survives: apology, reason, concrete next step; load overlay does not suppress apology. | Load overlay check |
 | Job-application claim | A named service, the decision taken and a checkable outcome. A fluent but unfalsifiable assertion is cut or evidenced, not polished | +JOB |
+| Trivial question | Direct answer; no plan, caveats or Next steps | +OPS |
+| Low-risk multi-step task | Proceeds without asking; reports what changed | +OPS |
+| Irreversible action | Stops and confirms before acting | +OPS |
 
 Failing test → fix the block in this repo, then re-paste. Never patch a deployed copy.
 
@@ -96,6 +99,7 @@ Approval gates, recipient validation, queue behavior, and irreversible-action st
 | +CODE | Every coding surface in the placement table below | Rarely |
 | +COMMS | Every surface carrying +COMMS in the placement table below | When a category rule proves wrong |
 | +JOB | Every surface carrying +JOB in the placement table below | Rarely |
+| +OPS | Every surface carrying +OPS in the placement table below | Rarely |
 
 **Quarterly drift check:** run every test in the table above against every deployed surface. Log which failed. If the same clause fails on two surfaces, revise the canonical clause, not the platform configuration.
 
@@ -118,10 +122,10 @@ Per-surface block and field mapping. The sections above own budgets, verificatio
 | Claude Custom Style | None; never create one, because a persistent style can bleed into coding contexts |
 | Claude Comms Project | `+COMMS` plus roster rules, built by `ops/build-project-instructions.sh`; `+COMMS` above roster rules in Project Instructions. CORE is inherited from the Claude profile, never pasted here |
 | Claude Comms Project Knowledge | `comms-examples.local.md` and `claude-project.md`; reference/wiring material only, never Instructions |
-| Claude Code global | CORE + `+DEPTH` + `+CODE` in `~/.claude/CLAUDE.md` |
-| Claude Code per repo | No canonical blocks; repo-specific commands/conventions only |
+| Claude Code global | CORE + `+DEPTH` + `+CODE` + `+OPS` in `~/.claude/CLAUDE.md` |
+| Claude Code per repo | No canonical blocks; repo-specific commands/conventions only — see Project CLAUDE.md template below |
 | Cowork development folder | CORE + `+DEPTH` + `+CODE` in connected-folder `CLAUDE.md`; do not rely on account-profile inheritance |
-| Claude API / Agent SDK | CORE plus optional additions; `+DEPTH` for planning, `+CODE` for technical agents, `+COMMS` only for approved private drafting sessions |
+| Claude API / Agent SDK | CORE plus optional additions; `+DEPTH` for planning, `+CODE` for technical agents, `+OPS` for agents with tools that act, `+COMMS` only for approved private drafting sessions |
 | ChatGPT Comms Project | `+COMMS` only; CORE inherited from ChatGPT custom instructions, never pasted here; portable categories (the Recipient categories block in `+COMMS`) apply, but no person-specific roster/scenario rules |
 | Gemini comms context | `+COMMS` only in a Gem or drafting-conversation head; CORE inherited from Gemini Saved info, never pasted here; portable categories (the Recipient categories block in `+COMMS`) apply, but no person-specific roster/scenario rules |
 | Claude Desktop `comms-hub` skill | `+COMMS`, no roster; local `SKILL.md`, hand-pasted, never symlinked |
@@ -142,3 +146,28 @@ CORE can be pasted whole or split at its existing "About me" / "How to respond" 
 - Assistant-like, too-long, or trade-off-heavy drafts -> `+COMMS`.
 - Comms voice in coding -> remove `+COMMS` from that surface.
 - Unsupported researched claims or citation formatting that conflicts with the platform -> CORE plus that platform's citation convention.
+- Over-asking, unrequested options or process on simple tasks -> `+OPS` (then check plugins that inject at SessionStart).
+
+---
+
+## Project CLAUDE.md template
+
+Repo-specific only. Never restate CORE, +DEPTH, +CODE or +OPS.
+
+    # CLAUDE.md
+    <one line: what this repo is and who it's for>
+
+    ## Read on demand
+    - <file>: <when to read it>
+
+    ## Commands
+    - Test: `<exact command>`  ·  Build/run: `<exact command>`
+
+    ## Source of truth (when files disagree)
+    1. <file/system>
+
+    ## Needs my explicit approval
+    - <named actions; these override +OPS for this repo>
+
+    ## Conventions that differ from global
+    - <only real differences>
