@@ -29,8 +29,9 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Libre Franklin",
-      "Arial"
+      "Arial",
+      "Calibri",
+      "Georgia"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -55,7 +56,7 @@
     "supporting_neutral": "#E0E0E0"
   },
   "typography": {
-    "base_font": "Libre Franklin",
+    "base_font": "Arial",
     "base_size_pt": 10.5,
     "line_spacing": 1.3,
     "spacing_after_pt": 6,
@@ -214,7 +215,6 @@
   },
   "complementary_accent": "#FF5A3C",
   "heading_font_family": [
-    "Archivo",
     "Arial"
   ]
 }

@@ -40,7 +40,7 @@
     "white": "#FFFFFF"
   },
   "typography": {
-    "base_font": "IBM Plex Sans",
+    "base_font": "Arial",
     "base_size_pt": 10.5,
     "line_spacing": 1.25,
     "spacing_after_pt": 6,
@@ -381,7 +381,6 @@
     }
   ],
   "heading_font_family": [
-    "IBM Plex Mono",
-    "Consolas"
+    "Arial"
   ]
 }

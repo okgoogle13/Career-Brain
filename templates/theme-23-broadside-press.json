@@ -30,8 +30,9 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Source Serif 4",
-      "Georgia"
+      "Georgia",
+      "Calibri",
+      "Arial"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -56,7 +57,7 @@
     "supporting_neutral": "#F5F5F5"
   },
   "typography": {
-    "base_font": "Source Serif 4",
+    "base_font": "Georgia",
     "base_size_pt": 10.5,
     "line_spacing": 1.3,
     "spacing_after_pt": 6,
@@ -220,7 +221,6 @@
   },
   "complementary_accent": "#A01818",
   "heading_font_family": [
-    "Archivo Black",
     "Arial"
   ]
 }

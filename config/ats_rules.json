@@ -7,6 +7,22 @@
       "action": [60, 200],
       "result": [30, 100],
       "total": [200, 500]
+    },
+    "_competency_tag_keywords_note": "Maps each narrative competency_tag in database/ksc_curated.json to phrases that signal it in criterion text. Matched as substrings of the lowercased criterion with hyphens read as spaces.",
+    "competency_tag_keywords": {
+      "lived_experience": ["lived experience", "living experience", "peer work", "peer support", "peer scope", "self disclosure", "recovery oriented"],
+      "complex_advocacy": ["advocacy", "advocate", "rights based", "consumer led"],
+      "trauma_informed_practice": ["trauma informed", "healing centred"],
+      "risk_de_escalation": ["distress", "suicidality", "crisis", "de escalation", "risk assessment", "safety planning", "least restrictive"],
+      "service_coordination": ["service systems", "service navigation", "navigate", "case management", "care planning", "coordination", "referral"],
+      "mdt_facilitation": ["multidisciplinary", "mdt", "facilitat"],
+      "stakeholder_engagement": ["stakeholder", "collaborat", "partnership"],
+      "cultural_humility": ["cultural", "inclusive", "diversity", "stigma", "discrimination"],
+      "conflict_resolution": ["conflict"],
+      "leadership": ["leadership", "mentoring", "role modelling", "supervis"],
+      "project_management": ["project", "program management"],
+      "program_compliance": ["compliance", "governance", "quality assurance", "documentation", "policies"],
+      "data_systems": ["data", "digital systems", "database"]
     }
   },
   "structure": {
@@ -17,7 +33,9 @@
     "allowed_headings": ["Summary", "Skills", "Experience", "Education", "Certifications", "Key Achievements"]
   },
   "vocabulary": {
-    "forbidden_characters": ["•", "✔", "★", "❖", "●", "✅", "❌", "|"],
+    "forbidden_characters": ["•", "✔", "★", "❖", "●", "✅", "❌", "|", "!"],
+    "_forbidden_char_ranges_note": "Inclusive hex codepoint ranges [lo, hi]. Covers emoji and pictographs, which forbidden_characters cannot express.",
+    "forbidden_char_ranges": [["1F300", "1FAFF"], ["2600", "27BF"]],
 
     "_banned_phrases_note": "Unambiguous corporate slop. Warned on, never auto-rewritten. Whole-word, case-insensitive.",
     "banned_phrases": [
@@ -79,7 +97,11 @@
       "all walks of life",
       "hands-on experience",
       "skill set that aligns",
-      "make me the ideal"
+      "make me the ideal",
+      "apologies for",
+      "apologise for",
+      "sorry for",
+      "sorry to"
     ],
 
     "_overclaim_terms_note": "Clinical, licensed or registered titles Nishant does not hold. WARN ONLY - never auto-rewritten, because these legitimately appear when quoting a position description or describing a colleague. A human resolves every hit.",

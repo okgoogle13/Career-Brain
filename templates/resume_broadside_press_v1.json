@@ -41,7 +41,7 @@
     "white": "#FFFFFF"
   },
   "typography": {
-    "base_font": "Source Serif 4",
+    "base_font": "Georgia",
     "base_size_pt": 10.5,
     "line_spacing": 1.24,
     "spacing_after_pt": 6,
@@ -382,7 +382,6 @@
     }
   ],
   "heading_font_family": [
-    "Archivo Black",
     "Arial"
   ]
 }

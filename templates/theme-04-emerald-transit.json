@@ -26,8 +26,9 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Public Sans",
-      "Arial"
+      "Calibri",
+      "Arial",
+      "Georgia"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -52,7 +53,7 @@
     "supporting_neutral": "#ECFDF5"
   },
   "typography": {
-    "base_font": "Public Sans",
+    "base_font": "Calibri",
     "base_size_pt": 10.5,
     "line_spacing": 1.3,
     "spacing_after_pt": 6,
@@ -220,7 +221,6 @@
   },
   "complementary_accent": "#1A7A52",
   "heading_font_family": [
-    "Fraunces",
     "Georgia"
   ]
 }

@@ -34,13 +34,20 @@ Runs a mechanical Python audit against the live Google Docs API payload. Zero in
 
 ### Theme-specific overrides (resume variants)
 
-When a theme JSON is provided, the font family, font sizes, line spacing, and color checks are driven by the theme's `visualConfig` block — not the Calibri defaults above. The structural rules (no tables, no images, native heading styles) apply to **all** themes regardless.
+When a theme JSON is provided, the font family, font sizes, line spacing, and color checks are driven by the theme's `ats_constraints.font_family` and `typography` block — not the Calibri defaults above. The structural rules (no tables, no images, native heading styles) apply to **all** themes regardless.
 
-| Theme | Font | Normal size | H1 size | Title size | Line spacing |
-|---|---|---|---|---|---|
-| `contemporary_professional` | Calibri | 10.5pt | 13pt | 17pt | 1.2 |
-| `professional_classic` | Times New Roman | 11pt | 14pt | 16pt | 1.15 |
-| `modern_minimalist` | Arial | 10.5pt | 13pt | 18pt | 1.2 |
+**Fonts must come from the canonical ATS-safe list** (the `font_family` enum in `templates/schema_v2_0.json`; listed in `templates/THEME_SPEC_GUIDE.md`): Arial, Calibri, Helvetica, Verdana, Tahoma, Trebuchet MS, Century Gothic, Gill Sans, Lucida Sans, Lucida Grande, Garamond, Georgia, Cambria, Times New Roman, Century Schoolbook, New Century Schoolbook, Palatino, Book Antiqua. `base_font`, `ats_constraints.font_family` and `heading_font_family` are all constrained to it. `audit_doc_style.py` checks the doc against the theme's font; it does not check the allowlist — run `python3 tools/validate_templates_v2.py <theme.json>` for that.
+
+Example expected values (read the theme JSON for the authoritative numbers):
+
+| Theme | Font | Normal size | Line spacing |
+|---|---|---|---|
+| `contemporary_professional` | Calibri | 10.5pt | 1.2 |
+| `professional_classic` | Times New Roman | 11pt | 1.15 |
+| `modern_minimalist` | Arial | 10.5pt | 1.2 |
+| `graphite_ledger`, `broadside_press`, `violet_signal` | body Georgia, headings Arial | per theme | per theme |
+| `citrus_edge`, `rainbow_minimal` | body Calibri, headings Arial | per theme | per theme |
+| `emerald_transit` | body Calibri, headings Georgia | per theme | per theme |
 
 ## Protocol
 
@@ -77,7 +84,7 @@ Do not proceed with the pipeline run until the audit exits 0.
 - **Never declare PASS without running the script.** LLM review of raw API JSON is not a substitute.
 - **Never attempt automated fixes.** The Golden Master is source-of-truth — only the user edits it.
 - **Relay FAIL output verbatim.** Do not paraphrase or omit failure lines.
-- **Never fail a themed template for using the wrong font** unless the font doesn't match its own theme spec. A Times New Roman doc is not broken — it's intentional.
+- **Never fail a themed template for using the wrong font** unless the font doesn't match its own theme spec. A Times New Roman or Georgia doc is not broken — it's intentional. A theme whose own fonts fall outside the canonical list is a template defect: fix the theme JSON, not the doc.
 
 ## Common Issues
 

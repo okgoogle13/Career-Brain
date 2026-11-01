@@ -41,7 +41,7 @@
     "white": "#FFFFFF"
   },
   "typography": {
-    "base_font": "Spectral",
+    "base_font": "Georgia",
     "base_size_pt": 10.5,
     "line_spacing": 1.28,
     "spacing_after_pt": 7,
@@ -382,7 +382,6 @@
     }
   ],
   "heading_font_family": [
-    "Fraunces",
     "Georgia"
   ]
 }

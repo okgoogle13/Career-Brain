@@ -585,8 +585,13 @@ class CriteriaParsingTests(unittest.TestCase):
     def test_extracts_competency_keywords(self):
         text = "1. Demonstrated experience in case management and risk assessment"
         criteria = parse_criteria(text)
-        self.assertIn("case management", criteria[0]["extracted_competencies"])
-        self.assertIn("risk assessment", criteria[0]["extracted_competencies"])
+        self.assertIn("service_coordination", criteria[0]["extracted_competencies"])
+        self.assertIn("risk_de_escalation", criteria[0]["extracted_competencies"])
+
+    def test_extracts_tags_across_hyphens(self):
+        criteria = parse_criteria("1. Understanding of recovery-oriented, trauma-informed practice")
+        self.assertIn("lived_experience", criteria[0]["extracted_competencies"])
+        self.assertIn("trauma_informed_practice", criteria[0]["extracted_competencies"])
 
     def test_limits_to_max_criteria(self):
         lines = [f"{i}. Criterion {i}" for i in range(1, 20)]
@@ -614,6 +619,16 @@ class KSCResponseTests(unittest.TestCase):
         # At least one section should have content
         has_content = any(response.get(k) for k in ("context", "action", "result"))
         self.assertTrue(has_content)
+
+
+class KSCNoReuseTests(unittest.TestCase):
+    def test_used_narrative_not_selected_twice(self):
+        criterion = {"criterion_text": "Service coordination", "extracted_competencies": ["service_coordination"]}
+        pool = SAMPLE_NARRATIVES["narratives"]
+        used: set[int] = set()
+        build_ksc_response(criterion, pool, SAMPLE_HISTORY, SAMPLE_TAXONOMY["rosetta_stone"], used)
+        build_ksc_response(criterion, pool, SAMPLE_HISTORY, SAMPLE_TAXONOMY["rosetta_stone"], used)
+        self.assertEqual(len(used), min(2, len(pool)))
 
 
 class KSCWordCountTests(unittest.TestCase):
@@ -974,15 +989,22 @@ class CareerCopilotLeverageTests(unittest.TestCase):
         warnings = validate_document_structure(document)
         self.assertTrue(any("forbidden_character_detected" in w for w in warnings))
 
+    def test_detects_emoji_in_document(self):
+        document = {
+            "body": {"content": [{"paragraph": {"elements": [{"textRun": {"content": "\U0001F680 " + " ".join(["word"] * 200)}}]}}]},
+        }
+        warnings = validate_document_structure(document)
+        self.assertTrue(any("U+1F680" in w for w in warnings))
+
 
 
 
 class TestAtsRulesProvenance(unittest.TestCase):
     """Cross-check that ats_rules.json metadata is consistent with the profile it claims to track.
 
-    Also pins the profile's inheritance edge: block-level identity comes from
-    config/llm-specs/agent-operating-spec.md section +JOB (the synced copy inside
-    this repo), while the profile owns the machine-checkable mechanics.
+    Also pins that the recruiter prompt embeds the +JOB block from
+    config/llm-specs/agent-operating-spec.md (the synced copy inside this repo),
+    while the profile owns the machine-checkable mechanics.
 
     Deliberately narrow: reads two real files, no mocking, no network.
     Fails fast if provenance fields are absent or mismatched.
@@ -1031,23 +1053,14 @@ class TestAtsRulesProvenance(unittest.TestCase):
             "likely a mismatch after a profile update",
         )
 
-    def test_profile_declares_job_block_inheritance(self):
-        profile_text = self._load_profile_text()
-        self.assertIn(
-            "Career-Brain",
-            profile_text,
-            "Profile header must include 'Career-Brain' to confirm local scope",
-        )
-        self.assertIn(
-            "config/llm-specs/agent-operating-spec.md",
-            profile_text,
-            "Profile header must name the synced spec copy it inherits its block identity from",
-        )
-        self.assertIn(
-            "+JOB",
-            profile_text,
-            "Profile header must name the +JOB block it inherits",
-        )
+    def test_recruiter_prompt_contains_job_block(self):
+        import pathlib
+        from content_engine import get_recruiter_system_prompt
+        spec = (pathlib.Path(__file__).parent.parent / "config" / "llm-specs" / "agent-operating-spec.md").read_text(encoding="utf-8")
+        section = spec.split("## +JOB", 1)[1].split("\n## ", 1)[0]
+        block = " ".join(l[1:].strip() for l in section.splitlines() if l.startswith(">"))
+        self.assertTrue(block, "+JOB block not found in synced spec")
+        self.assertIn(block, get_recruiter_system_prompt())
 
 
 class GeneratorNoBannedPhraseTests(unittest.TestCase):

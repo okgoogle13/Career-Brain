@@ -174,6 +174,9 @@ def r4_forbidden_glyphs(spec_text: str, ats_rules: dict) -> list[Failure]:
         for ch in forbidden:
             if ch in line:
                 failures.append(("rule4", f"Forbidden character '{ch}' (ats_rules.json forbidden_characters)", i))
+        for lo, hi in ats_rules.get("vocabulary", {}).get("forbidden_char_ranges", []):
+            for ch in sorted({c for c in line if int(lo, 16) <= ord(c) <= int(hi, 16)}):
+                failures.append(("rule4", f"Forbidden character U+{ord(ch):04X} (ats_rules.json forbidden_char_ranges)", i))
     return failures
 
 

@@ -83,7 +83,7 @@ Every theme file must contain these top-level keys in this order:
 }
 ```
 
-**ATS-safe fonts (Google Docs available):** `Calibri`, `Arial`, `Times New Roman`, `Helvetica` (use Arial as fallback — Helvetica is not reliably available in Google Docs).
+**ATS-safe fonts (canonical list; also the `font_family` enum in `schema_v2_0.json`):** `Arial`, `Calibri`, `Helvetica`, `Verdana`, `Tahoma`, `Trebuchet MS`, `Century Gothic`, `Gill Sans`, `Lucida Sans`, `Lucida Grande`, `Garamond`, `Georgia`, `Cambria`, `Times New Roman`, `Century Schoolbook`, `New Century Schoolbook`, `Palatino`, `Book Antiqua`. `base_font`, `ats_constraints.font_family` and `heading_font_family` must all come from this list. Helvetica is not reliably available in Google Docs — use Arial as fallback.
 
 ### `palette` (required)
 

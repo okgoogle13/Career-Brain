@@ -30,8 +30,9 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Lora",
-      "Georgia"
+      "Georgia",
+      "Calibri",
+      "Arial"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -56,7 +57,7 @@
     "supporting_neutral": "#EFEBE9"
   },
   "typography": {
-    "base_font": "Lora",
+    "base_font": "Georgia",
     "base_size_pt": 10.5,
     "line_spacing": 1.34,
     "spacing_after_pt": 9,
@@ -221,7 +222,6 @@
   },
   "complementary_accent": "#B24A2B",
   "heading_font_family": [
-    "Fraunces",
     "Georgia"
   ]
 }

@@ -26,8 +26,9 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "IBM Plex Sans",
-      "Arial"
+      "Arial",
+      "Calibri",
+      "Georgia"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -52,7 +53,7 @@
     "supporting_neutral": "#16324A"
   },
   "typography": {
-    "base_font": "IBM Plex Sans",
+    "base_font": "Arial",
     "base_size_pt": 10.5,
     "line_spacing": 1.2,
     "spacing_after_pt": 4,
@@ -225,7 +226,6 @@
   },
   "complementary_accent": "#5CC8FF",
   "heading_font_family": [
-    "IBM Plex Mono",
-    "Consolas"
+    "Arial"
   ]
 }

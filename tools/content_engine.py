@@ -656,6 +656,26 @@ def generate_professional_summary(
 # CAR Recruiter Rewrite
 # ──────────────────────────────────────────────────────────────────────
 
+JOB_SPEC_PATH = Path(__file__).parent.parent / "config" / "llm-specs" / "agent-operating-spec.md"
+
+
+def _load_job_voice() -> str:
+    """Return the +JOB block text (the '>' lines under '## +JOB') from the synced spec."""
+    lines = JOB_SPEC_PATH.read_text(encoding="utf-8").splitlines()
+    if "## +JOB" not in lines:
+        raise ValueError(f"'## +JOB' heading not found in {JOB_SPEC_PATH}")
+    block = []
+    for line in lines[lines.index("## +JOB") + 1:]:
+        if line.startswith("## "):
+            break
+        if line.startswith(">"):
+            block.append(line[1:].strip())
+    text = " ".join(block).strip()
+    if not text:
+        raise ValueError(f"No '>' block under '## +JOB' in {JOB_SPEC_PATH}")
+    return text
+
+
 def get_recruiter_system_prompt() -> str:
     """Build the recruiter system prompt dynamically using ATS rules."""
     banned_phrases = []
@@ -667,6 +687,11 @@ def get_recruiter_system_prompt() -> str:
     banned_str = ", ".join(f'"{p}"' for p in banned_phrases) if banned_phrases else "generic filler phrases"
     review_str = ", ".join(f'"{p}"' for p in review_phrases) if review_phrases else ""
     
+    job_voice = _load_job_voice()
+    ctx_min, ctx_max = KSC_WORD_TARGETS["context"]
+    act_min, act_max = KSC_WORD_TARGETS["action"]
+    res_min, res_max = KSC_WORD_TARGETS["result"]
+
     review_clause = f" Avoid context-dependent review phrases where possible: {review_str}." if review_str else ""
 
     return f"""\
@@ -682,6 +707,13 @@ Context-Action-Result (CAR) response for a Key Selection Criteria (KSC) applicat
 The output must be grounded exclusively in the supplied source material. \
 You will produce a single JSON object and nothing else.
 </task>
+
+<job_voice>
+{job_voice}
+
+Where <job_voice> conflicts with <output_schema>, the schema governs structure; \
+<job_voice> governs voice.
+</job_voice>
 
 <community_services_values>
 The Community Services sector in Australia is guided by these core values. \
@@ -705,12 +737,12 @@ demonstrated behaviours woven into the CAR narrative:
 <output_schema>
 Return ONLY valid JSON with exactly these three keys:
 {{
-  "context": "<40-100 words. The organisational setting, role mandate, and challenge or \
+  "context": "<{ctx_min}-{ctx_max} words. The organisational setting, role mandate, and challenge or \
 problem being addressed. Third-person framing of the situation.>",
-  "action":  "<80-200 words. What the candidate personally did — concrete steps, methods, \
+  "action":  "<{act_min}-{act_max} words. What the candidate personally did — concrete steps, methods, \
 tools, and competencies deployed. First person, active voice, strong action verbs. \
 Never begin with 'I am' or 'I have'.>",
-  "result":  "<40-120 words. Measurable or observable outcomes. Quantify with real figures \
+  "result":  "<{res_min}-{res_max} words. Measurable or observable outcomes. Quantify with real figures \
 where the source provides them. Name stakeholder impact where relevant.>"
 }}
 No text, explanation, or markdown outside the JSON object.
@@ -728,8 +760,8 @@ in the source MUST be wrapped in [[NEEDS_REVIEW: <your addition>]]. This include
 connective tissue, implied scope, and estimated metrics.
 
 AUSTRALIAN ENGLISH: Use Australian spelling and terminology throughout \
-(e.g. "organisation" not "organization", "programme" not "program", \
-"behaviour" not "behavior").
+(e.g. "organisation" not "organization", "behaviour" not "behavior"). \
+"Program" is correct Australian usage; never write "programme".
 
 QUALITY BAR: A strong CAR response reads as a confident first-person account. \
 Avoid passive voice and hedging language. DO NOT use any of these banned phrases: \
@@ -760,7 +792,7 @@ achievable through previous service contacts."
 
 EXAMPLE 2 — KSC: Ability to use lived experience of recovery
 {{
-  "context": "A new client in our AOD recovery programme was expressing significant \
+  "context": "A new client in our AOD recovery program was expressing significant \
 hopelessness, stating they did not believe long-term recovery was possible. The clinical \
 team identified an opportunity for peer-led engagement to complement the therapeutic model.",
   "action": "Using intentional self-disclosure, I briefly shared that I had faced similar \
@@ -770,7 +802,7 @@ a life in recovery could mean for them. I shared practical, non-clinical strateg
 managing early cravings, drawn from personal experience, without oversharing or \
 making the session about myself.",
   "result": "The client reported a significant shift in perspective, describing the \
-conversation as a turning point. They remained engaged in the programme and later \
+conversation as a turning point. They remained engaged in the program and later \
 volunteered as a peer mentor for newer members — demonstrating the multiplier effect \
 of peer-led support."
 }}
@@ -778,7 +810,7 @@ of peer-led support."
 EXAMPLE 3 — KSC: Demonstrated organisational skills
 {{
   "context": "Our annual community wellness event — serving over 300 residents — was at \
-risk after a key service provider withdrew with 48 hours' notice. The Programme \
+risk after a key service provider withdrew with 48 hours' notice. The Program \
 Coordinator needed immediate support to manage replacement sourcing, stakeholder \
 communications, and materials updates simultaneously.",
   "action": "I created a shared tracking spreadsheet to manage potential replacement \
@@ -954,21 +986,13 @@ def parse_criteria(criteria_text: str) -> list[dict[str, Any]]:
 
 
 def _build_criterion(text: str) -> dict[str, Any]:
-    """Build a criterion dict with extracted competency keywords."""
-    competency_keywords = [
-        "communication", "teamwork", "leadership", "problem solving",
-        "conflict resolution", "cultural safety", "risk assessment",
-        "case management", "stakeholder engagement", "advocacy",
-        "trauma informed", "harm reduction", "governance",
-        "quality assurance", "compliance", "coordination",
-        "facilitation", "collaboration", "complex needs",
-        "person centred", "recovery oriented", "inclusive practice",
-        "safety planning", "community development", "intake",
-        "assessment", "service delivery", "program management",
+    """Build a criterion dict with the narrative competency_tags its text signals."""
+    tag_keywords = _ats_data.get("ksc", {}).get("competency_tag_keywords", {})
+    text_lower = text.lower().replace("-", " ")
+    extracted = [
+        tag for tag, phrases in tag_keywords.items()
+        if any(phrase in text_lower for phrase in phrases)
     ]
-
-    text_lower = text.lower()
-    extracted = [kw for kw in competency_keywords if kw in text_lower]
 
     return {
         "criterion_text": _clean_text(text),
@@ -981,12 +1005,18 @@ def build_ksc_response(
     narratives: list[dict[str, Any]],
     history: dict[str, Any],
     rosetta_stone: dict[str, dict[str, Any]],
+    used_narratives: set[int] | None = None,
 ) -> dict[str, str]:
     """Build a CAR response for a single criterion.
+
+    Narratives whose id() is in ``used_narratives`` are skipped, and the chosen
+    one is added, so a multi-criterion run does not reuse one story.
 
     Returns ``{context, action, result, support_bullet_1, support_bullet_2}``.
     """
     competencies = criterion.get("extracted_competencies", [])
+    if used_narratives is not None:
+        narratives = [n for n in narratives if id(n) not in used_narratives]
 
     # KSC narrative guard: exclude cover letters and address blocks mis-tagged
     # as STAR in ksc_curated.json during ETL. Uses content-based detection.
@@ -1013,6 +1043,8 @@ def build_ksc_response(
 
     if matched:
         narrative = matched[0]
+        if used_narratives is not None:
+            used_narratives.add(id(narrative))
         full_text = _clean_text(narrative.get("full_text", ""))
         criterion_text = criterion.get("criterion_text", "")
 

@@ -96,8 +96,8 @@
         "allows_headers_footers": { "type": "boolean", "const": false },
         "font_family": {
           "type": "string",
-          "enum": ["Calibri", "Arial", "Times New Roman", "Helvetica", "Georgia", "Source Serif 4", "Public Sans", "Lora", "IBM Plex Sans", "Libre Franklin", "Inter", "Work Sans", "Spectral", "Newsreader"],
-          "description": "ATS-safe Google Docs fonts and selected modern theme fonts. Use Arial as fallback for Helvetica — not reliably available in Google Docs."
+          "enum": ["Arial", "Calibri", "Helvetica", "Verdana", "Tahoma", "Trebuchet MS", "Century Gothic", "Gill Sans", "Lucida Sans", "Lucida Grande", "Garamond", "Georgia", "Cambria", "Times New Roman", "Century Schoolbook", "New Century Schoolbook", "Palatino", "Book Antiqua"],
+          "description": "Canonical ATS-safe system fonts only. Use Arial as fallback for Helvetica — not reliably available in Google Docs."
         },
         "content_layer": {
           "type": "string",
@@ -131,7 +131,7 @@
       "properties": {
         "base_font": {
           "type": "string",
-          "enum": ["Calibri", "Arial", "Times New Roman", "Helvetica", "Georgia", "Source Serif 4", "Public Sans", "Lora", "IBM Plex Sans", "Libre Franklin", "Inter", "Work Sans", "Spectral", "Newsreader"],
+          "enum": ["Arial", "Calibri", "Helvetica", "Verdana", "Tahoma", "Trebuchet MS", "Century Gothic", "Gill Sans", "Lucida Sans", "Lucida Grande", "Garamond", "Georgia", "Cambria", "Times New Roman", "Century Schoolbook", "New Century Schoolbook", "Palatino", "Book Antiqua"],
           "description": "Must match ats_constraints.font_family (enforced by caller, not schema)."
         },
         "base_size_pt": {

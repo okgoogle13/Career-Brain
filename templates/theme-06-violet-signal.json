@@ -26,8 +26,9 @@
     "allows_text_boxes": false,
     "allows_headers_footers": false,
     "font_family": [
-      "Newsreader",
-      "Georgia"
+      "Georgia",
+      "Calibri",
+      "Arial"
     ],
     "content_layer": "all essential content must remain plain text in normal reading order and selectable",
     "forbidden_glyphs": [
@@ -52,7 +53,7 @@
     "supporting_neutral": "#F3E8FF"
   },
   "typography": {
-    "base_font": "Newsreader",
+    "base_font": "Georgia",
     "base_size_pt": 10.5,
     "line_spacing": 1.32,
     "spacing_after_pt": 7,
@@ -221,7 +222,6 @@
   },
   "complementary_accent": "#C2410C",
   "heading_font_family": [
-    "Space Grotesk",
     "Arial"
   ]
 }

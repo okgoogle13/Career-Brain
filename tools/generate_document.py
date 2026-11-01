@@ -752,13 +752,14 @@ def _build_ksc_values(
         return
 
     all_narratives = narratives.get("narratives", [])
+    used_narratives: set[int] = set()
 
     for c_idx, criterion in enumerate(criteria_list[:MAX_KSC_CRITERIA], start=1):
         values[f"{{{{KSC_CRITERION_{c_idx}_TEXT}}}}"] = criterion.get("criterion_text", "")
 
         # Build CAR response
         response = build_ksc_response(
-            criterion, all_narratives, history, rosetta_stone,
+            criterion, all_narratives, history, rosetta_stone, used_narratives,
         )
 
         values[f"{{{{KSC_{c_idx}_CONTEXT}}}}"] = response.get("context", "")
@@ -852,6 +853,9 @@ def validate_document_structure(document: dict[str, Any]) -> list[str]:
     for char in forbidden_chars:
         if char in text:
             warnings.append(f"forbidden_character_detected_ats_risk: '{char}'")
+    for lo, hi in vocab_rules.get("forbidden_char_ranges", []):
+        for char in sorted({c for c in text if int(lo, 16) <= ord(c) <= int(hi, 16)}):
+            warnings.append(f"forbidden_character_detected_ats_risk: 'U+{ord(char):04X}'")
 
     warnings.extend(scan_voice_phrases(text, ats_rules))
 

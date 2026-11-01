@@ -5,7 +5,7 @@
 **Status:** Career-Brain-local authority for job-application voice mechanics. Supersedes the anti-slop
 section of `config/gem_system_prompt.md` (§6) and the ad-hoc `QUALITY BAR` in `tools/content_engine.py`.
 **Scope:** Career-Brain local enforcement spec for job-application voice. Block-level identity and
-register are inherited from `config/llm-specs/agent-operating-spec.md` §`+JOB` (synced from
+register come from `config/llm-specs/agent-operating-spec.md` §`+JOB`, which `get_recruiter_system_prompt()` embeds at run time (synced from
 comms-hub-v2, which is canonical for the operating-spec blocks — not for voice profiles). This
 document never restates or paraphrases that block; it carries what the block cannot: the
 machine-checkable phrase lists, the corpus evidence behind each pattern, the Australian

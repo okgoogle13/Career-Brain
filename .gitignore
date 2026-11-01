@@ -70,3 +70,5 @@ database/doc_generation_report_*_test.json
 
 # Database backups (keep locally for script safety, ignore from git to prevent bloat)
 database/backups/
+
+.claude/.status-hash
