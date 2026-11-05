@@ -1355,19 +1355,53 @@ class MainEntrypointTests(unittest.TestCase):
     """
 
     def test_dry_run_exits_zero_for_all_doc_types(self):
+        import json
         import os
-        from generate_document import main
+        import tempfile
+        from pathlib import Path
+        from generate_document import HISTORY_FILE, NARRATIVES_FILE, TAXONOMY_FILE, main
+
+        # Fictional engines and user config, so the test never reads the real
+        # (gitignored, sensitive) database/ or config/user_config.json.
+        achievement = {"domain_tags": ["case_management"], "needs_review": False, "source_lineage": "fixture.md"}
+        history = {"roles": [
+            {"role": "Test Role", "company": "Test Org", "start_date": "2021-01", "end_date": "2024-01",
+             "domain_archetypes": ["case_management"],
+             "achievements": [{**achievement, "text": f"Fictional achievement {i} in case management."}
+                              for i in range(1, 5)]},
+            {"role": "Earlier Test Role", "company": "Sample Org", "start_date": "2018-01", "end_date": "2020-12",
+             "domain_archetypes": ["case_management"],
+             "achievements": [{**achievement, "text": f"Fictional earlier achievement {i}."} for i in range(1, 3)]},
+        ]}
+        narrative = {"quality_tier": "high", "quality_score": 0.9, "source_lineage": "fixture.md"}
+        narratives = {"narratives": [
+            {**narrative, "narrative_type": "STAR", "criterion_text": "Demonstrated experience in case management.",
+             "full_text": "Fictional STAR narrative. " * 40, "word_count": 120, "ksc": ["case_management"]},
+            {**narrative, "narrative_type": "hook", "criterion_text": "",
+             "full_text": "Fictional hook paragraph about community services. " * 5, "word_count": 30},
+        ]}
+        taxonomy = {"keyword_bank": {}, "rosetta_stone": {}, "skills_inventory": {}}
+        user_config = {"contact": {"name": "Alex Sample", "phone": "0400 000 000",
+                                   "email": "alex.sample@example.com", "location": "Sampletown"}}
 
         env_backup = os.environ.get("GEMINI_API_KEY")
+        tmp = tempfile.TemporaryDirectory()
         try:
             os.environ["GEMINI_API_KEY"] = ""
+            data_dir = Path(tmp.name)
+            for name, data in ((HISTORY_FILE, history), (NARRATIVES_FILE, narratives), (TAXONOMY_FILE, taxonomy)):
+                (data_dir / name).write_text(json.dumps(data), encoding="utf-8")
+            user_config_path = data_dir / "user_config.json"
+            user_config_path.write_text(json.dumps(user_config), encoding="utf-8")
             for doc_type in ("resume", "cover_letter", "ksc"):
                 with self.subTest(doc_type=doc_type):
                     argv = [
                         "--type", doc_type,
                         "--target", "Test Role at Test Org",
                         "--dry-run",
-                        "--out-report", f"/tmp/test_report_{doc_type}.json",
+                        "--output-dir", str(data_dir),
+                        "--user-config", str(user_config_path),
+                        "--out-report", str(data_dir / f"test_report_{doc_type}.json"),
                     ]
                     if doc_type == "cover_letter":
                         argv.extend(["--employer-type", "nfp"])
@@ -1376,6 +1410,7 @@ class MainEntrypointTests(unittest.TestCase):
                     exit_code = main(argv)
                     self.assertEqual(exit_code, 0, f"Expected exit 0 for doc_type={doc_type}, got {exit_code}")
         finally:
+            tmp.cleanup()
             if env_backup is not None:
                 os.environ["GEMINI_API_KEY"] = env_backup
             else:
