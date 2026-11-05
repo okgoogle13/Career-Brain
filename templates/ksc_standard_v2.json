@@ -224,5 +224,8 @@
         }
       }
     }
+  ],
+  "heading_font_family": [
+    "Calibri"
   ]
 }
