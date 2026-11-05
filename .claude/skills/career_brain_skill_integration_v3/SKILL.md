@@ -1,6 +1,6 @@
 ---
 name: career-brain-skill-integration
-description: Manage and orchestrate the Career Brain ATS/template workflow skills (peer-review, ats-template-qa-v3, docs-style-auditor-v3, gold-template-builder-v3). Use this when designing templates, auditing Golden Master documents, validating template specs, or running the full template pipeline. Handles skill coordination, workflow sequencing, and integration with the Career Brain document generation system.
+description: Manage and orchestrate the Career Brain ATS/template workflow skills (peer-review, theme-visual-preview-v3, gold-template-builder-v3, docs-style-auditor-v3, ats-template-qa-v3). Use this when designing templates, auditing Golden Master documents, validating template specs, or running the full template pipeline. Handles skill coordination, workflow sequencing, and integration with the Career Brain document generation system.
 ---
 
 # Career Brain Skill Integration
@@ -131,7 +131,7 @@ Output: SPEC OK + STYLE PASS or detailed failure list
 
 The pipeline supports a dynamic set of rich JSON theme definitions. To see the current list of available themes, read the contents of the `templates/` directory. You will find theme files named such as `resume_<name>_v1.json`. Do not assume a hard-coded list of themes.
 
-Theme files live in `templates/` as `resume_<name>_v1.json`. When running `docs-style-auditor-v3` against a themed document, ALWAYS pass the `--theme templates/resume_<name>_v1.json` flag (via `python3 tools/audit_doc_style.py <DOC_ID> --theme ...`) so the auditor validates against the correct specific font/spacing values defined in the theme's `visualConfig`, rather than rejecting them for not being Calibri.
+Theme files live in `templates/` as `resume_<name>_v1.json`. When running `docs-style-auditor-v3` against a themed document, ALWAYS pass the `--theme templates/resume_<name>_v1.json` flag (via `.venv/bin/python tools/audit_doc_style.py <DOC_ID> --theme ...`) so the auditor validates against the correct specific font/spacing values defined in the theme's `visualConfig`, rather than rejecting them for not being Calibri.
 
 ## Trigger Guidance
 

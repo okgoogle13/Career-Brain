@@ -13,10 +13,12 @@ Two-stage QA process:
 
 2. **Docs-API check** — verify the items that only exist in the live Google Doc and cannot be checked from the spec file alone.
 
-## Stage 1 — Run the validator
+## Stage 1 — Run the validator (KSC specs only)
+
+Themed resume and cover-letter Golden Masters have no spec: skip to Stage 2 and first run `.venv/bin/python tools/validate_templates_v2.py templates/<theme>.json`.
 
 ```bash
-python3 tools/validate_template_spec.py <spec_file.md>
+.venv/bin/python tools/validate_template_spec.py <spec_file.md>
 ```
 
 Report the exact output verbatim. Do not interpret or paraphrase it. If exit code is 1, list each FAIL line to the user and stop — do not proceed to Stage 2 until the spec is fixed and the validator returns `SPEC OK`.
@@ -45,6 +47,6 @@ Report each check as `PASS` or `FAIL — <evidence>`. Do not claim PASS without 
 
 ## What you must never do
 
-- Declare the template QA-passed before Stage 1 returns `SPEC OK`.
+- Declare a KSC template QA-passed before Stage 1 returns `SPEC OK`.
 - Invent a PASS verdict for any Stage 2 check without reading the live doc.
 - Add decorative formatting, emoji, or summaries to your report — raw check results only.

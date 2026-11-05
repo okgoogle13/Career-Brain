@@ -36,18 +36,9 @@ Runs a mechanical Python audit against the live Google Docs API payload. Zero in
 
 When a theme JSON is provided, the font family, font sizes, line spacing, and color checks are driven by the theme's `ats_constraints.font_family` and `typography` block — not the Calibri defaults above. The structural rules (no tables, no images, native heading styles) apply to **all** themes regardless.
 
-**Fonts must come from the canonical ATS-safe list** (the `font_family` enum in `templates/schema_v2_0.json`; listed in `templates/THEME_SPEC_GUIDE.md`): Arial, Calibri, Helvetica, Verdana, Tahoma, Trebuchet MS, Century Gothic, Gill Sans, Lucida Sans, Lucida Grande, Garamond, Georgia, Cambria, Times New Roman, Century Schoolbook, New Century Schoolbook, Palatino, Book Antiqua. `base_font`, `ats_constraints.font_family` and `heading_font_family` are all constrained to it. `audit_doc_style.py` checks the doc against the theme's font; it does not check the allowlist — run `python3 tools/validate_templates_v2.py <theme.json>` for that.
+**Fonts must come from the canonical ATS-safe list** (`font_family` enum in `templates/schema_v2_0.json`; see `templates/THEME_SPEC_GUIDE.md`). `audit_doc_style.py` checks the doc against the theme's font; it does not check the allowlist — run `.venv/bin/python tools/validate_templates_v2.py <theme.json>` for that.
 
-Example expected values (read the theme JSON for the authoritative numbers):
-
-| Theme | Font | Normal size | Line spacing |
-|---|---|---|---|
-| `contemporary_professional` | Calibri | 10.5pt | 1.2 |
-| `professional_classic` | Times New Roman | 11pt | 1.15 |
-| `modern_minimalist` | Arial | 10.5pt | 1.2 |
-| `graphite_ledger`, `broadside_press`, `violet_signal` | body Georgia, headings Arial | per theme | per theme |
-| `citrus_edge`, `rainbow_minimal` | body Calibri, headings Arial | per theme | per theme |
-| `emerald_transit` | body Calibri, headings Georgia | per theme | per theme |
+Read the theme JSON for the authoritative font, sizes and spacing; do not rely on values copied here.
 
 ## Protocol
 
@@ -55,12 +46,12 @@ Example expected values (read the theme JSON for the authoritative numbers):
 
 For a KSC or unthemed template:
 ```bash
-python3 tools/audit_doc_style.py <DOC_ID>
+.venv/bin/python tools/audit_doc_style.py <DOC_ID>
 ```
 
 For a themed resume Golden Master (preferred — avoids false font FAILs):
 ```bash
-python3 tools/audit_doc_style.py <DOC_ID> --theme templates/resume_<theme_name>_v1.json
+.venv/bin/python tools/audit_doc_style.py <DOC_ID> --theme templates/resume_<theme_name>_v1.json
 ```
 
 The `--theme` flag (supported by `tools/audit_doc_style.py`) tells the auditor to read expected font, sizes, and spacing from the theme JSON instead of Calibri hardcoded defaults.

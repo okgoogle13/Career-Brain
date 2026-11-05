@@ -21,7 +21,7 @@ The spec file is the deliverable. Nothing else.
 
 **Every `{{TOKEN}}` you write must be cited in TOKENS_USED with its source line in `generate_document.py`.**
 
-KSC tokens are defined in `PLACEHOLDER_SCHEMA_V2["ksc"]` in `tools/generate_document.py` (the `"ksc": (` block, currently lines 127–144). Read that block for exact line numbers before writing the spec — they drift. The canonical token list is:
+KSC tokens are defined in `PLACEHOLDER_SCHEMA_V2["ksc"]` in `tools/generate_document.py` (the `"ksc": (` block; find it with `rg -n '"ksc": \(' tools/generate_document.py`). Read that block for exact line numbers before writing the spec. The canonical token list is:
 
 ```
 {{CONTACT_NAME}}  {{CONTACT_PHONE}}  {{CONTACT_EMAIL}}  {{CONTACT_LOCATION}}
@@ -38,7 +38,7 @@ Per criterion c (1 to 6):
 
 If a token name is not in this list, it does not exist in the pipeline. Do not write it.
 
-## ATS rules (source of truth: `ats_rules.json`)
+## ATS rules (source of truth: `config/ats_rules.json`)
 
 - **Forbidden characters** (never use in spec or document): `•  ✔  ★  ❖  ●  ✅  ❌  |`
 - **Bullet style**: plain hyphen `-` only. Never `•` or any Unicode bullet.
@@ -56,7 +56,7 @@ For each audit key, write `PASS` or `FAIL` only if you have checked it against t
 After writing the spec, run:
 
 ```bash
-python3 tools/validate_template_spec.py <spec_file.md>
+.venv/bin/python tools/validate_template_spec.py <spec_file.md>
 ```
 
 If it returns `FAIL`, fix the named issue and re-run. Do not declare done until it returns `SPEC OK`.

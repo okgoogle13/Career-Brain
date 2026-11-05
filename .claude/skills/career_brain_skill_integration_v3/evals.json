@@ -1,11 +1,11 @@
 {
   "evaluations": [
     {
-      "prompt": "Integrate the new career brain skill into the agent",
+      "prompt": "Walk me through the full template pipeline for a new themed resume",
       "should_trigger": true
     },
     {
-      "prompt": "Help me build a new theme variant integration",
+      "prompt": "Audit my Golden Master and tell me what to run next",
       "should_trigger": true
     },
     {
