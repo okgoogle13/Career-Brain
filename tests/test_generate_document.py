@@ -1,4 +1,7 @@
+import shutil
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import MagicMock
 
 from generate_document import (
@@ -1349,6 +1352,9 @@ class ReportFieldTests(unittest.TestCase):
 # BS-3.4: Main entrypoint exit code semantics
 # ══════════════════════════════════════════════════════════════════════
 
+ENGINE_FIXTURES = Path(__file__).parent / "fixtures" / "engines"
+
+
 class MainEntrypointTests(unittest.TestCase):
     """
     Verify exit code semantics in main() per BS-3.4.
@@ -1359,6 +1365,7 @@ class MainEntrypointTests(unittest.TestCase):
         from generate_document import main
 
         env_backup = os.environ.get("GEMINI_API_KEY")
+        tmp = tempfile.mkdtemp()
         try:
             os.environ["GEMINI_API_KEY"] = ""
             for doc_type in ("resume", "cover_letter", "ksc"):
@@ -1367,7 +1374,9 @@ class MainEntrypointTests(unittest.TestCase):
                         "--type", doc_type,
                         "--target", "Test Role at Test Org",
                         "--dry-run",
-                        "--out-report", f"/tmp/test_report_{doc_type}.json",
+                        "--output-dir", str(ENGINE_FIXTURES),
+                        "--user-config", str(ENGINE_FIXTURES / "user_config.fixture.json"),
+                        "--out-report", str(Path(tmp) / f"report_{doc_type}.json"),
                     ]
                     if doc_type == "cover_letter":
                         argv.extend(["--employer-type", "nfp"])
@@ -1376,6 +1385,7 @@ class MainEntrypointTests(unittest.TestCase):
                     exit_code = main(argv)
                     self.assertEqual(exit_code, 0, f"Expected exit 0 for doc_type={doc_type}, got {exit_code}")
         finally:
+            shutil.rmtree(tmp, ignore_errors=True)
             if env_backup is not None:
                 os.environ["GEMINI_API_KEY"] = env_backup
             else:

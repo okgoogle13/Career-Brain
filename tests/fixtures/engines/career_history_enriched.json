@@ -1,0 +1,127 @@
+{
+  "roles": [
+    {
+      "role": "Case Manager",
+      "company": "Example Community Services",
+      "start_date": "Jan 2022",
+      "end_date": "Present",
+      "source_lineage": "synthetic/role_1.md",
+      "achievements": [
+        {
+          "raw_text": "Supported 11 clients through intake and case planning, reducing wait times by 6%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_1_ach_1.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 12 clients through intake and case planning, reducing wait times by 7%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_1_ach_2.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 13 clients through intake and case planning, reducing wait times by 8%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_1_ach_3.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 14 clients through intake and case planning, reducing wait times by 9%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_1_ach_4.md",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "role": "Support Worker",
+      "company": "Sample Housing Group",
+      "start_date": "Mar 2019",
+      "end_date": "Dec 2021",
+      "source_lineage": "synthetic/role_2.md",
+      "achievements": [
+        {
+          "raw_text": "Supported 21 clients through intake and case planning, reducing wait times by 6%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_2_ach_1.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 22 clients through intake and case planning, reducing wait times by 7%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_2_ach_2.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 23 clients through intake and case planning, reducing wait times by 8%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_2_ach_3.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 24 clients through intake and case planning, reducing wait times by 9%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_2_ach_4.md",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "role": "Program Assistant",
+      "company": "Placeholder Health Network",
+      "start_date": "Jun 2016",
+      "end_date": "Feb 2019",
+      "source_lineage": "synthetic/role_3.md",
+      "achievements": [
+        {
+          "raw_text": "Supported 31 clients through intake and case planning, reducing wait times by 6%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_3_ach_1.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 32 clients through intake and case planning, reducing wait times by 7%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_3_ach_2.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 33 clients through intake and case planning, reducing wait times by 8%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_3_ach_3.md",
+          "needs_review": false
+        },
+        {
+          "raw_text": "Supported 34 clients through intake and case planning, reducing wait times by 9%.",
+          "domain_tags": [
+            "case_management"
+          ],
+          "source_lineage": "synthetic/role_3_ach_4.md",
+          "needs_review": false
+        }
+      ]
+    }
+  ]
+}

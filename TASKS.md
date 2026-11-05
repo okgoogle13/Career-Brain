@@ -2,14 +2,14 @@
 
 Persistent task tracker. Update status as work progresses. Completed tasks stay in the log.
 
-Last status sweep: 2026-09-21 (verified against working tree at commit `835c034`).
+Last status sweep: 2026-11-05 (verified against working tree at commit `0a2c221`).
 
 ---
 
 ## Active
 
 ### TASK-007 — Voice Authenticity Profile Gap Remediation
-**Status:** 🔵 In Progress — 4 of 5 sub-tasks built; BS-7.2 (the corpus run) is the only open item.
+**Status:** ✅ Complete — all 5 sub-tasks done (BS-7.2 corpus run completed 2026-09-21).
 **Priority:** Medium
 **Branch:** `main`
 
@@ -49,7 +49,7 @@ Last status sweep: 2026-09-21 (verified against working tree at commit `835c034`
 ---
 
 ### TASK-006 — Premium Font Upgrade & Cover Letter / KSC Template Suite
-**Status:** 🔵 In Progress — Stage 1 and Stage 3 complete; Stage 2 has 1 open item (BS-2.1) plus 3 needing live verification.
+**Status:** ✅ Complete — Stages 1–3 done; all checkboxes ticked.
 **Priority:** High
 **Branch:** `main`
 

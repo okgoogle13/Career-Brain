@@ -1,0 +1,16 @@
+{
+  "contact": {
+    "name": "Test Person",
+    "phone": "0400 000 000",
+    "email": "test.person@example.com",
+    "location": "Melbourne, VIC"
+  },
+  "education": [
+    "Bachelor of Arts \u2014 Example University, 2010"
+  ],
+  "certifications": [
+    "First Aid (example)",
+    "Working with Children Check (example)"
+  ],
+  "referees": "Available upon request"
+}
