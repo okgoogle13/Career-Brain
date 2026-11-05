@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Is this new theme family ready to build a Golden Master from? Give me a final verdict",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Run the full quality gate on resume_violet_signal_v1 before I register it",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Run audit_doc_style on this Doc ID",
+      "should_trigger": false
+    }
+  ]
+}

@@ -18,7 +18,7 @@ Four-phase staged audit for pipeline code changes. Phases 1–2 are always manda
 
 ## When NOT to Use
 
-- Reviewing Google Doc templates or KSC spec files → use `ats_template_qa_v3` or `docs_style_auditor_v3`
+- Reviewing Google Doc templates or KSC spec files → use `gold_template_builder_v3` (KSC specs) or `docs_style_auditor_v3` (live docs)
 - General code review with no pipeline concern → use standard code review
 
 ---

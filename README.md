@@ -67,7 +67,6 @@ Career Brain/
 ├── context/            AI session files: repomix XMLs, prompts, handover docs
 │   └── specs/          Document format specs (resume, cover letter, KSC)
 ├── .claude/skills/       AI agent skill definitions (versioned)
-│   ├── ats_template_qa_v3/
 │   ├── docs_style_auditor_v3/
 │   └── gold_template_builder_v3/
 ├── archive/            Legacy source files — do not re-ingest without explicit instruction

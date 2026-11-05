@@ -9,6 +9,14 @@
       "should_trigger": true
     },
     {
+      "prompt": "QA check this new KSC template spec",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Run ATS template QA on the live KSC golden master doc",
+      "should_trigger": true
+    },
+    {
       "prompt": "Build a golden master for the chronological resume template",
       "should_trigger": false
     },

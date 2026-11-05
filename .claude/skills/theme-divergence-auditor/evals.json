@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Are any of our resume themes basically the same design with a different colour?",
+      "should_trigger": true
+    },
+    {
+      "prompt": "I want to add a new theme called Ocean Ledger — check it's actually different from what we already have",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Audit the Golden Master doc for font and spacing violations",
+      "should_trigger": false
+    }
+  ]
+}

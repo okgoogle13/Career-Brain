@@ -1,6 +1,6 @@
 ---
 name: gold-template-builder-v3
-description: Use when designing or specifying a new KSC template for the Career Brain pipeline. Produces a machine-parseable spec that validate_template_spec.py can hard-gate before registration.
+description: Use when designing, specifying or QA-checking a Career Brain KSC template — writes a machine-parseable spec that validate_template_spec.py hard-gates, then QA-checks the spec and the built KSC Golden Master before registration or a live pipeline run. KSC only — not for building or checking resume or cover-letter Golden Masters.
 ---
 
 # Gold Template Builder v3 (KSC)
@@ -38,14 +38,11 @@ Per criterion c (1 to 6):
 
 If a token name is not in this list, it does not exist in the pipeline. Do not write it.
 
-## ATS rules (source of truth: `config/ats_rules.json`)
+## ATS rules (read, don't copy)
 
-- **Forbidden characters** (never use in spec or document): `•  ✔  ★  ❖  ●  ✅  ❌  |`
-- **Bullet style**: plain hyphen `-` only. Never `•` or any Unicode bullet.
-- **Allowed static headings**: `Summary`, `Skills`, `Experience`, `Education`, `Certifications`, `Key Achievements`. Criterion headings filled by `{{KSC_CRITERION_N_TEXT}}` are placeholder headings — exempt.
-- **AU terminology**: use `organisation` not `company`, `sector` not `industry`, `position description` not `job description`, `key selection criteria` not `competency questions`.
-- **Layout**: single column only. No tables. No text boxes. No inline images.
-- **KSC word limits**: Context 40–100w, Action 60–200w, Result 30–100w, Total 200–500w per criterion.
+Before writing, read these keys from `config/ats_rules.json` with `rg -n`: `forbidden_characters`, `forbidden_char_ranges`, `allowed_headings`, `terminology`, `ksc.word_limits`. They are the only source — do not rely on remembered lists. Criterion headings filled by `{{KSC_CRITERION_N_TEXT}}` are placeholder headings, exempt from `allowed_headings`.
+
+Not in that file: bullets are plain hyphen `-` only; layout is single column with no tables, text boxes or inline images.
 
 ## ATS_AUDIT fill rule
 
@@ -60,6 +57,16 @@ After writing the spec, run:
 ```
 
 If it returns `FAIL`, fix the named issue and re-run. Do not declare done until it returns `SPEC OK`.
+
+## QA (existing spec or built Golden Master)
+
+Use this section alone when asked to QA a KSC spec or KSC Golden Master you did not just write.
+
+**Stage 1 — Spec.** Run the validator above against the spec. It checks token validity, forbidden glyphs, heading whitelist, AU terminology, audit honesty, registration shape and KSC structural completeness. Report its output verbatim. On exit 1, list each `FAIL` line and stop — no Stage 2 until it returns `SPEC OK`.
+
+**Stage 2 — Live Golden Master** (only after the user has built it and has its Doc ID): run `docs-style-auditor-v3` on the Doc ID. It owns the live audit, the supplementary checks and the Google Docs API approval. Relay its result; never PASS without its output. Raw check results only — no decorative formatting or summaries.
+
+Never declare a KSC template QA-passed before Stage 1 returns `SPEC OK`.
 
 ## Registration fragment shape
 
@@ -78,4 +85,4 @@ Replace `REPLACE_WITH_KSC_GOLDEN_MASTER_DOC_ID` with the actual Google Doc ID af
 
 ## Out of scope
 
-This skill covers KSC templates only. Resume and cover_letter Golden Masters are built from theme JSON via `tools/build_golden_master.py`, not from a spec. It does not produce JSON layout schemas, Python models, or `.docx` files.
+This skill covers KSC templates only. Resume and cover_letter Golden Masters are built from theme JSON via `tools/build_golden_master.py`, not from a spec; QA them with `docs-style-auditor-v3`. It does not produce JSON layout schemas, Python models, or `.docx` files.

@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Check that the government family has a matching resume, cover letter and KSC template",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Which themes are missing a cover letter or KSC, and are there orphaned entries in doc_templates.json?",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Validate this KSC template spec before registration",
+      "should_trigger": false
+    }
+  ]
+}

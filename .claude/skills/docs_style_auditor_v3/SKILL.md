@@ -1,6 +1,6 @@
 ---
 name: docs-style-auditor-v3
-description: Use when verifying that a Career Brain Google Docs Golden Master template is structurally and typographically compliant before a live pipeline run — catches font, spacing, heading style, and layout violations that LLM review cannot reliably detect.
+description: Use when verifying or QA-checking that a live Career Brain Google Docs Golden Master (themed resume, cover letter or KSC) is structurally and typographically compliant before registration or a live pipeline run — catches font, spacing, heading style, and layout violations that LLM review cannot reliably detect.
 ---
 
 # Docs Style Auditor v3
@@ -42,6 +42,8 @@ Read the theme JSON for the authoritative font, sizes and spacing; do not rely o
 
 ## Protocol
 
+This skill is the single owner of the live audit: `output-quality-gate` and `gold-template-builder-v3` consume its result rather than re-running it. Both scripts call the Google Docs API — ask the user before each run.
+
 **Step 1 — Run the audit:**
 
 For a KSC or unthemed template:
@@ -69,6 +71,14 @@ Instruct the user:
 > [paste FAIL lines here]"
 
 Do not proceed with the pipeline run until the audit exits 0.
+
+**Step 4 — Supplementary checks** (all Golden Masters):
+
+```bash
+.venv/bin/python tools/verify_golden_master.py <DOC_ID> --theme=templates/<theme>.json
+```
+
+This adds a heading-aware font check. Neither script detects text boxes (positioned objects) — confirm none from the doc and report `PASS` or `FAIL — <evidence>`. KSC Golden Masters: run the spec stage in `gold-template-builder-v3` first.
 
 ## Hard Rules
 

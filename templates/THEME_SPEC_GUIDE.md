@@ -1,13 +1,14 @@
 # Theme Spec Guide
 
 > Source of truth for the `templates/` theme library.  
-> All new themes must follow this guide and be validated by `tools/audit_doc_style.py --theme <path>` before a Golden Master is built.
+> All new themes must follow this guide. Before a Golden Master is built they must pass `tools/validate_templates_v2.py <path>` (offline); after it is built, `tools/audit_doc_style.py <DOC_ID> --theme <path>` must print `STYLE OK`.
+> Stage order and the skill that owns each check: `.claude/skills/career_brain_skill_integration_v3/SKILL.md`.
 
 ---
 
 ## Current Theme Library
 
-| File | Doc Type | Name | Font | Palette | Tier | Target Sector | Status |
+| File | Doc Type | Name | Font (body / heading) | Palette | Tier | Target Sector | Status |
 |---|---|---|---|---|---|---|---|
 | `resume_professional_classic_v1.json` | resume | Professional Classic | Times New Roman | Deep Navy / Charcoal | 1 — ATS Standard | Finance, law, corporate, senior mgmt | ✅ Registered |
 | `resume_contemporary_professional_v1.json` | resume | Contemporary Professional | Calibri | Forest Green / Sage | 1 — ATS Clean | Community services, NFP, government, healthcare | ✅ Registered |
@@ -15,25 +16,26 @@
 | `resume_warm_impact_v1.json` | resume | Warm Impact | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | Community services, career-transition | ✅ Registered |
 | `resume_chronological_v1.json` | resume | Chronological | Times New Roman | Deep Navy / Charcoal | 1 — ATS Standard | Finance, law, corporate | ✅ Registered |
 | `resume_hybrid_v1.json` | resume | Hybrid | Calibri | Forest Green / Sage | 1 — ATS Clean | Government, community services | ✅ Registered |
-| `resume_graphite_ledger_v1.json` | resume | Graphite Ledger | Calibri | Graphite / Grey | 1 — ATS Clean | Finance, law, corporate, government | ✅ Registered |
+| `resume_graphite_ledger_v1.json` | resume | Graphite Ledger | Georgia / Arial | Graphite / Grey | 1 — ATS Clean | Finance, law, corporate, government | ✅ Registered |
 | `resume_midnight_blueprint_v1.json` | resume | Midnight Blueprint | Arial | Deep Navy / Cyan | 2 — ATS Modern | Tech, engineering, specialty | ✅ Registered |
-| `resume_citrus_edge_v1.json` | resume | Citrus Edge | Calibri | Charcoal / Orange | 2 — ATS Modern | Community services, social work | ✅ Registered |
-| `resume_emerald_transit_v1.json` | resume | Emerald Transit | Calibri | Emerald / Mint | 1 — ATS Clean | Health, transport, logistics | ✅ Registered |
+| `resume_citrus_edge_v1.json` | resume | Citrus Edge | Calibri / Arial | Charcoal / Orange | 2 — ATS Modern | Community services, social work | ✅ Registered |
+| `resume_emerald_transit_v1.json` | resume | Emerald Transit | Calibri / Georgia | Emerald / Mint | 1 — ATS Clean | Health, transport, logistics | ✅ Registered |
 | `resume_copper_teal_circuit_v1.json` | resume | Copper Teal Circuit | Arial | Copper / Teal | 2 — ATS Modern | Engineering, tech, architecture | ✅ Registered |
-| `resume_violet_signal_v1.json` | resume | Violet Signal | Georgia | Violet / Amethyst | 1 — ATS Standard | Creative, arts, marketing | ✅ Registered |
+| `resume_violet_signal_v1.json` | resume | Violet Signal | Georgia / Arial | Violet / Amethyst | 1 — ATS Standard | Creative, arts, marketing | ✅ Registered |
 | `resume_solar_gradient_v1.json` | resume | Solar Gradient | Georgia | Brown / Warm Cream | 1 — ATS Standard | Non-profit, education, community | ✅ Registered |
 | `resume_nordic_neon_v1.json` | resume | Nordic Neon | Arial | Cyan / Teal | 2 — ATS Modern | Design, tech, startups | ✅ Registered |
 | `resume_terracotta_service_v1.json` | resume | Terracotta Service | Georgia | Terracotta / Cream | 1 — ATS Standard | Community services, social work | ✅ Registered |
-| `resume_rainbow_minimal_v1.json` | resume | Rainbow Minimal | Calibri | Slate / Multi-color | 2 — ATS Modern | General, entry-level, tech | ✅ Registered |
+| `resume_rainbow_minimal_v1.json` | resume | Rainbow Minimal | Calibri / Arial | Slate / Multi-color | 2 — ATS Modern | General, entry-level, tech | ✅ Registered |
 | `resume_terminal_signal_v1.json` | resume | Terminal Signal | Arial | Green / Charcoal | 2 — ATS Modern | Dev, IT, cybersecurity | ✅ Registered |
 | `resume_horizon_edge_v1.json` | resume | Horizon Edge | Arial | Navy / Coral | 2 — ATS Modern | Media, communication, corporate | ✅ Registered |
-| `resume_broadside_press_v1.json` | resume | Broadside Press | Georgia | Crimson / Black | 1 — ATS Standard | Editorial, publishing, policy | ✅ Registered |
+| `resume_broadside_press_v1.json` | resume | Broadside Press | Georgia / Arial | Crimson / Black | 1 — ATS Standard | Editorial, publishing, policy | ✅ Registered |
 | `resume_clay_canvas_v1.json` | resume | Clay Canvas | Georgia | Clay / Espresso | 1 — ATS Standard | Artisanal, design, education | ✅ Registered |
 | `resume_cyan_blueprint_v1.json` | resume | Cyan Blueprint | Arial | Cyan / Charcoal | 2 — ATS Modern | Tech, engineering, corporate | ✅ Registered |
 | `cover_letter_base_v1.json` | cover_letter | Cover Letter Base | Times New Roman | Deep Navy | 1 — ATS Standard | All sectors | ✅ Registered |
 | `cover_letter_government_v1.json` | cover_letter | Cover Letter Government | Calibri | Forest Green | 1 — ATS Clean | Government, public service | ✅ Registered |
 | `cover_letter_nfp_v1.json` | cover_letter | Cover Letter NFP | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | NFP, community services | ✅ Registered |
 | `cover_letter_private_v1.json` | cover_letter | Cover Letter Private | Arial | Slate Blue / Teal | 2 — ATS Modern | Private sector, tech, design | ✅ Registered |
+| `ksc_standard_v2.json` | ksc | KSC Standard v2 | Calibri | Forest Green / Sage | 1 — ATS Clean | Government, community services, NFP | ✅ Registered |
 
 **Excluded (not migrated):**
 - `theme3` (Bold Executive) — two-column layout, ATS-unsafe
@@ -104,7 +106,7 @@ Named hex colors. Use descriptive keys (`forest_green`, `teal_accent`) not role 
 
 ### `page` (required)
 
-Margins in cm. Background must be `#FFFFFF` or `#FAFAFA` for ATS safety.
+Margins in cm. Background must be white or near-white for ATS safety: every RGB channel ≥ `F0` hex and the highest minus lowest channel ≤ 16. `#FFFFFF`, `#FAFAFA` and `#FAF8F5` pass; `#EEEEEE` and `#FFF5E0` fail. The builder only emits a page background when it is not `#FFFFFF`.
 
 ```json
 {
@@ -161,15 +163,22 @@ Two permitted styles:
 1. `border_bottom` — horizontal rule below the heading (Classic, Contemporary)
 2. `border_left` — vertical accent bar left of heading text (Modern Minimalist)
 
-Do not combine both on the same heading.
+Do not combine both on the same heading. Both are emitted as solid lines only; KSC criterion headings take no border.
+
+### What the builder emits
+
+`tools/build_golden_master.py` builds the Golden Master from the compiled JSON and reads only: fonts, sizes, weights and colours; line spacing and space below; margins; page background; solid heading bottom rule or left bar; the name rule; skills-block shading; and the literal `heading` text of each block (so heading case comes from that text, e.g. `SUMMARY` vs `Summary`).
+
+It does **not** read `text_transform`, `letter_spacing_pt`, `text_align`, contact `separator`, skills `layout`/`display`, block `order` (section order is fixed), or any v2.3 `bands`, `dividers` or `accent_logic`. Values in those fields do not change the document, so they do not make a theme distinct (see `.claude/skills/theme-divergence-auditor`).
 
 ### Background fills
-Permitted on `skills_section.container` only. Use a light tint from the palette (`#F0FFF4`, `#FDF5DC`, `#E6FFFA`). All other blocks must use `#FFFFFF` or `#FAFAFA`.
+Permitted on `skills_section.container` only. Use a light tint from the palette (`#F0FFF4`, `#FDF5DC`, `#E6FFFA`). All other blocks take the page background.
 
 ### Font colors
-- Headings: palette primary color (green, navy, teal)
+- Every text colour must meet WCAG AA against its actual background (the page, or the skills fill for text inside it): 4.5:1, or 3:1 for text ≥ 18pt or ≥ 14pt bold. `.venv/bin/python tools/theme_fingerprint.py <path>` lists failures under `contrast_failures`; it must be empty.
+- Headings: palette primary color (green, navy, teal), subject to the contrast rule — bright accents (`#22C55E`, `#38B2AC`, `#F472B6`) fail on white.
 - Body text: `#1A1A1A` or `#2D3748` (near-black)
-- Muted / meta text: `#718096` or `#4A5568`
+- Muted / meta text: `#4A5568` (7.5:1 on white). Do not use `#718096`: 4.02:1 on white, which fails AA.
 - Never use pure black `#000000` (renders harsh in print) or pure white on white
 
 ---
@@ -199,9 +208,13 @@ Increment `v<N>` for breaking changes to an existing theme's layout. Create a ne
 [ ] Confirm all 8 blocks present with correct order
 [ ] Confirm all ROLE_N tokens present (6 roles × 4 bullets)
 [ ] Confirm bullet glyph is "-" in experience_section.visualConfig.bullet.glyph
-[ ] No forbidden_glyphs appear anywhere in the file
-[ ] Run: python3 tools/audit_doc_style.py --theme templates/<new_file>.json
-[ ] Build the Golden Master Google Doc using the visualConfig as the build spec
+[ ] No character from config/ats_rules.json forbidden_characters / forbidden_char_ranges appears anywhere in the file
+[ ] Run: .venv/bin/python tools/validate_templates_v2.py templates/<new_file>.json  → PASS
+[ ] Run: .venv/bin/python tools/theme_fingerprint.py templates/<new_file>.json  → contrast_failures empty
+[ ] Run the output-quality-gate skill, Stage A → APPROVE
+[ ] Build: .venv/bin/python tools/build_golden_master.py templates/<new_file>.json  (--dry-run first; live build calls Google)
+[ ] Run: .venv/bin/python tools/audit_doc_style.py <DOC_ID> --theme templates/<new_file>.json  → STYLE OK
+[ ] Run the output-quality-gate skill, Stage B → APPROVE
 [ ] Register Doc ID in config/doc_templates.json under resume.variants.<name>
 ```
 
@@ -237,5 +250,7 @@ The `theme` field is currently informational — `generate_document.py` does not
 `tools/audit_doc_style.py` supports `--theme <path>` and loads font family, font sizes, line spacing,
 and colour expectations directly from the theme JSON. Pass `--theme` for every themed Golden
 Master audit. Unthemed/KSC templates are audited without the flag (Calibri defaults apply).
+It checks that the doc matches its theme; it does not check the font allowlist, contrast or
+background — those are offline checks (`validate_templates_v2.py`, `theme_fingerprint.py`).
 
 See `.claude/skills/docs_style_auditor_v3/SKILL.md` for the full protocol.

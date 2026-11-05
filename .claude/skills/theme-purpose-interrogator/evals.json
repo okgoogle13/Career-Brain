@@ -1,0 +1,16 @@
+{
+  "evaluations": [
+    {
+      "prompt": "Who is the Solar Gradient theme actually for? Does it need to exist?",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Stress-test the rationale for this proposed theme before we build it",
+      "should_trigger": true
+    },
+    {
+      "prompt": "Show me an HTML preview of the resume themes",
+      "should_trigger": false
+    }
+  ]
+}
