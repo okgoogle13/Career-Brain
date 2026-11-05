@@ -72,3 +72,6 @@ database/doc_generation_report_*_test.json
 database/backups/
 
 .claude/.status-hash
+
+# Golden Master verification exports and other PDFs (use git add -f for an intentional one)
+*.pdf
