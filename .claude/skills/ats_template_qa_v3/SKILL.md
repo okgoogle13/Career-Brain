@@ -39,7 +39,7 @@ These checks require reading the actual Google Doc. Run them only after the user
 ### Typography checks — use theme spec if available
 
 Read expected values from the theme JSON in `templates/` (e.g., `templates/resume_contemporary_professional_v1.json`). Do not rely on hard-coded values here to avoid drift.
-Run `tools/verify_golden_master.py <DOC_ID>` and `tools/audit_doc_style.py <DOC_ID> --theme templates/<theme_name>.json` to perform automated verification of the built document's style against the JSON template spec.
+Run `tools/verify_golden_master.py <DOC_ID> [pdf_out] --theme=templates/<theme_name>.json` (heading-aware font check) and `tools/audit_doc_style.py <DOC_ID> --theme templates/<theme_name>.json` to perform automated verification of the built document's style against the JSON template spec.
 
 Report each check as `PASS` or `FAIL — <evidence>`. Do not claim PASS without reading the doc.
 

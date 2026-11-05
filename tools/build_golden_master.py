@@ -13,6 +13,10 @@ import sys
 from pathlib import Path
 
 
+# Paragraph roles that use heading_font_family[0]; all other roles use base_font.
+HEADING_ROLES = ("name", "headline", "h1", "h2")
+
+
 def hex_to_rgb(hex_color: str) -> dict:
     h = hex_color.lstrip("#")
     return {
@@ -333,8 +337,8 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
                     "fontSize": pt(font_size),
                     "foregroundColor": {"color": {"rgbColor": hex_to_rgb(color)}},
                     "weightedFontFamily": {
-                        "fontFamily": heading_font if role in ("name", "headline", "h1", "h2") else font,
-                        **({"weight": heading_weight} if role in ("name", "headline", "h1", "h2") and heading_weight else {}),
+                        "fontFamily": heading_font if role in HEADING_ROLES else font,
+                        **({"weight": heading_weight} if role in HEADING_ROLES and heading_weight else {}),
                     },
                 },
                 "fields": "bold,italic,fontSize,foregroundColor,weightedFontFamily",
