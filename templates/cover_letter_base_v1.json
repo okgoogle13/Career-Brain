@@ -164,5 +164,8 @@
         "margin_top_pt": 8
       }
     }
+  ],
+  "heading_font_family": [
+    "Times New Roman"
   ]
 }
