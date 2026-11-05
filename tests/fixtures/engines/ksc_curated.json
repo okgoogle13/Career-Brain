@@ -1,0 +1,59 @@
+{
+  "narratives": [
+    {
+      "narrative_type": "hook",
+      "full_text": "I bring practical experience supporting people through complex service systems.",
+      "quality_tier": 1,
+      "quality_score": 89,
+      "word_count": 10,
+      "competency_tags": [
+        "case management"
+      ],
+      "source_lineage": "synthetic/narr_1.md"
+    },
+    {
+      "narrative_type": "STAR",
+      "full_text": "In my role as a case manager at a fictional community service I coordinated support plans for clients, worked with referral partners, and tracked outcomes against agreed goals over twelve months.",
+      "quality_tier": 1,
+      "quality_score": 88,
+      "word_count": 31,
+      "competency_tags": [
+        "case management"
+      ],
+      "source_lineage": "synthetic/narr_2.md"
+    },
+    {
+      "narrative_type": "CAR",
+      "full_text": "In my role as a case manager at a fictional community service I coordinated support plans for clients, worked with referral partners, and tracked outcomes against agreed goals over twelve months. The result was improved client engagement.",
+      "quality_tier": 1,
+      "quality_score": 87,
+      "word_count": 37,
+      "competency_tags": [
+        "case management"
+      ],
+      "source_lineage": "synthetic/narr_3.md"
+    },
+    {
+      "narrative_type": "STAR",
+      "full_text": "In my role as a case manager at a fictional community service I coordinated support plans for clients, worked with referral partners, and tracked outcomes against agreed goals over twelve months. This strengthened our team practice.",
+      "quality_tier": 1,
+      "quality_score": 86,
+      "word_count": 36,
+      "competency_tags": [
+        "case management"
+      ],
+      "source_lineage": "synthetic/narr_4.md"
+    },
+    {
+      "narrative_type": "pivot",
+      "full_text": "I moved from administration into frontline support work.",
+      "quality_tier": 1,
+      "quality_score": 85,
+      "word_count": 8,
+      "competency_tags": [
+        "case management"
+      ],
+      "source_lineage": "synthetic/narr_5.md"
+    }
+  ]
+}

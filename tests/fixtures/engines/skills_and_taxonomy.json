@@ -1,0 +1,44 @@
+{
+  "skills_inventory": [
+    {
+      "skill_name": "Case management",
+      "source_lineage": "synthetic/skill.md"
+    },
+    {
+      "skill_name": "Client advocacy",
+      "source_lineage": "synthetic/skill.md"
+    },
+    {
+      "skill_name": "Risk assessment",
+      "source_lineage": "synthetic/skill.md"
+    },
+    {
+      "skill_name": "Report writing",
+      "source_lineage": "synthetic/skill.md"
+    },
+    {
+      "skill_name": "Care coordination",
+      "source_lineage": "synthetic/skill.md"
+    },
+    {
+      "skill_name": "Stakeholder engagement",
+      "source_lineage": "synthetic/skill.md"
+    }
+  ],
+  "rosetta_stone": {
+    "case": {
+      "corporate_term": "stakeholder management",
+      "community_keywords": [
+        "client advocacy",
+        "service coordination"
+      ],
+      "source_lineage": "synthetic/rosetta.md"
+    }
+  },
+  "keyword_bank": {
+    "case_management": [
+      "case management",
+      "care coordination"
+    ]
+  }
+}
