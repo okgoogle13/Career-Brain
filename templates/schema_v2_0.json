@@ -180,6 +180,13 @@
       "additionalProperties": false
     },
 
+    "heading_font_family": {
+      "type": "array",
+      "description": "Heading font stack. build_golden_master.py uses [0] for name, headline, section headings, role titles and KSC criterion text; falls back to typography.base_font when absent.",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": { "type": "string", "enum": ["Arial", "Calibri", "Helvetica", "Verdana", "Tahoma", "Trebuchet MS", "Century Gothic", "Gill Sans", "Lucida Sans", "Lucida Grande", "Garamond", "Georgia", "Cambria", "Times New Roman", "Century Schoolbook", "New Century Schoolbook", "Palatino", "Book Antiqua"] }
+    },
     "blocks": {
       "type": "array",
       "description": "Ordered content and layout blocks. build_golden_master.py identifies blocks by block_id.",

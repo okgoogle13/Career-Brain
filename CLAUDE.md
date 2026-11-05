@@ -53,7 +53,7 @@
   .venv/bin/python pipeline/compile_brain.py
   .venv/bin/python pipeline/query_brain.py --help
   ```
-- `.venv/bin/pytest tests/` — covers `tools/generate_document.py` and `tools/build_golden_master.py` only; no pipeline/ tests exist.
+- `.venv/bin/pytest tests/` — covers `tools/generate_document.py`, `tools/build_golden_master.py` and `tools/verify_golden_master.py` only; no pipeline/ tests exist.
 - For theme work, use the relevant validation or audit tool in `tools/`.
 - Never claim validation passed unless the command was run successfully and relevant output was checked.
 

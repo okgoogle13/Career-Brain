@@ -374,5 +374,8 @@
         }
       }
     }
+  ],
+  "heading_font_family": [
+    "Arial"
   ]
 }
