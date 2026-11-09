@@ -8,6 +8,18 @@ Last status sweep: 2026-11-05 (verified against working tree at commit `0a2c221`
 
 ## Active
 
+### TASK-009 — Gemini Skills & Sharing Policy Migration
+**Status:** ✅ Complete
+**Priority:** Medium
+**Branch:** `main`
+**Context:** Replaced the former Custom Gem upload / memory layer model with risk-tiered, task-scoped exports for Gemini Skills and Gemini Spark. Career Brain database remains canonical and local.
+- [x] Rename `config/gem_system_prompt.md` to `config/gemini_skill_system_prompt.md` and update system prompt for Gemini Skills / Spark.
+- [x] Add machine-readable `config/gemini_sharing_policy.json` (Green default-shareable, Amber task-scoped, Red excluded).
+- [x] Update `docs/manifesto.md`, `README.md`, `TASKS.md`, `AGENTS.md`, and `CLAUDE.md` to remove "Gem upload" assumptions.
+- [ ] Future: Build `pipeline/export_gemini_context.py` to enforce `config/gemini_sharing_policy.json` export profiles.
+
+---
+
 ### TASK-007 — Voice Authenticity Profile Gap Remediation
 **Status:** ✅ Complete — all 5 sub-tasks done (BS-7.2 corpus run completed 2026-09-21).
 **Priority:** Medium

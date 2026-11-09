@@ -10,7 +10,7 @@ The goal of this system is to ingest, standardize, and synthesize a vast archive
 
 This database is split into three modular JSON engines to optimize Retrieval-Augmented Generation (RAG). By separating **Facts** (Career History), **Narratives** (STAR Stories/Pivots), and **Translations** (Skills & Taxonomies), we prevent LLM context-bloat and prompt drift.
 
-This engine is designed to feed a custom, hardcoded Gemini Copilot Gem in Google AI Studio, as well as serve as a local query engine within our active IDE workspace — enabling instantaneous, precise tailoring of resumes, cover letters, and Key Selection Criteria (KSC) responses via direct Google Workspace Document generation.
+Career Brain remains the local source of truth for career history, narratives, taxonomy mappings, lineage, and document generation. Gemini Skills and Gemini Spark receive curated, task-scoped exports from Career Brain. Green-tier career material—such as roles, achievement bullets, verified metrics, skills, taxonomy mappings, and curated narratives—may be shared by default. Amber-tier application drafts and selected personal narratives may be shared when required for an active drafting or review task. Red-tier sensitive data is excluded by default. This model enables practical AI-assisted tailoring while preserving local control over the canonical Career Brain database.
 
 ---
 
@@ -139,7 +139,7 @@ See `pipeline/compile_brain.py` (ROSETTA_STONE constant) for the full 9-mapping 
 **Input:** `database/ksc_and_narratives.json`  
 **Output:** `database/ksc_curated.json`, `database/ksc_curated_tier1.json`, `database/narrative_curation_report.md`
 
-Scores all narratives on 4 axes: length (word count), STAR completeness (keyword coverage), metric presence, and near-duplicate detection (Jaccard similarity ≥85%). Assigns quality_tier (1/2/3) to each narrative. Tier 1 is recommended for Gem upload — precision over volume.
+Scores all narratives on 4 axes: length (word count), STAR completeness (keyword coverage), metric presence, and near-duplicate detection (Jaccard similarity ≥85%). Assigns quality_tier (1/2/3) to each narrative. Tier 1 is recommended for task-scoped exports — precision over volume.
 
 ---
 
@@ -194,4 +194,4 @@ Whenever a new role, certificate, or successful job application artifact is deve
 2. Run Phase 1 (`pipeline/normalize_vault.py`) to generate a matching standardized text file in `processed/`.
 3. Run Phase 2 (`pipeline/compile_brain.py`) to parse, merge, preserve variations, and compile the update directly into the 3-pillar files in `database/`.
 4. Optionally run Phases 3–4 to re-score narratives and resolve any new metric gaps.
-5. The Custom AI Gem's memory layer is instantly kept pristine, synchronized, and optimized for future tailoring.
+5. Local engines and task-scoped export contexts are instantly kept pristine, synchronized, and optimized for future tailoring.

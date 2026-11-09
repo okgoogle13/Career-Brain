@@ -1,0 +1,127 @@
+{
+  "policy_version": "1.0",
+  "canonical_source": "local_career_brain_database",
+  "gemini_targets": [
+    "gemini_skills",
+    "gemini_spark"
+  ],
+  "default_sharing_posture": "risk_tiered_task_scoped",
+  "data_tiers": {
+    "green": {
+      "description": "Career material appropriate for default Gemini use",
+      "share_by_default": true,
+      "examples": [
+        "job_titles",
+        "employers",
+        "employment_dates",
+        "achievement_bullets",
+        "verified_metrics",
+        "skills",
+        "taxonomy_mappings",
+        "curated_narratives",
+        "anonymised_demo_examples"
+      ]
+    },
+    "amber": {
+      "description": "Application material shared only for an active task",
+      "share_by_default": false,
+      "share_when": [
+        "drafting_resume",
+        "drafting_cover_letter",
+        "drafting_ksc",
+        "tailoring_application",
+        "reviewing_application"
+      ],
+      "examples": [
+        "full_resume_drafts",
+        "ksc_responses",
+        "cover_letters",
+        "selected_personal_narratives",
+        "contact_details_supplied_for_task"
+      ]
+    },
+    "red": {
+      "description": "High-sensitivity data excluded from Gemini exports by default",
+      "share_by_default": false,
+      "require_explicit_user_instruction": true,
+      "examples": [
+        "government_identifiers",
+        "financial_account_details",
+        "passwords",
+        "api_keys",
+        "oauth_tokens",
+        "full_home_address",
+        "health_information",
+        "legal_information",
+        "third_party_sensitive_information"
+      ]
+    }
+  },
+  "export_profiles": {
+    "gemini_resume_context": {
+      "purpose": "Resume tailoring and achievement selection",
+      "included_tiers": [
+        "green"
+      ],
+      "included_files": [
+        "database/career_history_enriched.json",
+        "database/skills_and_taxonomy.json"
+      ],
+      "exclude_source_lineage": true
+    },
+    "gemini_ksc_context": {
+      "purpose": "KSC, STAR, and narrative tailoring",
+      "included_tiers": [
+        "green"
+      ],
+      "included_files": [
+        "database/career_history_enriched.json",
+        "database/ksc_curated_tier1.json",
+        "database/skills_and_taxonomy.json"
+      ],
+      "exclude_source_lineage": true
+    },
+    "gemini_application_review": {
+      "purpose": "Reviewing a specific draft application",
+      "included_tiers": [
+        "green",
+        "amber"
+      ],
+      "requires_active_task": true,
+      "included_files": [
+        "database/career_history_enriched.json",
+        "database/ksc_curated_tier1.json",
+        "database/skills_and_taxonomy.json",
+        "user_supplied_application_draft"
+      ],
+      "exclude_source_lineage": true
+    },
+    "public_demo": {
+      "purpose": "Public AI Studio demonstration only",
+      "included_tiers": [
+        "green"
+      ],
+      "require_synthetic_or_anonymised_data": true,
+      "included_files": [
+        "exports/public_demo/career_history_demo.json",
+        "exports/public_demo/skills_and_taxonomy_demo.json"
+      ],
+      "exclude_source_lineage": true
+    }
+  },
+  "redaction": {
+    "placeholder": "[[REDACTED_SENSITIVE_DATA]]",
+    "scan_before_export": true,
+    "fields_to_scan": [
+      "contact_details",
+      "address",
+      "phone",
+      "email",
+      "government_id",
+      "financial_details",
+      "credentials",
+      "health_information"
+    ]
+  }
+}
+

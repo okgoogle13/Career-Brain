@@ -32,6 +32,7 @@
 - `processed/` and `database/` are generated outputs; do not edit them manually unless explicitly instructed.
 - `archive/` is legacy material; never re-ingest it without explicit instruction.
 - Never publish raw source documents, complete database engines, or full knowledge exports.
+- Gemini Skills and Gemini Spark receive curated, task-scoped exports governed by `config/gemini_sharing_policy.json` (Green default, Amber task-scoped, Red excluded); the canonical Career Brain database remains strictly local.
 - Secrets are managed with 1Password CLI (`op`). Never write raw secret values to `.env`, logs, source, commits, or output.
 - Use `op run --env-file=".env" -- <command>` when approved runtime secrets are needed; `.env` must contain only `op://` references.
 
@@ -62,3 +63,4 @@
 - Python: PEP 8, 4 spaces, `pathlib`, structured `logging`, type annotations for core models, and repository-root resolution via `Path(__file__).parent.parent`. Use `google-genai` (not legacy SDK).
 - Theme sources (`theme-*.json`) conform to `MASTER_SCHEMA_V2_3.json`; compiled templates validate against `schema_v2_0.json`.
 - If authorized to commit, use focused Conventional Commits: `feat:`, `fix:`, `chore:`, or `docs:`.
+w

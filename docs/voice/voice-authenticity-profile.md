@@ -3,7 +3,7 @@
 **Generated:** 2026-09-05
 **Version:** 2026-09-05
 **Status:** Career-Brain-local authority for job-application voice mechanics. Supersedes the anti-slop
-section of `config/gem_system_prompt.md` (§6) and the ad-hoc `QUALITY BAR` in `tools/content_engine.py`.
+section of `config/gemini_skill_system_prompt.md` (§7) and the ad-hoc `QUALITY BAR` in `tools/content_engine.py`.
 **Scope:** Career-Brain local enforcement spec for job-application voice. Block-level identity and
 register come from `config/llm-specs/agent-operating-spec.md` §`+JOB`, which `get_recruiter_system_prompt()` embeds at run time (synced from
 comms-hub-v2, which is canonical for the operating-spec blocks — not for voice profiles). This
@@ -24,7 +24,7 @@ Australian-spelling substitution loop.
 | `database/Career_Brain_Knowledge.md` | DFFH/TGV inclusive-language glossary, action-verb bank |
 | `~/comms-hub-v2/agent/agent-operating-spec.md` | The `+JOB` register constraints: outcome first, avoid apology openers, polished but direct (see `+JOB` for full constraints) |
 | `~/comms-hub-v2/comms/comms-examples.local.md` | Confirmed cover-letter voice was an **unfilled gap** — no prior worked example existed |
-| `config/gem_system_prompt.md` §5 | Output format contracts (CAR/SAO word bands, bullet shape, CAO hook) — reused, not redefined |
+| `config/gemini_skill_system_prompt.md` §6 | Output format contracts (CAR/SAO word bands, bullet shape, CAO hook) — reused, not redefined |
 
 **Machine-enforced subset:** `config/ats_rules.json` → `vocabulary.banned_phrases`,
 `vocabulary.review_phrases`, `vocabulary.overclaim_terms`, `terminology.australian_spelling`.
