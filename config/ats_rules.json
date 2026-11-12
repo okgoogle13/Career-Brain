@@ -28,7 +28,8 @@
         "i", "my", "me", "we", "our", "us", "have", "has", "had", "also", "very", "both",
         "build", "maintain", "develop", "provide", "conduct", "use", "learn", "manage", "perform",
         "contribute", "promote", "foster", "address", "enhance", "new", "relevant", "effective",
-        "effectively", "approach", "environment"
+        "effectively", "approach", "environment", "professional", "appropriate", "clearly",
+        "through", "various", "multiple", "number", "ensure", "include"
       ],
       "phrase_split_words": ["and", "or", "including", "such as", "emphasising", "through", "that", "to"],
       "min_selection_stems": 2,

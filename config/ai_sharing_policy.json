@@ -131,6 +131,7 @@
         "docs/voice/ksc-exemplars.local.md",
         "docs/voice/cover-letter-exemplars.local.md",
         "docs/voice/resume-bullet-exemplars.local.md",
+        "docs/voice/answer_bank.local.json",
         "config/ats_rules.json",
         "context/specs/ksc_standard_v2_spec.md",
         "context/specs/cover_letter_template_spec.md",

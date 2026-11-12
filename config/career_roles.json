@@ -1,0 +1,326 @@
+{
+  "_status": "DRAFT for user confirmation. Generated from the scratchpad parse; every 'note' is an open question.",
+  "_rules": "A parsed block maps to a role when its start date is in match_start_dates (start_date is implied), its company equals the role's company or is 'Unknown', and its title (letters and digits only, lowercased) equals one in match_titles (role is implied). A block with a known company and title 'Unknown' maps when exactly one role fits its company and start. Blocks matching none stay as parsed. Titles in exclude_titles are dropped.",
+  "exclude_titles": [
+    "Diploma of Community Services",
+    "BSc Human Nutrition"
+  ],
+  "roles": [
+    {
+      "company": "Headspace",
+      "role": "Multicultural Practice Team Intern",
+      "start_date": "Apr 2024",
+      "end_date": "Nov 2024",
+      "match_start_dates": [
+        "Mar 2024"
+      ],
+      "match_titles": [
+        "Intern",
+        "Multicultural Practice Project Worker",
+        "Multicultural Practice Team Internship",
+        "National",
+        "Internship - Clinical Practice team",
+        "Internship- Clinical Practiceteam",
+        "Internship- RefugeeandMigrant PracticeTeam",
+        "Multicultural Practice Project Intern",
+        "Internship – Refugee and Migrant Practice Team"
+      ],
+      "note": "User-confirmed 2026-11-12 from HRVic resume: one headspace placement, Apr–Nov 2024."
+    },
+    {
+      "company": "Unknown",
+      "role": "Markets Assistant",
+      "start_date": "May 2023",
+      "end_date": "Dec 2023",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "Employer not stated in any source; fill in or leave Unknown."
+    },
+    {
+      "company": "Diamond Valley Community Support",
+      "role": "Community Support Worker",
+      "start_date": "Mar 2022",
+      "end_date": "Mar 2024",
+      "match_start_dates": [
+        "Nov 2022"
+      ],
+      "match_titles": [
+        "Client Care and Support Worker",
+        "Client Social Worker",
+        "Diamond",
+        "Client Support Worker"
+      ],
+      "note": "User-confirmed 2026-11-12 from HRVic resume: Mar 2022 – Mar 2024. 'Client Social Worker' variant still maps here."
+    },
+    {
+      "company": "Thorne Harbour Health",
+      "role": "Emergency Relief Delivery Volunteer",
+      "start_date": "Mar 2020",
+      "end_date": "Sep 2020",
+      "match_start_dates": [
+        "May 2020"
+      ],
+      "match_titles": [
+        "COVD19 Rainbow Connection Delivery Volunteer",
+        "COVID19 Rainbow Connection Delivery Volunteer",
+        "COVID19 Food Delivery Volunteer",
+        "Rainbow Connection COVID19 Volunteer",
+        "Rainbow Connect COVID19 Food Delivery",
+        "Rainbow Connect COVID19 Food Delivery Volunteer",
+        "Thorne",
+        "Rainbow Connection Delivery Volunteer"
+      ],
+      "note": "Mar–Sep 2020 in ~53 sources, May–Dec 2020 in ~40; together only in the 2 'final_combined_resumes' compilation files. Confirm dates. Title per HRVic resume (2026-11-12)."
+    },
+    {
+      "company": "Thorne Harbour Health",
+      "role": "Harm Reduction Peer Worker",
+      "start_date": "Dec 2019",
+      "end_date": "Nov 2020",
+      "match_start_dates": [],
+      "match_titles": [
+        "Harm Reduction Peer Facilitator",
+        "Peer Support Group Facilitator",
+        "SMART Recovery Facilitator"
+      ],
+      "note": "Merged with SMART Recovery Facilitator per HRVic resume (2026-11-12). Dates per PLC THH resume: Dec 2019 – Nov 2020; THH volunteering spans Dec 2018 – Nov 2020."
+    },
+    {
+      "company": "Thorne Harbour Health",
+      "role": "Sexual Health Outreach Support Worker",
+      "start_date": "Dec 2018",
+      "end_date": "Nov 2019",
+      "match_start_dates": [],
+      "match_titles": [
+        "Sex On Premise Venue (SOPV) Outreach Worker",
+        "Sex On Premise Venue Outreach Volunteer",
+        "Sex-on-premises Venue (SOPV) Outreach",
+        "Sex-on-premises Venue SOPV Outreach",
+        "Sex-on-premises Venue Outreach",
+        "Sexual Health and HIV Support Worker",
+        "Thorne",
+        "Sex On Premise Venue (SOPV) Outreach Volunteer"
+      ],
+      "note": "End 'Nov 2019' (~58 sources) vs 'Dec 2019' (~35). 'Sexual Health and HIV Support Worker' is a reframed title — confirm it is accurate. Title chosen from the 'Volunteer' variants (21 sources); 'Outreach Worker' has 14. Title per HRVic resume (2026-11-12)."
+    },
+    {
+      "company": "Thorne Harbour Health",
+      "role": "Re-Wired v2.0 Volunteer Peer Support Facilitator",
+      "start_date": "Aug 2018",
+      "end_date": "Jan 2019",
+      "match_start_dates": [],
+      "match_titles": [
+        "Re-Wired v2.0 Peer Support Group Facilitator",
+        "Re-Wired v2.0 Volunteer Peer Support Group Facilitator"
+      ],
+      "note": "7 sources give no title and end 'Dec 2021'; they map here."
+    },
+    {
+      "company": "Unknown",
+      "role": "Customer Service Consultant",
+      "start_date": "May 2018",
+      "end_date": "Dec 2019",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "Employer not stated."
+    },
+    {
+      "company": "Coutts",
+      "role": "Project Manager",
+      "start_date": "Feb 2018",
+      "end_date": "Sep 2018",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "All 17 sources also list RBS Project Manager Jan 2016 – Sep 2018 (overlapping). 'ITN Business Analyst Feb–Sep 2018' (8 sources) is left unmapped — likely a mislabel."
+    },
+    {
+      "company": "Unknown",
+      "role": "Driver",
+      "start_date": "Jan 2017",
+      "end_date": "Nov 2017",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "Employer not stated."
+    },
+    {
+      "company": "Royal Bank of Scotland",
+      "role": "Project Manager",
+      "start_date": "Jan 2016",
+      "end_date": "Sep 2018",
+      "match_start_dates": [
+        "2016"
+      ],
+      "match_titles": [],
+      "note": "'2016–2017 Project Manager' (7 sources, year only, no employer) maps here — confirm."
+    },
+    {
+      "company": "Royal Bank of Scotland",
+      "role": "Senior Business Analyst",
+      "start_date": "Jan 2016",
+      "end_date": "Dec 2019",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "Listed with Coutts Senior Business Analyst Jan 2016 only in the 2 'final_combined_resumes' compilation files (Coutts is part of the RBS group); may be the same job."
+    },
+    {
+      "company": "Coutts",
+      "role": "Senior Business Analyst",
+      "start_date": "Jan 2016",
+      "end_date": "Mar 2019",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "End 'Mar 2019' (18 sources) vs 'Sep 2019' (Senior Project Manager variant, 3 — left unmapped)."
+    },
+    {
+      "company": "Coutts",
+      "role": "Senior Business Analyst",
+      "start_date": "Mar 2016",
+      "end_date": "Aug 2017",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "All 4 sources also list the Jan 2016 Coutts role, so kept separate. Confirm."
+    },
+    {
+      "company": "Royal Bank of Scotland",
+      "role": "Project Manager",
+      "start_date": "Jun 2014",
+      "end_date": "Dec 2015",
+      "match_start_dates": [
+        "Apr 2015"
+      ],
+      "match_titles": [],
+      "note": "'Apr 2015 – Feb 2016' in 5 sources (3 without employer). Same dates as ITN Business Analyst — confirm both are real."
+    },
+    {
+      "company": "ITN",
+      "role": "Business Analyst",
+      "start_date": "Jun 2014",
+      "end_date": "Dec 2015",
+      "match_start_dates": [
+        "Jan 2014",
+        "Jul 2014",
+        "2014"
+      ],
+      "match_titles": [],
+      "note": "Start Jun 2014 (27 sources), Jan 2014 (26), Jul 2014 (19, 15 without employer, ends Mar 2015). Together only in the 2 'final_combined_resumes' compilation files. Confirm dates."
+    },
+    {
+      "company": "Unknown",
+      "role": "Senior Business Analyst",
+      "start_date": "Dec 2013",
+      "end_date": "Feb 2014",
+      "match_start_dates": [],
+      "match_titles": [
+        "Senior Project Analyst"
+      ],
+      "note": "Employer not stated."
+    },
+    {
+      "company": "Unknown",
+      "role": "Change Analyst",
+      "start_date": "Aug 2013",
+      "end_date": "Dec 2013",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "All 17 sources also list Change Analyst Apr–Nov 2013, so kept as a separate contract. Employer not stated."
+    },
+    {
+      "company": "Unknown",
+      "role": "Business Analyst",
+      "start_date": "Jul 2013",
+      "end_date": "Aug 2013",
+      "match_start_dates": [],
+      "match_titles": [
+        "Project Analyst"
+      ],
+      "note": "Employer not stated."
+    },
+    {
+      "company": "Unknown",
+      "role": "Change Analyst",
+      "start_date": "Apr 2013",
+      "end_date": "Nov 2013",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "Employer not stated."
+    },
+    {
+      "company": "Unknown",
+      "role": "Senior Business Analyst",
+      "start_date": "Jan 2012",
+      "end_date": "Feb 2014",
+      "match_start_dates": [],
+      "match_titles": [
+        "Bank of the Future for Business Program"
+      ],
+      "note": "Never listed in the same file as NAB Project Analyst (overlapping dates) — may be the NAB role reframed. 'Bank of the Future' (program name, 55 bullets) maps here."
+    },
+    {
+      "company": "Unknown",
+      "role": "Project Analyst",
+      "start_date": "Jan 2012",
+      "end_date": "Mar 2013",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "4 sources; employer not stated."
+    },
+    {
+      "company": "Unknown",
+      "role": "Subject Matter Expert",
+      "start_date": "Mar 2011",
+      "end_date": "Dec 2011",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "'Bank of the Future for Business Program, Mar 2011 – Feb 2014' (5 sources, 23 bullets) is left unmapped because it spans this and the Jan 2012 role."
+    },
+    {
+      "company": "NAB",
+      "role": "Project Analyst",
+      "start_date": "Jan 2011",
+      "end_date": "Dec 2013",
+      "match_start_dates": [
+        "Dec 2010",
+        "Feb 2011",
+        "2011"
+      ],
+      "match_titles": [],
+      "note": "User-confirmed 2026-11-12: Project Analyst after the graduate program, to end of 2013."
+    },
+    {
+      "company": "NAB",
+      "role": "Graduate Business Banker",
+      "start_date": "Jan 2009",
+      "end_date": "Dec 2010",
+      "match_start_dates": [
+        "2009",
+        "Feb 2009"
+      ],
+      "match_titles": [
+        "Business Banker",
+        "Graduate Program",
+        "Associate Business Banker"
+      ],
+      "note": "User-confirmed 2026-11-12: graduate program Jan 2009 – end 2010."
+    },
+    {
+      "company": "Officeworks",
+      "role": "Customer Service Manager",
+      "start_date": "Jan 2006",
+      "end_date": "Mar 2008",
+      "match_start_dates": [],
+      "match_titles": [
+        "Officeworks Fitzroy"
+      ],
+      "note": "Employer taken from the header text 'Officeworks Fitzroy'."
+    },
+    {
+      "company": "Unknown",
+      "role": "Night Manager",
+      "start_date": "Jan 2003",
+      "end_date": "Dec 2005",
+      "match_start_dates": [],
+      "match_titles": [],
+      "note": "Employer not stated."
+    }
+  ]
+}
