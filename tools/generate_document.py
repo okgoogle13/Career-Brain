@@ -51,6 +51,7 @@ from content_engine import (
     generate_professional_summary,
     load_user_config,
     parse_criteria,
+    score_ksc,
     select_all_bullets,
     select_bullets,
     select_narratives,
@@ -745,11 +746,17 @@ def _build_ksc_values(
     # Parse criteria
     criteria_list = []
     if config.criteria_text:
-        criteria_list = parse_criteria("\n".join(config.criteria_text))
+        criteria_list = parse_criteria("\n".join(config.criteria_text), max_criteria=None)
 
     if not criteria_list:
         warnings.append("no_criteria_provided_or_parsed")
         return
+
+    if len(criteria_list) > MAX_KSC_CRITERIA:
+        warnings.append(
+            f"ksc_criteria_truncated: {len(criteria_list)} criteria parsed, template has "
+            f"{MAX_KSC_CRITERIA} slots; criteria {MAX_KSC_CRITERIA + 1}-{len(criteria_list)} not rendered"
+        )
 
     all_narratives = narratives.get("narratives", [])
     used_narratives: set[int] = set()
@@ -773,6 +780,15 @@ def _build_ksc_values(
         # Validate word counts
         wc_warnings = validate_ksc_word_counts(response)
         for w in wc_warnings:
+            warnings.append(f"criterion_{c_idx}_{w}")
+
+        # ATS coverage + panel rubric (warn-only), then voice on the response alone,
+        # so PD wording in the criterion heading never trips review_phrases.
+        rubric = score_ksc(criterion.get("criterion_text", ""), response, target_role=target)
+        for w in rubric["warnings"]:
+            warnings.append(f"criterion_{c_idx}_{w}")
+        response_text = " ".join(str(v) for v in response.values() if v)
+        for w in scan_voice_phrases(response_text):
             warnings.append(f"criterion_{c_idx}_{w}")
 
 
@@ -1351,11 +1367,13 @@ def main(argv: list[str] | None = None) -> int:
 
         # Determine exit code per BS-3.4: 0 on success.
         # "dry_run_no_google_document_created" is expected behavior during --dry-run.
-        # Word-count warnings (BS-3.3) are advisory content metrics recorded in the report.
+        # Word-count warnings (BS-3.3) and per-criterion KSC rubric/ATS/voice warnings
+        # are advisory content metrics recorded in the report.
         fatal_or_blocking_warnings = [
             w for w in all_warnings
             if w != "dry_run_no_google_document_created"
             and not ("_too_short" in w or "_too_long" in w)
+            and not w.startswith("criterion_")
         ]
         return 1 if (fatal_or_blocking_warnings or unresolved_tokens) else 0
 

@@ -1392,5 +1392,82 @@ class MainEntrypointTests(unittest.TestCase):
                 os.environ.pop("GEMINI_API_KEY", None)
 
 
+class CriterionMatchingTests(unittest.TestCase):
+    """Key-phrase extraction, criterion-aware selection and score_ksc()."""
+
+    def test_extract_key_phrases_strips_lead_ins(self):
+        from content_engine import extract_key_phrases
+        phrases = extract_key_phrases(
+            "Demonstrated ability to conduct client intake and assessments, develop care plans."
+        )
+        self.assertIn("client intake", phrases)
+        self.assertIn("care plans", phrases)
+        self.assertFalse(any("demonstrated" in p for p in phrases))
+
+    def test_parse_criteria_uncapped(self):
+        lines = "\n".join(f"{i}. Criterion number {i}" for i in range(1, 9))
+        self.assertEqual(len(parse_criteria(lines, max_criteria=None)), 8)
+
+    def test_select_narratives_prefers_criterion_overlap(self):
+        pool = [
+            {"full_text": "Ran budget reconciliation for finance quarterly reporting cycles.",
+             "narrative_type": "STAR", "quality_tier": 1, "quality_score": 10},
+            {"full_text": "Completed client intake, wrote the case plan and arranged three referrals.",
+             "narrative_type": "STAR", "quality_tier": 2, "quality_score": 5},
+        ]
+        picked = select_narratives(
+            pool, narrative_types=["STAR"], max_count=1,
+            criterion_text="Conduct client intake and develop case plans with referrals",
+        )
+        self.assertIs(picked[0], pool[1])
+        # Legacy order (tier first) without criterion_text
+        self.assertIs(select_narratives(pool, narrative_types=["STAR"], max_count=1)[0], pool[0])
+
+    def test_select_narratives_skips_bullet_list_documents(self):
+        listy = " ".join(["* client intake case plan"] * 12)
+        pool = [{"full_text": listy, "narrative_type": "STAR", "quality_tier": 1, "quality_score": 10}]
+        self.assertEqual(
+            select_narratives(pool, narrative_types=["STAR"], exclude_cover_letters=True), [],
+        )
+
+    def test_score_ksc_flags_restatement_and_placeholder(self):
+        from content_engine import score_ksc
+        criterion = "Proven ability to build professional relationships with external agencies"
+        response = {"context": "I have built professional relationships with external agencies. "
+                               "This led to [mention the positive outcome]."}
+        warns = [w.split(":")[0] for w in score_ksc(criterion, response)["warnings"]]
+        self.assertIn("restatement_opener", warns)
+        self.assertIn("unfilled_placeholder", warns)
+
+    def test_score_ksc_agency_without_pronouns(self):
+        from content_engine import score_ksc
+        result = score_ksc("Client intake", {"context": "Client intake was completed."})
+        self.assertEqual((result["i_count"], result["we_count"]), (0, 0))
+        self.assertTrue(any(w.startswith("low_personal_agency") for w in result["warnings"]))
+
+    def test_score_ksc_clean_response_passes(self):
+        from content_engine import score_ksc
+        response = {
+            "context": "At Diamond Valley Community Support, a client facing eviction needed housing.",
+            "action": "I completed the client intake and wrote a case plan with three referrals.",
+            "result": "The referral to Queerspace secured temporary accommodation within 2 weeks.",
+        }
+        result = score_ksc("Demonstrated ability to conduct client intake and develop case plans", response)
+        self.assertEqual(result["keyword_coverage"], 1.0)
+        self.assertEqual(result["warnings"], [])
+
+    def test_ksc_truncation_warning(self):
+        config = GenerationConfig(
+            doc_type=DocumentType.KSC,
+            target_role="Worker",
+            criteria_text=[f"{i}. Criterion number {i}" for i in range(1, 9)],
+        )
+        _, _, warnings = build_placeholder_values_v2(
+            config=config, history=SAMPLE_HISTORY, narratives=SAMPLE_NARRATIVES,
+            taxonomy=SAMPLE_TAXONOMY, user_config=SAMPLE_USER_CONFIG,
+        )
+        self.assertTrue(any(w.startswith("ksc_criteria_truncated: 8") for w in warnings))
+
+
 if __name__ == "__main__":
     unittest.main()

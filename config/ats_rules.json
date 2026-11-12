@@ -8,6 +8,45 @@
       "result": [30, 100],
       "total": [200, 500]
     },
+    "_criterion_matching_note": "Generic, PD-independent matching between criterion text and narratives/responses. Lead-ins are removed before key-phrase extraction (they are PD boilerplate, and several are review_phrases). Stopwords never count as content words. Words are stemmed by suffix strip + 7-char prefix. length_norm_b is the BM25 length-normalisation weight (0 = off; 0.25+ picked short low-quality fragments on the PLC eval). KSC selection skips narratives with >= max_bullet_markers bullet markers (resume sections and guides mis-typed as STAR). No per-PD synonyms by design.",
+    "criterion_matching": {
+      "lead_in_prefixes": [
+        "demonstrated ability to", "demonstrated capacity to", "demonstrated experience in",
+        "demonstrated experience", "demonstrated sensitivity to", "demonstrated understanding of",
+        "demonstrated knowledge of", "demonstrated", "proven ability to", "proven track record in",
+        "proven", "ability to", "capacity to", "strong skills in", "strong understanding of",
+        "well developed", "highly developed", "excellent", "understanding of", "knowledge of",
+        "experience working within an", "experience working within", "experience working with",
+        "experience in", "experience with", "commitment to"
+      ],
+      "stopwords": [
+        "a", "an", "the", "and", "or", "of", "to", "in", "on", "for", "with", "within", "by", "as",
+        "at", "from", "into", "that", "which", "who", "is", "are", "be", "this", "these", "their",
+        "other", "all", "any", "such", "including", "required", "well", "strong", "excellent",
+        "skills", "skill", "ability", "abilities", "experience", "demonstrated", "proven",
+        "understanding", "knowledge", "capacity", "work", "working", "able", "high", "level",
+        "i", "my", "me", "we", "our", "us", "have", "has", "had", "also", "very", "both",
+        "build", "maintain", "develop", "provide", "conduct", "use", "learn", "manage", "perform",
+        "contribute", "promote", "foster", "address", "enhance", "new", "relevant", "effective",
+        "effectively", "approach", "environment"
+      ],
+      "phrase_split_words": ["and", "or", "including", "such as", "emphasising", "through", "that", "to"],
+      "min_selection_stems": 2,
+      "length_norm_b": 0,
+      "max_bullet_markers": 10,
+      "min_bullet_stems": 2
+    },
+    "_response_scoring_note": "Warn-only checks applied by score_ksc() to each generated KSC response. Keyword coverage = share of criterion key phrases whose content stems all appear in the response. restatement_overlap = share of the opening sentence's content stems that come from the criterion.",
+    "response_scoring": {
+      "min_keyword_coverage": 0.6,
+      "restatement_overlap": 0.5,
+      "restatement_min_stems": 3,
+      "outcome_markers": [
+        "resulted in", "result was", "as a result", "led to", "secured", "enabled", "approved",
+        "delivered", "reduced", "increased", "improved", "achieved", "completed", "launched",
+        "adopted", "returned", "retained", "connected", "linked", "housed", "accessed"
+      ]
+    },
     "_competency_tag_keywords_note": "Maps each narrative competency_tag in database/ksc_curated.json to phrases that signal it in criterion text. Matched as substrings of the lowercased criterion with hyphens read as spaces.",
     "competency_tag_keywords": {
       "lived_experience": ["lived experience", "living experience", "peer work", "peer support", "peer scope", "self disclosure", "recovery oriented"],

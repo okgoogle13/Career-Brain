@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import os
 import re
 from dataclasses import dataclass
@@ -323,13 +324,18 @@ def select_narratives(
     max_count: int = 3,
     max_word_count: int | None = None,
     exclude_cover_letters: bool = False,
+    criterion_text: str | None = None,
 ) -> list[dict[str, Any]]:
     """Select narratives by competency match and quality tier.
 
-    Priority order:
+    Priority order without ``criterion_text``:
     1. quality_tier ascending (tier 1 first)
     2. competency_tags match count (more matches = better)
     3. quality_score descending
+
+    With ``criterion_text``, IDF-weighted word overlap between the criterion and
+    the narrative text ranks first (below ``min_selection_stems`` it counts as 0),
+    then tag matches, tier and quality score.
     """
     if not narratives:
         return []
@@ -337,7 +343,7 @@ def select_narratives(
     targets_lower = [t.lower() for t in (competency_targets or [])]
     type_filter = [t.lower() for t in (narrative_types or [])]
 
-    scored: list[tuple[int, int, int, int, dict[str, Any]]] = []
+    scored: list[tuple[Any, ...]] = []
 
     for idx, narrative in enumerate(narratives):
         text = _clean_text(narrative.get("full_text"))
@@ -355,8 +361,8 @@ def select_narratives(
             if wc > max_word_count:
                 continue
 
-        # Filter out cover-letter-style documents when exclude_cover_letters=True
-        if exclude_cover_letters and _looks_like_cover_letter(text):
+        # Filter out cover-letter-style and bullet-list documents when exclude_cover_letters=True
+        if exclude_cover_letters and (_looks_like_cover_letter(text) or _looks_like_list_document(text)):
             continue
 
         tier = narrative.get("quality_tier", 99)
@@ -378,9 +384,21 @@ def select_narratives(
         ]
         match_count = sum(1 for t in targets_lower if t in comp_tags)
 
-        scored.append((tier_val, -match_count, -q_score, idx, narrative))
+        scored.append((tier_val, -match_count, -q_score, idx, narrative, text))
 
-    scored.sort()
+    if criterion_text:
+        relevance = _idf_relevance(
+            _content_stems(criterion_text),
+            [_content_stems(item[5]) for item in scored],
+            _matching_rules().get("min_selection_stems", 2),
+        )
+        ranked = sorted(
+            zip(relevance, scored),
+            key=lambda pair: (-pair[0], pair[1][1], pair[1][0], pair[1][2], pair[1][3]),
+        )
+        return [item[4] for _, item in ranked[:max_count]]
+
+    scored.sort(key=lambda item: item[:4])
     return [item[4] for item in scored[:max_count]]
 
 
@@ -832,9 +850,15 @@ def _extract_grounding_evidence(
     history: dict[str, Any],
     competencies: list[str],
     max_bullets: int = 8,
+    criterion_text: str = "",
 ) -> str:
-    """Pull the top matching achievement bullets from career history as grounding evidence."""
+    """Pull the top matching achievement bullets from career history as grounding evidence.
+
+    Falls back to criterion word overlap when no bullet matches by tag."""
     candidates: list[tuple[int, int, str]] = []
+    fallback: list[tuple[int, int, str]] = []
+    criterion_stems = _content_stems(criterion_text)
+    min_stems = _matching_rules().get("min_bullet_stems", 2)
     for role_idx, role in enumerate(history.get("roles", [])):
         company = role.get("company", "")
         role_title = role.get("role", "")
@@ -844,9 +868,14 @@ def _extract_grounding_evidence(
                 continue
             tags = [t.lower().replace("_", " ") for t in ach.get("domain_tags", []) if isinstance(t, str)]
             match_count = sum(1 for c in competencies if c in " ".join(tags))
+            prefix = f"[{company} / {role_title}] " if (company and company != "Unknown") else ""
             if match_count > 0:
-                prefix = f"[{company} / {role_title}] " if (company and company != "Unknown") else ""
                 candidates.append((match_count, role_idx * 1000 + ach_idx, f"{prefix}{text}"))
+            elif criterion_stems:
+                overlap = len(criterion_stems & _content_stems(text))
+                if overlap >= min_stems:
+                    fallback.append((overlap, role_idx * 1000 + ach_idx, f"{prefix}{text}"))
+    candidates = candidates or fallback
     candidates.sort(key=lambda x: (-x[0], x[1]))
     bullets = [c[2] for c in candidates[:max_bullets]]
     return "\n".join(f"- {b}" for b in bullets)
@@ -874,14 +903,21 @@ def _rewrite_car_with_llm(
         log.warning("google-genai package not installed — skipping LLM CAR rewrite")
         return None
 
-    grounding = _extract_grounding_evidence(history, competencies)
+    grounding = _extract_grounding_evidence(history, competencies, criterion_text=criterion_text)
+    key_phrases = extract_key_phrases(criterion_text)
 
     user_content = (
         f"SELECTION CRITERION:\n{criterion_text}\n\n"
         f"COMPETENCIES TO ADDRESS: {', '.join(competencies) or 'general'}\n\n"
+        f"KEY PHRASES FROM THE CRITERION (the panel and any ATS look for these): "
+        f"{'; '.join(key_phrases) or '(none)'}\n\n"
         f"SOURCE NARRATIVE (raw career material):\n{full_text[:2000]}\n\n"
         f"SUPPORTING CAREER EVIDENCE (verified achievements from career history):\n"
         f"{grounding or '(none matched)'}\n\n"
+        "Use each key phrase in its exact wording where the source narrative or career "
+        "evidence supports it, inside a sentence that states a specific action or result. "
+        "Leave out any key phrase the sources cannot support. Do not open by restating "
+        "the criterion; open with the situation.\n\n"
         "Rewrite the source narrative into CAR sections addressing the criterion. "
         "Return JSON only: {{\"context\": \"...\", \"action\": \"...\", \"result\": \"...\"}}."
     )
@@ -934,15 +970,202 @@ def _looks_like_cover_letter(text: str) -> bool:
     return bool(_COVER_LETTER_RE.search(text[:500]))
 
 
+_BULLET_MARKER_RE = re.compile(r"(?:^|\s)[*•▪]\s")
+
+
+def _looks_like_list_document(text: str) -> bool:
+    """Return True for bullet-list documents (resume sections, guides) mis-typed as STAR."""
+    limit = _ats_data.get("ksc", {}).get("criterion_matching", {}).get("max_bullet_markers")
+    return limit is not None and len(_BULLET_MARKER_RE.findall(text)) >= limit
+
+
 # ──────────────────────────────────────────────────────────────────────
 # KSC Engine
 # ──────────────────────────────────────────────────────────────────────
 
-def parse_criteria(criteria_text: str) -> list[dict[str, Any]]:
+# ──────────────────────────────────────────────────────────────────────
+# Criterion Matching (generic, PD-independent; config: ats_rules.json → ksc)
+# ──────────────────────────────────────────────────────────────────────
+
+_WORD_RE = re.compile(r"[a-z0-9][a-z0-9+&']*")
+_STEM_SUFFIXES = ("ational", "ations", "ation", "ments", "ment", "ings", "ing", "ised",
+                  "ises", "ise", "ized", "izes", "ize", "ies", "es", "ed", "s")
+
+
+def _matching_rules() -> dict[str, Any]:
+    return _ats_data.get("ksc", {}).get("criterion_matching", {})
+
+
+def _scoring_rules() -> dict[str, Any]:
+    return _ats_data.get("ksc", {}).get("response_scoring", {})
+
+
+def _normalise(text: str) -> str:
+    return re.sub(r"[-/]", " ", (text or "").lower())
+
+
+def _stem(word: str) -> str:
+    """Crude suffix strip + 7-char prefix, so plan/plans/planning and
+    organised/organisational collapse together."""
+    for suffix in _STEM_SUFFIXES:
+        if word.endswith(suffix) and len(word) - len(suffix) >= 3 and not word.endswith("ss"):
+            word = word[: -len(suffix)] + ("y" if suffix == "ies" else "")
+            break
+    if len(word) > 3 and word[-1] == word[-2] and word[-1] not in "aeiou":
+        word = word[:-1]
+    return word[:7]
+
+
+def _content_stems(text: str) -> set[str]:
+    stop = set(_matching_rules().get("stopwords", []))
+    return {_stem(w) for w in _WORD_RE.findall(_normalise(text)) if w not in stop and len(w) > 2}
+
+
+def extract_key_phrases(criterion_text: str) -> list[str]:
+    """Split a criterion into the short phrases a panel or ATS would look for.
+
+    Removes PD lead-ins ("demonstrated ability to"), splits on punctuation and
+    list words, trims stopwords from each fragment's edges, and drops fragments
+    with no content word. Lowercased, order-preserving, deduplicated.
+    """
+    rules = _matching_rules()
+    stop = set(rules.get("stopwords", []))
+    text = _normalise(criterion_text)
+    for lead_in in sorted(rules.get("lead_in_prefixes", []), key=len, reverse=True):
+        text = re.sub(r"\b" + re.escape(lead_in) + r"\b", ",", text)
+    split_words = "|".join(re.escape(w) for w in rules.get("phrase_split_words", []))
+    pattern = r"[,;.:()]" + (r"|\b(?:" + split_words + r")\b" if split_words else "")
+
+    phrases: list[str] = []
+    for fragment in re.split(pattern, text):
+        words = _WORD_RE.findall(fragment)
+        while words and words[0] in stop:
+            words.pop(0)
+        while words and words[-1] in stop:
+            words.pop()
+        phrase = " ".join(words)
+        if phrase and _content_stems(phrase) and phrase not in phrases:
+            phrases.append(phrase)
+    return phrases
+
+
+def _idf_relevance(
+    criterion_stems: set[str],
+    doc_stems: list[set[str]],
+    min_stems: int,
+) -> list[float]:
+    """IDF-weighted overlap of criterion stems with each document; 0.0 below min_stems.
+
+    BM25-style length normalisation (``length_norm_b``) stops long multi-topic
+    documents, e.g. whole resumes mis-typed as STAR, winning on breadth alone.
+    """
+    n_docs = len(doc_stems)
+    if not n_docs:
+        return []
+    b = _matching_rules().get("length_norm_b", 0.75)
+    avg_len = sum(len(d) for d in doc_stems) / n_docs or 1.0
+    df = {s: sum(1 for d in doc_stems if s in d) for s in criterion_stems}
+    scores = []
+    for stems in doc_stems:
+        hits = criterion_stems & stems
+        if len(hits) < min_stems:
+            scores.append(0.0)
+            continue
+        idf = sum(math.log((n_docs + 1) / (df[s] + 1)) for s in hits)
+        scores.append(idf / (1 - b + b * len(stems) / avg_len))
+    return scores
+
+
+def score_ksc(
+    criterion_text: str,
+    response: dict[str, str],
+    target_role: str = "",
+) -> dict[str, Any]:
+    """Score one KSC response for ATS keyword coverage and panel-rubric basics.
+
+    Local and deterministic. Returns the measurements plus a ``warnings`` list.
+    ``keyword_coverage`` is None when the criterion yields no key phrases.
+    """
+    rules = _scoring_rules()
+    sections = [response.get(k, "") for k in ("context", "action", "result")]
+    bullets = [v for k, v in response.items() if k.startswith("support_bullet_")]
+    full_text = " ".join(s for s in sections + bullets if s)
+    response_stems = _content_stems(full_text)
+    criterion_stems = _content_stems(criterion_text)
+
+    phrases = extract_key_phrases(criterion_text)
+    matched = [p for p in phrases if _content_stems(p) <= response_stems]
+    missing = [p for p in phrases if p not in matched]
+    coverage = round(len(matched) / len(phrases), 2) if phrases else None
+
+    opener_text = next((s for s in sections if s.strip()), "")
+    opener = re.split(r"(?<=[.!?])\s+", opener_text.strip())[0] if opener_text else ""
+    opener_stems = _content_stems(opener)
+    overlap = (len(opener_stems & criterion_stems) / len(opener_stems)) if opener_stems else 0.0
+    restatement = (
+        len(opener_stems) >= rules.get("restatement_min_stems", 4)
+        and overlap >= rules.get("restatement_overlap", 0.6)
+    )
+
+    known = _normalise(f"{criterion_text} {target_role}")
+    proper_nouns = {
+        m.group(0) for m in re.finditer(r"(?<![.!?]\s)(?<!^)\b[A-Z][A-Za-z&]+\b", full_text)
+        if m.group(0) != "I" and m.group(0).lower() not in known
+    }
+    numbers = re.findall(r"\b\d[\d,.%]*\b(?!\s*(?:years?|yrs?)\b)", full_text)
+    has_example = bool(proper_nouns or numbers)
+
+    i_count = len(re.findall(r"\bI\b|\b[Mm]y\b|\b[Mm]e\b", full_text))
+    we_count = len(re.findall(r"\b(?:[Ww]e|[Oo]ur|[Uu]s)\b", full_text))
+
+    outcome_text = (response.get("result") or full_text).lower()
+    has_outcome = bool(re.search(r"\d", outcome_text)) or any(
+        re.search(r"\b" + re.escape(m) + r"\b", outcome_text)
+        for m in rules.get("outcome_markers", [])
+    )
+    placeholders = [
+        p for p in re.findall(r"\[\[?[^\]]*\]\]?", full_text)
+        if not p.upper().startswith("[[VOICE_REVIEW")
+    ]
+
+    warnings: list[str] = []
+    if coverage is not None and coverage < rules.get("min_keyword_coverage", 0.6):
+        warnings.append(f"ats_coverage_low: {coverage:.0%} — missing {missing}")
+    if restatement:
+        warnings.append(f"restatement_opener: {overlap:.0%} of opening words come from the criterion")
+    if not has_example:
+        warnings.append("no_specific_example: no named service, organisation or figure beyond the criterion")
+    if i_count == 0 or we_count > i_count:
+        warnings.append(f"low_personal_agency: I/my={i_count} we/our={we_count}")
+    if not has_outcome:
+        warnings.append("no_outcome: result has no figure or outcome marker")
+    if placeholders:
+        warnings.append(f"unfilled_placeholder: {len(placeholders)}")
+
+    return {
+        "key_phrases": phrases,
+        "matched_phrases": matched,
+        "missing_phrases": missing,
+        "keyword_coverage": coverage,
+        "restatement_overlap": round(overlap, 2),
+        "has_specific_example": has_example,
+        "i_count": i_count,
+        "we_count": we_count,
+        "has_outcome": has_outcome,
+        "placeholder_count": len(placeholders),
+        "warnings": warnings,
+    }
+
+
+def parse_criteria(
+    criteria_text: str,
+    max_criteria: int | None = MAX_KSC_CRITERIA,
+) -> list[dict[str, Any]]:
     """Parse selection criteria from position description text.
 
     Supports numbered lists, lettered lists, and bullet-point lists.
-    Returns ``[{criterion_text, extracted_competencies}]``.
+    Returns ``[{criterion_text, extracted_competencies}]``, capped at
+    ``max_criteria`` (None = no cap).
     """
     if not criteria_text:
         return []
@@ -982,7 +1205,7 @@ def parse_criteria(criteria_text: str) -> list[dict[str, Any]]:
     if current:
         criteria.append(_build_criterion(" ".join(current)))
 
-    return criteria[:MAX_KSC_CRITERIA]
+    return criteria if max_criteria is None else criteria[:max_criteria]
 
 
 def _build_criterion(text: str) -> dict[str, Any]:
@@ -1015,6 +1238,7 @@ def build_ksc_response(
     Returns ``{context, action, result, support_bullet_1, support_bullet_2}``.
     """
     competencies = criterion.get("extracted_competencies", [])
+    criterion_text = criterion.get("criterion_text", "")
     if used_narratives is not None:
         narratives = [n for n in narratives if id(n) not in used_narratives]
 
@@ -1028,6 +1252,7 @@ def build_ksc_response(
         narrative_types=["STAR", "CAR"],
         max_count=1,
         exclude_cover_letters=True,
+        criterion_text=criterion_text,
     )
 
     if not matched:
@@ -1037,6 +1262,7 @@ def build_ksc_response(
             narrative_types=["STAR", "CAR", "achievement", "evidence"],
             max_count=1,
             exclude_cover_letters=True,
+            criterion_text=criterion_text,
         )
 
     response = {"context": "", "action": "", "result": ""}
@@ -1046,7 +1272,6 @@ def build_ksc_response(
         if used_narratives is not None:
             used_narratives.add(id(narrative))
         full_text = _clean_text(narrative.get("full_text", ""))
-        criterion_text = criterion.get("criterion_text", "")
 
         # Attempt LLM-driven recruiter rewrite first; fall back to heuristic split
         llm_car = _rewrite_car_with_llm(full_text, criterion_text, competencies, history)
@@ -1074,6 +1299,7 @@ def build_ksc_response(
     # Select supporting bullets from career history
     support_bullets = _select_support_bullets(
         history, competencies, max_bullets=MAX_KSC_SUPPORT_BULLETS,
+        criterion_text=criterion_text,
     )
     for idx, bullet in enumerate(support_bullets, start=1):
         response[f"support_bullet_{idx}"] = bullet
@@ -1085,10 +1311,15 @@ def _select_support_bullets(
     history: dict[str, Any],
     competencies: list[str],
     max_bullets: int = 2,
+    criterion_text: str = "",
 ) -> list[str]:
     """Select supporting bullets from career history that match
-    the criterion's competencies."""
+    the criterion's competencies, falling back to criterion word overlap
+    when no bullet matches by tag."""
     candidates: list[tuple[int, int, str]] = []
+    fallback: list[tuple[int, int, str]] = []
+    criterion_stems = _content_stems(criterion_text)
+    min_stems = _matching_rules().get("min_bullet_stems", 2)
 
     for role_idx, role in enumerate(history.get("roles", [])):
         for ach_idx, achievement in enumerate(role.get("achievements", [])):
@@ -1107,7 +1338,12 @@ def _select_support_bullets(
 
             if match_count > 0:
                 candidates.append((match_count, role_idx * 100 + ach_idx, text))
+            elif criterion_stems:
+                overlap = len(criterion_stems & _content_stems(text))
+                if overlap >= min_stems:
+                    fallback.append((overlap, role_idx * 100 + ach_idx, text))
 
+    candidates = candidates or fallback
     candidates.sort(key=lambda item: (-item[0], item[1]))
     return [item[2] for item in candidates[:max_bullets]]
 
