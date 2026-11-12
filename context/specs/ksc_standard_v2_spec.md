@@ -3,7 +3,7 @@
 ## META
 TEMPLATE_TYPE: ksc
 VARIANT: standard
-DOC_ID: 1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes
+DOC_ID: 1VmkQ2Oror0o25A5NHouvE-sB9ufdW-iOoSObZlmjK7M
 TARGET_SECTOR: government, community_services, non_profit
 
 ## TOKENS_USED
@@ -103,7 +103,7 @@ ksc_word_limit_fit: PASS — CAR structure maps to context 40-100w, action 60-20
 ```json
 {
   "ksc": {
-    "template_doc_id": "1vtekKqdoK_MoavvlxD5qBg4KNkTJInnOJ2ZAALcxBes"
+    "template_doc_id": "1VmkQ2Oror0o25A5NHouvE-sB9ufdW-iOoSObZlmjK7M"
   }
 }
 ```

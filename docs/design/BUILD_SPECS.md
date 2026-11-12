@@ -139,7 +139,7 @@ Exits `0`. Doc opens. Salutation reads "Selection Panel". Zero unresolved tokens
 
 **Acceptance Criterion:**
 ```
-python3 tools/generate_document.py --type ksc --target "Support Worker at Launch Housing" --criteria context/specs/ksc_template_spec.md
+python3 tools/generate_document.py --type ksc --target "Support Worker at Launch Housing" --criteria context/specs/ksc_standard_v2_spec.md
 ```
 Exits `0`. Doc contains correctly structured CAR sections for each parsed criterion. Zero unresolved tokens.
 
@@ -279,7 +279,7 @@ python3 tools/generate_document.py --type resume --target "Project Worker" --job
 
 **Acceptance Criterion:**
 ```bash
-python3 tools/generate_document.py --type ksc --target "Intake Worker" --criteria context/specs/ksc_template_spec.md --dry-run
+python3 tools/generate_document.py --type ksc --target "Intake Worker" --criteria context/specs/ksc_standard_v2_spec.md --dry-run
 ```
 Parses criteria from the file correctly. Report shows the parsed criterion count.
 
