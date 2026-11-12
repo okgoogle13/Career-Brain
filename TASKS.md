@@ -16,7 +16,16 @@ Last status sweep: 2026-11-05 (verified against working tree at commit `0a2c221`
 - [x] Rename `config/gem_system_prompt.md` to `config/gemini_skill_system_prompt.md` and update system prompt for Gemini Skills / Spark.
 - [x] Add machine-readable `config/gemini_sharing_policy.json` (Green default-shareable, Amber task-scoped, Red excluded).
 - [x] Update `docs/manifesto.md`, `README.md`, `TASKS.md`, `AGENTS.md`, and `CLAUDE.md` to remove "Gem upload" assumptions.
-- [ ] Future: Build `pipeline/export_gemini_context.py` to enforce `config/gemini_sharing_policy.json` export profiles.
+- [ ] Future: Build `pipeline/export_gemini_context.py` to enforce `config/ai_sharing_policy.json` export profiles.
+
+---
+
+### TASK-010 — Drive restructure: organise by application (Future)
+**Status:** ⏳ Not started — interim doc-type cleanup comes first.
+**Priority:** Low
+**Context:** Proposal (session 2026-11-12): file each job as one folder (`01_Applications/YYYY/YYYY-MM-DD_Org_Role/` holding PD, final PDFs and notes), keep pipeline drafts in `00_Drafts/` (move the three `drive_folders` IDs from `config/doc_templates.json` there; moving keeps IDs), plus `02_Master_Documents/`, `03_Credentials/`, `04_Reference_Library/`, `05_AI_Exports/` (Green/Amber only, per `config/ai_sharing_policy.json`), `99_Archive/`, and a one-row-per-job Application Tracker sheet.
+- [ ] Build folder tree in Career Spark (`12z6Wsqor3bz40ELbXR7XIDk54h0jHyTc`); move pipeline folders into `00_Drafts/`.
+- [ ] Optional code change (needs approval): add organisation name to generated doc titles (`tools/generate_document.py`) and create the per-application folder.
 
 ---
 

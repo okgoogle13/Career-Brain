@@ -1,14 +1,18 @@
 {
-  "policy_version": "1.0",
+  "policy_version": "1.1",
   "canonical_source": "local_career_brain_database",
   "gemini_targets": [
     "gemini_skills",
     "gemini_spark"
   ],
+  "claude_targets": [
+    "claude_desktop",
+    "claude_duet"
+  ],
   "default_sharing_posture": "risk_tiered_task_scoped",
   "data_tiers": {
     "green": {
-      "description": "Career material appropriate for default Gemini use",
+      "description": "Career material appropriate for default use by approved targets",
       "share_by_default": true,
       "examples": [
         "job_titles",
@@ -41,7 +45,7 @@
       ]
     },
     "red": {
-      "description": "High-sensitivity data excluded from Gemini exports by default",
+      "description": "High-sensitivity data excluded from all exports by default",
       "share_by_default": false,
       "require_explicit_user_instruction": true,
       "examples": [
@@ -67,7 +71,7 @@
         "database/career_history_enriched.json",
         "database/skills_and_taxonomy.json"
       ],
-      "exclude_source_lineage": true
+      "exclude_source_lineage": false
     },
     "gemini_ksc_context": {
       "purpose": "KSC, STAR, and narrative tailoring",
@@ -79,7 +83,7 @@
         "database/ksc_curated_tier1.json",
         "database/skills_and_taxonomy.json"
       ],
-      "exclude_source_lineage": true
+      "exclude_source_lineage": false
     },
     "gemini_application_review": {
       "purpose": "Reviewing a specific draft application",
@@ -94,7 +98,7 @@
         "database/skills_and_taxonomy.json",
         "user_supplied_application_draft"
       ],
-      "exclude_source_lineage": true
+      "exclude_source_lineage": false
     },
     "public_demo": {
       "purpose": "Public AI Studio demonstration only",
@@ -106,6 +110,35 @@
         "exports/public_demo/career_history_demo.json",
         "exports/public_demo/skills_and_taxonomy_demo.json"
       ],
+      "exclude_source_lineage": true
+    },
+    "claude_job_application": {
+      "purpose": "Drafting and tailoring one specific job application in Claude Desktop or Claude Duet",
+      "targets": [
+        "claude_desktop",
+        "claude_duet"
+      ],
+      "included_tiers": [
+        "green",
+        "amber"
+      ],
+      "requires_active_task": true,
+      "included_files": [
+        "database/career_history_enriched.json",
+        "database/ksc_curated_tier1.json",
+        "database/skills_and_taxonomy.json",
+        "docs/voice/voice-authenticity-profile.md",
+        "docs/voice/ksc-exemplars.local.md",
+        "docs/voice/cover-letter-exemplars.local.md",
+        "docs/voice/resume-bullet-exemplars.local.md",
+        "config/ats_rules.json",
+        "context/specs/ksc_standard_v2_spec.md",
+        "context/specs/cover_letter_template_spec.md",
+        "context/specs/resume_template_spec.md"
+      ],
+      "staging_dir": "~/Documents/job-pack",
+      "delete_staging_after_task": true,
+      "referees_and_contact": "supply_in_chat_per_task",
       "exclude_source_lineage": true
     }
   },
@@ -124,4 +157,3 @@
     ]
   }
 }
-

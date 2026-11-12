@@ -64,7 +64,7 @@ Career Brain/
 ├── templates/          Google Docs theme configs (JSON + THEME_SPEC_GUIDE.md)
 ├── config/             Runtime config: ats_rules.json, doc_templates.json, user_config.json
 │   ├── gemini_skill_system_prompt.md  Prompt for Gemini Skills / Spark
-│   └── gemini_sharing_policy.json     Machine-readable sharing and export policy
+│   └── ai_sharing_policy.json         Machine-readable sharing and export policy (Gemini + Claude)
 ├── context/            AI session files: repomix XMLs, prompts, handover docs
 │   └── specs/          Document format specs (resume, cover letter, KSC)
 ├── .claude/skills/       AI agent skill definitions (versioned)
