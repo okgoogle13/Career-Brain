@@ -1229,11 +1229,15 @@ def build_ksc_response(
     history: dict[str, Any],
     rosetta_stone: dict[str, dict[str, Any]],
     used_narratives: set[int] | None = None,
+    bank_story: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     """Build a CAR response for a single criterion.
 
     Narratives whose id() is in ``used_narratives`` are skipped, and the chosen
     one is added, so a multi-criterion run does not reuse one story.
+
+    A ``bank_story`` (from ``assign_bank_stories``) is used verbatim, with no
+    LLM rewrite; without one, the curated narratives are used.
 
     Returns ``{context, action, result, support_bullet_1, support_bullet_2}``.
     """
@@ -1242,30 +1246,38 @@ def build_ksc_response(
     if used_narratives is not None:
         narratives = [n for n in narratives if id(n) not in used_narratives]
 
-    # KSC narrative guard: exclude cover letters and address blocks mis-tagged
-    # as STAR in ksc_curated.json during ETL. Uses content-based detection.
+    if bank_story is not None:
+        response = {
+            "context": bank_story.get("situation", ""),
+            "action": bank_story.get("action", ""),
+            "result": bank_story.get("result", ""),
+        }
+        matched: list[dict[str, Any]] = []
+    else:
+        # KSC narrative guard: exclude cover letters and address blocks mis-tagged
+        # as STAR in ksc_curated.json during ETL. Uses content-based detection.
 
-    # Select the best narrative for this criterion
-    matched = select_narratives(
-        narratives=narratives,
-        competency_targets=competencies,
-        narrative_types=["STAR", "CAR"],
-        max_count=1,
-        exclude_cover_letters=True,
-        criterion_text=criterion_text,
-    )
-
-    if not matched:
+        # Select the best narrative for this criterion
         matched = select_narratives(
             narratives=narratives,
             competency_targets=competencies,
-            narrative_types=["STAR", "CAR", "achievement", "evidence"],
+            narrative_types=["STAR", "CAR"],
             max_count=1,
             exclude_cover_letters=True,
             criterion_text=criterion_text,
         )
 
-    response = {"context": "", "action": "", "result": ""}
+        if not matched:
+            matched = select_narratives(
+                narratives=narratives,
+                competency_targets=competencies,
+                narrative_types=["STAR", "CAR", "achievement", "evidence"],
+                max_count=1,
+                exclude_cover_letters=True,
+                criterion_text=criterion_text,
+            )
+
+        response = {"context": "", "action": "", "result": ""}
 
     if matched:
         narrative = matched[0]
@@ -1305,6 +1317,48 @@ def build_ksc_response(
         response[f"support_bullet_{idx}"] = bullet
 
     return response
+
+
+def assign_bank_stories(
+    criteria_texts: list[str],
+    answer_bank: list[dict[str, Any]],
+) -> list[dict[str, Any] | None]:
+    """Assign at most one confirmed answer-bank story to each criterion.
+
+    Relevance is the same IDF overlap used for curated narratives, over each
+    story's ``answers`` keywords plus its situation, action and result. Pairs
+    are assigned strongest first across all criteria, so a weak early match
+    cannot take a story a later criterion matches better. No story is reused;
+    a criterion with no story scoring above 0 gets None.
+    """
+    picks: list[dict[str, Any] | None] = [None] * len(criteria_texts)
+    pool = [
+        s for s in answer_bank
+        if s.get("status") == "confirmed"
+        and not any("[[" in (s.get(k) or "") for k in ("situation", "action", "result"))
+        and not any("NEEDS VALIDATION" in str(f) for f in (s.get("flags") or []))
+    ]
+    if not pool:
+        return picks
+    story_stems = [
+        _content_stems(" ".join([
+            *s.get("answers", []), s.get("situation", ""), s.get("action", ""), s.get("result", ""),
+        ]))
+        for s in pool
+    ]
+    min_stems = _matching_rules().get("min_selection_stems", 2)
+    pairs = [
+        (-score, c_idx, s_idx)
+        for c_idx, text in enumerate(criteria_texts)
+        for s_idx, score in enumerate(_idf_relevance(_content_stems(text), story_stems, min_stems))
+        if score > 0
+    ]
+    taken: set[int] = set()
+    for _, c_idx, s_idx in sorted(pairs):
+        if picks[c_idx] is None and s_idx not in taken:
+            picks[c_idx] = pool[s_idx]
+            taken.add(s_idx)
+    return picks
 
 
 def _select_support_bullets(

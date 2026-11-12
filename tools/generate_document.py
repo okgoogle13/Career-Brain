@@ -44,6 +44,7 @@ from content_engine import (
     EmployerType,
     GenerationConfig,
     apply_rosetta_stone,
+    assign_bank_stories,
     build_ksc_response,
     extract_job_ad_keywords,
     generate_bridge_paragraph,
@@ -76,6 +77,8 @@ DEFAULT_REPORT = OUTPUT / "doc_generation_report.json"
 HISTORY_FILE = "career_history_enriched.json"
 NARRATIVES_FILE = "ksc_curated.json"
 TAXONOMY_FILE = "skills_and_taxonomy.json"
+# Hand-confirmed KSC stories (gitignored: personal disclosure). Optional.
+ANSWER_BANK_PATH = BASE / "docs" / "voice" / "answer_bank.local.json"
 
 DOC_LINK_TEMPLATE = "https://docs.google.com/document/d/{doc_id}/edit"
 PLACEHOLDER_RE = re.compile(r"\{\{[A-Z0-9_]+\}\}")
@@ -759,6 +762,10 @@ def _build_ksc_values(
         )
 
     all_narratives = narratives.get("narratives", [])
+    bank_picks = assign_bank_stories(
+        [c.get("criterion_text", "") for c in criteria_list[:MAX_KSC_CRITERIA]],
+        load_json(ANSWER_BANK_PATH, required=False).get("stories", []),
+    )
     used_narratives: set[int] = set()
 
     for c_idx, criterion in enumerate(criteria_list[:MAX_KSC_CRITERIA], start=1):
@@ -767,6 +774,7 @@ def _build_ksc_values(
         # Build CAR response
         response = build_ksc_response(
             criterion, all_narratives, history, rosetta_stone, used_narratives,
+            bank_picks[c_idx - 1],
         )
 
         values[f"{{{{KSC_{c_idx}_CONTEXT}}}}"] = response.get("context", "")

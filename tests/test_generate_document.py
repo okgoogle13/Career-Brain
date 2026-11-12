@@ -1469,5 +1469,95 @@ class CriterionMatchingTests(unittest.TestCase):
         self.assertTrue(any(w.startswith("ksc_criteria_truncated: 8") for w in warnings))
 
 
+
+
+# Synthetic answer-bank stories (no real content).
+def _bank_story(sid: str, status: str = "confirmed") -> dict:
+    stories = {
+        "A": {
+            "answers": ["harm reduction", "needle syringe program"],
+            "situation": "Clients visiting the needle syringe program asked about safer use.",
+            "action": "I gave harm reduction information and offered referrals.",
+            "result": "Clients left with equipment and a referral pathway.",
+        },
+        "B": {
+            "answers": ["budgeting", "financial counselling"],
+            "situation": "A household was behind on utility bills.",
+            "action": "I built a budget with them and referred them to financial counselling.",
+            "result": "The arrears were placed on a payment plan.",
+        },
+    }
+    return {"id": sid, "status": status, "source_lineage": ["synthetic"], **stories[sid]}
+
+
+HARM_CRITERION = {
+    "criterion_text": "Demonstrated knowledge of harm reduction and needle syringe programs",
+    "extracted_competencies": [],
+}
+
+
+class AnswerBankTests(unittest.TestCase):
+    def test_bank_story_used_verbatim_without_llm(self):
+        from unittest.mock import patch
+        story = _bank_story("A")
+        with patch("content_engine._rewrite_car_with_llm", side_effect=AssertionError("LLM called")):
+            response = build_ksc_response(
+                HARM_CRITERION, SAMPLE_NARRATIVES["narratives"], SAMPLE_HISTORY,
+                SAMPLE_TAXONOMY["rosetta_stone"], set(), story,
+            )
+        self.assertEqual(response["context"], story["situation"])
+        self.assertEqual(response["action"], story["action"])
+        self.assertEqual(response["result"], story["result"])
+
+    def test_assigns_matching_story_and_none_for_no_match(self):
+        from content_engine import assign_bank_stories
+        a, b = _bank_story("A"), _bank_story("B")
+        picks = assign_bank_stories(
+            [HARM_CRITERION["criterion_text"], "Demonstrated experience in service coordination"], [a, b],
+        )
+        self.assertIs(picks[0], a)
+        self.assertIsNone(picks[1])
+
+    def test_strongest_match_wins_and_no_reuse(self):
+        from content_engine import assign_bank_stories
+        a, b = _bank_story("A"), _bank_story("B")
+        weak = "Knowledge of harm reduction principles"
+        strong = HARM_CRITERION["criterion_text"]
+        picks = assign_bank_stories([weak, strong], [a, b])
+        self.assertIs(picks[1], a)
+        self.assertIsNot(picks[0], a)
+
+    def test_unconfirmed_story_never_assigned(self):
+        from content_engine import assign_bank_stories
+        flagged = {**_bank_story("A"), "flags": ["NEEDS VALIDATION: check outcome"]}
+        picks = assign_bank_stories(
+            [HARM_CRITERION["criterion_text"]], [_bank_story("A", "needs_confirmation"), flagged, _bank_story("B")],
+        )
+        self.assertIsNone(picks[0])
+
+    def test_bank_file_feeds_ksc_document(self):
+        import json
+        from unittest.mock import patch
+        import generate_document
+        story = _bank_story("A")
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            path = tmp / "answer_bank.local.json"
+            path.write_text(json.dumps({"stories": [story, _bank_story("B")]}), encoding="utf-8")
+            config = GenerationConfig(
+                doc_type=DocumentType.KSC,
+                target_role="Peer Worker at Example Health",
+                criteria_text=["1. " + HARM_CRITERION["criterion_text"]],
+            )
+            with patch.object(generate_document, "ANSWER_BANK_PATH", path):
+                values, _, _ = build_placeholder_values_v2(
+                    config=config, history=SAMPLE_HISTORY, narratives=SAMPLE_NARRATIVES,
+                    taxonomy=SAMPLE_TAXONOMY, user_config=SAMPLE_USER_CONFIG,
+                )
+        finally:
+            shutil.rmtree(tmp)
+        self.assertEqual(values["{{KSC_1_CONTEXT}}"], story["situation"])
+
+
 if __name__ == "__main__":
     unittest.main()
