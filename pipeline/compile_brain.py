@@ -424,67 +424,187 @@ def extract_paragraphs(text: str, min_words: int = 30) -> list[str]:
     return [p.strip() for p in paragraphs if len(p.split()) >= min_words]
 
 
+ROLE_CFG = json.loads((BASE / "config" / "role_parsing.json").read_text(encoding="utf-8"))
+ROLE_EMPLOYERS = {**KNOWN_EMPLOYERS, **ROLE_CFG["extra_employers"]}
+
+_MONTH = (r"(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?"
+          r"|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)")
+_POINT = rf"(?:{_MONTH}\.?\s*(?:19|20)\d{{2}}|\b(?:0?[1-9]|1[0-2])/(?:19|20)\d{{2}}|\b(?:19|20)\d{{2}})"
+DATE_SPAN = re.compile(
+    rf"\(?({_POINT})\s*(?:-|–|—|\bto\b)\s*({_POINT}|present|current|ongoing|now)\b\)?\]?",
+    re.IGNORECASE,
+)
+_BULLET_GLYPHS = "●•▪◦‣➤►→*"
+_MONTH_ABBR = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+
+
+def normalise_date(raw: str) -> str:
+    """'January 2016' / '01/2016' → 'Jan 2016'; '2016' → '2016'; 'current' → 'Present'."""
+    raw = raw.strip()
+    if raw.lower() in ("present", "current", "ongoing", "now"):
+        return "Present"
+    year = re.search(r"(?:19|20)\d{2}", raw)
+    month = re.match(r"[a-z]{3}", raw.lower())
+    if not year:
+        return "Unknown"
+    numeric = re.match(r"(\d{1,2})/", raw)
+    if numeric:
+        return f"{_MONTH_ABBR[int(numeric.group(1)) - 1].title()} {year.group(0)}"
+    if month and month.group(0) in _MONTH_ABBR:
+        return f"{month.group(0).title()} {year.group(0)}"
+    return year.group(0)
+
+
+def date_sort_key(date: str) -> tuple[int, int]:
+    if date == "Present":
+        return (9999, 0)
+    year = re.search(r"\d{4}", date)
+    if not year:
+        return (0, 0)
+    month = date[:3].lower()
+    return (int(year.group(0)), _MONTH_ABBR.index(month) + 1 if month in _MONTH_ABBR else 0)
+
+
+def _squish(text: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def match_employer(text: str) -> Optional[str]:
+    """Canonical employer named in text; long aliases also match with spaces removed."""
+    lower, squished = text.lower(), _squish(text)
+    for employer, aliases in ROLE_EMPLOYERS.items():
+        for alias in [employer, *aliases]:
+            a = alias.lower()
+            if len(_squish(a)) >= 6 and _squish(a) in squished:
+                return employer
+            if re.search(rf"\b{re.escape(a)}\b", lower):
+                return employer
+    return None
+
+
+def _heading(line: str) -> str:
+    return re.sub(r"\s+", " ", line.strip(" |\t:").lower())
+
+
+def _is_bullet(line: str) -> bool:
+    return bool(line) and (line[0] in _BULLET_GLYPHS or line[0] == "-")
+
+
+def _split_fields(text: str) -> list[str]:
+    if "|" in text:
+        parts = text.split("|")
+    else:
+        parts = re.split(r"\t+|\s+[-–—/]\s+|,\s*|\s{2,}", text)
+    parts = [re.sub(r"\s+", " ", p).strip(" ,;:-–—[]()\t") for p in parts]
+    return [p for p in parts if p]
+
+
+def _classify(fields: list[str]) -> tuple[Optional[str], list[str]]:
+    """Split fields into (company, title candidates); location fields are dropped."""
+    company, titles = None, []
+    locations = set(ROLE_CFG["location_words"])
+    headings = set(ROLE_CFG["experience_headings"]) | set(ROLE_CFG["end_headings"])
+    for f in fields:
+        if _heading(f) in headings:
+            continue
+        emp = match_employer(f)
+        if emp and not company:
+            company = emp
+        elif f.lower() in locations or all(w.lower().strip(",") in locations for w in f.split()):
+            continue
+        elif not emp:
+            titles.append(f)
+    return company, titles
+
+
+def _short_neighbour(lines: list[str], idx: int) -> Optional[str]:
+    if 0 <= idx < len(lines):
+        line = lines[idx].strip()
+        if line and not _is_bullet(line) and len(line.split()) <= 10 and not DATE_SPAN.search(line):
+            return line
+    return None
+
+
+def parse_role_header(lines: list[str], i: int) -> Optional[dict]:
+    """Parse line i as a role header (title / company / dates); None if it is not one."""
+    line = lines[i].strip()
+    if _is_bullet(line):
+        return None
+    line = re.split(rf"[{re.escape(_BULLET_GLYPHS)}]", line)[0].strip()
+    m = DATE_SPAN.search(line)
+    if not m:
+        return None
+    rest = f"{line[:m.start()]} | {line[m.end():]}" if "|" in line else f"{line[:m.start()]}\t{line[m.end():]}"
+    if len(rest.split()) > ROLE_CFG["max_header_words"]:
+        return None
+    company, titles = _classify(_split_fields(rest))
+
+    prev = _short_neighbour(lines, i - 1)
+    if not titles and prev:
+        prev_company, titles = _classify(_split_fields(prev))
+        company = company or prev_company
+    for nb in (prev, _short_neighbour(lines, i + 1)):
+        if not company and nb:
+            company = match_employer(nb)
+
+    max_words = ROLE_CFG["max_title_words"]
+    if titles and len(titles[0].split()) > max_words:
+        return None
+    return {
+        "company": company or "Unknown",
+        "role": titles[0] if titles else "Unknown",
+        "start_date": normalise_date(m.group(1)),
+        "end_date": normalise_date(m.group(2)),
+        "raw_header": line,
+    }
+
+
+def has_experience_heading(text: str) -> bool:
+    starts = set(ROLE_CFG["experience_headings"])
+    return any(_heading(l) in starts for l in text.splitlines())
+
+
 def extract_role_blocks(text: str) -> list[dict]:
     """
-    Heuristically identify job blocks in a resume.
-    Looks for date patterns near company/title lines.
-    Returns list of dicts with company, role, dates, body.
+    Identify job blocks in a resume. The date line is the header: title and company
+    are read from it first, then from a short neighbouring line. Inside a file with an
+    experience heading, only experience sections are parsed.
     """
-    blocks = []
-
-    # Date patterns: "2020 – 2022", "Jan 2019 – Present", "2018 to 2020", "2019-2022"
-    DATE_PATTERN = re.compile(
-        r"((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)?\.?\s*\d{4})\s*[-–—to]+\s*((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)?\.?\s*\d{4}|Present|Current|Ongoing)",
-        re.IGNORECASE
-    )
-
+    starts = set(ROLE_CFG["experience_headings"])
+    ends = set(ROLE_CFG["end_headings"])
     lines = text.splitlines()
-    current_block = None
-    current_body = []
+    has_heading = has_experience_heading(text)
+    in_section = not has_heading
+    blocks: list[dict] = []
+    current_block: Optional[dict] = None
+    current_body: list[str] = []
+
+    def flush():
+        if current_block:
+            current_block["body"] = "\n".join(current_body).strip()
+            blocks.append(current_block)
 
     for i, line in enumerate(lines):
         line_stripped = line.strip()
-        if not line_stripped:
-            if current_block and current_body:
-                current_body.append("")
+        heading = _heading(line_stripped)
+        if heading in starts:
+            in_section = True
             continue
-
-        date_match = DATE_PATTERN.search(line_stripped)
-        if date_match:
-            # Save previous block
-            if current_block:
-                current_block["body"] = "\n".join(current_body).strip()
-                blocks.append(current_block)
-
-            # Try to get company/role from surrounding lines
-            context_lines = lines[max(0, i-3):i+2]
-            context_text = " | ".join(l.strip() for l in context_lines if l.strip())
-
-            employer = detect_employer(context_text)
-            role_guess = "Unknown"
-            
-            clean_context = [l.strip() for l in context_lines if l.strip() and not DATE_PATTERN.search(l)]
-            if not employer and clean_context:
-                employer = clean_context[-1]
-            if clean_context:
-                role_guess = clean_context[0] if len(clean_context) > 1 else "Unknown"
-
-            current_block = {
-                "company": employer or "Unknown",
-                "role": role_guess,
-                "start_date": date_match.group(1).strip(),
-                "end_date": date_match.group(2).strip(),
-                "raw_header": line_stripped,
-            }
-            current_body = []
+        if has_heading and heading in ends:
+            flush()
+            current_block, current_body = None, []
+            in_section = False
+            continue
+        if not in_section:
+            continue
+        header = parse_role_header(lines, i)
+        if header:
+            flush()
+            current_block, current_body = header, []
         elif current_block is not None:
             current_body.append(line_stripped)
 
-    # Flush last block
-    if current_block:
-        current_block["body"] = "\n".join(current_body).strip()
-        blocks.append(current_block)
-
+    flush()
     return blocks
 
 
@@ -501,7 +621,7 @@ def _norm(text: str) -> str:
 
 
 def _load_bullet_audit_map(enriched_path: Path) -> dict[str, dict]:
-    """Build (fingerprint|text_norm) → audit_fields from career_history_enriched.json."""
+    """Build text_norm → audit_fields from career_history_enriched.json (text only, so role re-keying keeps audits)."""
     if not enriched_path.exists():
         return {}
     try:
@@ -510,12 +630,10 @@ def _load_bullet_audit_map(enriched_path: Path) -> dict[str, dict]:
         return {}
     out: dict[str, dict] = {}
     for role in data.get("roles", []):
-        fp = role.get("fingerprint", "")
         for b in role.get("achievements", []):
             if not b.get("applied_fixes") and not b.get("is_lived_experience") and not b.get("car_quality_score"):
                 continue
-            key = f"{fp}|{_norm(b.get('raw_text', ''))}"
-            out[key] = {f: b.get(f) for f in _AUDIT_FIELDS}
+            out.setdefault(_norm(b.get("raw_text", "")), {f: b.get(f) for f in _AUDIT_FIELDS})
     return out
 
 
@@ -540,7 +658,7 @@ def _merge_bullet_audit(career_db: "CareerHistoryDB", audit_map: dict) -> int:
     merged = 0
     for role in career_db.roles:
         for bullet in role.achievements:
-            key = f"{role.fingerprint}|{_norm(bullet.raw_text)}"
+            key = _norm(bullet.raw_text)
             if key in audit_map:
                 for field, val in audit_map[key].items():
                     if val is not None:
@@ -565,6 +683,25 @@ def _merge_narrative_audit(narratives_db: "NarrativesDB", audit_map: dict) -> in
 # SECTION 5: PILLAR COMPILERS
 # ════════════════════════════════════════════════════════════════════════════
 
+_ROLES_PATH = BASE / "config" / "career_roles.json"
+CAREER_ROLES = json.loads(_ROLES_PATH.read_text(encoding="utf-8")) if _ROLES_PATH.exists() else {"exclude_titles": [], "roles": []}
+_EXCLUDED_TITLES = {_squish(t) for t in CAREER_ROLES["exclude_titles"]}
+
+
+def resolve_role(block: dict) -> Optional[dict]:
+    """Confirmed role from config/career_roles.json for a parsed block, or None."""
+    title = _squish(block["role"])
+    fits = [r for r in CAREER_ROLES["roles"]
+            if block["start_date"] in (r["start_date"], *r["match_start_dates"])
+            and block["company"] in (r["company"], "Unknown")]
+    by_title = [r for r in fits if title in {_squish(t) for t in (r["role"], *r["match_titles"])}]
+    if len(by_title) == 1:
+        return by_title[0]
+    if block["role"] == "Unknown" and block["company"] != "Unknown" and len(fits) == 1:
+        return fits[0]
+    return None
+
+
 def compile_career_history(vault_files: list[Path]) -> CareerHistoryDB:
     """
     PILLAR 1: Aggregate all resume files into a deduplicated career history.
@@ -577,6 +714,7 @@ def compile_career_history(vault_files: list[Path]) -> CareerHistoryDB:
     job_map: dict[str, JobRecord] = {}
     # seen_bullets: fingerprint → set of normalized bullet texts (for exact-dup check)
     seen_bullets: dict[str, set] = {}
+    unmatched = excluded = 0
 
     resume_files = [f for f in vault_files if f.stem.startswith("resumes__") or f.stem.startswith("cover_letters__resumes")]
 
@@ -590,15 +728,23 @@ def compile_career_history(vault_files: list[Path]) -> CareerHistoryDB:
             role_blocks = extract_role_blocks(body)
             if not role_blocks:
                 # Treat entire file as one block
-                role_blocks = [{"company": detect_employer(body) or "Unknown",
+                named = [e for e in ROLE_EMPLOYERS if any(re.search(rf"\b{re.escape(a.lower())}\b", body.lower()) for a in [e, *ROLE_EMPLOYERS[e]])]
+                role_blocks = [{"company": named[0] if len(named) == 1 else "Unknown",
                                 "role": "Unknown", "start_date": "Unknown",
                                 "end_date": "Unknown", "body": body, "raw_header": source}]
 
             for block in role_blocks:
-                company  = block["company"]
-                role     = block.get("role", "Unknown")
-                start    = block.get("start_date", "Unknown")
-                end      = block.get("end_date", "Unknown")
+                if _squish(block["role"]) in _EXCLUDED_TITLES:
+                    excluded += 1
+                    continue
+                confirmed = resolve_role(block)
+                if not confirmed:
+                    unmatched += 1
+                confirmed = confirmed or block
+                company  = confirmed["company"]
+                role     = confirmed["role"]
+                start    = confirmed["start_date"]
+                end      = confirmed["end_date"]
                 fp       = fingerprint(company, role, start)
 
                 if fp not in job_map:
@@ -643,10 +789,14 @@ def compile_career_history(vault_files: list[Path]) -> CareerHistoryDB:
         except Exception as e:
             log_error(source, f"Career history block: {e}")
 
-    db.roles = sorted(job_map.values(), key=lambda r: r.start_date, reverse=True)
+    db.roles = sorted(job_map.values(), key=lambda r: date_sort_key(r.start_date), reverse=True)
     db.total_roles = len(db.roles)
     db.total_bullets = sum(len(r.achievements) for r in db.roles)
     log.info(f"  → {db.total_roles} roles, {db.total_bullets} aggregated bullets")
+    if unmatched:
+        log.warning(f"  {unmatched} role blocks not in config/career_roles.json; kept as parsed")
+    if excluded:
+        log.info(f"  {excluded} role blocks dropped by exclude_titles")
     return db
 
 

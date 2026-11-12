@@ -1,0 +1,46 @@
+{
+  "experience_headings": [
+    "experience",
+    "work experience",
+    "work history",
+    "employment",
+    "employment history",
+    "professional experience",
+    "relevant experience",
+    "volunteer experience",
+    "career history"
+  ],
+  "end_headings": [
+    "education",
+    "education and qualifications",
+    "qualifications",
+    "certificates",
+    "certifications",
+    "skills",
+    "key skills",
+    "key transferable skills",
+    "information technology skills",
+    "references",
+    "employment referees",
+    "personal referee",
+    "personal details",
+    "personal interests"
+  ],
+  "location_words": [
+    "melbourne",
+    "naarm",
+    "vic",
+    "victoria",
+    "sydney",
+    "london",
+    "uk",
+    "australia"
+  ],
+  "extra_employers": {
+    "ITN": ["itn", "independent television news", "independent news television", "independent tv news"],
+    "Coutts": ["coutts"],
+    "Diamond Valley Community Support": ["diamond valley"]
+  },
+  "max_title_words": 8,
+  "max_header_words": 15
+}
