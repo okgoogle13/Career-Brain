@@ -67,6 +67,7 @@ database/doc_generation_report_*_test.json
 # contact details and referee information. Same boundary as comms-hub-v2's comms/*.local.md:
 # never a git remote. The rules-only profile (docs/voice/voice-authenticity-profile.md) IS tracked.
 *.local.md
+*.local.json
 
 # Database backups (keep locally for script safety, ignore from git to prevent bloat)
 database/backups/
