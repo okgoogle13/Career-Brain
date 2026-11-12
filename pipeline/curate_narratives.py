@@ -39,6 +39,8 @@ SOURCE  = OUTPUT / "ksc_and_narratives.json"
 CURATED = OUTPUT / "ksc_curated.json"
 TIER1   = OUTPUT / "ksc_curated_tier1.json"
 REPORT  = OUTPUT / "narrative_curation_report.md"
+CURATION_CONFIG = BASE / "config" / "narrative_curation.json"
+SHARING_POLICY  = BASE / "config" / "ai_sharing_policy.json"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -131,7 +133,7 @@ def _call_gemini_voice(text: str) -> Optional[dict]:
         )
         return json.loads(resp.text.strip())
     except Exception as exc:
-        log.debug("Voice LLM call failed: %s", exc)
+        log.warning("Voice LLM call failed: %s", exc)
         return None
 
 
@@ -248,6 +250,25 @@ def main():
     narratives = data.get("narratives", [])
     log.info(f"  Processing {len(narratives)} narratives...")
 
+    # ── Pass 0: Own-source filter, contact redaction, lived-experience flag ──
+    cfg = json.loads(CURATION_CONFIG.read_text(encoding="utf-8"))
+    placeholder = json.loads(SHARING_POLICY.read_text(encoding="utf-8"))["redaction"]["placeholder"]
+    own_re     = re.compile("|".join(cfg["own_source_patterns"]), re.IGNORECASE)
+    contact_re = re.compile("|".join(cfg["contact_patterns"]), re.IGNORECASE)
+    letter_re  = re.compile("|".join(cfg["letter_markers"]), re.IGNORECASE)
+
+    own = [n for n in narratives if own_re.search(n.get("source_lineage", ""))]
+    log.info(f"  Dropped {len(narratives) - len(own)} narratives from non-own (reference/example) sources")
+    narratives = own
+
+    redacted_count = 0
+    for n in narratives:
+        n["full_text"], hits = contact_re.subn(placeholder, n.get("full_text", ""))
+        if hits:
+            redacted_count += 1
+        n["is_lived_experience"] = "lived_experience" in n.get("competency_tags", [])
+    log.info(f"  Redacted contact details in {redacted_count} narratives")
+
     # ── Pass 1: Score all narratives ─────────────────────────────────────────
     tier_counts  = Counter()
     flag_counts  = Counter()
@@ -255,6 +276,14 @@ def main():
 
     for n in narratives:
         tier, flags, score = score_narrative(n)
+        if placeholder in n.get("full_text", ""):
+            flags.append("contact_redacted")
+        if letter_re.search(n.get("full_text", "")):
+            flags.append("full_letter")
+            tier = max(tier, 2)
+        if len(n.get("full_text", "").split()) > cfg["tier1_max_words"]:
+            flags.append("too_long")
+            tier = max(tier, 2)
         n["quality_tier"]  = tier
         n["quality_flags"] = flags
         n["quality_score"] = score
@@ -289,7 +318,10 @@ def main():
                     loser = n_a if n_a["quality_score"] <= n_b["quality_score"] else n_b
                     if "near_duplicate" not in loser["quality_flags"]:
                         loser["quality_flags"].append("near_duplicate")
-                        loser["quality_tier"] = max(loser["quality_tier"], 2)  # bump down at least to T2
+                        old_tier = loser["quality_tier"]
+                        loser["quality_tier"] = max(old_tier, 2)  # bump down at least to T2
+                        tier_counts[old_tier] -= 1
+                        tier_counts[loser["quality_tier"]] += 1
                         dup_count += 1
 
     log.info(f"  Near-duplicates detected: {dup_count}")
@@ -314,7 +346,8 @@ def main():
             n["voice_patterns"] = v_patterns
             if v_reason:
                 n["voice_reason"] = v_reason
-            voice_scored_count += 1
+            if v_reason is not None:
+                voice_scored_count += 1
             # Re-tier upward if voice score is strong (≥3 patterns) and narrative
             # is on the T1/T2 boundary
             if v_score >= 3 and n["quality_tier"] == 2:

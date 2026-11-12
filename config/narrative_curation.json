@@ -1,0 +1,27 @@
+{
+  "own_source_patterns": [
+    "Nishant",
+    "Dougall",
+    "Cover[ _]Letter",
+    "Key[ _]Selection[ _]Criteria[ _]Responses",
+    "^\\d{8}.*KSC",
+    "final combined resumes",
+    "Interview Prep",
+    "Master Resume with subtypes",
+    "cover_letter_evidence",
+    "key_criteria_evidence"
+  ],
+  "tier1_max_words": 600,
+  "letter_markers": [
+    "\\bdear\\s",
+    "to whom it may",
+    "i am writing to",
+    "yours sincerely",
+    "kind regards",
+    "yours faithfully"
+  ],
+  "contact_patterns": [
+    "[\\w.+-]+@[\\w-]+\\.[\\w.]+",
+    "(?:\\+?61\\s?|\\b0)4\\d{2}\\s?\\d{3}\\s?\\d{3}\\b"
+  ]
+}
