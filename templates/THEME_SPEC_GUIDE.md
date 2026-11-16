@@ -8,34 +8,36 @@
 
 ## Current Theme Library
 
-| File | Doc Type | Name | Font (body / heading) | Palette | Tier | Target Sector | Status |
-|---|---|---|---|---|---|---|---|
-| `resume_professional_classic_v1.json` | resume | Professional Classic | Times New Roman | Deep Navy / Charcoal | 1 — ATS Standard | Finance, law, corporate, senior mgmt | ✅ Registered |
-| `resume_contemporary_professional_v1.json` | resume | Contemporary Professional | Calibri | Forest Green / Sage | 1 — ATS Clean | Community services, NFP, government, healthcare | ✅ Registered |
-| `resume_modern_minimalist_v1.json` | resume | Modern Minimalist | Arial | Slate Blue / Teal | 2 — ATS Modern | Tech, design, startups | ✅ Registered |
-| `resume_warm_impact_v1.json` | resume | Warm Impact | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | Community services, career-transition | ✅ Registered |
-| `resume_chronological_v1.json` | resume | Chronological | Times New Roman | Deep Navy / Charcoal | 1 — ATS Standard | Finance, law, corporate | ✅ Registered |
-| `resume_hybrid_v1.json` | resume | Hybrid | Calibri | Forest Green / Sage | 1 — ATS Clean | Government, community services | ✅ Registered |
-| `resume_graphite_ledger_v1.json` | resume | Graphite Ledger | Georgia / Arial | Graphite / Grey | 1 — ATS Clean | Finance, law, corporate, government | ✅ Registered |
-| `resume_midnight_blueprint_v1.json` | resume | Midnight Blueprint | Arial | Deep Navy / Cyan | 2 — ATS Modern | Tech, engineering, specialty | ✅ Registered |
-| `resume_citrus_edge_v1.json` | resume | Citrus Edge | Calibri / Arial | Charcoal / Orange | 2 — ATS Modern | Community services, social work | ✅ Registered |
-| `resume_emerald_transit_v1.json` | resume | Emerald Transit | Calibri / Georgia | Emerald / Mint | 1 — ATS Clean | Health, transport, logistics | ✅ Registered |
-| `resume_copper_teal_circuit_v1.json` | resume | Copper Teal Circuit | Arial | Copper / Teal | 2 — ATS Modern | Engineering, tech, architecture | ✅ Registered |
-| `resume_violet_signal_v1.json` | resume | Violet Signal | Georgia / Arial | Violet / Amethyst | 1 — ATS Standard | Creative, arts, marketing | ✅ Registered |
-| `resume_solar_gradient_v1.json` | resume | Solar Gradient | Georgia | Brown / Warm Cream | 1 — ATS Standard | Non-profit, education, community | ✅ Registered |
-| `resume_nordic_neon_v1.json` | resume | Nordic Neon | Arial | Cyan / Teal | 2 — ATS Modern | Design, tech, startups | ✅ Registered |
-| `resume_terracotta_service_v1.json` | resume | Terracotta Service | Georgia | Terracotta / Cream | 1 — ATS Standard | Community services, social work | ✅ Registered |
-| `resume_rainbow_minimal_v1.json` | resume | Rainbow Minimal | Calibri / Arial | Slate / Multi-color | 2 — ATS Modern | General, entry-level, tech | ✅ Registered |
-| `resume_terminal_signal_v1.json` | resume | Terminal Signal | Arial | Green / Charcoal | 2 — ATS Modern | Dev, IT, cybersecurity | ✅ Registered |
-| `resume_horizon_edge_v1.json` | resume | Horizon Edge | Arial | Navy / Coral | 2 — ATS Modern | Media, communication, corporate | ✅ Registered |
-| `resume_broadside_press_v1.json` | resume | Broadside Press | Georgia / Arial | Crimson / Black | 1 — ATS Standard | Editorial, publishing, policy | ✅ Registered |
-| `resume_clay_canvas_v1.json` | resume | Clay Canvas | Georgia | Clay / Espresso | 1 — ATS Standard | Artisanal, design, education | ✅ Registered |
-| `resume_cyan_blueprint_v1.json` | resume | Cyan Blueprint | Arial | Cyan / Charcoal | 2 — ATS Modern | Tech, engineering, corporate | ✅ Registered |
-| `cover_letter_base_v1.json` | cover_letter | Cover Letter Base | Times New Roman | Deep Navy | 1 — ATS Standard | All sectors | ✅ Registered |
-| `cover_letter_government_v1.json` | cover_letter | Cover Letter Government | Calibri | Forest Green | 1 — ATS Clean | Government, public service | ✅ Registered |
-| `cover_letter_nfp_v1.json` | cover_letter | Cover Letter NFP | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | NFP, community services | ✅ Registered |
-| `cover_letter_private_v1.json` | cover_letter | Cover Letter Private | Arial | Slate Blue / Teal | 2 — ATS Modern | Private sector, tech, design | ✅ Registered |
-| `ksc_standard_v2.json` | ksc | KSC Standard v2 | Calibri | Forest Green / Sage | 1 — ATS Clean | Government, community services, NFP | ✅ Registered |
+Registration status and Doc IDs live in `config/doc_templates.json`, not here.
+
+| File | Doc Type | Name | Font (body / heading) | Palette | Tier | Target Sector |
+|---|---|---|---|---|---|---|
+| `resume_professional_classic_v1.json` | resume | Professional Classic | Times New Roman | Deep Navy / Charcoal | 1 — ATS Standard | Finance, law, corporate, senior mgmt |
+| `resume_contemporary_professional_v1.json` | resume | Contemporary Professional | Calibri | Forest Green / Sage | 1 — ATS Clean | Community services, NFP, government, healthcare |
+| `resume_modern_minimalist_v1.json` | resume | Modern Minimalist | Arial | Slate Blue / Teal | 2 — ATS Modern | Tech, design, startups |
+| `resume_warm_impact_v1.json` | resume | Warm Impact | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | Community services, career-transition |
+| `resume_chronological_v1.json` | resume | Chronological | Times New Roman | Deep Navy / Charcoal | 1 — ATS Standard | Finance, law, corporate |
+| `resume_hybrid_v1.json` | resume | Hybrid | Calibri | Forest Green / Sage | 1 — ATS Clean | Government, community services |
+| `resume_graphite_ledger_v1.json` | resume | Graphite Ledger | Georgia / Arial | Graphite / Grey | 1 — ATS Clean | Finance, law, corporate, government |
+| `resume_midnight_blueprint_v1.json` | resume | Midnight Blueprint | Arial | Deep Navy / Cyan | 2 — ATS Modern | Tech, engineering, specialty |
+| `resume_citrus_edge_v1.json` | resume | Citrus Edge | Calibri / Arial | Charcoal / Orange | 2 — ATS Modern | Community services, social work |
+| `resume_emerald_transit_v1.json` | resume | Emerald Transit | Calibri / Georgia | Emerald / Mint | 1 — ATS Clean | Health, transport, logistics |
+| `resume_copper_teal_circuit_v1.json` | resume | Copper Teal Circuit | Arial | Copper / Teal | 2 — ATS Modern | Engineering, tech, architecture |
+| `resume_violet_signal_v1.json` | resume | Violet Signal | Georgia / Arial | Violet / Amethyst | 1 — ATS Standard | Creative, arts, marketing |
+| `resume_solar_gradient_v1.json` | resume | Solar Gradient | Georgia | Brown / Warm Cream | 1 — ATS Standard | Non-profit, education, community |
+| `resume_nordic_neon_v1.json` | resume | Nordic Neon | Arial | Cyan / Teal | 2 — ATS Modern | Design, tech, startups |
+| `resume_terracotta_service_v1.json` | resume | Terracotta Service | Georgia | Terracotta / Cream | 1 — ATS Standard | Community services, social work |
+| `resume_rainbow_minimal_v1.json` | resume | Rainbow Minimal | Calibri / Arial | Slate / Multi-color | 2 — ATS Modern | General, entry-level, tech |
+| `resume_terminal_signal_v1.json` | resume | Terminal Signal | Arial | Green / Charcoal | 2 — ATS Modern | Dev, IT, cybersecurity |
+| `resume_horizon_edge_v1.json` | resume | Horizon Edge | Arial | Navy / Coral | 2 — ATS Modern | Media, communication, corporate |
+| `resume_broadside_press_v1.json` | resume | Broadside Press | Georgia / Arial | Crimson / Black | 1 — ATS Standard | Editorial, publishing, policy |
+| `resume_clay_canvas_v1.json` | resume | Clay Canvas | Georgia | Clay / Espresso | 1 — ATS Standard | Artisanal, design, education |
+| `resume_cyan_blueprint_v1.json` | resume | Cyan Blueprint | Arial | Cyan / Charcoal | 2 — ATS Modern | Tech, engineering, corporate |
+| `cover_letter_base_v1.json` | cover_letter | Cover Letter Base | Times New Roman | Deep Navy | 1 — ATS Standard | All sectors |
+| `cover_letter_government_v1.json` | cover_letter | Cover Letter Government | Calibri | Forest Green | 1 — ATS Clean | Government, public service |
+| `cover_letter_nfp_v1.json` | cover_letter | Cover Letter NFP | Calibri | Ink Gold / Waratah Red | 2 — ATS Bold | NFP, community services |
+| `cover_letter_private_v1.json` | cover_letter | Cover Letter Private | Arial | Slate Blue / Teal | 2 — ATS Modern | Private sector, tech, design |
+| `ksc_standard_v2.json` | ksc | KSC Standard v2 | Calibri | Forest Green / Sage | 1 — ATS Clean | Government, community services, NFP |
 
 **Excluded (not migrated):**
 - `theme3` (Bold Executive) — two-column layout, ATS-unsafe
@@ -85,7 +87,9 @@ Every theme file must contain these top-level keys in this order:
 }
 ```
 
-**ATS-safe fonts (canonical list; also the `font_family` enum in `schema_v2_0.json`):** `Arial`, `Calibri`, `Helvetica`, `Verdana`, `Tahoma`, `Trebuchet MS`, `Century Gothic`, `Gill Sans`, `Lucida Sans`, `Lucida Grande`, `Garamond`, `Georgia`, `Cambria`, `Times New Roman`, `Century Schoolbook`, `New Century Schoolbook`, `Palatino`, `Book Antiqua`. `base_font`, `ats_constraints.font_family` and `heading_font_family` must all come from this list. Helvetica is not reliably available in Google Docs — use Arial as fallback.
+Source for `forbidden_glyphs`: `config/ats_rules.json` `vocabulary.forbidden_characters` (plus `forbidden_char_ranges`). Do not copy the list from this example. Existing themes predate `!` being added to that file and omit it.
+
+**ATS-safe fonts:** the canonical list is the `font_family` enum in `templates/schema_v2_0.json`. `base_font`, `ats_constraints.font_family` and `heading_font_family` must all come from it. Helvetica is not reliably available in Google Docs — use Arial as fallback.
 
 ### `palette` (required)
 
@@ -151,6 +155,8 @@ Ordered list of content blocks. The required blocks depend on the `doc_type`:
 - `application_meta`
 - `criteria_responses`
 
+Resume and cover-letter structure is defined by the theme JSON `blocks[]`; `build_golden_master.py` builds from it. Only KSC has a Markdown spec (`context/specs/ksc_standard_v2_spec.md`, via `gold-template-builder-v3`).
+
 ---
 
 ## `visualConfig` Rules
@@ -183,25 +189,53 @@ Permitted on `skills_section.container` only. Use a light tint from the palette 
 
 ---
 
+## Design Standard
+
+Every theme and family must meet S1–S6. Rules use only fields the builder emits (see "What the builder emits"); anything else does not reach the document and cannot satisfy a rule. Buckets come from `config/theme_fingerprint.json`; read values with `.venv/bin/python tools/theme_fingerprint.py <path>`. Record the result in the family's `THEME_BRIEF_FORM.md` `STANDARD_CHECK`.
+
+**S1 Hierarchy** — four readable levels: name > section heading > role title > body.
+- `name_scale` is `prominent` or `dominant`.
+- `heading_scale` is `moderate` or `strong`. If `flat`, the heading must differ from body on at least two of: weight, case, colour, rule.
+- Role title is bold or larger than body; org and dates use the muted colour.
+
+**S2 Typography** — body 10.5–12pt; at most two families. A second family must be a different class (serif + sans); two sans or two serif families is a FAIL.
+
+**S3 Colour** — the accent has one role (headings, or rules, or skills fill) and never colours body text. Body `#1A1A1A` or `#2D3748`; meta `#4A5568`; contrast per "Font colors".
+
+**S4 Rhythm** — `line_spacing` 1.15–1.35; `spacing_after_pt` 4–8; margins 1.5–2.5 cm with left = right. One value per role: all section headings share size and spacing; all bullets share spacing.
+
+**S5 Page fit** (rendered, not offline) — with the stress content in `context/theme_viz_sample_content.md`: resume ≤ 2 A4 pages, cover letter 1 page, no section or criterion heading alone at a page foot, no bullet ending in a one-word line.
+
+**S6 Family** — members share `base_font`, heading font, heading colour hue, `name_header` styling and margins (±0.3 cm). The cover letter may sit one `line_rhythm` bucket airier. KSC `criteria_responses.visualConfig.criterion_text` reuses the resume section heading's font, weight and colour.
+
+**Banned (each is a FAIL):**
+- Section heading indistinguishable from body (fails S1)
+- Same-class font pair (fails S2)
+- Accent on body text, or in more than one role (fails S3)
+- Identity that relies only on non-emitted fields (`bands`, `dividers`, `accent_logic`, `text_transform`, `letter_spacing_pt`)
+- Generic name (`modern`, `minimal`, `clean`, `professional`) with no structural signature
+
+---
+
 ## Naming Convention
 
 ```
-<doc_type>_<name>_v<N>.json
+<doc_type>_<family_id>_v<N>.json
 ```
 
-Examples:
-- `resume_professional_classic_v1.json`
-- `cover_letter_warm_impact_v1.json`  *(future)*
-- `ksc_contemporary_professional_v1.json`  *(future)*
+`family_id` is lowercase `snake_case` and names the sector or strategy (`state_gov_panel`), never the look (`teal_wave`). Example family: `resume_state_gov_panel_v1.json`, `cover_letter_state_gov_panel_v1.json`, `ksc_state_gov_panel_v1.json`.
 
-Increment `v<N>` for breaking changes to an existing theme's layout. Create a new theme file for a new visual identity.
+Existing files keep their current names: renaming breaks registry `theme` paths and `compile_theme.py`'s `resume_<suffix>_v1.json` output name.
+
+Increment `v<N>` for a visual revision within the same identity. Create a new `family_id` only when strategy, audience or layout identity changes.
 
 ---
 
 ## Adding a New Theme — Checklist
 
 ```
-[ ] Copy an existing theme file as your starting point
+[ ] Fill templates/THEME_BRIEF_FORM.md for the family (purpose, decisions, shared identity)
+[ ] Start the theme JSON from the brief's SHARED_IDENTITY and DECISIONS
 [ ] Update template_id, tier, tier_label, target_sector, description
 [ ] Define palette with named hex colors
 [ ] Set font_family in both ats_constraints and typography.base_font (must match)
@@ -209,6 +243,7 @@ Increment `v<N>` for breaking changes to an existing theme's layout. Create a ne
 [ ] Confirm all ROLE_N tokens present (6 roles × 4 bullets)
 [ ] Confirm bullet glyph is "-" in experience_section.visualConfig.bullet.glyph
 [ ] No character from config/ats_rules.json forbidden_characters / forbidden_char_ranges appears anywhere in the file
+[ ] Check against Design Standard S1–S4 and S6; record results in the brief's STANDARD_CHECK
 [ ] Run: .venv/bin/python tools/validate_templates_v2.py templates/<new_file>.json  → PASS
 [ ] Run: .venv/bin/python tools/theme_fingerprint.py templates/<new_file>.json  → contrast_failures empty
 [ ] Run the output-quality-gate skill, Stage A → APPROVE

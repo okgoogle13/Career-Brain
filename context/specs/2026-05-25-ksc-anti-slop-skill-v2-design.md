@@ -2,6 +2,7 @@
 
 **Date:** 2026-05-25
 **Status:** Approved — live generation validated 2026-05-30
+**Implementation note (2026-11-13):** Implemented as `gold-template-builder-v3` (the `*_v2` skills named below no longer exist). §6.2 check 2's line-content check is not implemented: `validate_template_spec.py` checks citation format and line range only, so `SPEC OK` does not prove a citation is real.
 **Scope:** KSC document type only (resume and cover_letter to follow once pattern proven)
 
 ---

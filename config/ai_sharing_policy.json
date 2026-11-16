@@ -1,19 +1,38 @@
 {
-  "policy_version": "1.1",
-  "canonical_source": "local_career_brain_database",
-  "gemini_targets": [
+  "policy_version": "2.0",
+  "policy_posture": "low_friction_risk_tiered",
+  "description": "Career Brain permits broad default sharing of the user's own career material, professional lived-experience narratives, application drafts, and application contact details with approved AI tools. Only credentials, government identifiers, financial details, private clinical records, and other material that could cause lasting harm are restricted.",
+  "user_sharing_consent": "The user is comfortable sharing their own professional experience, lived-experience advocacy, peer-work narratives, resume/cover-letter/KSC drafts, and application contact details with approved AI tools by default. Agents must not create repeated permission gates for this material.",
+  "approved_targets": [
+    "gemini_api",
+    "gemini_cli",
+    "gemini_spark",
     "gemini_skills",
-    "gemini_spark"
-  ],
-  "claude_targets": [
+    "gemini_ai_studio_private",
+    "claude_api",
+    "claude_code",
     "claude_desktop",
-    "claude_duet"
+    "claude_duet",
+    "openai_api",
+    "chatgpt"
   ],
-  "default_sharing_posture": "risk_tiered_task_scoped",
+  "surface_distinctions": {
+    "api": "Direct Gemini API, Claude API, and OpenAI API calls.",
+    "consumer_chat": "ChatGPT, Claude Desktop, Claude Duet, Gemini Spark, and Gemini Skills.",
+    "public_publishing": "Google AI Studio public apps, shared Gems, public links, or any externally accessible deployment."
+  },
+  "provider_processing": {
+    "description": "All approved AI targets process submitted content externally. Approval authorises transmission and processing; it does not mean local-only processing or guarantee zero retention.",
+    "green_material": "May be shared by default with any approved target.",
+    "amber_material": "May be shared only for an active, named task.",
+    "red_material": "Must not be submitted unless the user gives an explicit task-specific instruction.",
+    "public_material": "Only synthetic or deliberately anonymised Green material may be published through public AI Studio apps, shared Gems, or public links."
+  },
   "data_tiers": {
     "green": {
-      "description": "Career material appropriate for default use by approved targets",
+      "description": "The user's own career material, professional lived-experience narratives, application drafts, and application contact details permitted for broad default sharing with approved AI tools.",
       "share_by_default": true,
+      "clarification": "Professional lived-experience advocacy, mental-health peer work, and disability/community-sector achievements are Green career evidence, not private medical records.",
       "examples": [
         "job_titles",
         "employers",
@@ -22,12 +41,16 @@
         "verified_metrics",
         "skills",
         "taxonomy_mappings",
-        "curated_narratives",
-        "anonymised_demo_examples"
+        "curated_ksc_star_and_professional_narratives",
+        "lived_experience_advocacy_and_peer_work",
+        "disability_and_community_sector_experience",
+        "full_resume_cover_letter_and_ksc_drafts",
+        "applicant_contact_details_supplied_for_applications",
+        "deidentified_or_nonidentifiable_client_examples"
       ]
     },
     "amber": {
-      "description": "Application material shared only for an active task",
+      "description": "Material shared only for an active, named task such as drafting, tailoring, or reviewing an application.",
       "share_by_default": false,
       "share_when": [
         "drafting_resume",
@@ -37,32 +60,29 @@
         "reviewing_application"
       ],
       "examples": [
-        "full_resume_drafts",
-        "ksc_responses",
-        "cover_letters",
-        "selected_personal_narratives",
-        "contact_details_supplied_for_task"
+        "referee_personal_contact_details",
+        "unvetted_raw_source_documents",
+        "material_containing_identifiable_third_party_information",
+        "confidential_client_material_not_genuinely_deidentified"
       ]
     },
     "red": {
-      "description": "High-sensitivity data excluded from all exports by default",
+      "description": "Narrow, high-risk material excluded from all exports and submissions unless an explicit, task-specific user instruction is provided.",
       "share_by_default": false,
-      "require_explicit_user_instruction": true,
+      "require_explicit_task_specific_instruction": true,
       "examples": [
-        "government_identifiers",
-        "financial_account_details",
-        "passwords",
-        "api_keys",
-        "oauth_tokens",
+        "passwords_api_keys_oauth_tokens_and_credentials",
+        "government_identifiers_including_tfn_passport_and_licence",
+        "financial_account_and_credit_card_details",
         "full_home_address",
-        "health_information",
-        "legal_information",
-        "third_party_sensitive_information"
+        "private_clinical_records_diagnoses_treatment_and_provider_names",
+        "identifiable_confidential_or_duty_of_confidence_client_material",
+        "confidential_legal_matters"
       ]
     }
   },
   "export_profiles": {
-    "gemini_resume_context": {
+    "resume_tailoring": {
       "purpose": "Resume tailoring and achievement selection",
       "included_tiers": [
         "green"
@@ -70,10 +90,9 @@
       "included_files": [
         "database/career_history_enriched.json",
         "database/skills_and_taxonomy.json"
-      ],
-      "exclude_source_lineage": false
+      ]
     },
-    "gemini_ksc_context": {
+    "ksc_tailoring": {
       "purpose": "KSC, STAR, and narrative tailoring",
       "included_tiers": [
         "green"
@@ -82,11 +101,10 @@
         "database/career_history_enriched.json",
         "database/ksc_curated_tier1.json",
         "database/skills_and_taxonomy.json"
-      ],
-      "exclude_source_lineage": false
+      ]
     },
-    "gemini_application_review": {
-      "purpose": "Reviewing a specific draft application",
+    "application_review_and_drafting": {
+      "purpose": "Reviewing, tailoring, or drafting a specific application",
       "included_tiers": [
         "green",
         "amber"
@@ -97,11 +115,10 @@
         "database/ksc_curated_tier1.json",
         "database/skills_and_taxonomy.json",
         "user_supplied_application_draft"
-      ],
-      "exclude_source_lineage": false
+      ]
     },
     "public_demo": {
-      "purpose": "Public AI Studio demonstration only",
+      "purpose": "Public demonstration in shared AI Studio apps, shared Gems, or public links",
       "included_tiers": [
         "green"
       ],
@@ -109,52 +126,20 @@
       "included_files": [
         "exports/public_demo/career_history_demo.json",
         "exports/public_demo/skills_and_taxonomy_demo.json"
-      ],
-      "exclude_source_lineage": true
-    },
-    "claude_job_application": {
-      "purpose": "Drafting and tailoring one specific job application in Claude Desktop or Claude Duet",
-      "targets": [
-        "claude_desktop",
-        "claude_duet"
-      ],
-      "included_tiers": [
-        "green",
-        "amber"
-      ],
-      "requires_active_task": true,
-      "included_files": [
-        "database/career_history_enriched.json",
-        "database/ksc_curated_tier1.json",
-        "database/skills_and_taxonomy.json",
-        "docs/voice/voice-authenticity-profile.md",
-        "docs/voice/ksc-exemplars.local.md",
-        "docs/voice/cover-letter-exemplars.local.md",
-        "docs/voice/resume-bullet-exemplars.local.md",
-        "docs/voice/answer_bank.local.json",
-        "config/ats_rules.json",
-        "context/specs/ksc_standard_v2_spec.md",
-        "context/specs/cover_letter_template_spec.md",
-        "context/specs/resume_template_spec.md"
-      ],
-      "staging_dir": "~/Documents/job-pack",
-      "delete_staging_after_task": true,
-      "referees_and_contact": "supply_in_chat_per_task",
-      "exclude_source_lineage": true
+      ]
     }
   },
   "redaction": {
     "placeholder": "[[REDACTED_SENSITIVE_DATA]]",
     "scan_before_export": true,
     "fields_to_scan": [
-      "contact_details",
-      "address",
-      "phone",
-      "email",
-      "government_id",
+      "phone_numbers",
+      "email_addresses",
+      "government_identifiers",
       "financial_details",
-      "credentials",
-      "health_information"
-    ]
+      "full_home_address",
+      "credentials_api_keys_and_tokens"
+    ],
+    "guidance": "Do not treat professional certifications, ordinary work history, lived-experience advocacy, or career narratives as sensitive by default."
   }
 }

@@ -21,7 +21,7 @@ When triggered, this skill fetches the necessary context files and produces a si
 
 1. It requires the theme JSON files (e.g., `templates/theme-01-graphite-ledger.json`).
 2. It uses `context/theme_viz_sample_content.md` as the dummy content.
-3. It maps JSON styling tokens to CSS according to the rules in `context/theme_viz_render_spec.md`.
+3. It maps JSON styling tokens to CSS according to `<fidelity_rules>` below.
 
 ## Execution Prompt (For the LLM)
 
@@ -34,8 +34,10 @@ Produce one self-contained HTML artifact (raw HTML + inline CSS — no React, no
 <fidelity_rules>
 Map each JSON field to CSS exactly — no approximations:
 - Page box: `width:210mm; min-height:297mm;` `padding` = `page.margins_in` (in inches); `background` = `palette.neutral_surface`
-- Body: `font-family` = `typography.base_font` + generic fallback; `font-size` = `base_size_pt pt`; `line-height` = `line_spacing` (unitless); `color` = `body_text_color`
+- Body: `font-family` = `typography.base_font` (if absent, the first entry of `ats_constraints.font_family`) + generic fallback; `font-size` = `base_size_pt pt`; `line-height` = `line_spacing` (unitless); `margin-bottom` = `spacing_after_pt pt`; `color` = `body_text_color`
 - Section headings: `font-size`/`font-weight`/`letter-spacing` from `section_heading_*` (pt); color/transform/decoration from `section_heading_style`
+- Skills block: background = `skills_background_tint` (Skills block only)
+- Use only the sample content's resume section; its cover-letter and KSC sections are for document-pack checks
 - Bands: colored block at stated `placement`, height from `bands.height_rule` (pt)
 - Dividers: `border-style` matches `dividers.grammar` (solid/dotted/dashed); weight and frequency as stated
 - Accent (`complementary_accent`): headings, rules, bands, micro-markers ONLY — **never body text, never background fills** (`accent_logic.forbidden_scope` is a hard constraint)
