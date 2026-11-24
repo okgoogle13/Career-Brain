@@ -9,7 +9,7 @@ single source of truth for the ETL extraction pipeline.
 Run this script to clean and optimize your knowledge directory.
 """
 
-import os
+import argparse
 import shutil
 import hashlib
 import logging
@@ -53,8 +53,15 @@ def is_third_party(filename: str) -> bool:
     return any(p in lower_name for p in THIRD_PARTY_PATTERNS)
 
 def main():
+    parser = argparse.ArgumentParser(description="Knowledge vault cleanup (writes to source_docs/ and archive/)")
+    parser.add_argument("--write", action="store_true",
+                        help="Delete/move files and write the cleanup log. Default is a dry run: "
+                             "list planned actions only.")
+    args = parser.parse_args()
+
     log.info("="*60)
     log.info("CAREER BRAIN — KNOWLEDGE VAULT CLEANUP WORKFLOW")
+    log.info(f"Mode: {'WRITE' if args.write else 'DRY-RUN (no files changed)'}")
     log.info(f"Started: {datetime.now().isoformat()}")
     log.info("="*60)
 
@@ -62,8 +69,9 @@ def main():
         log.error(f"Knowledge directory does not exist: {KNOWLEDGE_DIR}")
         sys.exit(1)
 
-    ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    if args.write:
+        ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     seen_hashes = {}
     actions_taken = []
@@ -78,7 +86,8 @@ def main():
         if fhash in seen_hashes:
             original = seen_hashes[fhash]
             log.info(f"  [DUP] Purging byte duplicate: {f.name} (Clone of {original})")
-            f.unlink()
+            if args.write:
+                f.unlink()
             actions_taken.append(f"DELETE_DUPLICATE | {f.name} | Byte-level clone of {original}")
             files_to_process.remove(f)
         else:
@@ -112,7 +121,8 @@ def main():
             
             if redundant:
                 log.info(f"  [FORMAT] Purging flat text: {f.name} (Rich source is {rich_match})")
-                f.unlink()
+                if args.write:
+                    f.unlink()
                 actions_taken.append(f"DELETE_FORMAT_REDUNDANT | {f.name} | Superceded by rich file {rich_match}")
                 files_to_process.remove(f)
 
@@ -122,7 +132,8 @@ def main():
         if is_third_party(f.name):
             dest = ARCHIVE_DIR / f.name
             log.info(f"  [ARCHIVE] Moving: {f.name} → CLEANUP/archive_third_party/")
-            shutil.move(str(f), str(dest))
+            if args.write:
+                shutil.move(str(f), str(dest))
             actions_taken.append(f"ARCHIVE_THIRD_PARTY | {f.name} | Moved to {ARCHIVE_DIR.name}/")
             files_to_process.remove(f)
 
@@ -135,7 +146,10 @@ def main():
         ""
     ] + actions_taken
     
-    CLEANUP_LOG.write_text("\n".join(cleanup_log_content) + "\n", encoding="utf-8")
+    if args.write:
+        CLEANUP_LOG.write_text("\n".join(cleanup_log_content) + "\n", encoding="utf-8")
+    else:
+        log.info("\nDRY-RUN: no files changed. Re-run with --write to apply.")
     
     log.info("\n" + "="*60)
     log.info("CLEANUP WORKFLOW SUMMARY")

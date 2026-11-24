@@ -55,6 +55,7 @@ def _get_credentials() -> Credentials:
             flow = InstalledAppFlow.from_client_secrets_file(str(CREDENTIALS_FILE), SCOPES)
             creds = flow.run_local_server(port=0)
         TOKEN_FILE.write_text(creds.to_json())
+        TOKEN_FILE.chmod(0o600)
     return creds
 
 

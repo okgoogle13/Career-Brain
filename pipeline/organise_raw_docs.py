@@ -5,6 +5,7 @@ Moves source files from archive/ into source_docs/
 with include/exclude rules applied. Non-reversible — ensure backup exists.
 """
 
+import argparse
 import os
 import shutil
 import re
@@ -145,16 +146,27 @@ def should_skip(filename, extra_patterns=None):
             return True
     return False
 
+WRITE = False  # set by --write; dry run lists planned moves only
+
+
 def move_file(src: Path, dst_dir: Path, log: list):
-    dst_dir.mkdir(parents=True, exist_ok=True)
     dst = dst_dir / src.name
     if dst.exists():
         log.append(f"  SKIP (exists, already moved): {src.name}")
         return
+    if not WRITE:
+        log.append(f"  WOULD MOVE: {src.name}")
+        return
+    dst_dir.mkdir(parents=True, exist_ok=True)
     shutil.move(str(src), str(dst))
     log.append(f"  MOVED: {src.name}")
 
 def main():
+    global WRITE
+    parser = argparse.ArgumentParser(description="Phase 0: move files from archive/ into source_docs/")
+    parser.add_argument("--write", action="store_true",
+                        help="Move files. Default is a dry run: list planned moves only.")
+    WRITE = parser.parse_args().write
     log = []
     counts = {}
 
@@ -240,7 +252,7 @@ def main():
 
     # Print summary
     print("\n" + "="*60)
-    print("ORGANISE RAW DOCS — COMPLETE")
+    print("ORGANISE RAW DOCS — " + ("COMPLETE" if WRITE else "DRY-RUN (no files moved)"))
     print("="*60)
     print(f"  resumes/        : {counts['resumes']} files")
     print(f"  cover_letters/  : {counts['cover_letters']} files")

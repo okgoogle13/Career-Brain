@@ -1,0 +1,16 @@
+{
+  "description": "Regex patterns used by tools/ai_policy.py. Keys under 'redact' match ai_sharing_policy.json redaction.fields_to_scan; matches are replaced with the policy placeholder. 'red_block' matches block the external call unless CB_ALLOW_RED_TIER=1 is set for that run. Clinical and confidential-client material has no reliable pattern and is not auto-detected.",
+  "redact": {
+    "phone_numbers": ["(?<!\\d)(?:\\+?61[ -]?|0)[2-478](?:[ -]?\\d){8}(?!\\d)", "(?<!\\d)1[38]00(?:[ -]?\\d){6}(?!\\d)"],
+    "email_addresses": ["[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"],
+    "government_identifiers": ["(?i)\\b(?:TFN|tax file number|passport|licence|license|medicare)(?: (?:no|number))?\\.?\\s*[:#]?\\s*[A-Z]?\\d[\\d ]{5,}\\d"],
+    "financial_details": ["(?<!\\d)(?:\\d[ -]?){13,16}(?!\\d)", "(?i)\\bBSB\\s*[:#]?\\s*\\d{3}-?\\d{3}\\b"],
+    "full_home_address": ["\\b\\d{1,5}[A-Za-z]?\\s+(?:[A-Z][a-z]+\\s){1,3}(?:Street|St|Road|Rd|Avenue|Ave|Court|Ct|Drive|Dr|Place|Pl|Lane|Crescent|Cres|Parade|Pde|Grove|Gr)\\b\\.?,?\\s+[A-Z][a-z]+(?:\\s[A-Z][a-z]+)?\\s+(?:VIC|NSW|QLD|SA|WA|TAS|ACT|NT)\\s+\\d{4}\\b"],
+    "credentials_api_keys_and_tokens": ["AIza[0-9A-Za-z_-]{35}", "\\bsk-[A-Za-z0-9_-]{20,}", "\\bya29\\.[0-9A-Za-z_-]+", "(?i)\\b(?:password|passwd|api[_ -]?key|secret)\\s*[:=]\\s*\\S+"]
+  },
+  "red_block": {
+    "credentials_api_keys_and_tokens": ["AIza[0-9A-Za-z_-]{35}", "\\bsk-[A-Za-z0-9_-]{20,}", "\\bya29\\.[0-9A-Za-z_-]+", "(?i)\\b(?:password|passwd)\\s*[:=]\\s*\\S+"],
+    "government_identifiers": ["(?i)\\b(?:TFN|tax file number|passport|medicare)(?: (?:no|number))?\\.?\\s*[:#]?\\s*[A-Z]?\\d[\\d ]{5,}\\d"],
+    "financial_details": ["(?<!\\d)(?:\\d[ -]?){13,16}(?!\\d)"]
+  }
+}

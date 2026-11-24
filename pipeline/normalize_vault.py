@@ -17,6 +17,8 @@ import logging
 from pathlib import Path
 from datetime import datetime
 
+import engine_io
+
 # ─── Dependencies ───────────────────────────────────────────────────────────
 try:
     from docx import Document as DocxDocument
@@ -108,18 +110,12 @@ def extract_doc_ole(path: Path) -> str:
             raise ValueError("No WordDocument stream found in OLE file")
 
     text_parts = []
-    try:
-        decoded = data.decode("utf-16-le", errors="ignore")
-        text_parts = [c for c in decoded if c.isprintable() or c in "\n\r\t "]
-    except Exception:
-        pass
+    decoded = data.decode("utf-16-le", errors="ignore")
+    text_parts = [c for c in decoded if c.isprintable() or c in "\n\r\t "]
 
     if not text_parts or len("".join(text_parts).strip()) < 50:
-        try:
-            decoded = data.decode("latin-1", errors="ignore")
-            text_parts = [c for c in decoded if c.isprintable() or c in "\n\r\t "]
-        except Exception:
-            pass
+        decoded = data.decode("latin-1", errors="ignore")
+        text_parts = [c for c in decoded if c.isprintable() or c in "\n\r\t "]
 
     raw_text = "".join(text_parts)
     raw_text = re.sub(r"\r\n|\r", "\n", raw_text)
@@ -148,11 +144,11 @@ def extract_doc(path: Path) -> str:
             # antiword returned empty or error — fall through
             stderr = result.stderr.decode("utf-8", errors="ignore")
             if stderr:
-                log.debug(f"antiword stderr for {path.name}: {stderr.strip()}")
+                log.warning(f"antiword stderr for {path.name}: {stderr.strip()} (falling back to olefile)")
         except subprocess.TimeoutExpired:
-            log.warning(f"antiword timed out on {path.name}")
-        except Exception as e:
-            log.debug(f"antiword failed on {path.name}: {e}")
+            log.warning(f"antiword timed out on {path.name} (falling back to olefile)")
+        except OSError as e:
+            log.warning(f"antiword failed on {path.name}: {e} (falling back to olefile)")
 
     # 2. Fall back to olefile
     return extract_doc_ole(path)
@@ -240,7 +236,8 @@ def process_directory(src_dir: Path, category: str, seen_hashes: dict) -> dict:
         # Duplicate hash check
         try:
             fhash = file_md5(f)
-        except Exception:
+        except OSError as e:
+            log_error(f.name, f"Hashing failed, duplicate check skipped: {e}")
             fhash = None
 
         if fhash and fhash in seen_hashes:
@@ -301,8 +298,18 @@ def main():
     seen_hashes = {}  # Cross-directory duplicate detection
     all_stats = {}
 
-    # Truncate error log at phase start — ensures a clean run produces an empty file
+    # Sole owner of log truncation: later phases append under their own run_id.
     ERROR_LOG.write_text("", encoding="utf-8")
+    rid = engine_io.run_id("normalize_vault")
+    try:
+        return _normalize(seen_hashes, all_stats)
+    finally:
+        engine_io.append_errors(rid, error_entries)
+        if error_entries:
+            log.warning(f"\nParsing errors logged to: {ERROR_LOG}")
+
+
+def _normalize(seen_hashes: dict, all_stats: dict) -> bool:
 
     CATEGORIES = [
         ("resumes",       RAW_DOCS / "resumes"),
@@ -315,12 +322,6 @@ def main():
     for category, src_dir in CATEGORIES:
         stats = process_directory(src_dir, category, seen_hashes)
         all_stats[category] = stats
-
-    # Write error log (file was truncated at startup; append phase errors)
-    if error_entries:
-        with ERROR_LOG.open("a", encoding="utf-8") as fh:
-            fh.write("\n".join(error_entries) + "\n")
-        log.warning(f"\nParsing errors logged to: {ERROR_LOG}")
 
 
     # ─── HEALTH LEDGER ───────────────────────────────────────────────────────

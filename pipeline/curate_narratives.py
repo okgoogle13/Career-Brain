@@ -33,6 +33,10 @@ from datetime import datetime
 from collections import Counter
 from typing import Optional
 
+sys.path.insert(0, str(Path(__file__).parent.parent / "tools"))
+from ai_policy import policy_check  # noqa: E402
+import engine_io  # noqa: E402
+
 BASE    = Path(__file__).parent.parent  # project root
 OUTPUT  = BASE / "database"
 SOURCE  = OUTPUT / "ksc_and_narratives.json"
@@ -118,11 +122,14 @@ def _call_gemini_voice(text: str) -> Optional[dict]:
     except ImportError:
         log.warning("google-genai not installed — skipping voice scoring")
         return None
+    contents = policy_check(f"Score this narrative:\n\n{text[:1500]}", "ksc_tailoring")
+    if contents is None:
+        return None
     try:
         client = genai.Client(api_key=api_key)
         resp = client.models.generate_content(
             model="gemini-2.5-flash",
-            contents=f"Score this narrative:\n\n{text[:1500]}",
+            contents=contents,
             config=types.GenerateContentConfig(
                 system_instruction=_VOICE_SCORE_SYSTEM,
                 max_output_tokens=200,
@@ -139,19 +146,19 @@ def _call_gemini_voice(text: str) -> Optional[dict]:
 
 # ─── Voice authenticity scorer ─────────────────────────────────────────────────
 
-def score_voice_authenticity(narrative: dict) -> tuple[int, list[str], Optional[str]]:
+def score_voice_authenticity(narrative: dict) -> tuple[Optional[int], list[str], Optional[str]]:
     """
     Score a narrative on voice authenticity via Gemini LLM.
     Returns (voice_score 0-5, patterns_hit[], reason).
-    Returns (0, [], None) when GEMINI_API_KEY is unset or call fails.
+    Returns (None, [], None) when the call is blocked, fails or returns no usable score.
     """
     text = narrative.get("full_text", "")
     if not text.strip():
-        return 0, [], None
+        return None, [], None
     result = _call_gemini_voice(text)
-    if result is None:
-        return 0, [], None
-    score = int(result.get("score", 0))
+    if result is None or not isinstance(result.get("score"), (int, float)):
+        return None, [], None
+    score = max(0, min(5, int(result["score"])))
     patterns = result.get("patterns_hit", [])
     reason = result.get("reason", "")
     return score, patterns, reason
@@ -233,7 +240,14 @@ def main():
         action="store_true",
         help="Run LLM voice scoring on ALL narratives (slow/costly). Default: boundary cases only.",
     )
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="Back up and write ksc_curated.json, ksc_curated_tier1.json and the report. "
+             "Default is a dry run: no writes and no LLM calls.",
+    )
     args = parser.parse_args()
+    log.info(f"Mode: {'WRITE' if args.write else 'DRY-RUN (no writes, no LLM calls)'}")
 
     log.info("=" * 60)
     log.info("CAREER BRAIN — NARRATIVE CURATION PASS")
@@ -327,7 +341,7 @@ def main():
     log.info(f"  Near-duplicates detected: {dup_count}")
 
     # ── Pass 3: Voice authenticity scoring (Axis 5, LLM, optional) ──────────────
-    has_gemini = bool(os.environ.get("GEMINI_API_KEY"))
+    has_gemini = args.write and bool(os.environ.get("GEMINI_API_KEY"))
     voice_scored_count = 0
     voice_score_mode = "none"
 
@@ -350,14 +364,14 @@ def main():
                 voice_scored_count += 1
             # Re-tier upward if voice score is strong (≥3 patterns) and narrative
             # is on the T1/T2 boundary
-            if v_score >= 3 and n["quality_tier"] == 2:
+            if v_score is not None and v_score >= 3 and n["quality_tier"] == 2:
                 n["quality_tier"] = 1
                 n["quality_flags"].append("voice_promoted")
                 tier_counts[2] -= 1
                 tier_counts[1] += 1
         log.info(f"  Voice-scored: {voice_scored_count}")
     else:
-        log.info("  GEMINI_API_KEY not set — voice scoring skipped (run with op run or set key)")
+        log.info("  Voice scoring skipped (dry run, or GEMINI_API_KEY not set)")
 
     # ── Summary ───────────────────────────────────────────────────────────────
     log.info(f"\n{'─'*60}")
@@ -382,8 +396,13 @@ def main():
         "voice_score_mode": voice_score_mode,
         "voice_scored_count": voice_scored_count,
     }
+    if not args.write:
+        log.info("\n  DRY-RUN: no files written. Re-run with --write to apply.")
+        return
+    engine_io.backup([CURATED, TIER1])
     with open(CURATED, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    engine_io.validate_engine(CURATED)
     log.info(f"\n  ✅ Saved: {CURATED.name}  ({CURATED.stat().st_size // 1024} KB)")
 
     # ── Write Tier 1 only JSON ────────────────────────────────────────────────
@@ -396,6 +415,7 @@ def main():
     }
     with open(TIER1, "w", encoding="utf-8") as f:
         json.dump(tier1_data, f, indent=2, ensure_ascii=False)
+    engine_io.validate_engine(TIER1)
     log.info(f"  ✅ Saved: {TIER1.name}  ({TIER1.stat().st_size // 1024} KB)  ← recommended for Gem")
 
     # ── Write Markdown Report ─────────────────────────────────────────────────

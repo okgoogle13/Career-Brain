@@ -22,12 +22,14 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, Field, field_validator
 
+import engine_io
+
 # ─── Paths ────────────────────────────────────────────────────────────────────────────
 BASE    = Path(__file__).parent.parent  # project root
 VAULT   = BASE / "processed"
 OUTPUT  = BASE / "database"
 OUTPUT.mkdir(parents=True, exist_ok=True)
-ERROR_LOG = OUTPUT / "parsing_errors.log"
+
 
 # ─── Logging ─────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -56,7 +58,7 @@ class AchievementBullet(BaseModel):
     strategy_methodology: Optional[str] = None
     domain_tags: list[str] = Field(default_factory=list)
     needs_review: bool = False          # True if >20 words but zero numeric metrics
-    source_lineage: str = ""
+    source_lineage: str = Field(min_length=1)
     # Audit fields — populated by audit_and_repair_database.py
     is_lived_experience: bool = False
     car_quality_score: int = 0
@@ -82,7 +84,7 @@ class JobRecord(BaseModel):
     sector: Optional[str] = None        # "corporate" | "community" | "hybrid"
     domain_archetypes: list[str] = Field(default_factory=list)
     achievements: list[AchievementBullet] = Field(default_factory=list)
-    source_lineage: list[str] = Field(default_factory=list)
+    source_lineage: list[str] = Field(min_length=1)
 
 
 class CareerHistoryDB(BaseModel):
@@ -99,7 +101,7 @@ class Narrative(BaseModel):
     competency_tags: list[str] = Field(default_factory=list)
     organisation_context: Optional[str] = None
     word_count: int = 0
-    source_lineage: str = ""
+    source_lineage: str = Field(min_length=1)
     # Audit fields — populated by audit_and_repair_database.py
     is_lived_experience: bool = False
     car_quality_score: int = 0
@@ -132,7 +134,7 @@ class SkillEntry(BaseModel):
     skill_name: str
     skill_level: Optional[str] = None  # "advanced" | "intermediate" | "foundational"
     context: Optional[str] = None
-    source_lineage: list[str] = Field(default_factory=list)
+    source_lineage: list[str] = Field(min_length=1)
 
 
 class TaxonomyDB(BaseModel):
@@ -624,10 +626,8 @@ def _load_bullet_audit_map(enriched_path: Path) -> dict[str, dict]:
     """Build text_norm → audit_fields from career_history_enriched.json (text only, so role re-keying keeps audits)."""
     if not enriched_path.exists():
         return {}
-    try:
-        data = json.loads(enriched_path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
+    # A corrupt file raises: silently returning {} would drop every audit field on recompile.
+    data = json.loads(enriched_path.read_text(encoding="utf-8"))
     out: dict[str, dict] = {}
     for role in data.get("roles", []):
         for b in role.get("achievements", []):
@@ -641,10 +641,7 @@ def _load_narrative_audit_map(curated_path: Path) -> dict[str, dict]:
     """Build text_norm → audit_fields from ksc_curated.json."""
     if not curated_path.exists():
         return {}
-    try:
-        data = json.loads(curated_path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
+    data = json.loads(curated_path.read_text(encoding="utf-8"))
     out: dict[str, dict] = {}
     for n in data.get("narratives", []):
         if not n.get("applied_fixes") and not n.get("is_lived_experience") and not n.get("car_quality_score"):
@@ -931,9 +928,17 @@ def main():
         sys.exit(1)
     log.info(f"Vault: {len(vault_files)} files to process")
 
-    # Truncate error log at phase start — ensures a clean run produces an empty file
-    ERROR_LOG.write_text("", encoding="utf-8")
+    # normalize_vault.py owns log truncation; this run appends under its run_id.
+    rid = engine_io.run_id("compile_brain")
+    try:
+        return _compile(rid)
+    finally:
+        engine_io.append_errors(rid, error_entries)
 
+
+def _compile(rid: str) -> bool:
+    vault_files = sorted(VAULT.glob("*.txt"))
+    engine_io.backup([OUTPUT / n for n in ("career_history.json", "ksc_and_narratives.json", "skills_and_taxonomy.json")])
 
     # ── PILLAR 1 ────────────────────────────────────────────────────────────
     career_db = compile_career_history(vault_files)
@@ -972,11 +977,9 @@ def main():
     )
     log.info(f"  Saved: {taxonomy_path}")
 
-    # Write error log (file was truncated at startup; append phase errors)
-    if error_entries:
-        with ERROR_LOG.open("a", encoding="utf-8") as fh:
-            fh.write("\n".join(error_entries) + "\n")
-
+    for path in (career_path, narratives_path, taxonomy_path):
+        engine_io.validate_engine(path)
+    log.info("  Engine validation passed (source_lineage non-empty on every node)")
 
     # ── FINAL AUDIT REPORT ──────────────────────────────────────────────────
     needs_review_count = sum(

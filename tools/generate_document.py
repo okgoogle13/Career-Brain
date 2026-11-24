@@ -774,8 +774,10 @@ def _build_ksc_values(
         # Build CAR response
         response = build_ksc_response(
             criterion, all_narratives, history, rosetta_stone, used_narratives,
-            bank_picks[c_idx - 1],
+            bank_picks[c_idx - 1], use_llm=not config.dry_run,
         )
+        if not response.pop("llm_used"):
+            warnings.append(f"criterion_{c_idx}_llm_not_used")
 
         values[f"{{{{KSC_{c_idx}_CONTEXT}}}}"] = response.get("context", "")
         values[f"{{{{KSC_{c_idx}_ACTION}}}}"] = response.get("action", "")
@@ -986,6 +988,7 @@ def build_google_services() -> tuple[Any, Any]:
                 )
             credentials = flow.run_local_server(port=0)
             token_path.write_text(credentials.to_json(), encoding="utf-8")
+            token_path.chmod(0o600)
 
     docs_service = build("docs", "v1", credentials=credentials)
     drive_service = build("drive", "v3", credentials=credentials)
@@ -1358,7 +1361,14 @@ def main(argv: list[str] | None = None) -> int:
             ksc_word_count_warnings=ksc_wc_warnings,
             source_files_used=list(source_files),
         )
-        write_report(args.out_report, report)
+        report["llm_used"] = args.doc_type == "ksc" and not any(
+            w.endswith("_llm_not_used") for w in all_warnings
+        )
+        out_report = args.out_report
+        if args.dry_run and out_report == DEFAULT_REPORT:
+            # Keep database/*.json byte-identical across dry runs.
+            out_report = OUTPUT / "dry_runs" / DEFAULT_REPORT.name
+        write_report(out_report, report)
 
         # Summary log
         log.info(

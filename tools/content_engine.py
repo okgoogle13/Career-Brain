@@ -22,6 +22,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
+from ai_policy import policy_check
+
 log = logging.getLogger("content_engine")
 
 
@@ -921,6 +923,9 @@ def _rewrite_car_with_llm(
         "Rewrite the source narrative into CAR sections addressing the criterion. "
         "Return JSON only: {{\"context\": \"...\", \"action\": \"...\", \"result\": \"...\"}}."
     )
+    user_content = policy_check(user_content, "ksc_tailoring")
+    if user_content is None:
+        return None
 
     try:
         client = genai.Client(api_key=api_key)
@@ -1230,7 +1235,8 @@ def build_ksc_response(
     rosetta_stone: dict[str, dict[str, Any]],
     used_narratives: set[int] | None = None,
     bank_story: dict[str, Any] | None = None,
-) -> dict[str, str]:
+    use_llm: bool = True,
+) -> dict[str, Any]:
     """Build a CAR response for a single criterion.
 
     Narratives whose id() is in ``used_narratives`` are skipped, and the chosen
@@ -1239,7 +1245,9 @@ def build_ksc_response(
     A ``bank_story`` (from ``assign_bank_stories``) is used verbatim, with no
     LLM rewrite; without one, the curated narratives are used.
 
-    Returns ``{context, action, result, support_bullet_1, support_bullet_2}``.
+    ``use_llm=False`` (dry runs) skips the external rewrite entirely.
+
+    Returns ``{context, action, result, support_bullet_1, support_bullet_2, llm_used}``.
     """
     competencies = criterion.get("extracted_competencies", [])
     criterion_text = criterion.get("criterion_text", "")
@@ -1279,6 +1287,7 @@ def build_ksc_response(
 
         response = {"context": "", "action": "", "result": ""}
 
+    llm_used = False
     if matched:
         narrative = matched[0]
         if used_narratives is not None:
@@ -1286,7 +1295,8 @@ def build_ksc_response(
         full_text = _clean_text(narrative.get("full_text", ""))
 
         # Attempt LLM-driven recruiter rewrite first; fall back to heuristic split
-        llm_car = _rewrite_car_with_llm(full_text, criterion_text, competencies, history)
+        llm_car = _rewrite_car_with_llm(full_text, criterion_text, competencies, history) if use_llm else None
+        llm_used = llm_car is not None
         if llm_car:
             response.update(llm_car)
         else:
@@ -1316,6 +1326,7 @@ def build_ksc_response(
     for idx, bullet in enumerate(support_bullets, start=1):
         response[f"support_bullet_{idx}"] = bullet
 
+    response["llm_used"] = llm_used
     return response
 
 

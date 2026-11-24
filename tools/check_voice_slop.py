@@ -29,6 +29,8 @@ import os
 import sys
 from pathlib import Path
 
+from ai_policy import policy_check
+
 BASE = Path(__file__).parent.parent  # project root
 
 # Load .env from project root
@@ -107,11 +109,14 @@ def _call_gemini_judge(text: str) -> dict | None:
     except ImportError:
         log.error("google-genai not installed. Run: pip install google-genai")
         return None
+    contents = policy_check(f"Analyse this application text:\n\n{text[:4000]}", "application_review_and_drafting")
+    if contents is None:
+        return None
     try:
         client = genai.Client(api_key=api_key)
         resp = client.models.generate_content(
             model="gemini-2.5-flash",
-            contents=f"Analyse this application text:\n\n{text[:4000]}",
+            contents=contents,
             config=types.GenerateContentConfig(
                 system_instruction=_SLOP_JUDGE_SYSTEM,
                 max_output_tokens=1500,

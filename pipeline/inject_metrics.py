@@ -22,6 +22,7 @@ Outputs:
   database/metric_injection_targets.md    — truly unresolvable manual hit list
 """
 
+import argparse
 import re
 import json
 import logging
@@ -30,10 +31,13 @@ from pathlib import Path
 from datetime import datetime
 from difflib import SequenceMatcher
 
+import engine_io
+
 # ─── Paths ────────────────────────────────────────────────────────────────────
 BASE     = Path(__file__).parent.parent  # project root
 OUTPUT   = BASE / "database"
-# Use enriched if it exists (from a prior partial run), otherwise use source
+# Always reads career_history.json (compile merges audit fields into it) and
+# overwrites career_history_enriched.json. See _unmerged_audit_fields().
 SOURCE   = OUTPUT / "career_history.json"
 ENRICHED = OUTPUT / "career_history_enriched.json"
 TARGETS  = OUTPUT / "metric_injection_targets.md"
@@ -103,14 +107,49 @@ def bullet_has_hard_metric(bullet: dict) -> bool:
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
 
+def _audited_texts(path: Path) -> set[str]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        " ".join(b.get("raw_text", "").lower().split())
+        for r in data.get("roles", [])
+        for b in r.get("achievements", [])
+        if b.get("applied_fixes")
+    }
+
+
+def _unmerged_audit_fields() -> int:
+    """Count audited bullets in the enriched file that career_history.json lacks.
+
+    audit_and_repair writes audit fields to the enriched file only; compile_brain
+    merges them back into career_history.json. Running this script in between
+    would overwrite (lose) them.
+    """
+    if not ENRICHED.exists() or ENRICHED.stat().st_mtime <= SOURCE.stat().st_mtime:
+        return 0
+    return len(_audited_texts(ENRICHED) - _audited_texts(SOURCE))
+
+
 def main():
+    parser = argparse.ArgumentParser(description="Metric injection pass (Phase 4)")
+    parser.add_argument("--write", action="store_true",
+                        help="Back up and write career_history_enriched.json and the targets file. "
+                             "Default is a dry run: no writes.")
+    args = parser.parse_args()
+
     log.info("=" * 60)
     log.info("CAREER BRAIN — METRIC INJECTION PASS v2 (Multi-Heuristic)")
+    log.info(f"Mode: {'WRITE' if args.write else 'DRY-RUN (no writes)'}")
     log.info(f"Started: {datetime.now().isoformat()}")
     log.info("=" * 60)
 
     if not SOURCE.exists():
         log.error(f"Source not found: {SOURCE}")
+        sys.exit(1)
+
+    unmerged = _unmerged_audit_fields()
+    if unmerged:
+        log.error(f"{ENRICHED.name} holds {unmerged} audited bullets not yet merged into "
+                  f"{SOURCE.name}. Run compile_brain.py first, or these audit fields are lost.")
         sys.exit(1)
 
     with open(SOURCE, encoding="utf-8") as f:
@@ -230,8 +269,13 @@ def main():
     data["meta"]["p3_suggested"] = p3_suggested
     data["meta"]["manual_pending"] = len(manual_needed)
 
+    if not args.write:
+        log.info("\n  DRY-RUN: no files written. Re-run with --write to apply.")
+        return len([b for b in manual_needed if b["resolution"] == "unresolved"])
+    engine_io.backup([ENRICHED, TARGETS])
     with open(ENRICHED, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    engine_io.validate_engine(ENRICHED)
     log.info(f"\n  ✅ Saved: {ENRICHED.name}")
 
     # ─── Write manual targets Markdown ────────────────────────────────────────

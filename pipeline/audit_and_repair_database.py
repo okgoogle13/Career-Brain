@@ -25,24 +25,27 @@ import json
 import logging
 import os
 import re
-import shutil
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
-import dotenv
 
 # ─── Paths ────────────────────────────────────────────────────────────────────
 BASE      = Path(__file__).parent.parent
 DB        = BASE / "database"
 ENRICHED  = DB / "career_history_enriched.json"
 CURATED   = DB / "ksc_curated.json"
-ERROR_LOG = DB / "parsing_errors.log"
 
-dotenv.load_dotenv(BASE / ".env")
+# Secrets come from `op run --env-file=.env`; .env holds only op:// references.
 
 sys.path.insert(0, str(BASE))
+sys.path.insert(0, str(BASE / "tools"))
 from tools.content_engine import _looks_like_cover_letter  # noqa: E402
+from ai_policy import policy_check  # noqa: E402
+import engine_io  # noqa: E402
+
+# Set False in --dry-run so no external call can happen.
+_LLM_ENABLED = True
 
 logging.basicConfig(
     level=logging.INFO,
@@ -52,10 +55,11 @@ logging.basicConfig(
 log = logging.getLogger("audit_repair")
 
 
+error_entries: list[str] = []
+
+
 def _log_pipeline_error(source: str, reason: str) -> None:
-    entry = f"[{datetime.now().isoformat()}] ERROR | {source} | {reason}\n"
-    with ERROR_LOG.open("a", encoding="utf-8") as fh:
-        fh.write(entry)
+    error_entries.append(f"[{datetime.now().isoformat()}] ERROR | {source} | {reason}")
     log.warning("AUDIT ERROR: %s → %s", source, reason)
 
 # ─── Patterns ─────────────────────────────────────────────────────────────────
@@ -222,7 +226,12 @@ CONSTRAINTS:
 
 
 def _call_gemini(prompt: str, system: str, max_tokens: int = 500) -> Optional[str]:
+    if not _LLM_ENABLED:
+        return None
     api_key = os.environ.get("GEMINI_API_KEY")
+    prompt = policy_check(prompt, "ksc_tailoring")
+    if prompt is None:
+        return None
     if not api_key:
         log.debug("GEMINI_API_KEY not set — skipping LLM rewrite")
         return None
@@ -513,15 +522,6 @@ def render_report(
 # SECTION 6: MAIN
 # ════════════════════════════════════════════════════════════════════════════
 
-def _backup(ts: str) -> None:
-    backup_dir = DB / "backups" / ts
-    backup_dir.mkdir(parents=True, exist_ok=True)
-    for src in [ENRICHED, CURATED]:
-        if src.exists():
-            shutil.copy2(src, backup_dir / src.name)
-            log.info(f"  Backed up {src.name} → backups/{ts}/")
-
-
 def _load_json(path: Path) -> dict:
     if not path.exists():
         log.error(f"Required file not found: {path}")
@@ -551,9 +551,20 @@ def main() -> None:
     log.info(f"Started: {datetime.now().isoformat()}")
     log.info("=" * 60)
 
-    # Truncate error log at phase start — ensures a clean run produces an empty file
-    ERROR_LOG.write_text("", encoding="utf-8")
+    global _LLM_ENABLED
+    if args.dry_run:
+        # Zero external calls and no log/engine writes in a dry run.
+        _LLM_ENABLED = False
+        _run(args)
+        return
+    rid = engine_io.run_id("audit_and_repair_database")
+    try:
+        _run(args)
+    finally:
+        engine_io.append_errors(rid, error_entries)
 
+
+def _run(args: argparse.Namespace) -> None:
     enriched = _load_json(ENRICHED)
 
     curated = _load_json(CURATED)
@@ -586,7 +597,7 @@ def main() -> None:
         log.info("REVIEW the report, then run --write to apply to the full database.")
 
     else:  # --write
-        _backup(ts)
+        engine_io.backup([ENRICHED, CURATED], ts)
 
         stats = {"total": 0, "fixed": 0, "lived_experience": 0,
                  "llm_rewrites": 0, "fix_counts": {}}
@@ -638,6 +649,8 @@ def main() -> None:
 
         ENRICHED.write_text(json.dumps(enriched, indent=2, ensure_ascii=False), encoding="utf-8")
         CURATED.write_text(json.dumps(curated, indent=2, ensure_ascii=False), encoding="utf-8")
+        engine_io.validate_engine(ENRICHED)
+        engine_io.validate_engine(CURATED)
         log.info(f"Updated: {ENRICHED.name}")
         log.info(f"Updated: {CURATED.name}")
 
