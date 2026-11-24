@@ -1,0 +1,245 @@
+{
+  "schema_version": "2.0",
+  "template_id": "ksc_policy_editorial_v1",
+  "tier": 1,
+  "tier_label": "ATS Clean",
+  "doc_type": "ksc",
+  "target_sector": [
+    "policy",
+    "research",
+    "advocacy",
+    "government"
+  ],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDER_SCHEMA_V2",
+  "description": "Policy editorial family. Georgia body, Arial strong uppercase headings over a dark red rule, dominant ruled name, tight rhythm and narrow margins for dense evidence. Single column, ATS-safe.",
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": "Georgia",
+    "content_layer": "body_only",
+    "forbidden_glyphs": [
+      "•",
+      "✔",
+      "★",
+      "❖",
+      "●",
+      "✅",
+      "❌",
+      "|"
+    ]
+  },
+  "palette": {
+    "primary": "#000000",
+    "accent": "#8B0000",
+    "body_text": "#1A1A1A",
+    "muted_text": "#4A5568",
+    "white": "#FFFFFF"
+  },
+  "typography": {
+    "base_font": "Georgia",
+    "base_size_pt": 11,
+    "line_spacing": 1.25,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 0,
+    "section_heading_size_pt": 14.5
+  },
+  "page": {
+    "margin_top_cm": 1.6,
+    "margin_bottom_cm": 1.6,
+    "margin_left_cm": 1.6,
+    "margin_right_cm": 1.6,
+    "background_color": "#FFFFFF"
+  },
+  "blocks": [
+    {
+      "block_id": "name_header",
+      "type": "name_block",
+      "order": 1,
+      "tokens": [
+        "{{CONTACT_NAME}}"
+      ],
+      "content": "{{CONTACT_NAME}}",
+      "visualConfig": {
+        "font_size_pt": 26.0,
+        "font_weight": "bold",
+        "font_color": "#000000",
+        "text_align": "left",
+        "padding_top_pt": 0,
+        "padding_bottom_pt": 4,
+        "letter_spacing": "normal",
+        "line_spacing": 1.15,
+        "margin_bottom_pt": 4,
+        "border_bottom": {
+          "color": "#8B0000",
+          "width_pt": 0.75,
+          "style": "solid"
+        }
+      }
+    },
+    {
+      "block_id": "contact_info",
+      "type": "contact_block",
+      "order": 2,
+      "tokens": [
+        "{{CONTACT_PHONE}}",
+        "{{CONTACT_EMAIL}}",
+        "{{CONTACT_LOCATION}}"
+      ],
+      "content": "{{CONTACT_PHONE}}    {{CONTACT_EMAIL}}    {{CONTACT_LOCATION}}",
+      "visualConfig": {
+        "font_size_pt": 10.5,
+        "font_color": "#4A5568",
+        "text_align": "left",
+        "padding_top_pt": 3,
+        "padding_bottom_pt": 12,
+        "line_spacing": 1.25,
+        "separator": "inline_spaced"
+      }
+    },
+    {
+      "block_id": "application_meta",
+      "type": "application_meta_block",
+      "order": 3,
+      "tokens": [
+        "{{TARGET_ROLE}}",
+        "{{EMPLOYER_ORG}}"
+      ],
+      "content": "{{TARGET_ROLE}}\n{{EMPLOYER_ORG}}",
+      "visualConfig": {
+        "role": {
+          "font_size_pt": 12,
+          "font_weight": "bold",
+          "font_color": "#2D3748",
+          "text_align": "left",
+          "padding_top_pt": 2,
+          "padding_bottom_pt": 2
+        },
+        "employer": {
+          "font_size_pt": 11,
+          "font_color": "#4A5568",
+          "text_align": "left",
+          "padding_bottom_pt": 14
+        }
+      }
+    },
+    {
+      "block_id": "criteria_responses",
+      "type": "criteria_block",
+      "order": 4,
+      "max_criteria": 6,
+      "criteria": [
+        {
+          "criterion_index": 1,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_1_TEXT}}",
+            "context": "{{KSC_1_CONTEXT}}",
+            "action": "{{KSC_1_ACTION}}",
+            "result": "{{KSC_1_RESULT}}",
+            "support_bullets": [
+              "{{KSC_1_SUPPORT_BULLET_1}}",
+              "{{KSC_1_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 2,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_2_TEXT}}",
+            "context": "{{KSC_2_CONTEXT}}",
+            "action": "{{KSC_2_ACTION}}",
+            "result": "{{KSC_2_RESULT}}",
+            "support_bullets": [
+              "{{KSC_2_SUPPORT_BULLET_1}}",
+              "{{KSC_2_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 3,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_3_TEXT}}",
+            "context": "{{KSC_3_CONTEXT}}",
+            "action": "{{KSC_3_ACTION}}",
+            "result": "{{KSC_3_RESULT}}",
+            "support_bullets": [
+              "{{KSC_3_SUPPORT_BULLET_1}}",
+              "{{KSC_3_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 4,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_4_TEXT}}",
+            "context": "{{KSC_4_CONTEXT}}",
+            "action": "{{KSC_4_ACTION}}",
+            "result": "{{KSC_4_RESULT}}",
+            "support_bullets": [
+              "{{KSC_4_SUPPORT_BULLET_1}}",
+              "{{KSC_4_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 5,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_5_TEXT}}",
+            "context": "{{KSC_5_CONTEXT}}",
+            "action": "{{KSC_5_ACTION}}",
+            "result": "{{KSC_5_RESULT}}",
+            "support_bullets": [
+              "{{KSC_5_SUPPORT_BULLET_1}}",
+              "{{KSC_5_SUPPORT_BULLET_2}}"
+            ]
+          }
+        },
+        {
+          "criterion_index": 6,
+          "tokens": {
+            "criterion_text": "{{KSC_CRITERION_6_TEXT}}",
+            "context": "{{KSC_6_CONTEXT}}",
+            "action": "{{KSC_6_ACTION}}",
+            "result": "{{KSC_6_RESULT}}",
+            "support_bullets": [
+              "{{KSC_6_SUPPORT_BULLET_1}}",
+              "{{KSC_6_SUPPORT_BULLET_2}}"
+            ]
+          }
+        }
+      ],
+      "visualConfig": {
+        "criterion_text": {
+          "font_size_pt": 14.5,
+          "font_weight": "bold",
+          "font_color": "#000000",
+          "text_transform": "none",
+          "margin_top_pt": 14,
+          "margin_bottom_pt": 6,
+          "line_spacing": 1.25
+        },
+        "body": {
+          "font_size_pt": 11,
+          "font_color": "#1A1A1A",
+          "line_spacing": 1.25,
+          "paragraph_spacing_after_pt": 6
+        },
+        "bullet": {
+          "font_size_pt": 10.5,
+          "font_color": "#1A1A1A",
+          "glyph": "-",
+          "indent_pt": 14,
+          "line_spacing": 1.25,
+          "margin_bottom_pt": 2
+        }
+      }
+    }
+  ],
+  "heading_font_family": [
+    "Arial"
+  ],
+  "family_id": "policy_editorial"
+}

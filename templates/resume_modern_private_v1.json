@@ -1,0 +1,388 @@
+{
+  "schema_version": "2.0",
+  "template_id": "resume_modern_private_v1",
+  "tier": 2,
+  "tier_label": "ATS Modern",
+  "doc_type": "resume",
+  "target_sector": [
+    "private",
+    "technology",
+    "startup"
+  ],
+  "region": "AU",
+  "placeholder_schema": "PLACEHOLDER_SCHEMA_V2",
+  "description": "Modern private-sector family. Arial, strong title-case headings with a teal left bar, wide margins, no fills. Single column, ATS-safe.",
+  "ats_constraints": {
+    "columns": 1,
+    "allows_tables": false,
+    "allows_images": false,
+    "allows_text_boxes": false,
+    "allows_headers_footers": false,
+    "font_family": "Arial",
+    "content_layer": "body_only",
+    "forbidden_glyphs": [
+      "•",
+      "✔",
+      "★",
+      "❖",
+      "●",
+      "✅",
+      "❌",
+      "|"
+    ]
+  },
+  "palette": {
+    "primary": "#234E52",
+    "accent": "#38B2AC",
+    "body_text": "#1A1A1A",
+    "muted_text": "#4A5568",
+    "white": "#FFFFFF"
+  },
+  "typography": {
+    "base_font": "Arial",
+    "base_size_pt": 11,
+    "line_spacing": 1.25,
+    "spacing_after_pt": 6,
+    "section_heading_tracking_pt": 0,
+    "section_heading_size_pt": 14.5
+  },
+  "page": {
+    "margin_top_cm": 2.4,
+    "margin_bottom_cm": 2.4,
+    "margin_left_cm": 2.4,
+    "margin_right_cm": 2.4,
+    "background_color": "#FFFFFF"
+  },
+  "blocks": [
+    {
+      "block_id": "name_header",
+      "type": "name_block",
+      "order": 1,
+      "tokens": [
+        "{{CONTACT_NAME}}"
+      ],
+      "content": "{{CONTACT_NAME}}",
+      "visualConfig": {
+        "font_size_pt": 20.0,
+        "font_weight": "bold",
+        "font_color": "#234E52",
+        "text_align": "left",
+        "padding_top_pt": 0,
+        "padding_bottom_pt": 4,
+        "letter_spacing": "normal",
+        "line_spacing": 1.25,
+        "margin_bottom_pt": 4
+      }
+    },
+    {
+      "block_id": "contact_info",
+      "type": "contact_block",
+      "order": 2,
+      "tokens": [
+        "{{CONTACT_PHONE}}",
+        "{{CONTACT_EMAIL}}",
+        "{{CONTACT_LOCATION}}"
+      ],
+      "content": "{{CONTACT_PHONE}}    {{CONTACT_EMAIL}}    {{CONTACT_LOCATION}}",
+      "visualConfig": {
+        "font_size_pt": 10.5,
+        "font_color": "#4A5568",
+        "text_align": "left",
+        "padding_top_pt": 3,
+        "padding_bottom_pt": 14,
+        "line_spacing": 1.25,
+        "separator": "inline_spaced"
+      }
+    },
+    {
+      "block_id": "role_headline",
+      "type": "headline_block",
+      "order": 3,
+      "tokens": [
+        "{{TARGET_ROLE}}"
+      ],
+      "content": "{{TARGET_ROLE}}",
+      "visualConfig": {
+        "font_size_pt": 12,
+        "font_weight": "bold",
+        "font_color": "#2D3748",
+        "text_align": "left",
+        "padding_top_pt": 0,
+        "padding_bottom_pt": 8,
+        "line_spacing": 1.25
+      }
+    },
+    {
+      "block_id": "summary_section",
+      "type": "summary_block",
+      "order": 4,
+      "heading": "Summary",
+      "tokens": [
+        "{{PROFESSIONAL_SUMMARY}}"
+      ],
+      "content": "{{PROFESSIONAL_SUMMARY}}",
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 14.5,
+          "font_weight": "bold",
+          "font_color": "#234E52",
+          "text_transform": "none",
+          "letter_spacing_pt": 0,
+          "margin_bottom_pt": 6,
+          "line_spacing": 1.25,
+          "border_left": {
+            "color": "#38B2AC",
+            "width_pt": 3.0,
+            "style": "solid"
+          }
+        },
+        "body": {
+          "font_size_pt": 11,
+          "font_color": "#1A1A1A",
+          "line_spacing": 1.25
+        }
+      }
+    },
+    {
+      "block_id": "skills_section",
+      "type": "skills_block",
+      "order": 5,
+      "heading": "Skills",
+      "tokens": [
+        "{{SKILL_1}}",
+        "{{SKILL_2}}",
+        "{{SKILL_3}}",
+        "{{SKILL_4}}",
+        "{{SKILL_5}}",
+        "{{SKILL_6}}"
+      ],
+      "layout": "grouped_inline",
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 14.5,
+          "font_weight": "bold",
+          "font_color": "#234E52",
+          "text_transform": "none",
+          "letter_spacing_pt": 0,
+          "margin_bottom_pt": 6,
+          "line_spacing": 1.25,
+          "border_left": {
+            "color": "#38B2AC",
+            "width_pt": 3.0,
+            "style": "solid"
+          }
+        },
+        "item": {
+          "font_size_pt": 10.5,
+          "font_color": "#1A1A1A",
+          "separator": "comma",
+          "display": "inline",
+          "line_spacing": 1.25
+        }
+      }
+    },
+    {
+      "block_id": "experience_section",
+      "type": "experience_block",
+      "order": 6,
+      "heading": "Experience",
+      "max_roles": 6,
+      "max_bullets_per_role": 4,
+      "roles": [
+        {
+          "role_index": 1,
+          "tokens": {
+            "title": "{{ROLE_1_TITLE}}",
+            "org": "{{ROLE_1_ORG}}",
+            "dates": "{{ROLE_1_DATES}}",
+            "bullets": [
+              "{{ROLE_1_BULLET_1}}",
+              "{{ROLE_1_BULLET_2}}",
+              "{{ROLE_1_BULLET_3}}",
+              "{{ROLE_1_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 2,
+          "tokens": {
+            "title": "{{ROLE_2_TITLE}}",
+            "org": "{{ROLE_2_ORG}}",
+            "dates": "{{ROLE_2_DATES}}",
+            "bullets": [
+              "{{ROLE_2_BULLET_1}}",
+              "{{ROLE_2_BULLET_2}}",
+              "{{ROLE_2_BULLET_3}}",
+              "{{ROLE_2_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 3,
+          "tokens": {
+            "title": "{{ROLE_3_TITLE}}",
+            "org": "{{ROLE_3_ORG}}",
+            "dates": "{{ROLE_3_DATES}}",
+            "bullets": [
+              "{{ROLE_3_BULLET_1}}",
+              "{{ROLE_3_BULLET_2}}",
+              "{{ROLE_3_BULLET_3}}",
+              "{{ROLE_3_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 4,
+          "tokens": {
+            "title": "{{ROLE_4_TITLE}}",
+            "org": "{{ROLE_4_ORG}}",
+            "dates": "{{ROLE_4_DATES}}",
+            "bullets": [
+              "{{ROLE_4_BULLET_1}}",
+              "{{ROLE_4_BULLET_2}}",
+              "{{ROLE_4_BULLET_3}}",
+              "{{ROLE_4_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 5,
+          "tokens": {
+            "title": "{{ROLE_5_TITLE}}",
+            "org": "{{ROLE_5_ORG}}",
+            "dates": "{{ROLE_5_DATES}}",
+            "bullets": [
+              "{{ROLE_5_BULLET_1}}",
+              "{{ROLE_5_BULLET_2}}",
+              "{{ROLE_5_BULLET_3}}",
+              "{{ROLE_5_BULLET_4}}"
+            ]
+          }
+        },
+        {
+          "role_index": 6,
+          "tokens": {
+            "title": "{{ROLE_6_TITLE}}",
+            "org": "{{ROLE_6_ORG}}",
+            "dates": "{{ROLE_6_DATES}}",
+            "bullets": [
+              "{{ROLE_6_BULLET_1}}",
+              "{{ROLE_6_BULLET_2}}",
+              "{{ROLE_6_BULLET_3}}",
+              "{{ROLE_6_BULLET_4}}"
+            ]
+          }
+        }
+      ],
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 14.5,
+          "font_weight": "bold",
+          "font_color": "#234E52",
+          "text_transform": "none",
+          "letter_spacing_pt": 0,
+          "margin_bottom_pt": 6,
+          "line_spacing": 1.25,
+          "border_left": {
+            "color": "#38B2AC",
+            "width_pt": 3.0,
+            "style": "solid"
+          }
+        },
+        "role_title": {
+          "font_size_pt": 11.5,
+          "font_weight": "bold",
+          "font_color": "#2D3748",
+          "margin_top_pt": 8,
+          "margin_bottom_pt": 2,
+          "line_spacing": 1.25
+        },
+        "role_meta": {
+          "font_size_pt": 10.5,
+          "font_style": "italic",
+          "font_color": "#4A5568",
+          "margin_bottom_pt": 4,
+          "format": "{{ROLE_N_ORG}}   {{ROLE_N_DATES}}",
+          "line_spacing": 1.25
+        },
+        "bullet": {
+          "font_size_pt": 10.5,
+          "font_color": "#1A1A1A",
+          "glyph": "-",
+          "indent_pt": 14,
+          "line_spacing": 1.25,
+          "margin_bottom_pt": 2
+        }
+      }
+    },
+    {
+      "block_id": "education_section",
+      "type": "education_block",
+      "order": 7,
+      "heading": "Education",
+      "tokens": [
+        "{{EDUCATION_1}}",
+        "{{EDUCATION_2}}"
+      ],
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 14.5,
+          "font_weight": "bold",
+          "font_color": "#234E52",
+          "text_transform": "none",
+          "letter_spacing_pt": 0,
+          "margin_bottom_pt": 6,
+          "line_spacing": 1.25,
+          "border_left": {
+            "color": "#38B2AC",
+            "width_pt": 3.0,
+            "style": "solid"
+          }
+        },
+        "item": {
+          "font_size_pt": 10.5,
+          "font_color": "#1A1A1A",
+          "line_spacing": 1.25,
+          "separator": "line_break"
+        }
+      }
+    },
+    {
+      "block_id": "certifications_section",
+      "type": "certifications_block",
+      "order": 8,
+      "heading": "Certifications",
+      "tokens": [
+        "{{CERT_1}}",
+        "{{CERT_2}}",
+        "{{CERT_3}}"
+      ],
+      "visualConfig": {
+        "heading": {
+          "font_size_pt": 14.5,
+          "font_weight": "bold",
+          "font_color": "#234E52",
+          "text_transform": "none",
+          "letter_spacing_pt": 0,
+          "margin_bottom_pt": 6,
+          "line_spacing": 1.25,
+          "border_left": {
+            "color": "#38B2AC",
+            "width_pt": 3.0,
+            "style": "solid"
+          }
+        },
+        "item": {
+          "font_size_pt": 10.5,
+          "font_color": "#1A1A1A",
+          "line_spacing": 1.25,
+          "separator": "line_break"
+        }
+      }
+    }
+  ],
+  "heading_font_family": [
+    "Arial"
+  ],
+  "family_id": "modern_private"
+}
