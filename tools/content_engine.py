@@ -55,6 +55,7 @@ class GenerationConfig:
     dry_run: bool = False
     summary_override: str | None = None
     rosetta: bool = True
+    max_ksc_criteria: int = 6
 
 
 

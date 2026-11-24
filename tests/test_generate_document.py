@@ -875,6 +875,16 @@ class CareerCopilotLeverageTests(unittest.TestCase):
         self.assertIn("banned_phrase_detected: 'dedicated professional'", warnings)
         self.assertFalse([w for w in warnings if "proven track record" in w])
 
+    def test_review_phrase_exempt_when_quoted_from_pd(self):
+        """Mirroring a PD review_phrase does not warn, while non-PD review and banned phrases still warn."""
+        from generate_document import scan_voice_phrases
+        pd_text = "Demonstrated ability to conduct client intake and proven track record."
+        response = "I used my demonstrated ability in intake, am passionate about care, with a proven track record."
+        warnings = scan_voice_phrases(response, pd_text=pd_text)
+        self.assertNotIn("review_phrase_flagged: 'demonstrated ability'", warnings)
+        self.assertIn("review_phrase_flagged: 'passionate about'", warnings)
+        self.assertIn("banned_phrase_detected: 'proven track record'", warnings)
+
     def test_proper_noun_survives_substitution_but_generic_word_converts(self):
         """BS-7.3/7.4: an employer name containing a mapped word is masked inline.
 
@@ -1467,6 +1477,21 @@ class CriterionMatchingTests(unittest.TestCase):
             taxonomy=SAMPLE_TAXONOMY, user_config=SAMPLE_USER_CONFIG,
         )
         self.assertTrue(any(w.startswith("ksc_criteria_truncated: 8") for w in warnings))
+
+    def test_ksc_max_criteria_override_renders_all_eight(self):
+        config = GenerationConfig(
+            doc_type=DocumentType.KSC,
+            target_role="Worker",
+            criteria_text=[f"{i}. Criterion number {i}" for i in range(1, 9)],
+            max_ksc_criteria=8,
+        )
+        values, _, warnings = build_placeholder_values_v2(
+            config=config, history=SAMPLE_HISTORY, narratives=SAMPLE_NARRATIVES,
+            taxonomy=SAMPLE_TAXONOMY, user_config=SAMPLE_USER_CONFIG,
+        )
+        self.assertFalse(any(w.startswith("ksc_criteria_truncated") for w in warnings))
+        self.assertIn("{{KSC_CRITERION_8_TEXT}}", values)
+        self.assertIn("{{KSC_8_CONTEXT}}", values)
 
 
 

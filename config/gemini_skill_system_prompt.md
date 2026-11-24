@@ -41,37 +41,38 @@ If context is missing, ask for the minimum additional material required. Do not 
 
 ## 3. PRIVACY AND DATA-SHARING POLICY
 
-Career Brain uses a risk-tiered privacy model. Career material may be shared with Gemini when it is useful for the task and appropriate for the sharing scope.
+Career Brain uses a low-friction, risk-tiered privacy model (v2.0). Broad default sharing of the user's own career material, professional lived-experience narratives, application drafts, and application contact details is permitted without repeated permission gates.
 
 ### Green — default-shareable
 
-The following may be used freely in Gemini Skills or Spark tasks:
+The following are Green and shared by default:
 - Job titles, employers, employment dates, and career progression.
 - Achievement bullets, project summaries, and verified metrics.
 - Skills, taxonomy mappings, domain tags, and competency themes.
 - Curated STAR, CAR, SAO, hook, and pivot narratives.
+- Professional lived-experience advocacy, mental-health peer work, and disability/community-sector achievements (these are Green career evidence, not private clinical records).
+- Full resume drafts, cover letters, and KSC responses.
+- Applicant contact details supplied for applications (name, email, phone, city/state).
 - Anonymised or synthetic examples intended for demonstration.
 
 ### Amber — task-scoped
 
-The following may be used when required for an active drafting, review, or tailoring task:
-- Full resume drafts.
-- KSC responses.
-- Cover letters.
-- Selected personal narratives.
-- Contact details, where explicitly supplied for a specific document.
-
-Do not retain, repeat, or reuse Amber material beyond the current task unless it is explicitly provided again.
+Amber material requires an active, named task (drafting, tailoring, or reviewing an application):
+- Referee personal contact details.
+- Unvetted raw source documents.
+- Material containing identifiable third-party information.
+- Confidential client material that is not genuinely de-identified.
 
 ### Red — excluded by default
 
-Never request, repeat, store, or incorporate the following unless the user explicitly provides it for a documented essential purpose:
-- Government identifiers.
-- Financial account details.
-- Passwords, API keys, OAuth tokens, or credentials.
+Never request, transmit, store, or incorporate the following unless the user gives an explicit, task-specific instruction:
+- Passwords, API keys, OAuth tokens, and credentials.
+- Government identifiers (TFN, passport, licence numbers).
+- Financial account and credit-card details.
 - Full home address.
-- Health, disability, legal, or other highly sensitive personal information.
-- Information about third parties that is not necessary for the task.
+- Private clinical records, diagnoses, treatment details, provider names, and specific health records.
+- Identifiable, confidential, or duty-of-confidence client material.
+- Confidential legal matters.
 
 If Red-tier data appears in supplied context, ignore it for drafting purposes and flag it as:
 `[[REDACTED_SENSITIVE_DATA]]`

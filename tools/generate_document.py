@@ -755,20 +755,21 @@ def _build_ksc_values(
         warnings.append("no_criteria_provided_or_parsed")
         return
 
-    if len(criteria_list) > MAX_KSC_CRITERIA:
+    max_slots = max(1, config.max_ksc_criteria)
+    if len(criteria_list) > max_slots:
         warnings.append(
             f"ksc_criteria_truncated: {len(criteria_list)} criteria parsed, template has "
-            f"{MAX_KSC_CRITERIA} slots; criteria {MAX_KSC_CRITERIA + 1}-{len(criteria_list)} not rendered"
+            f"{max_slots} slots; criteria {max_slots + 1}-{len(criteria_list)} not rendered"
         )
 
     all_narratives = narratives.get("narratives", [])
     bank_picks = assign_bank_stories(
-        [c.get("criterion_text", "") for c in criteria_list[:MAX_KSC_CRITERIA]],
+        [c.get("criterion_text", "") for c in criteria_list[:max_slots]],
         load_json(ANSWER_BANK_PATH, required=False).get("stories", []),
     )
     used_narratives: set[int] = set()
 
-    for c_idx, criterion in enumerate(criteria_list[:MAX_KSC_CRITERIA], start=1):
+    for c_idx, criterion in enumerate(criteria_list[:max_slots], start=1):
         values[f"{{{{KSC_CRITERION_{c_idx}_TEXT}}}}"] = criterion.get("criterion_text", "")
 
         # Build CAR response
@@ -793,12 +794,13 @@ def _build_ksc_values(
             warnings.append(f"criterion_{c_idx}_{w}")
 
         # ATS coverage + panel rubric (warn-only), then voice on the response alone,
-        # so PD wording in the criterion heading never trips review_phrases.
-        rubric = score_ksc(criterion.get("criterion_text", ""), response, target_role=target)
+        # exempting review_phrases mirrored verbatim from the criterion/PD text.
+        criterion_text = criterion.get("criterion_text", "")
+        rubric = score_ksc(criterion_text, response, target_role=target)
         for w in rubric["warnings"]:
             warnings.append(f"criterion_{c_idx}_{w}")
         response_text = " ".join(str(v) for v in response.values() if v)
-        for w in scan_voice_phrases(response_text):
+        for w in scan_voice_phrases(response_text, pd_text=criterion_text):
             warnings.append(f"criterion_{c_idx}_{w}")
 
 
@@ -905,12 +907,20 @@ VOICE_PHRASE_CLASSES = (
 VOICE_REVIEW_MARKER = re.compile(r'\[\[VOICE_REVIEW:.*?\]\]', re.IGNORECASE | re.DOTALL)
 
 
-def scan_voice_phrases(text: str, ats_rules: dict[str, Any] | None = None) -> list[str]:
+def scan_voice_phrases(
+    text: str,
+    ats_rules: dict[str, Any] | None = None,
+    *,
+    pd_text: str | None = None,
+) -> list[str]:
     """Flag corporate slop, context-dependent filler, and over-claimed credentials.
 
     Warn-only by design; see docs/voice/voice-authenticity-profile.md. Matching is
     whole-word and case-insensitive, so "dynamic" does not fire on "group dynamics".
     Wrapping text in [[VOICE_REVIEW: ...]] exempts it from every voice class.
+    When ``pd_text`` is supplied, ``review_phrases`` that appear verbatim in the
+    criterion/PD are exempted so ATS keyword mirroring does not trigger false
+    positives (banned_phrases and overclaim_terms are never auto-exempted).
     """
     if ats_rules is None:
         ats_rules = load_ats_rules()
@@ -923,6 +933,8 @@ def scan_voice_phrases(text: str, ats_rules: dict[str, Any] | None = None) -> li
         for phrase in vocab_rules.get(config_key, []):
             pattern = re.compile(r'\b' + re.escape(phrase) + r'\b', re.IGNORECASE)
             if pattern.search(scanned):
+                if config_key == "review_phrases" and pd_text and pattern.search(pd_text):
+                    continue
                 warnings.append(f"{prefix}: '{phrase}'")
     if overrides:
         warnings.append(f"voice_review_override_honoured: {overrides}")
@@ -1161,6 +1173,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="KSC criteria text: path to a file OR inline text string (required for --type ksc).",
     )
     parser.add_argument(
+        "--max-ksc-criteria", type=int, default=MAX_KSC_CRITERIA,
+        help=f"Maximum KSC criteria slots to render (default: {MAX_KSC_CRITERIA}).",
+    )
+    parser.add_argument(
         "--user-config", type=Path, default=DEFAULT_USER_CONFIG,
         help="Path to user config JSON (contact info, education, certs).",
     )
@@ -1272,6 +1288,7 @@ def main(argv: list[str] | None = None) -> int:
             dry_run=args.dry_run,
             summary_override=args.summary,
             rosetta=args.rosetta,
+            max_ksc_criteria=args.max_ksc_criteria,
         )
 
 
