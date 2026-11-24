@@ -11,12 +11,14 @@
 ## Approval gates
 
 - Do not write, execute, modify, generate, commit, push, deploy, or call external services without explicit approval for the relevant step.
-- Before script changes: audit affected paths and proposed changes, then stop for approval.
-- Pipeline stages require separate approval:
+- Approval of a written plan covers, within that plan's scope: local edits, tests, `--dry-run` runs, one focused commit per stage, and `git rm` of files the plan names.
+- Before script changes outside an approved plan: audit affected paths and proposed changes, then stop for approval.
+- Pipeline stages require separate approval until pipeline Stage A1 (timestamped backups, `--dry-run` defaults, append-only error log) is committed and verified; after that, an approved plan may run local stages end-to-end:
   1. Phase 0–1: `organise_raw_docs.py`, `normalize_vault.py`
   2. Phase 2–4: `compile_brain.py`, `curate_narratives.py`, `inject_metrics.py`
   3. Phase 5: `tools/generate_document.py`
-- “Run the pipeline” means audit first, never all phases autonomously.
+- Hard gates (approval every time, once per batch, plan approval never covers them): writes to `source_docs/` or `archive/`; live Gemini calls or Google Docs/Drive writes; tier changes in `config/ai_sharing_policy.json`; OAuth scopes or credentials; `git push`.
+- “Run the pipeline” without an approved plan means audit first, never all phases autonomously.
 - Before generating or submitting application copy, review every banned-phrase, review-phrase, and overclaim warning; only spelling may be auto-corrected.
 
 ## Context and output
@@ -32,7 +34,7 @@
 - `processed/` and `database/` are generated outputs; do not edit them manually unless explicitly instructed.
 - `archive/` is legacy material; never re-ingest it without explicit instruction.
 - Never publish raw source documents, complete database engines, or full knowledge exports.
-- Gemini Skills, Gemini Spark, Claude Desktop and Claude Duet receive curated, task-scoped exports governed by `config/ai_sharing_policy.json` (Green default, Amber task-scoped, Red excluded); the canonical Career Brain database remains strictly local.
+- Approved AI targets (Gemini, Claude, OpenAI) operate under `config/ai_sharing_policy.json` (low-friction risk-tiered: user career material, application drafts, contact details, and professional lived-experience narratives are Green share-by-default without repeated gates; Amber task-scoped; Red strictly excluded); the canonical Career Brain database remains strictly local.
 - Secrets are managed with 1Password CLI (`op`). Never write raw secret values to `.env`, logs, source, commits, or output.
 - Use `op run --env-file=".env" -- <command>` when approved runtime secrets are needed; `.env` must contain only `op://` references.
 
@@ -63,4 +65,3 @@
 - Python: PEP 8, 4 spaces, `pathlib`, structured `logging`, type annotations for core models, and repository-root resolution via `Path(__file__).parent.parent`. Use `google-genai` (not legacy SDK).
 - Theme sources (`theme-*.json`) conform to `MASTER_SCHEMA_V2_3.json`; compiled templates validate against `schema_v2_0.json`.
 - If authorized to commit, use focused Conventional Commits: `feat:`, `fix:`, `chore:`, or `docs:`.
-w
