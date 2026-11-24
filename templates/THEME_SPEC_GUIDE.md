@@ -2,7 +2,7 @@
 
 > Source of truth for the `templates/` theme library.  
 > All new themes must follow this guide. Before a Golden Master is built they must pass `tools/validate_templates_v2.py <path>` (offline); after it is built, `tools/audit_doc_style.py <DOC_ID> --theme <path>` must print `STYLE OK`.
-> Stage order and the skill that owns each check: `.claude/skills/career_brain_skill_integration_v3/SKILL.md`.
+> Stage order and the skill that owns each check: `.claude/skills/theme-gate/SKILL.md` ("Run order").
 
 ---
 
@@ -175,7 +175,7 @@ Do not combine both on the same heading. Both are emitted as solid lines only; K
 
 `tools/build_golden_master.py` builds the Golden Master from the compiled JSON and reads only: fonts, sizes, weights and colours; line spacing and space below; margins; page background; solid heading bottom rule or left bar; the name rule; skills-block shading; and the literal `heading` text of each block (so heading case comes from that text, e.g. `SUMMARY` vs `Summary`).
 
-It does **not** read `text_transform`, `letter_spacing_pt`, `text_align`, contact `separator`, skills `layout`/`display`, block `order` (section order is fixed), or any v2.3 `bands`, `dividers` or `accent_logic`. Values in those fields do not change the document, so they do not make a theme distinct (see `.claude/skills/theme-divergence-auditor`).
+It does **not** read `text_transform`, `letter_spacing_pt`, `text_align`, contact `separator`, skills `layout`/`display`, block `order` (section order is fixed), or any v2.3 `bands`, `dividers` or `accent_logic`. Values in those fields do not change the document, so they do not make a theme distinct (theme-gate line A4).
 
 ### Background fills
 Permitted on `skills_section.container` only. Use a light tint from the palette (`#F0FFF4`, `#FDF5DC`, `#E6FFFA`). All other blocks take the page background.
@@ -246,10 +246,10 @@ Increment `v<N>` for a visual revision within the same identity. Create a new `f
 [ ] Check against Design Standard S1–S4 and S6; record results in the brief's STANDARD_CHECK
 [ ] Run: .venv/bin/python tools/validate_templates_v2.py templates/<new_file>.json  → PASS
 [ ] Run: .venv/bin/python tools/theme_fingerprint.py templates/<new_file>.json  → contrast_failures empty
-[ ] Run the output-quality-gate skill, Stage A → APPROVE
+[ ] Run the theme-gate skill, Stage A → PASS
 [ ] Build: .venv/bin/python tools/build_golden_master.py templates/<new_file>.json  (--dry-run first; live build calls Google)
 [ ] Run: .venv/bin/python tools/audit_doc_style.py <DOC_ID> --theme templates/<new_file>.json  → STYLE OK
-[ ] Run the output-quality-gate skill, Stage B → APPROVE
+[ ] Run the theme-gate skill, Stage B → PASS
 [ ] Register Doc ID in config/doc_templates.json under resume.variants.<name>
 ```
 

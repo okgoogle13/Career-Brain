@@ -2,8 +2,20 @@
 
 <!-- One brief per family, written before any theme JSON. Fill every field; write "absent" rather than
 inventing a rationale. Field rules: templates/THEME_SPEC_GUIDE.md "Design Standard" (S1-S6) and
-"Naming Convention". Q-numbers map to theme-purpose-interrogator; Q8 (colour variation) comes from
-theme-divergence-auditor and is not filled here. DECISIONS may cite emitted fields only. -->
+"Naming Convention". The theme-gate skill checks this form (line A5); "is it only a colour variation"
+is gate line A4 (theme_fingerprint.py --nearest) and is not filled here. DECISIONS may cite emitted
+fields only.
+
+Answer rules: AUDIENCE and READER_FIRST must be specific (not "professionals", not "clean layout");
+STORY must not fit another theme in the same sector; a vague, circular or unsupported answer
+(e.g. "compact" with line_rhythm airy) is a FAIL for A5.
+
+FAMILY_ID rules: lowercase snake_case; a sector or strategy name (state_gov_panel), never a visual one
+(teal_wave); identical in every member; minor visual revision keeps the id and bumps v<N>.
+
+KSC coverage rule: government / public service -> KSC required; community services / NFP -> required
+where selection criteria are common; corporate, private, technical -> optional, with a written
+rationale in MEMBERS if absent. -->
 
 ## META
 FAMILY_ID: <snake_case sector or strategy name>

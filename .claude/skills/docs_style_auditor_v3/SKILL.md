@@ -42,7 +42,7 @@ Read the theme JSON for the authoritative font, sizes and spacing; do not rely o
 
 ## Protocol
 
-This skill is the single owner of the live audit: `output-quality-gate` and `gold-template-builder-v3` consume its result rather than re-running it. Both scripts call the Google Docs API — ask the user before each run.
+This skill is the single owner of the live audit: `theme-gate` and `gold-template-builder-v3` consume its result rather than re-running it. Both scripts call the Google Docs API — ask the user before each run.
 
 **Step 1 — Run the audit:**
 

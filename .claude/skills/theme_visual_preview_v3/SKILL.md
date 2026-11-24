@@ -50,7 +50,7 @@ The production builder is ATS-minimal: it applies font, sizes, colors, line-spac
 
 <output>
 1. Generate the HTML artifact.
-2. Present a table to the user with one row per theme: 1-line aesthetic verdict | visual tweaks & improvements. Do not rate distinctiveness: the preview renders v2.3 bands and dividers the built doc drops, so it overstates differences. Distinctiveness comes from `theme-divergence-auditor`.
+2. Present a table to the user with one row per theme: 1-line aesthetic verdict | visual tweaks & improvements. Do not rate distinctiveness: the preview renders v2.3 bands and dividers the built doc drops, so it overstates differences. Distinctiveness comes from `theme-gate` line A4.
 3. Ask the user to rank the themes and note any desired tweaks.
 </output>
 
@@ -61,4 +61,4 @@ The production builder is ATS-minimal: it applies font, sizes, colors, line-spac
 3. LLM reads `context/theme_viz_sample_content.md`
 4. LLM outputs the HTML artifact and aesthetic table
 5. User provides ranking/tweaks
-6. Continue with `theme-divergence-auditor` on the ranked themes (next stage in `career-brain-skill-integration`)
+6. Continue with `theme-gate` Stage A on the ranked family (run order in `theme-gate`)
