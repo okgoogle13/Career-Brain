@@ -1,0 +1,8 @@
+{
+  "description": "Tolerances used by tools/verify_golden_master.py when comparing a live Golden Master with its theme JSON (via build_golden_master.role_style).",
+  "font_size_pt": 0.5,
+  "line_spacing_pct": 0.5,
+  "spacing_pt": 0.5,
+  "margin_pt": 0.5,
+  "rgb_channel": 0.008
+}

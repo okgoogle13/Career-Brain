@@ -34,6 +34,17 @@ ROOT = Path(__file__).parent.parent
 TEMPLATES_DIR = ROOT / "templates"
 CONFIG = json.loads((ROOT / "config" / "theme_fingerprint.json").read_text(encoding="utf-8"))
 
+sys.path.insert(0, str(ROOT / "tools"))
+import build_golden_master as bgm  # noqa: E402
+
+
+def built_line_spacing(data: dict) -> float | None:
+    """Mean line spacing (multiplier) over every paragraph the builder emits for this theme."""
+    rows = bgm.build_paragraphs(data)
+    if not rows:
+        return None
+    return round(sum(bgm.role_style(data, r[4])["line_spacing"] for r in rows) / len(rows) / 100, 3)
+
 
 def _bucket(value: float | None, edges: list[float], labels: list[str]) -> str | None:
     if value is None:
@@ -156,7 +167,7 @@ def fingerprint(path: Path) -> dict:
         "name_scale": _bucket(name_size / base if name_size and base else None,
                               CONFIG["name_scale_buckets"], ["modest", "prominent", "dominant"]),
         "skills_fill": bool(skills.get("container", {}).get("background_color")) if skills else None,
-        "line_rhythm": _bucket(typo.get("line_spacing"), CONFIG["line_spacing_buckets"],
+        "line_rhythm": _bucket(built_line_spacing(data), CONFIG["line_spacing_buckets"],
                                ["tight", "medium", "airy"]),
         "margin_frame": _bucket(margin_mean, CONFIG["margin_mean_cm_buckets"],
                                 ["narrow", "standard", "wide"]),
@@ -180,6 +191,7 @@ def fingerprint(path: Path) -> dict:
         "skills_fill_color": skills.get("container", {}).get("background_color"),
         "base_size_pt": base,
         "line_spacing": typo.get("line_spacing"),
+        "built_line_spacing": built_line_spacing(data),
         "section_heading_size_pt": head_size,
         "name_size_pt": name_size,
         "margin_mean_cm": margin_mean,

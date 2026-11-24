@@ -63,6 +63,7 @@ def _get_credentials() -> Credentials:
 
 HEADING_NAMED_STYLES = {"HEADING_1", "TITLE"}
 FAKE_HEADING_MAX_CHARS = 60         # all-bold NORMAL_TEXT shorter than this → flag
+RGB_TOLERANCE = 2 / 255             # Docs round-trips colours as floats
 
 class ExpectedStyle:
     def __init__(self, font: str, normal_size: float, heading_size: float, line_spacing_pct: float, space_below_pt: float):
@@ -93,6 +94,8 @@ def load_theme_style(theme_path: str) -> ExpectedStyle:
     typo = data.get("typography", {})
     
     font = ats.get("font_family", typo.get("base_font", "Calibri"))
+    if isinstance(font, list):  # v2.3 sources list a fallback stack; the first entry is the font
+        font = font[0]
     normal_size = typo.get("base_size_pt", 11.0)
     heading_size = typo.get("section_heading_size_pt", 14.0)
     
@@ -129,49 +132,10 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
 
     # If it is a v2.0 template (has blocks), run role-aware paragraph audit
     if theme_data and "blocks" in theme_data:
-        try:
-            import sys
-            # Add BASE to path to import build_golden_master
-            sys.path.insert(0, str(BASE))
-            from build_golden_master import build_paragraphs
-        except ImportError as exc:
-            failures.append(f"FAIL: Could not import build_paragraphs for verification: {exc}")
-            return failures
+        sys.path.insert(0, str(BASE / "tools"))
+        from build_golden_master import build_paragraphs, hex_to_rgb, role_style
 
         expected_paras = build_paragraphs(theme_data)
-        doc_type = theme_data.get("doc_type", "resume")
-        
-        # Helper to get block config
-        def get_block(block_id):
-            return next((b for b in theme_data.get("blocks", []) if b["block_id"] == block_id), None)
-
-        exp_block = get_block("experience_section")
-        ev = exp_block["visualConfig"] if exp_block else {"role_title": {}, "role_meta": {}, "bullet": {}}
-
-        skills_block = get_block("skills_section")
-        sv = skills_block["visualConfig"] if skills_block else {"item": {}}
-
-        name_block = get_block("name_header")
-        nv = name_block["visualConfig"] if name_block else {"font_size_pt": 24, "font_color": "#000000"}
-
-        summary_block = get_block("summary_section")
-        h1_vc = summary_block["visualConfig"]["heading"] if summary_block and "visualConfig" in summary_block else {"font_size_pt": 14, "font_color": "#000000"}
-
-        contact_block = get_block("contact_info")
-        cv = contact_block["visualConfig"] if contact_block else {"font_size_pt": 11, "font_color": "#444444"}
-
-        headline_block = get_block("role_headline")
-        hv = headline_block["visualConfig"] if headline_block else {"font_size_pt": 12, "font_color": "#1A1A1A"}
-
-        criteria_block = get_block("criteria_responses")
-        ksc_cv = criteria_block["visualConfig"]["criterion_text"] if criteria_block else {}
-
-        # Default body settings from typography
-        typo = theme_data.get("typography", {})
-        body_size = typo.get("base_size_pt", 11.0)
-        body_color = theme_data.get("palette", {}).get("body_text", "#1A1A1A")
-        font = typo.get("base_font", "Calibri")
-        heading_font = (theme_data.get("heading_font_family") or [font])[0]
 
         # 1. Collect all non-empty paragraphs from document
         doc_paras = []
@@ -218,66 +182,11 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
                     f"(Check for missing/unknown placeholders or content outside body)"
                 )
 
-            # Map the expected block configs
-            if role == "name":
-                font_size = nv.get("font_size_pt", 24)
-                color = nv.get("font_color", "#000000")
-                line_spacing_pct = 115.0
-                space_below = nv.get("margin_bottom_pt", 2.0)
-            elif role == "contact":
-                font_size = cv.get("font_size_pt", 11)
-                color = cv.get("font_color", "#444444")
-                line_spacing_pct = cv.get("line_spacing", 1.15) * 100.0
-                space_below = cv.get("margin_bottom_pt", 2.0)
-            elif role == "headline":
-                font_size = hv.get("font_size_pt", 12)
-                color = hv.get("font_color", "#1A1A1A")
-                line_spacing_pct = 115.0
-                space_below = hv.get("margin_bottom_pt", 8.0)
-            elif role == "employer":
-                font_size = body_size
-                color = body_color
-                line_spacing_pct = typo.get("line_spacing", 1.15) * 100.0
-                space_below = 2.0
-            elif role == "h1":
-                font_size = h1_vc.get("font_size_pt", 14)
-                color = h1_vc.get("font_color", "#000000")
-                line_spacing_pct = 115.0
-                space_below = h1_vc.get("margin_bottom_pt", 6.0)
-            elif role == "h2":
-                if doc_type == "ksc":
-                    font_size = ksc_cv.get("font_size_pt", 12)
-                    color = ksc_cv.get("font_color", "#000000")
-                    space_below = ksc_cv.get("margin_bottom_pt", 8.0)
-                else:
-                    rt = ev.get("role_title", {})
-                    font_size = rt.get("font_size_pt", 12)
-                    color = rt.get("font_color", "#000000")
-                    space_below = rt.get("margin_top_pt", 8.0)
-                line_spacing_pct = 115.0
-            elif role == "role_meta":
-                rm = ev.get("role_meta", {})
-                font_size = rm.get("font_size_pt", 11)
-                color = rm.get("font_color", "#444444")
-                line_spacing_pct = 115.0
-                space_below = rm.get("margin_bottom_pt", 4.0)
-            elif role == "bullet":
-                b_vc = ev.get("bullet", {})
-                font_size = b_vc.get("font_size_pt", body_size)
-                color = b_vc.get("font_color", body_color)
-                line_spacing_pct = b_vc.get("line_spacing", 1.2) * 100.0
-                space_below = b_vc.get("margin_bottom_pt", 2.0)
-            elif role == "skills_body":
-                item = sv.get("item", {})
-                font_size = item.get("font_size_pt", body_size)
-                color = item.get("font_color", body_color)
-                line_spacing_pct = 115.0
-                space_below = 6.0
-            else:  # body
-                font_size = body_size
-                color = body_color
-                line_spacing_pct = typo.get("line_spacing", 1.15) * 100.0
-                space_below = typo.get("spacing_after_pt", 6.0)
+            st = role_style(theme_data, role)
+            font_size = st["font_size"]
+            line_spacing_pct = st["line_spacing"]
+            space_below = st["space_below"]
+            expected_rgb = hex_to_rgb(st["color"])
 
             # Line spacing check
             ls = para_style.get("lineSpacing")
@@ -325,7 +234,7 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
                     )
 
                 # Check font family (accept absent if default Arial)
-                expected_font = heading_font if role in ("name", "headline", "h1", "h2") else font
+                expected_font = st["font"]
                 weighted_font = text_style.get("weightedFontFamily", {})
                 font_family = weighted_font.get("fontFamily")
                 if font_family is None:
@@ -338,6 +247,16 @@ def _audit(doc: dict, expected: ExpectedStyle, theme_data: dict | None = None) -
                     failures.append(
                         f"FAIL: Text run '{run_snippet}' (role '{role}') — font is '{font_family}' "
                         f"(expected '{expected_font}')"
+                    )
+
+                # Check colour (RGB, per channel)
+                rgb = text_style.get("foregroundColor", {}).get("color", {}).get("rgbColor")
+                if rgb is not None and any(
+                    abs(rgb.get(ch, 0.0) - expected_rgb[ch]) > RGB_TOLERANCE for ch in ("red", "green", "blue")
+                ):
+                    failures.append(
+                        f"FAIL: Text run '{run_snippet}' (role '{role}') — colour {rgb} "
+                        f"(expected {st['color']})"
                     )
 
                 # Check font size (accept absent if default 11.0pt)
@@ -501,11 +420,8 @@ def main() -> None:
     if args.theme:
         expected_style = load_theme_style(args.theme)
         theme_path = Path(args.theme)
-        if theme_path.exists():
-            try:
-                theme_data = json.loads(theme_path.read_text(encoding="utf-8"))
-            except Exception:
-                pass
+        # load_theme_style already exited on a missing or invalid file
+        theme_data = json.loads(theme_path.read_text(encoding="utf-8"))
 
     try:
         creds = _get_credentials()

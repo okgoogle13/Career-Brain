@@ -135,46 +135,91 @@ def build_paragraphs(theme: dict) -> list[tuple[str, str, bool, bool, str | None
     return rows
 
 
-def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
-    """Build all batchUpdate requests for styling after content is inserted."""
+def _vc(theme: dict, block_id: str) -> dict:
+    """visualConfig of a block, or {} when the block or its visualConfig is absent."""
+    block = next((b for b in theme.get("blocks", []) if b["block_id"] == block_id), None)
+    return (block or {}).get("visualConfig") or {}
+
+
+def _below(vc: dict, default: float) -> float:
+    return vc.get("margin_bottom_pt", vc.get("padding_bottom_pt", default))
+
+
+def role_style(theme: dict, role: str) -> dict:
+    """Resolved paragraph + text style for one paragraph role.
+
+    Single source of the role -> style map: the builder emits it and the audit,
+    verifier and fingerprint tools read it, so they cannot drift apart.
+    Keys: font, weight, font_size, color, line_spacing (percent), space_above, space_below.
+    """
     doc_type = theme.get("doc_type", "resume")
-    font = theme["typography"]["base_font"]
-    heading_font = (theme.get("heading_font_family") or [font])[0]
-    heading_weight = theme["typography"].get("section_heading_weight")
-    page = theme.get("page", {
-        "margin_top_cm": 2.0, "margin_bottom_cm": 2.0, 
-        "margin_left_cm": 2.0, "margin_right_cm": 2.0, 
-        "background_color": "#FFFFFF"
-    })
-
-    def get_block(block_id):
-        return next((b for b in theme.get("blocks", []) if b["block_id"] == block_id), None)
-
-    exp_block = get_block("experience_section")
-    ev = exp_block["visualConfig"] if exp_block else {"role_title": {}, "role_meta": {}, "bullet": {}}
-
-    skills_block = get_block("skills_section")
-    sv = skills_block["visualConfig"] if skills_block else {"item": {}}
-
-    name_block = get_block("name_header")
-    nv = name_block["visualConfig"] if name_block else {"font_size_pt": 24, "font_color": "#000000"}
-
-    summary_block = get_block("summary_section")
-    h1_vc = summary_block["visualConfig"]["heading"] if summary_block and "visualConfig" in summary_block else {"font_size_pt": 14, "font_color": "#000000"}
-
-    contact_block = get_block("contact_info")
-    cv = contact_block["visualConfig"] if contact_block else {"font_size_pt": 11, "font_color": "#444444"}
-
-    headline_block = get_block("role_headline")
-    hv = headline_block["visualConfig"] if headline_block else {"font_size_pt": 12, "font_color": "#1A1A1A"}
-
-    criteria_block = get_block("criteria_responses")
-    ksc_cv = criteria_block["visualConfig"]["criterion_text"] if criteria_block else {}
-
-    # Default body settings from typography
     typo = theme.get("typography", {})
+    base_font = typo.get("base_font", "Calibri")
+    heading_font = (theme.get("heading_font_family") or [base_font])[0]
     body_size = typo.get("base_size_pt", 11.0)
     body_color = theme.get("palette", {}).get("body_text", "#1A1A1A")
+    body_ls = typo.get("line_spacing", 1.15)
+    ev = _vc(theme, "experience_section")
+    kv = _vc(theme, "criteria_responses")
+    above = 0.0
+
+    if role == "name":
+        vc = _vc(theme, "name_header")
+        size, color, ls, below = vc.get("font_size_pt", 24), vc.get("font_color", "#000000"), vc.get("line_spacing", body_ls), _below(vc, 2.0)
+    elif role == "contact":
+        vc = _vc(theme, "contact_info")
+        size, color, ls, below = vc.get("font_size_pt", 11), vc.get("font_color", "#444444"), vc.get("line_spacing", body_ls), _below(vc, 2.0)
+    elif role == "headline":
+        vc = _vc(theme, "role_headline")
+        size, color, ls, below = vc.get("font_size_pt", 12), vc.get("font_color", "#1A1A1A"), vc.get("line_spacing", body_ls), _below(vc, 8.0)
+    elif role == "employer":
+        size, color, ls, below = body_size, body_color, body_ls, 2.0
+    elif role == "h1":
+        vc = _vc(theme, "summary_section").get("heading", {})
+        size, color, ls, below = vc.get("font_size_pt", 14), vc.get("font_color", "#000000"), vc.get("line_spacing", body_ls), vc.get("margin_bottom_pt", 6.0)
+    elif role == "h2":
+        vc = kv.get("criterion_text", {}) if doc_type == "ksc" else ev.get("role_title", {})
+        size, color, ls = vc.get("font_size_pt", 12), vc.get("font_color", "#000000"), vc.get("line_spacing", body_ls)
+        above, below = vc.get("margin_top_pt", 0.0), vc.get("margin_bottom_pt", 2.0)
+    elif role == "role_meta":
+        vc = ev.get("role_meta", {})
+        size, color, ls, below = vc.get("font_size_pt", 11), vc.get("font_color", "#444444"), vc.get("line_spacing", body_ls), vc.get("margin_bottom_pt", 4.0)
+    elif role == "bullet":
+        vc = kv.get("bullet", {}) if doc_type == "ksc" else ev.get("bullet", {})
+        size, color, ls, below = vc.get("font_size_pt", body_size), vc.get("font_color", body_color), vc.get("line_spacing", 1.2), vc.get("margin_bottom_pt", 2.0)
+    elif role == "skills_body":
+        vc = _vc(theme, "skills_section").get("item", {})
+        size, color, ls, below = vc.get("font_size_pt", body_size), vc.get("font_color", body_color), vc.get("line_spacing", body_ls), 6.0
+    else:  # body
+        vc = kv.get("body", {}) if doc_type == "ksc" else {}
+        size, color = vc.get("font_size_pt", body_size), vc.get("font_color", body_color)
+        ls = vc.get("line_spacing", body_ls)
+        below = vc.get("paragraph_spacing_after_pt", typo.get("spacing_after_pt", 6.0))
+
+    heading = role in HEADING_ROLES
+    return {
+        "font": heading_font if heading else base_font,
+        "weight": typo.get("section_heading_weight") if heading else None,
+        "font_size": size,
+        "color": color,
+        "line_spacing": round(ls * 100),
+        "space_above": above,
+        "space_below": below,
+    }
+
+
+def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
+    """Build all batchUpdate requests for styling after content is inserted."""
+    page = theme.get("page", {
+        "margin_top_cm": 2.0, "margin_bottom_cm": 2.0,
+        "margin_left_cm": 2.0, "margin_right_cm": 2.0,
+        "background_color": "#FFFFFF"
+    })
+    ev = _vc(theme, "experience_section")
+    sv = _vc(theme, "skills_section")
+    nv = _vc(theme, "name_header")
+    h1_vc = _vc(theme, "summary_section").get("heading", {})
+    bullet_vc = _vc(theme, "criteria_responses").get("bullet", {}) if theme.get("doc_type") == "ksc" else ev.get("bullet", {})
 
     requests = []
 
@@ -204,76 +249,18 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
         end = index + len(text)
         index = end + 1
 
-        if role == "name":
-            font_size = nv.get("font_size_pt", 24)
-            color = nv.get("font_color", "#000000")
-            line_spacing = 115
-            space_below = nv.get("margin_bottom_pt", 2.0)
-        elif role == "contact":
-            font_size = cv.get("font_size_pt", 11)
-            color = cv.get("font_color", "#444444")
-            line_spacing = round(cv.get("line_spacing", 1.15) * 100)
-            space_below = cv.get("margin_bottom_pt", 2.0)
-        elif role == "headline":
-            font_size = hv.get("font_size_pt", 12)
-            color = hv.get("font_color", "#1A1A1A")
-            line_spacing = 115
-            space_below = hv.get("margin_bottom_pt", 8.0)
-        elif role == "employer":
-            font_size = body_size
-            color = body_color
-            line_spacing = round(typo.get("line_spacing", 1.15) * 100)
-            space_below = 2.0
-        elif role == "h1":
-            font_size = h1_vc.get("font_size_pt", 14)
-            color = h1_vc.get("font_color", "#000000")
-            line_spacing = 115
-            space_below = h1_vc.get("margin_bottom_pt", 6.0)
-        elif role == "h2":
-            if doc_type == "ksc":
-                font_size = ksc_cv.get("font_size_pt", 12)
-                color = ksc_cv.get("font_color", "#000000")
-                space_below = ksc_cv.get("margin_bottom_pt", 8.0)
-            else:
-                rt = ev.get("role_title", {})
-                font_size = rt.get("font_size_pt", 12)
-                color = rt.get("font_color", "#000000")
-                space_below = rt.get("margin_top_pt", 8.0)
-            line_spacing = 115
-        elif role == "role_meta":
-            rm = ev.get("role_meta", {})
-            font_size = rm.get("font_size_pt", 11)
-            color = rm.get("font_color", "#444444")
-            line_spacing = 115
-            space_below = rm.get("margin_bottom_pt", 4.0)
-        elif role == "bullet":
-            b_vc = ev.get("bullet", {})
-            font_size = b_vc.get("font_size_pt", body_size)
-            color = b_vc.get("font_color", body_color)
-            line_spacing = round(b_vc.get("line_spacing", 1.2) * 100)
-            space_below = b_vc.get("margin_bottom_pt", 2.0)
-        elif role == "skills_body":
-            item = sv.get("item", {})
-            font_size = item.get("font_size_pt", body_size)
-            color = item.get("font_color", body_color)
-            line_spacing = 115
-            space_below = 6.0
-        else:  # body
-            font_size = body_size
-            color = body_color
-            line_spacing = round(typo.get("line_spacing", 1.15) * 100)
-            space_below = typo.get("spacing_after_pt", 6.0)
+        st = role_style(theme, role)
 
         # Paragraph style request
         para_style = {
             "namedStyleType": named_style,
-            "lineSpacing": line_spacing,
-            "spaceBelow": pt(space_below),
-            "spaceAbove": pt(0),
+            "lineSpacing": st["line_spacing"],
+            "spaceBelow": pt(st["space_below"]),
+            "spaceAbove": pt(st["space_above"]),
         }
 
         if role == "bullet":
-            para_style["indentStart"] = pt(ev.get("bullet", {}).get("indent_pt", 14))
+            para_style["indentStart"] = pt(bullet_vc.get("indent_pt", 14))
             para_style["indentFirstLine"] = pt(0)
 
         para_fields = "namedStyleType,lineSpacing,spaceBelow,spaceAbove"
@@ -334,11 +321,11 @@ def build_requests(theme: dict, paragraphs: list, doc_id: str) -> list[dict]:
                 "textStyle": {
                     "bold": bold,
                     "italic": italic,
-                    "fontSize": pt(font_size),
-                    "foregroundColor": {"color": {"rgbColor": hex_to_rgb(color)}},
+                    "fontSize": pt(st["font_size"]),
+                    "foregroundColor": {"color": {"rgbColor": hex_to_rgb(st["color"])}},
                     "weightedFontFamily": {
-                        "fontFamily": heading_font if role in HEADING_ROLES else font,
-                        **({"weight": heading_weight} if role in HEADING_ROLES and heading_weight else {}),
+                        "fontFamily": st["font"],
+                        **({"weight": st["weight"]} if st["weight"] else {}),
                     },
                 },
                 "fields": "bold,italic,fontSize,foregroundColor,weightedFontFamily",

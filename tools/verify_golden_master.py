@@ -17,8 +17,11 @@ body, and checks each run's font against heading_font_family[0] or base_font.
 A run with no override passes only when the expected font equals the doc default.
 
 Usage:
-    python3 tools/verify_golden_master.py <DOC_ID> [pdf_out] [--base-font=Calibri]
     python3 tools/verify_golden_master.py <DOC_ID> [pdf_out] --theme=templates/<name>.json
+
+--theme is required: it also drives the size / spacing / margin / RGB comparison
+(check_styles_by_role) against build_golden_master.role_style(), with tolerances
+from config/golden_master_tolerances.json.
 """
 import io
 import json
@@ -61,6 +64,70 @@ def check_fonts_by_role(paragraphs, rows, default_font, base_font, heading_font,
     return not problems, checked, problems
 
 
+TOLERANCES_PATH = ROOT / "config" / "golden_master_tolerances.json"
+
+
+def _mag(dim) -> float:
+    return (dim or {}).get("magnitude", 0.0)
+
+
+def check_styles_by_role(doc, theme, tol):
+    """Compare a fetched Doc against the theme's built values (build_golden_master.role_style).
+
+    Checks page margins, each paragraph's lineSpacing / spaceAbove / spaceBelow, and each
+    run's fontSize and foregroundColor RGB. Paragraphs are matched to roles by text.
+    Returns (ok, problems).
+    """
+    import build_golden_master as bgm
+
+    problems = []
+    page = theme.get("page", {})
+    ds = doc.get("documentStyle", {})
+    for side in ("top", "bottom", "left", "right"):
+        key = f"margin_{side}_cm"
+        if key not in page:
+            continue
+        expected = bgm.cm_to_pt(page[key])
+        actual = _mag(ds.get(f"margin{side.capitalize()}"))
+        if abs(actual - expected) > tol["margin_pt"]:
+            problems.append(f"margin {side}: {actual:.1f}pt expected {expected:.1f}pt")
+
+    role_by_text = {}
+    for row in bgm.build_paragraphs(theme):
+        role_by_text.setdefault(row[0].strip(), row[4])
+    for el in doc.get("body", {}).get("content", []):
+        para = el.get("paragraph")
+        if not para:
+            continue
+        runs = [pe["textRun"] for pe in para.get("elements", []) if "textRun" in pe]
+        text = "".join(r.get("content", "") for r in runs).strip()
+        role = role_by_text.get(text)
+        if not text or role is None:
+            continue  # unmatched paragraphs are reported by check_fonts_by_role
+        st = bgm.role_style(theme, role)
+        ps = para.get("paragraphStyle", {})
+        label = f"{role} {text[:30]!r}"
+        # Docs omits a property equal to the named-style default, so absent = not checkable here.
+        ls = ps.get("lineSpacing")
+        if ls is not None and abs(ls - st["line_spacing"]) > tol["line_spacing_pct"]:
+            problems.append(f"{label}: lineSpacing={ls} expected={st['line_spacing']}")
+        for key, field in (("space_above", "spaceAbove"), ("space_below", "spaceBelow")):
+            if field in ps and abs(_mag(ps.get(field)) - st[key]) > tol["spacing_pt"]:
+                problems.append(f"{label}: {field}={_mag(ps.get(field))} expected={st[key]}")
+        want_rgb = bgm.hex_to_rgb(st["color"])
+        for r in runs:
+            if not r.get("content", "").strip():
+                continue
+            ts = r.get("textStyle", {})
+            size = _mag(ts.get("fontSize"))
+            if "fontSize" in ts and abs(size - st["font_size"]) > tol["font_size_pt"]:
+                problems.append(f"{label}: fontSize={size} expected={st['font_size']}")
+            rgb = ts.get("foregroundColor", {}).get("color", {}).get("rgbColor")
+            if rgb is not None and any(abs(rgb.get(ch, 0.0) - want_rgb[ch]) > tol["rgb_channel"] for ch in want_rgb):
+                problems.append(f"{label}: colour={rgb} expected={st['color']}")
+    return not problems, problems
+
+
 def main():
     positional = [a for a in sys.argv[1:] if not a.startswith("--")]
     base_font = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--base-font=")), None)
@@ -73,8 +140,8 @@ def main():
             print(f"--base-font={base_font} conflicts with theme base_font {theme_base}", file=sys.stderr)
             sys.exit(2)
         base_font = theme_base
-    if not positional or not positional[0].strip():
-        print("usage: verify_golden_master.py <DOC_ID> [pdf_out] [--base-font=NAME]", file=sys.stderr)
+    if not positional or not positional[0].strip() or theme is None:
+        print("usage: verify_golden_master.py <DOC_ID> [pdf_out] --theme=templates/<name>.json", file=sys.stderr)
         sys.exit(2)
     doc_id = positional[0].strip()
     pdf_out = Path(positional[1]) if len(positional) > 1 else ROOT / "scratch" / "golden_master_verification.pdf"
@@ -156,10 +223,16 @@ def main():
         font_note = (f"N/A (base_font {base_font} == doc default -> override normalized away)"
                      if base_font else "N/A (no --base-font given)")
 
+    tol = json.loads(TOLERANCES_PATH.read_text(encoding="utf-8"))
+    style_ok, style_problems = check_styles_by_role(doc, theme, tol)
+    for prob in style_problems[:15]:
+        print(f"  style problem: {prob}")
+
     no_empty = len(nonblank) > 0 and not empty
     color_ok = len(with_color) == len(nonblank)
-    ok = no_empty and color_ok and font_ok
-    print(f"\n  no-empty-textStyle: {no_empty} | color-on-all: {color_ok} | font: {font_note}")
+    ok = no_empty and color_ok and font_ok and style_ok
+    print(f"\n  no-empty-textStyle: {no_empty} | color-on-all: {color_ok} | font: {font_note} | "
+          f"size/spacing/margins/RGB: {'ok' if style_ok else f'{len(style_problems)} problems'}")
     print(f"VERDICT: {'PASS — run-level textStyle persisted (fix confirmed live)' if ok else 'FAIL'}")
     sys.exit(0 if ok else 1)
 
